@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
 class AppTextField extends StatelessWidget {
-  // const AppTextField({super.key});
 
   final String? hintText;
   final Widget? trailing;
+  final Function(String newText)? onTextChange;
+  final TextInputAction? textInputAction;
 
   const AppTextField({
     super.key,
     this.hintText,
     this.trailing,
+    this.onTextChange,
+    this.textInputAction,
   });
 
   @override
@@ -22,6 +25,8 @@ class AppTextField extends StatelessWidget {
             borderSide: BorderSide(width: 1, color: Colors.black)),
         hintText: hintText,
       ),
+      onChanged: onTextChange,
+      textInputAction: textInputAction ?? TextInputAction.done,
     );
   }
 }
