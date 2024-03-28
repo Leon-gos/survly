@@ -11,6 +11,11 @@ class AppRouter {
         path: AppRouteNames.home.path,
         builder: (context, state) => const HomeView(),
       ),
+      GoRoute(
+        name: AppRouteNames.home.name,
+        path: AppRouteNames.home.path,
+        builder: (context, state) => const HomeView(),
+      ),
     ],
   );
 }
