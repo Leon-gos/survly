@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "133621180495",
+    "project_id": "survly",
+    "storage_bucket": "survly.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:133621180495:android:5f368ce5686c394308e23a",
+        "android_client_info": {
+          "package_name": "com.leon.survly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArVpABWWml4AWcUSx4b58oS1F2b_Bpn94"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
