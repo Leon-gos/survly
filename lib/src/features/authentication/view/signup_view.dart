@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/authentication/bloc/sign_up_bloc.dart';
 import 'package:survly/src/features/authentication/bloc/sign_up_state.dart';
+import 'package:survly/src/localization/temp_localization.dart';
+import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_button.dart';
 import 'package:survly/widgets/app_text_field.dart';
@@ -13,7 +14,7 @@ class SignUpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF4B9A79),
+      backgroundColor: AppColors.primary,
       appBar: const AppAppBarWidget(),
       body: Builder(
         builder: (context) {
@@ -52,14 +53,14 @@ class SignUpView extends StatelessWidget {
             style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: AppColors.white,
             ),
           ),
           Text(
             "Share Your Survey and Share Happiness",
             style: TextStyle(
               fontSize: 16,
-              color: Colors.white,
+              color: AppColors.white,
             ),
           ),
         ],
@@ -97,7 +98,7 @@ class SignUpView extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
-            hintText: "Email",
+            hintText: TempLocalization.emailHint,
             onTextChange: (newText) {
               context.read<SignUpBloc>().onEmailChange(newText);
             },
@@ -107,7 +108,7 @@ class SignUpView extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
-            hintText: "Username",
+            hintText: TempLocalization.usernameHint,
             onTextChange: (newText) {
               context.read<SignUpBloc>().onUserNameChange(newText);
             },
@@ -117,7 +118,7 @@ class SignUpView extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
-            hintText: "Name",
+            hintText: TempLocalization.nameHint,
             onTextChange: (newText) {
               context.read<SignUpBloc>().onNameChange(newText);
             },
@@ -130,7 +131,7 @@ class SignUpView extends StatelessWidget {
             onTextChange: (newText) {
               context.read<SignUpBloc>().onPasswordChange(newText);
             },
-            hintText: "Password",
+            hintText: TempLocalization.passwordHint,
           ),
         ],
       );
@@ -144,7 +145,7 @@ class SignUpView extends StatelessWidget {
           width: double.infinity,
           child: AppButton(
             onPressed: () {},
-            title: "Sign up",
+            label: TempLocalization.signUpBtnLable,
           ),
         ),
         const SizedBox(
@@ -154,20 +155,19 @@ class SignUpView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              "Have an account? ",
-              style: TextStyle(color: Colors.black),
+              TempLocalization.alreadyHaveAccount,
+              style: TextStyle(color: AppColors.black),
             ),
             Material(
               child: InkWell(
                 onTap: () {
-                  print("ok");
                 },
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                   child: Text(
-                    "Log In",
+                    TempLocalization.loginBtnLabel,
                     style: TextStyle(
-                      color: Color(0xFFE67B3B),
+                      color: AppColors.secondary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

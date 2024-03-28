@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:survly/src/theme/colors.dart';
 
 class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -16,7 +17,7 @@ class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: AppColors.primary,
       title: title != null ? Text(title!) : const SizedBox(),
       leading: leading ??
           IconButton(

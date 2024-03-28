@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:survly/src/theme/colors.dart';
 
 class AppButton extends StatelessWidget {
   final Function() onPressed;
-  final String title;
+  final String label;
 
   const AppButton({
     super.key,
     required this.onPressed,
-    required this.title,
+    required this.label,
   });
 
   @override
@@ -17,12 +18,12 @@ class AppButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
         ),
-        backgroundColor: const Color(0xFFE67B3B),
+        backgroundColor: AppColors.secondary,
       ),
       onPressed: onPressed,
       child: Text(
-        title,
-        style: const TextStyle(color: Colors.white),
+        label,
+        style: const TextStyle(color: AppColors.white),
       ),
     );
   }

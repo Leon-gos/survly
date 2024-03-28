@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:survly/src/theme/colors.dart';
 
 class AppTextField extends StatelessWidget {
 
@@ -19,10 +20,10 @@ class AppTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(8)),
-            borderSide: BorderSide(width: 1, color: Colors.black)),
+            borderSide: BorderSide(width: 1, color: AppColors.black)),
         hintText: hintText,
       ),
       onChanged: onTextChange,
