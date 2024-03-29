@@ -3,6 +3,7 @@ class TempLocalization {
   static const String usernameHint = "Username";
   static const String nameHint = "Name";
   static const String passwordHint = "Password";
+  static const String confirmPasswordHint = "Confirm password";
   static const String signUpBtnLable = "Sign Up";
   static const String alreadyHaveAccount = "Have an account?";
   static const String loginBtnLabel = "Login";

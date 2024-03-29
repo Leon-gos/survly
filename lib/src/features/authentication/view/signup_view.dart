@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:survly/src/features/authentication/bloc/sign_up_bloc.dart';
-import 'package:survly/src/features/authentication/bloc/sign_up_state.dart';
+import 'package:survly/src/features/authentication/logic/sign_up_bloc.dart';
+import 'package:survly/src/features/authentication/logic/sign_up_state.dart';
 import 'package:survly/src/localization/temp_localization.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
@@ -98,29 +98,19 @@ class SignUpView extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
-            hintText: TempLocalization.emailHint,
-            onTextChange: (newText) {
-              context.read<SignUpBloc>().onEmailChange(newText);
-            },
-            textInputAction: TextInputAction.next,
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          AppTextField(
-            hintText: TempLocalization.usernameHint,
-            onTextChange: (newText) {
-              context.read<SignUpBloc>().onUserNameChange(newText);
-            },
-            textInputAction: TextInputAction.next,
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          AppTextField(
             hintText: TempLocalization.nameHint,
             onTextChange: (newText) {
               context.read<SignUpBloc>().onNameChange(newText);
+            },
+            textInputAction: TextInputAction.next,
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          AppTextField(
+            hintText: TempLocalization.emailHint,
+            onTextChange: (newText) {
+              context.read<SignUpBloc>().onEmailChange(newText);
             },
             textInputAction: TextInputAction.next,
           ),
@@ -132,6 +122,15 @@ class SignUpView extends StatelessWidget {
               context.read<SignUpBloc>().onPasswordChange(newText);
             },
             hintText: TempLocalization.passwordHint,
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          AppTextField(
+            onTextChange: (newText) {
+              // context.read<SignUpBloc>().onPasswordChange(newText);
+            },
+            hintText: TempLocalization.confirmPasswordHint,
           ),
         ],
       );
