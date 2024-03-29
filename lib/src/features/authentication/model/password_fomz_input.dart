@@ -6,10 +6,6 @@ class PasswordFormzInput extends FormzInput<String, FormError> {
   const PasswordFormzInput.pure([super.value = ""]) : super.pure();
   const PasswordFormzInput.dirty([super.value = ""]) : super.dirty();
 
-  static final RegExp regExp = RegExp(
-    r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$&*~]).{6,}$',
-  );
-
   @override
   FormError? validator(String? value) {
     // Check if the password is empty
@@ -17,8 +13,8 @@ class PasswordFormzInput extends FormzInput<String, FormError> {
       return FormError.empty;
     }
 
-    // Check minimum length of 8 characters
-    if (value!.length < 8) {
+    // Check minimum length of 6 characters
+    if (value!.length < 6) {
       return FormError.passwordLength;
     }
 
