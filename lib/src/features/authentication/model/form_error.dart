@@ -1,5 +1,10 @@
 enum FormError {
   valid,
   empty,
-  invalid;
+  invalid,
+  passwordMissUpperChar,
+  passwordMissLowerChar,
+  passwordMissDigit,
+  passwordMissSpecialChar,
+  passwordLength;
 }
