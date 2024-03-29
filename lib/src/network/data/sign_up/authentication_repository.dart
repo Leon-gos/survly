@@ -1,6 +1,6 @@
 abstract class AuthenticationRepository {
-  Future<void> signUpEmailPassword(String emailAddress, String password);
-  Future<void> loginWithEmailPassword();
+  Future<void> signUpEmailPassword(String email, String password);
+  Future<void> loginWithEmailPassword(String email, String password);
   Future<void> loginWithGoogle();
   Future<void> logout();
 }

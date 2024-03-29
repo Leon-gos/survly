@@ -3,9 +3,19 @@ import 'package:survly/src/network/data/sign_up/authentication_repository.dart';
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
-  Future<void> loginWithEmailPassword() {
-    // TODO: implement loginWithEmailPassword
-    throw UnimplementedError();
+  Future<void> loginWithEmailPassword(String email, String password) async {
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
   }
 
   @override
@@ -21,11 +31,11 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<void> signUpEmailPassword(String emailAddress, String password) async {
+  Future<void> signUpEmailPassword(String email, String password) async {
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailAddress,
+        email: email,
         password: password,
       );
     } on FirebaseAuthException catch (e) {
