@@ -7,6 +7,7 @@ class TempLocalization {
   static const String signUpBtnLable = "Sign Up";
   static const String alreadyHaveAccount = "Have an account?";
   static const String loginBtnLabel = "Login";
+  static const String loginGoogleBtnLabel = "Continue with Google";
   static const String notHaveAccount = "Don't have an account?";
 
   static const String errorEmptyName = "Empty name";

@@ -142,6 +142,18 @@ class LoginView extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
+            SizedBox(
+              width: double.infinity,
+              child: AppButton(
+                onPressed: () {
+                  context.read<LoginBloc>().loginWithGoogle();
+                },
+                label: TempLocalization.loginGoogleBtnLabel,
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

@@ -16,6 +16,10 @@ class LoginBloc extends Cubit<LoginState> {
     );
   }
 
+  void loginWithGoogle() {
+    domain.authentication.loginWithGoogle();
+  }
+
   void onEmailChange(String email) {
     emit(state.copyWith(email: EmailFormzInput.pure(email)));
   }
