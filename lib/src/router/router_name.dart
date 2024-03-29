@@ -1,5 +1,6 @@
 enum AppRouteNames {
-  home(path: '/');
+  home(path: '/'),
+  signUp(path: '/signUp');
 
   const AppRouteNames({
     required this.path,
