@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/authentication/logic/login_bloc.dart';
 import 'package:survly/src/features/authentication/logic/login_state.dart';
-import 'package:survly/src/features/authentication/logic/sign_up_bloc.dart';
-import 'package:survly/src/features/authentication/logic/sign_up_state.dart';
 import 'package:survly/src/localization/temp_localization.dart';
-import 'package:survly/src/router/router.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_button.dart';
+import 'package:survly/widgets/app_icon_button.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
 class LoginView extends StatelessWidget {
@@ -126,63 +125,69 @@ class LoginView extends StatelessWidget {
   }
 
   Widget _buildBottomButtons() {
-    return BlocBuilder<LoginBloc, LoginState>(
-      builder: (context, state) {
-        return Column(
-          children: [
-            SizedBox(
-              width: double.infinity,
-              child: AppButton(
-                onPressed: () {
-                  context.read<LoginBloc>().loginWithEmailPassword();
-                },
-                label: TempLocalization.loginBtnLabel,
+    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+      return Column(
+        children: [
+          SizedBox(
+            width: double.infinity,
+            child: AppButton(
+              onPressed: () {
+                context.read<LoginBloc>().loginWithEmailPassword();
+              },
+              label: TempLocalization.loginBtnLabel,
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            child: const Text("Or"),  
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: AppIconButton(
+              onPressed: () {
+                context.read<LoginBloc>().loginWithGoogle();
+              },
+              label: TempLocalization.loginGoogleBtnLabel,
+              icon: SvgPicture.asset(
+                "assets/svgs/google.svg",
+                width: 21,
+                height: 21,
               ),
+              backgroundColor: AppColors.white,
+              labelColor: Colors.black54,
             ),
-            const SizedBox(
-              height: 16,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: AppButton(
-                onPressed: () {
-                  context.read<LoginBloc>().loginWithGoogle();
-                },
-                label: TempLocalization.loginGoogleBtnLabel,
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                TempLocalization.notHaveAccount,
+                style: TextStyle(color: AppColors.black),
               ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  TempLocalization.notHaveAccount,
-                  style: TextStyle(color: AppColors.black),
-                ),
-                Material(
-                  child: InkWell(
-                    onTap: () {
-                      context.push(AppRouteNames.signUp.path);
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                      child: Text(
-                        TempLocalization.signUpBtnLable,
-                        style: TextStyle(
-                          color: AppColors.secondary,
-                          fontWeight: FontWeight.bold,
-                        ),
+              Material(
+                child: InkWell(
+                  onTap: () {
+                    context.push(AppRouteNames.signUp.path);
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                    child: Text(
+                      TempLocalization.signUpBtnLable,
+                      style: TextStyle(
+                        color: AppColors.secondary,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
-          ],
-        );
-      }
-    );
+              ),
+            ],
+          ),
+        ],
+      );
+    });
   }
 }

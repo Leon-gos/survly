@@ -1,31 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:survly/src/theme/colors.dart';
 
-class AppButton extends StatelessWidget {
+class AppIconButton extends StatelessWidget {
   final Function() onPressed;
   final String label;
+  final Widget icon;
+  final Color? backgroundColor;
+  final Color? labelColor;
 
-  const AppButton({
+  const AppIconButton({
     super.key,
     required this.onPressed,
     required this.label,
+    required this.icon,
+    this.backgroundColor,
+    this.labelColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
         ),
-        backgroundColor: AppColors.secondary,
+        backgroundColor: backgroundColor ?? AppColors.secondary,
       ),
       onPressed: onPressed,
-      child: Text(
+      icon: icon,
+      label: Text(
         label,
-        style: const TextStyle(
+        style: TextStyle(
           fontWeight: FontWeight.bold,
-          color: AppColors.white,
+          color: labelColor ?? AppColors.white,
         ),
       ),
     );

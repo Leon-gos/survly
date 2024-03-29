@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
             secondary: AppColors.secondary,
           ),
           fontFamily: "Quicksand",
+          splashColor: Colors.black45
         ),
         debugShowCheckedModeBanner: false,
         routerConfig: _appRouter.router,
