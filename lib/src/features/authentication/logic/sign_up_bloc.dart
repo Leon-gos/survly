@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/authentication/logic/sign_up_state.dart';
 import 'package:survly/src/features/authentication/model/email_fomz_input.dart';
 import 'package:survly/src/features/authentication/model/name_fomz_input.dart';
@@ -7,7 +8,14 @@ import 'package:survly/src/features/authentication/model/password_fomz_input.dar
 class SignUpBloc extends Cubit<SignUpState> {
   SignUpBloc() : super(SignUpState.ds());
 
-  void signUp() {}
+  DomainManager get domain => DomainManager();
+
+  void signUpByEmailPassword() {
+    domain.authentication.signUpEmailPassword(
+      state.email.value,
+      state.password.value,
+    );
+  }
 
   void onEmailChange(String email) {
     emit(state.copyWith(email: EmailFormzInput.pure(email)));

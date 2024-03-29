@@ -138,44 +138,50 @@ class SignUpView extends StatelessWidget {
   }
 
   Widget _buildBottomButtons() {
-    return Column(
-      children: [
-        SizedBox(
-          width: double.infinity,
-          child: AppButton(
-            onPressed: () {},
-            label: TempLocalization.signUpBtnLable,
-          ),
-        ),
-        const SizedBox(
-          height: 16,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+    return BlocBuilder<SignUpBloc, SignUpState>(
+      builder: (context, state) {
+        return Column(
           children: [
-            const Text(
-              TempLocalization.alreadyHaveAccount,
-              style: TextStyle(color: AppColors.black),
-            ),
-            Material(
-              child: InkWell(
-                onTap: () {
+            SizedBox(
+              width: double.infinity,
+              child: AppButton(
+                onPressed: () {
+                  context.read<SignUpBloc>().signUpByEmailPassword();
                 },
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  child: Text(
-                    TempLocalization.loginBtnLabel,
-                    style: TextStyle(
-                      color: AppColors.secondary,
-                      fontWeight: FontWeight.bold,
+                label: TempLocalization.signUpBtnLable,
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  TempLocalization.alreadyHaveAccount,
+                  style: TextStyle(color: AppColors.black),
+                ),
+                Material(
+                  child: InkWell(
+                    onTap: () {
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                      child: Text(
+                        TempLocalization.loginBtnLabel,
+                        style: TextStyle(
+                          color: AppColors.secondary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
           ],
-        ),
-      ],
+        );
+      }
     );
   }
 }
