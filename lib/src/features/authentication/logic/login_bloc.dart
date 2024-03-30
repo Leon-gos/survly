@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/authentication/logic/login_state.dart';
@@ -9,11 +11,17 @@ class LoginBloc extends Cubit<LoginState> {
 
   DomainManager get domain => DomainManager();
 
-  void loginWithEmailPassword() {
-    domain.authentication.loginWithEmailPassword(
-      state.email.value,
-      state.password.value,
-    );
+  Future<void> loginWithEmailPassword() async {
+    try {
+      await domain.authentication.loginWithEmailPassword(
+        state.email.value,
+        state.password.value,
+      );
+      var admin = await domain.admin.getAdminByEmail(state.email.value);
+      print(admin?.fullname);
+    } catch (e) {
+      print(e);
+    }
   }
 
   void loginWithGoogle() {

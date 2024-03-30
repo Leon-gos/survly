@@ -1,4 +1,5 @@
-import 'package:survly/src/network/data/sign_up/authentication_repository_impl.dart';
+import 'package:survly/src/network/data/admin/admin_repository_impl.dart';
+import 'package:survly/src/network/data/authentication/authentication_repository_impl.dart';
 
 class DomainManager {
   factory DomainManager() {
@@ -9,4 +10,5 @@ class DomainManager {
   static DomainManager? _internal;
 
   final authentication = AuthenticationRepositoryImpl();
+  final admin = AdminRepositoryImpl();
 }

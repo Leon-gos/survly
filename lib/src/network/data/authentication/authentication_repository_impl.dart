@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:survly/src/network/data/sign_up/authentication_repository.dart';
+import 'package:survly/src/network/data/authentication/authentication_repository.dart';
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
@@ -16,6 +16,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
       }
+      rethrow;
     }
   }
 
