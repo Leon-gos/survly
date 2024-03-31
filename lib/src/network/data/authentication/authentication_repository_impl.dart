@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:survly/src/network/data/sign_up/authentication_repository.dart';
+import 'package:survly/src/network/data/authentication/authentication_repository.dart';
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
@@ -35,7 +35,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     );
 
     // Once signed in, return the UserCredential
-    // return await FirebaseAuth.instance.signInWithCredential(credential);
+    var userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    print(userCredential.user?.displayName);
   }
 
   @override
