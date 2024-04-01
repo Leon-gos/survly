@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:survly/gen/assets.gen.dart';
 import 'package:survly/src/features/authentication/logic/login_bloc.dart';
 import 'package:survly/src/features/authentication/logic/login_state.dart';
 import 'package:survly/src/localization/localization_utils.dart';
@@ -155,11 +156,7 @@ class LoginView extends StatelessWidget {
                 context.read<LoginBloc>().loginWithGoogle();
               },
               label: S.of(context).loginGoogleBtnLabel,
-              icon: SvgPicture.asset(
-                "assets/svgs/google.svg",
-                width: 21,
-                height: 21,
-              ),
+              icon: Assets.svgs.icGoogle.svg(width: 21, height: 21),
               backgroundColor: AppColors.white,
               labelColor: Colors.black54,
             ),
