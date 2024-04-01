@@ -1,5 +1,6 @@
 enum AppRouteNames {
   home(path: '/'),
+  login(path: '/login'),
   signUp(path: '/signUp');
 
   const AppRouteNames({

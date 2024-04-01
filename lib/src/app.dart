@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
-import 'package:survly/src/features/authentication/logic/sign_up_bloc.dart';
 import 'package:survly/src/router/router.dart';
 import 'package:survly/src/theme/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
@@ -12,25 +12,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => SignUpBloc(),
-        )
-      ],
-      child: MaterialApp.router(
-        title: 'Flutter Demo',
-        theme: ThemeData(
+    return MaterialApp.router(
+      title: 'Flutter Demo',
+      theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
             seedColor: AppColors.primary,
             primary: AppColors.primary,
             secondary: AppColors.secondary,
           ),
           fontFamily: "Quicksand",
-        ),
-        debugShowCheckedModeBanner: false,
-        routerConfig: _appRouter.router,
-      ),
+          splashColor: Colors.black45),
+      debugShowCheckedModeBanner: false,
+      routerConfig: _appRouter.router,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'), // English
+      ],
     );
   }
 }
