@@ -24,6 +24,8 @@ class LoginState extends Equatable {
         message: "",
       );
 
+
+bool get isValid => email.isValid && password.isValid;
   @override
   List<Object?> get props => [email, password, status];
 
