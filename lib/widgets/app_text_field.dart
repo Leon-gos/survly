@@ -9,6 +9,7 @@ class AppTextField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final TextInputType? textInputType;
   final bool? obscureText;
+  final String? errorText;
 
   const AppTextField({
     super.key,
@@ -18,6 +19,7 @@ class AppTextField extends StatelessWidget {
     this.textInputAction,
     this.textInputType,
     this.obscureText,
+    this.errorText
   });
 
   @override
@@ -29,6 +31,7 @@ class AppTextField extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(8)),
             borderSide: BorderSide(width: 1, color: AppColors.black)),
         hintText: hintText,
+        errorText: errorText,
       ),
       keyboardType: textInputType,
       obscureText: obscureText ?? false,

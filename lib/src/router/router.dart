@@ -7,14 +7,18 @@ import 'package:survly/src/router/router_name.dart';
 
 class AppRouter {
   final router = GoRouter(
-    // initialLocation: AppRouteNames.splash.path,
+    initialLocation: AppRouteNames.login.path,
     redirect: (context, state) async {
-      DomainManager domain = DomainManager();
-      var loginInfo = await domain.authenticationLocal.readLoginInfo();
-      if (loginInfo?.email != "") {
-        return AppRouteNames.home.path;
+      if (state.path == AppRouteNames.login.path) {
+        DomainManager domain = DomainManager();
+        var loginInfo = await domain.authenticationLocal.readLoginInfo();
+        if (loginInfo?.email != "") {
+          return AppRouteNames.home.path;
+        } else {
+          return AppRouteNames.login.path;
+        }
       }
-      return AppRouteNames.login.path;
+      return state.path;
     },
     routes: <RouteBase>[
       GoRoute(

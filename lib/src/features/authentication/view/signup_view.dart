@@ -93,6 +93,7 @@ class SignUpView extends StatelessWidget {
 
   Widget _buildListTextField() {
     return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
+      print("build");
       return Column(
         children: [
           const SizedBox(
@@ -104,6 +105,7 @@ class SignUpView extends StatelessWidget {
               context.read<SignUpBloc>().onNameChange(newText);
             },
             textInputAction: TextInputAction.next,
+            errorText: state.name.errorOf(),
           ),
           const SizedBox(
             height: 16,
@@ -114,6 +116,7 @@ class SignUpView extends StatelessWidget {
               context.read<SignUpBloc>().onEmailChange(newText);
             },
             textInputAction: TextInputAction.next,
+            errorText: state.email.errorOf(),
           ),
           const SizedBox(
             height: 16,
@@ -124,6 +127,7 @@ class SignUpView extends StatelessWidget {
             },
             hintText: TempLocalization.passwordHint,
             textInputAction: TextInputAction.next,
+            errorText: state.password.errorOf(),
           ),
           const SizedBox(
             height: 16,

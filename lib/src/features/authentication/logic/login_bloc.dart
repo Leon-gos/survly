@@ -35,7 +35,6 @@ class LoginBloc extends Cubit<LoginState> {
   Future<void> loginWithGoogle(BuildContext context) async {
     var user = await domain.authentication.loginWithGoogle();
     if (user.user?.email != "") { // sign in successful
-      print("Sign in success");
       domain.authenticationLocal.storeLoginInfo(
         LoginInfo(
           email: user.user!.email!,
@@ -44,9 +43,6 @@ class LoginBloc extends Cubit<LoginState> {
       ).then((value) {
         context.replace(AppRouteNames.home.path);
       });
-    }
-    else {
-      print("Sign in fail");
     }
   }
 

@@ -16,5 +16,6 @@ class TempLocalization {
   static const String errorPasswordMissLowerChar = "Password must contain at least one lowercase letter";
   static const String errorPasswordMissDigit = "Password must contain at least one digit";
   static const String errorPasswordMissSpecialChar = "Password must contain at least one special character";
+  static const String errorEmailInvalid = "Email invalid";
 
 }
