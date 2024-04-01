@@ -10,6 +10,10 @@ class LoginState extends Equatable {
   final FormzSubmissionStatus status;
   final String message;
 
+  bool isValid() {
+    return email.isValid && password.isValid;
+  }
+
   const LoginState({
     required this.email,
     required this.password,
@@ -24,8 +28,6 @@ class LoginState extends Equatable {
         message: "",
       );
 
-
-bool get isValid => email.isValid && password.isValid;
   @override
   List<Object?> get props => [email, password, status];
 

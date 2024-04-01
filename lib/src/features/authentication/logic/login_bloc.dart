@@ -12,10 +12,9 @@ class LoginBloc extends Cubit<LoginState> {
   DomainManager get domain => DomainManager();
 
   void loginWithEmailPassword() async {
-      emit(state.copyWith(email: EmailFormzInput.dirty(state.email.value)));
-      emit(state.copyWith(password: PasswordFormzInput.dirty(state.password.value)));
-
-    if(!state.isValid) {
+    emit(state.copyWith(email: EmailFormzInput.dirty(state.email.value)));
+    emit(state.copyWith(password: PasswordFormzInput.dirty(state.password.value)));
+    if (!state.isValid()) {
       return;
     }
     try {
