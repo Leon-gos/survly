@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:survly/gen/assets.gen.dart';
 import 'package:survly/src/features/authentication/logic/sign_up_bloc.dart';
 import 'package:survly/src/features/authentication/logic/sign_up_state.dart';
 import 'package:survly/src/localization/temp_localization.dart';
