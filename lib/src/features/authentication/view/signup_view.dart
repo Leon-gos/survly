@@ -47,22 +47,22 @@ class SignUpScreen extends StatelessWidget {
   Widget _buildTitle(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(32),
-      child: const Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "Survly",
-            style: TextStyle(
+            S.of(context).appName,
+            style: const TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
               color: AppColors.white,
             ),
           ),
           Text(
-            "Share Your Survey and Share Happiness",
-            style: TextStyle(
+            S.of(context).appSlogan,
+            style: const TextStyle(
               fontSize: 16,
               color: AppColors.white,
             ),
@@ -102,7 +102,7 @@ class SignUpScreen extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
-            hintText: S.text.nameHint,
+            hintText: S.of(context).nameHint,
             onTextChange: (newText) {
               context.read<SignUpBloc>().onNameChange(newText);
             },
@@ -113,7 +113,7 @@ class SignUpScreen extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
-            hintText: S.text.emailHint,
+            hintText: S.of(context).emailHint,
             onTextChange: (newText) {
               context.read<SignUpBloc>().onEmailChange(newText);
             },
@@ -127,7 +127,7 @@ class SignUpScreen extends StatelessWidget {
             onTextChange: (newText) {
               context.read<SignUpBloc>().onPasswordChange(newText);
             },
-            hintText: S.text.passwordHint,
+            hintText: S.of(context).passwordHint,
             textInputAction: TextInputAction.next,
             errorText: state.password.errorOf(),
           ),
@@ -137,7 +137,7 @@ class SignUpScreen extends StatelessWidget {
           AppTextField(
             onTextChange: (newText) {
             },
-            hintText: S.text.confirmPasswordHint,
+            hintText: S.of(context).confirmPasswordHint,
           ),
         ],
       );
@@ -155,7 +155,7 @@ class SignUpScreen extends StatelessWidget {
                 onPressed: () {
                   context.read<SignUpBloc>().signUpByEmailPassword();
                 },
-                label: S.text.signUpBtnLabel,
+                label: S.of(context).signUpBtnLabel,
               ),
             ),
             const SizedBox(
@@ -165,7 +165,7 @@ class SignUpScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  S.text.alreadyHaveAccount,
+                  S.of(context).alreadyHaveAccount,
                   style: const TextStyle(color: AppColors.black),
                 ),
                 Material(
@@ -176,7 +176,7 @@ class SignUpScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       child: Text(
-                        S.text.loginBtnLabel,
+                        S.of(context).loginBtnLabel,
                         style: const TextStyle(
                           color: AppColors.secondary,
                           fontWeight: FontWeight.bold,

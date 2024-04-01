@@ -1,4 +1,7 @@
 {
+    "appName": "Survly",
+    "appSlogan": "Share Your Survey and Share Happiness",
+    "or": "Or",
     "emailHint": "Email",
     "usernameHint": "Username",
     "nameHint": "Name",
