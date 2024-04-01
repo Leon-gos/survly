@@ -9,34 +9,37 @@ import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_button.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
-class SignUpView extends StatelessWidget {
-  const SignUpView({super.key});
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.primary,
-      appBar: const AppAppBarWidget(),
-      body: Builder(
-        builder: (context) {
-          return SafeArea(
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: _buildTitle(context),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    height: (MediaQuery.sizeOf(context).height / 10) * 7,
-                    child: _buildSignUpForm(),
+    return BlocProvider(
+      create: (context) => SignUpBloc(),
+      child: Scaffold(
+        backgroundColor: AppColors.primary,
+        appBar: const AppAppBarWidget(),
+        body: Builder(
+          builder: (context) {
+            return SafeArea(
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: _buildTitle(context),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      height: (MediaQuery.sizeOf(context).height / 10) * 7,
+                      child: _buildSignUpForm(),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -93,7 +96,6 @@ class SignUpView extends StatelessWidget {
 
   Widget _buildListTextField() {
     return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
-      print("build");
       return Column(
         children: [
           const SizedBox(

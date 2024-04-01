@@ -17,31 +17,34 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.primary,
-      appBar: const AppAppBarWidget(
-        leading: SizedBox(),
-      ),
-      body: Builder(
-        builder: (context) {
-          return SafeArea(
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: _buildTitle(context),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    height: (MediaQuery.sizeOf(context).height / 10) * 7,
-                    child: _buildLoginForm(),
+    return BlocProvider(
+      create: (context) => LoginBloc(),
+      child: Scaffold(
+        backgroundColor: AppColors.primary,
+        appBar: const AppAppBarWidget(
+          leading: SizedBox(),
+        ),
+        body: Builder(
+          builder: (context) {
+            return SafeArea(
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: _buildTitle(context),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      height: (MediaQuery.sizeOf(context).height / 10) * 7,
+                      child: _buildLoginForm(),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

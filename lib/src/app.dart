@@ -13,29 +13,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => SignUpBloc(),
+    return MaterialApp.router(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppColors.primary,
+          primary: AppColors.primary,
+          secondary: AppColors.secondary,
         ),
-        BlocProvider(
-          create: (context) => LoginBloc(),
-        ),
-      ],
-      child: MaterialApp.router(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: AppColors.primary,
-            primary: AppColors.primary,
-            secondary: AppColors.secondary,
-          ),
-          fontFamily: "Quicksand",
-          splashColor: Colors.black45
-        ),
-        debugShowCheckedModeBanner: false,
-        routerConfig: _appRouter.router,
+        fontFamily: "Quicksand",
+        splashColor: Colors.black45
       ),
+      debugShowCheckedModeBanner: false,
+      routerConfig: _appRouter.router,
     );
   }
 }
