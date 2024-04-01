@@ -8,8 +8,13 @@ class AdminRepositoryImpl implements AdminRepository {
 
   @override
   Future<Admin?> getAdminByEmail(String email) async {
-    var snapshot = await ref.where("email", isEqualTo: email).get();
-    Admin? admin = Admin.fromJson(snapshot.docs[0].data() as Map<String, dynamic>);
+    Admin? admin;
+    try {
+      var snapshot = await ref.where("email", isEqualTo: email).get();
+      admin = Admin.fromJson(snapshot.docs[0].data() as Map<String, dynamic>);
+    } catch (e) {
+      rethrow;
+    }
     return admin;
   }
 }

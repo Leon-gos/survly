@@ -13,49 +13,62 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-
   var currentIndex = 0;
+  late final HomeBloc homeBloc;
 
   @override
   void initState() {
     super.initState();
-    //TODO: find solution for fetch
-    // context.read<HomeBloc>().fetchAdminInfo(context);
+    homeBloc = HomeBloc();
+    homeBloc.fetchAdminInfo();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeBloc(),
-      lazy: false,
-      child: Scaffold(
-        appBar: const AppAppBarWidget(
-          leading: SizedBox(),
-          title: "Survey",
-        ),
-        body: BlocBuilder<HomeBloc, HomeState>(
-          builder: (context, state) {
-            return state.status == HomeStatus.loading
-                ? const AppLoadingCircle()
-                : const Center(child: Text("Hello world"));
-          },
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: (value) {
-            
-          },
-          currentIndex: currentIndex,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.note_alt_outlined),
-              label: "Survey",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.image),
-              label: "Outlet",
-            ),
-          ],
-        ),
+      create: (context) => homeBloc,
+      child: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          return state.status == HomeStatus.loading
+              ? _buildLoadingScreen()
+              : _buildHomeScreen();
+        },
+      ),
+    );
+  }
+
+  Widget _buildLoadingScreen() {
+    return const Scaffold(
+      body: AppLoadingCircle(),
+    );
+  }
+
+  Widget _buildHomeScreen() {
+    return Scaffold(
+      appBar: const AppAppBarWidget(
+        leading: SizedBox(),
+        title: "Survey",
+      ),
+      body: const Center(
+        child: Text("Hello world"),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (value) {
+          setState(() {
+            currentIndex = value;
+          });
+        },
+        currentIndex: currentIndex,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.note_alt_outlined),
+            label: "Survey",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.image),
+            label: "Outlet",
+          ),
+        ],
       ),
     );
   }

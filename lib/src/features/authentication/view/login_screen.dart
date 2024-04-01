@@ -24,26 +24,22 @@ class LoginView extends StatelessWidget {
         appBar: const AppAppBarWidget(
           leading: SizedBox(),
         ),
-        body: Builder(
-          builder: (context) {
-            return SafeArea(
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: _buildTitle(context),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: SizedBox(
-                      height: (MediaQuery.sizeOf(context).height / 10) * 7,
-                      child: _buildLoginForm(),
-                    ),
-                  ),
-                ],
+        body: SafeArea(
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: _buildTitle(context),
               ),
-            );
-          },
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                  height: (MediaQuery.sizeOf(context).height / 10) * 7,
+                  child: _buildLoginForm(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -107,28 +103,28 @@ class LoginView extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
-            hintText: S.of(context).emailHint,
-            onTextChange: (newText) {
-              context.read<LoginBloc>().onEmailChange(newText);
-            },
-            textInputAction: TextInputAction.next,
-            textInputType: TextInputType.emailAddress,
-            errorText: state.email.errorOf(),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          AppTextField(
-            onTextChange: (newText) {
-              context.read<LoginBloc>().onPasswordChange(newText);
-            },
-            hintText: S.of(context).passwordHint,
-            obscureText: true,
-            errorText: state.password.errorOf(),
-          ),
-        ],
-      );
-    });
+                onTextChange: (newText) {
+                  context.read<LoginBloc>().onEmailChange(newText);
+                },
+                hintText: S.of(context).emailHint,
+                textInputAction: TextInputAction.next,
+                textInputType: TextInputType.emailAddress,
+                errorText: state.email.errorOf(),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              AppTextField(
+                onTextChange: (newText) {
+                  context.read<LoginBloc>().onPasswordChange(newText);
+                },
+                hintText: S.of(context).passwordHint,
+                obscureText: true,
+                errorText: state.password.errorOf(),
+              ),
+            ],
+          );
+        });
   }
 
   Widget _buildBottomButtons() {
@@ -146,7 +142,7 @@ class LoginView extends StatelessWidget {
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 8),
-            child: Text(S.of(context).or),  
+            child: Text(S.of(context).or),
           ),
           SizedBox(
             width: double.infinity,
@@ -176,7 +172,8 @@ class LoginView extends StatelessWidget {
                     context.push(AppRouteNames.signUp.path);
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                     child: Text(
                       S.of(context).signUpBtnLabel,
                       style: const TextStyle(

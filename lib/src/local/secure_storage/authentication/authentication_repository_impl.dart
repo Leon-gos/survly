@@ -10,8 +10,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Future<LoginInfo?> readLoginInfo() async {
-    var email = await _storage.read(key: keyEmail);
-    var password = await _storage.read(key: keyPassword);
+    var email = await _storage.read(key: keyEmail).timeout(const Duration(seconds: 2));
+    var password = await _storage.read(key: keyPassword).timeout(const Duration(seconds: 2));
     return LoginInfo(email: email ?? "", password: password ?? "");
   }
 
