@@ -15,21 +15,19 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    context.read<HomeBloc>().fetchAdminInfo();
+    context.read<HomeBloc>().fetchAdminInfo(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        return Scaffold(
-          body: state.status == HomeStatus.loading
+    return Scaffold(
+      body: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          return state.status == HomeStatus.loading
               ? const AppLoadingCircle()
-              : const Center(
-                  child: Text("Hello world"),
-                ),
-        );
-      },
+              : const Center(child: Text("Hello world"));
+        },
+      ),
     );
   }
 }
