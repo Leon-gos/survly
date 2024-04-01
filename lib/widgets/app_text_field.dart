@@ -7,6 +7,8 @@ class AppTextField extends StatelessWidget {
   final Widget? trailing;
   final Function(String newText)? onTextChange;
   final TextInputAction? textInputAction;
+  final TextInputType? textInputType;
+  final bool? obscureText;
 
   const AppTextField({
     super.key,
@@ -14,6 +16,8 @@ class AppTextField extends StatelessWidget {
     this.trailing,
     this.onTextChange,
     this.textInputAction,
+    this.textInputType,
+    this.obscureText,
   });
 
   @override
@@ -26,6 +30,8 @@ class AppTextField extends StatelessWidget {
             borderSide: BorderSide(width: 1, color: AppColors.black)),
         hintText: hintText,
       ),
+      keyboardType: textInputType,
+      obscureText: obscureText ?? false,
       onChanged: onTextChange,
       textInputAction: textInputAction ?? TextInputAction.done,
     );

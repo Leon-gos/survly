@@ -109,6 +109,7 @@ class LoginView extends StatelessWidget {
               context.read<LoginBloc>().onEmailChange(newText);
             },
             textInputAction: TextInputAction.next,
+            textInputType: TextInputType.emailAddress,
           ),
           const SizedBox(
             height: 16,
@@ -118,6 +119,7 @@ class LoginView extends StatelessWidget {
               context.read<LoginBloc>().onPasswordChange(newText);
             },
             hintText: TempLocalization.passwordHint,
+            obscureText: true,
           ),
         ],
       );
