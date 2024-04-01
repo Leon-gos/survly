@@ -14,6 +14,14 @@ class LoginBloc extends Cubit<LoginState> {
   DomainManager get domain => DomainManager();
 
   void loginWithEmailPassword(BuildContext context) async {
+    if(!state.email.isValid) {
+      emit(state.copyWith(email: EmailFormzInput.dirty(state.email.value)));
+      return;
+    }
+    if(!state.password.isValid) {
+      emit(state.copyWith(password: PasswordFormzInput.dirty(state.password.value)));
+      return;
+    }
     try {
       await domain.authentication.loginWithEmailPassword(
         state.email.value,

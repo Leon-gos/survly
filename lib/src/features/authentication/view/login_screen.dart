@@ -113,6 +113,7 @@ class LoginView extends StatelessWidget {
             },
             textInputAction: TextInputAction.next,
             textInputType: TextInputType.emailAddress,
+            errorText: state.email.errorOf(),
           ),
           const SizedBox(
             height: 16,
@@ -123,6 +124,7 @@ class LoginView extends StatelessWidget {
             },
             hintText: TempLocalization.passwordHint,
             obscureText: true,
+            errorText: state.password.errorOf(),
           ),
         ],
       );

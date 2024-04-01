@@ -6,7 +6,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<void> loginWithEmailPassword(String email, String password) async {
     try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -47,8 +47,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<void> signUpEmailPassword(String email, String password) async {
     try {
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );

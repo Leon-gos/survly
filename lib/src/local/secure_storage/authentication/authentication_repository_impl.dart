@@ -19,7 +19,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   Future<void> storeLoginInfo(LoginInfo loginInfo) async {
     await _storage.write(key: keyEmail, value: loginInfo.email);
     await _storage.write(key: keyPassword, value: loginInfo.password);
-    print("store login info done");
   }
   
 }
