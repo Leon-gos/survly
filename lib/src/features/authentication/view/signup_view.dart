@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/authentication/logic/sign_up_bloc.dart';
 import 'package:survly/src/features/authentication/logic/sign_up_state.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/localization/temp_localization.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
@@ -102,7 +103,7 @@ class SignUpScreen extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
-            hintText: TempLocalization.nameHint,
+            hintText: S.text.nameHint,
             onTextChange: (newText) {
               context.read<SignUpBloc>().onNameChange(newText);
             },
@@ -113,7 +114,7 @@ class SignUpScreen extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
-            hintText: TempLocalization.emailHint,
+            hintText: S.text.emailHint,
             onTextChange: (newText) {
               context.read<SignUpBloc>().onEmailChange(newText);
             },
@@ -127,7 +128,7 @@ class SignUpScreen extends StatelessWidget {
             onTextChange: (newText) {
               context.read<SignUpBloc>().onPasswordChange(newText);
             },
-            hintText: TempLocalization.passwordHint,
+            hintText: S.text.passwordHint,
             textInputAction: TextInputAction.next,
             errorText: state.password.errorOf(),
           ),
@@ -137,7 +138,7 @@ class SignUpScreen extends StatelessWidget {
           AppTextField(
             onTextChange: (newText) {
             },
-            hintText: TempLocalization.confirmPasswordHint,
+            hintText: S.text.confirmPasswordHint,
           ),
         ],
       );
@@ -155,7 +156,7 @@ class SignUpScreen extends StatelessWidget {
                 onPressed: () {
                   context.read<SignUpBloc>().signUpByEmailPassword();
                 },
-                label: TempLocalization.signUpBtnLable,
+                label: S.text.signUpBtnLabel,
               ),
             ),
             const SizedBox(
@@ -164,20 +165,20 @@ class SignUpScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  TempLocalization.alreadyHaveAccount,
-                  style: TextStyle(color: AppColors.black),
+                Text(
+                  S.text.alreadyHaveAccount,
+                  style: const TextStyle(color: AppColors.black),
                 ),
                 Material(
                   child: InkWell(
                     onTap: () {
                       context.pop();
                     },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       child: Text(
-                        TempLocalization.loginBtnLabel,
-                        style: TextStyle(
+                        S.text.loginBtnLabel,
+                        style: const TextStyle(
                           color: AppColors.secondary,
                           fontWeight: FontWeight.bold,
                         ),

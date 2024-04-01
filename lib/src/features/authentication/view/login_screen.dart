@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/authentication/logic/login_bloc.dart';
 import 'package:survly/src/features/authentication/logic/login_state.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/localization/temp_localization.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
@@ -107,7 +108,7 @@ class LoginView extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
-            hintText: TempLocalization.emailHint,
+            hintText: S.text.emailHint,
             onTextChange: (newText) {
               context.read<LoginBloc>().onEmailChange(newText);
             },
@@ -122,7 +123,7 @@ class LoginView extends StatelessWidget {
             onTextChange: (newText) {
               context.read<LoginBloc>().onPasswordChange(newText);
             },
-            hintText: TempLocalization.passwordHint,
+            hintText: S.text.passwordHint,
             obscureText: true,
             errorText: state.password.errorOf(),
           ),
@@ -141,7 +142,7 @@ class LoginView extends StatelessWidget {
               onPressed: () {
                 context.read<LoginBloc>().loginWithEmailPassword();
               },
-              label: TempLocalization.loginBtnLabel,
+              label: S.text.loginBtnLabel,
             ),
           ),
           Container(
@@ -154,7 +155,7 @@ class LoginView extends StatelessWidget {
               onPressed: () {
                 context.read<LoginBloc>().loginWithGoogle();
               },
-              label: TempLocalization.loginGoogleBtnLabel,
+              label: S.text.loginGoogleBtnLabel,
               icon: SvgPicture.asset(
                 "assets/svgs/google.svg",
                 width: 21,
@@ -170,20 +171,20 @@ class LoginView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                TempLocalization.notHaveAccount,
-                style: TextStyle(color: AppColors.black),
+              Text(
+                S.text.notHaveAccount,
+                style: const TextStyle(color: AppColors.black),
               ),
               Material(
                 child: InkWell(
                   onTap: () {
                     context.push(AppRouteNames.signUp.path);
                   },
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                     child: Text(
-                      TempLocalization.signUpBtnLable,
-                      style: TextStyle(
+                      S.text.signUpBtnLabel,
+                      style: const TextStyle(
                         color: AppColors.secondary,
                         fontWeight: FontWeight.bold,
                       ),

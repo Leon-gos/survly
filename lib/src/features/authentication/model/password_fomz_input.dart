@@ -1,6 +1,6 @@
 import 'package:formz/formz.dart';
 import 'package:survly/src/features/authentication/model/form_error.dart';
-import 'package:survly/src/localization/temp_localization.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 
 class PasswordFormzInput extends FormzInput<String, FormError> {
   const PasswordFormzInput.pure([super.value = ""]) : super.pure();
@@ -49,15 +49,15 @@ class PasswordFormzInput extends FormzInput<String, FormError> {
     switch (error) {
       case FormError.empty:
       case FormError.passwordLength:
-        return TempLocalization.errorPasswordLength;
+        return S.text.errorPasswordLength;
       case FormError.passwordMissLowerChar:
-        return TempLocalization.errorPasswordMissLowerChar;
+        return S.text.errorPasswordMissLowerChar;
       case FormError.passwordMissUpperChar:
-        return TempLocalization.errorPasswordMissUpperChar;
+        return S.text.errorPasswordMissUpperChar;
       case FormError.passwordMissDigit:
-        return TempLocalization.errorPasswordMissDigit;
+        return S.text.errorPasswordMissDigit;
       case FormError.passwordMissSpecialChar:
-        return TempLocalization.errorPasswordMissSpecialChar;
+        return S.text.errorPasswordMissSpecialChar;
       default:
         return null;
     }
