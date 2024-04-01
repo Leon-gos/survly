@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/authentication/logic/login_bloc.dart';
 import 'package:survly/src/features/authentication/logic/login_state.dart';
 import 'package:survly/src/localization/localization_utils.dart';
-import 'package:survly/src/localization/temp_localization.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
