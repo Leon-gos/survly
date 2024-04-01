@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/authentication/logic/login_bloc.dart';
 import 'package:survly/src/features/authentication/logic/login_state.dart';
-import 'package:survly/src/localization/temp_localization.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
@@ -52,22 +52,22 @@ class LoginView extends StatelessWidget {
   Widget _buildTitle(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(32),
-      child: const Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "Survly",
-            style: TextStyle(
+            S.of(context).appName,
+            style: const TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
               color: AppColors.white,
             ),
           ),
           Text(
-            "Share Your Survey and Share Happiness",
-            style: TextStyle(
+            S.of(context).appSlogan,
+            style: const TextStyle(
               fontSize: 16,
               color: AppColors.white,
             ),
@@ -107,7 +107,7 @@ class LoginView extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
-            hintText: TempLocalization.emailHint,
+            hintText: S.of(context).emailHint,
             onTextChange: (newText) {
               context.read<LoginBloc>().onEmailChange(newText);
             },
@@ -122,7 +122,7 @@ class LoginView extends StatelessWidget {
             onTextChange: (newText) {
               context.read<LoginBloc>().onPasswordChange(newText);
             },
-            hintText: TempLocalization.passwordHint,
+            hintText: S.of(context).passwordHint,
             obscureText: true,
             errorText: state.password.errorOf(),
           ),
@@ -141,12 +141,12 @@ class LoginView extends StatelessWidget {
               onPressed: () {
                 context.read<LoginBloc>().loginWithEmailPassword();
               },
-              label: TempLocalization.loginBtnLabel,
+              label: S.of(context).loginBtnLabel,
             ),
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 8),
-            child: const Text("Or"),  
+            child: Text(S.of(context).or),  
           ),
           SizedBox(
             width: double.infinity,
@@ -154,7 +154,7 @@ class LoginView extends StatelessWidget {
               onPressed: () {
                 context.read<LoginBloc>().loginWithGoogle();
               },
-              label: TempLocalization.loginGoogleBtnLabel,
+              label: S.of(context).loginGoogleBtnLabel,
               icon: SvgPicture.asset(
                 "assets/svgs/google.svg",
                 width: 21,
@@ -170,20 +170,20 @@ class LoginView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                TempLocalization.notHaveAccount,
-                style: TextStyle(color: AppColors.black),
+              Text(
+                S.of(context).notHaveAccount,
+                style: const TextStyle(color: AppColors.black),
               ),
               Material(
                 child: InkWell(
                   onTap: () {
                     context.push(AppRouteNames.signUp.path);
                   },
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                     child: Text(
-                      TempLocalization.signUpBtnLable,
-                      style: TextStyle(
+                      S.of(context).signUpBtnLabel,
+                      style: const TextStyle(
                         color: AppColors.secondary,
                         fontWeight: FontWeight.bold,
                       ),

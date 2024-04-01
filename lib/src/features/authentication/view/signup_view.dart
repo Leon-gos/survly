@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/authentication/logic/sign_up_bloc.dart';
 import 'package:survly/src/features/authentication/logic/sign_up_state.dart';
-import 'package:survly/src/localization/temp_localization.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_button.dart';
@@ -47,22 +47,22 @@ class SignUpScreen extends StatelessWidget {
   Widget _buildTitle(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(32),
-      child: const Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "Survly",
-            style: TextStyle(
+            S.of(context).appName,
+            style: const TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
               color: AppColors.white,
             ),
           ),
           Text(
-            "Share Your Survey and Share Happiness",
-            style: TextStyle(
+            S.of(context).appSlogan,
+            style: const TextStyle(
               fontSize: 16,
               color: AppColors.white,
             ),
@@ -102,7 +102,7 @@ class SignUpScreen extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
-            hintText: TempLocalization.nameHint,
+            hintText: S.of(context).nameHint,
             onTextChange: (newText) {
               context.read<SignUpBloc>().onNameChange(newText);
             },
@@ -113,7 +113,7 @@ class SignUpScreen extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
-            hintText: TempLocalization.emailHint,
+            hintText: S.of(context).emailHint,
             onTextChange: (newText) {
               context.read<SignUpBloc>().onEmailChange(newText);
             },
@@ -127,7 +127,7 @@ class SignUpScreen extends StatelessWidget {
             onTextChange: (newText) {
               context.read<SignUpBloc>().onPasswordChange(newText);
             },
-            hintText: TempLocalization.passwordHint,
+            hintText: S.of(context).passwordHint,
             textInputAction: TextInputAction.next,
             errorText: state.password.errorOf(),
           ),
@@ -137,7 +137,7 @@ class SignUpScreen extends StatelessWidget {
           AppTextField(
             onTextChange: (newText) {
             },
-            hintText: TempLocalization.confirmPasswordHint,
+            hintText: S.of(context).confirmPasswordHint,
           ),
         ],
       );
@@ -155,7 +155,7 @@ class SignUpScreen extends StatelessWidget {
                 onPressed: () {
                   context.read<SignUpBloc>().signUpByEmailPassword();
                 },
-                label: TempLocalization.signUpBtnLable,
+                label: S.of(context).signUpBtnLabel,
               ),
             ),
             const SizedBox(
@@ -164,20 +164,20 @@ class SignUpScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  TempLocalization.alreadyHaveAccount,
-                  style: TextStyle(color: AppColors.black),
+                Text(
+                  S.of(context).alreadyHaveAccount,
+                  style: const TextStyle(color: AppColors.black),
                 ),
                 Material(
                   child: InkWell(
                     onTap: () {
                       context.pop();
                     },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       child: Text(
-                        TempLocalization.loginBtnLabel,
-                        style: TextStyle(
+                        S.of(context).loginBtnLabel,
+                        style: const TextStyle(
                           color: AppColors.secondary,
                           fontWeight: FontWeight.bold,
                         ),
