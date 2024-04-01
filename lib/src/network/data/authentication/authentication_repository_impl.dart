@@ -20,7 +20,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<void> loginWithGoogle() async {
+  Future<UserCredential> loginWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -35,9 +35,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     );
 
     // Once signed in, return the UserCredential
-    var userCredential =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-    print(userCredential.user?.displayName);
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   @override

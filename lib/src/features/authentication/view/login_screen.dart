@@ -132,7 +132,7 @@ class LoginView extends StatelessWidget {
             width: double.infinity,
             child: AppButton(
               onPressed: () {
-                context.read<LoginBloc>().loginWithEmailPassword();
+                context.read<LoginBloc>().loginWithEmailPassword(context);
               },
               label: TempLocalization.loginBtnLabel,
             ),
@@ -145,7 +145,7 @@ class LoginView extends StatelessWidget {
             width: double.infinity,
             child: AppIconButton(
               onPressed: () {
-                context.read<LoginBloc>().loginWithGoogle();
+                context.read<LoginBloc>().loginWithGoogle(context);
               },
               label: TempLocalization.loginGoogleBtnLabel,
               icon: SvgPicture.asset(
