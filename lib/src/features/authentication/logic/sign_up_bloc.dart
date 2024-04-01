@@ -11,17 +11,11 @@ class SignUpBloc extends Cubit<SignUpState> {
   DomainManager get domain => DomainManager();
 
   void signUpByEmailPassword() {
-    if (!state.email.isValid) {
-      emit(state.copyWith(email: EmailFormzInput.dirty(state.email.value)));
-      return;
-    }
-    if (!state.name.isValid) {
-      emit(state.copyWith(name: NameFormzInput.dirty(state.name.value)));
-      return;
-    }
-    if (!state.password.isValid) {
-      emit(state.copyWith(
-          password: PasswordFormzInput.dirty(state.password.value)));
+    emit(state.copyWith(email: EmailFormzInput.dirty(state.email.value)));
+    emit(state.copyWith(name: NameFormzInput.dirty(state.name.value)));
+    emit(state.copyWith(
+        password: PasswordFormzInput.dirty(state.password.value)));
+    if (!state.isValid()) {
       return;
     }
 

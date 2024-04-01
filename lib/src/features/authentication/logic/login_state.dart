@@ -10,6 +10,10 @@ class LoginState extends Equatable {
   final FormzSubmissionStatus status;
   final String message;
 
+  bool isValid() {
+    return email.isValid && password.isValid;
+  }
+
   const LoginState({
     required this.email,
     required this.password,
