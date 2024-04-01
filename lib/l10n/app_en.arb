@@ -1,0 +1,22 @@
+{
+    "appName": "Survly",
+    "appSlogan": "Share Your Survey and Share Happiness",
+    "or": "Or",
+    "emailHint": "Email",
+    "usernameHint": "Username",
+    "nameHint": "Name",
+    "passwordHint": "Password",
+    "confirmPasswordHint": "Confirm password",
+    "signUpBtnLabel": "Sign Up",
+    "alreadyHaveAccount": "Have an account?",
+    "loginBtnLabel": "Login",
+    "loginGoogleBtnLabel": "Continue with Google",
+    "notHaveAccount": "Don't have an account?",
+    "errorEmptyName": "Empty name",
+    "errorPasswordLength": "Password must be at least 6 characters long",
+    "errorPasswordMissUpperChar": "Password must contain at least one uppercase letter",
+    "errorPasswordMissLowerChar": "Password must contain at least one lowercase letter",
+    "errorPasswordMissDigit": "Password must contain at least one digit",
+    "errorPasswordMissSpecialChar": "Password must contain at least one special character",
+    "errorEmailInvalid": "Email invalid"
+}

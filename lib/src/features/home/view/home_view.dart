@@ -19,38 +19,43 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    context.read<HomeBloc>().fetchAdminInfo(context);
+    //TODO: find solution for fetch
+    // context.read<HomeBloc>().fetchAdminInfo(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const AppAppBarWidget(
-        leading: SizedBox(),
-        title: "Survey",
-      ),
-      body: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
-          return state.status == HomeStatus.loading
-              ? const AppLoadingCircle()
-              : const Center(child: Text("Hello world"));
-        },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (value) {
-          
-        },
-        currentIndex: currentIndex,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.note_alt_outlined),
-            label: "Survey",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.image),
-            label: "Outlet",
-          ),
-        ],
+    return BlocProvider(
+      create: (context) => HomeBloc(),
+      lazy: false,
+      child: Scaffold(
+        appBar: const AppAppBarWidget(
+          leading: SizedBox(),
+          title: "Survey",
+        ),
+        body: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            return state.status == HomeStatus.loading
+                ? const AppLoadingCircle()
+                : const Center(child: Text("Hello world"));
+          },
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: (value) {
+            
+          },
+          currentIndex: currentIndex,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.note_alt_outlined),
+              label: "Survey",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.image),
+              label: "Outlet",
+            ),
+          ],
+        ),
       ),
     );
   }

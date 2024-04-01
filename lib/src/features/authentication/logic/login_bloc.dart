@@ -1,19 +1,22 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/authentication/logic/login_state.dart';
 import 'package:survly/src/features/authentication/model/email_fomz_input.dart';
 import 'package:survly/src/features/authentication/model/password_fomz_input.dart';
 import 'package:survly/src/local/model/login_info.dart';
-import 'package:survly/src/router/router_name.dart';
+import 'package:survly/src/router/coordinator.dart';
 
 class LoginBloc extends Cubit<LoginState> {
   LoginBloc() : super(LoginState.ds());
 
   DomainManager get domain => DomainManager();
 
-  void loginWithEmailPassword(BuildContext context) async {
+  void loginWithEmailPassword() async {
+    emit(state.copyWith(email: EmailFormzInput.dirty(state.email.value)));
+    emit(state.copyWith(password: PasswordFormzInput.dirty(state.password.value)));
+    if (!state.isValid()) {
+      return;
+    }
     try {
       await domain.authentication.loginWithEmailPassword(
         state.email.value,
@@ -25,28 +28,24 @@ class LoginBloc extends Cubit<LoginState> {
           password: state.password.value,
         ),
       ).then((value) {
-        context.replace(AppRouteNames.home.path);
+        AppCoordinator.showHomeScreen();
       });
     } catch (e) {
       print(e);
     }
   }
 
-  Future<void> loginWithGoogle(BuildContext context) async {
+  Future<void> loginWithGoogle() async {
     var user = await domain.authentication.loginWithGoogle();
     if (user.user?.email != "") { // sign in successful
-      print("Sign in success");
       domain.authenticationLocal.storeLoginInfo(
         LoginInfo(
           email: user.user!.email!,
           password: "",
         ),
       ).then((value) {
-        context.replace(AppRouteNames.home.path);
+        AppCoordinator.showHomeScreen();
       });
-    }
-    else {
-      print("Sign in fail");
     }
   }
 

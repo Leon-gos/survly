@@ -1,6 +1,6 @@
 import 'package:formz/formz.dart';
 import 'package:survly/src/features/authentication/model/form_error.dart';
-import 'package:survly/src/localization/temp_localization.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 
 class NameFormzInput extends FormzInput<String, FormError> {
   const NameFormzInput.pure(super.value) : super.pure();
@@ -20,7 +20,7 @@ class NameFormzInput extends FormzInput<String, FormError> {
     }
     switch (error) {
       case FormError.empty:
-        return TempLocalization.errorEmptyName;
+        return S.text.errorEmptyName;
       default:
         return null;
     }

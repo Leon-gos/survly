@@ -3,34 +3,43 @@ import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/authentication/view/login_screen.dart';
 import 'package:survly/src/features/authentication/view/signup_view.dart';
 import 'package:survly/src/features/home/view/home_view.dart';
+import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/router/router_name.dart';
 
 class AppRouter {
   final router = GoRouter(
-    // initialLocation: AppRouteNames.splash.path,
+    initialLocation: AppRouteNames.login.path,
+    navigatorKey: AppCoordinator.navigatorKey,
     redirect: (context, state) async {
-      DomainManager domain = DomainManager();
-      var loginInfo = await domain.authenticationLocal.readLoginInfo();
-      if (loginInfo?.email != "") {
-        return AppRouteNames.home.path;
+      if (state.path == AppRouteNames.login.path) {
+        DomainManager domain = DomainManager();
+        var loginInfo = await domain.authenticationLocal.readLoginInfo();
+        if (loginInfo?.email != "") {
+          return AppRouteNames.home.path;
+        } else {
+          return AppRouteNames.login.path;
+        }
       }
-      return AppRouteNames.login.path;
+      return state.path;
     },
     routes: <RouteBase>[
       GoRoute(
         name: AppRouteNames.home.name,
         path: AppRouteNames.home.path,
+        parentNavigatorKey: AppCoordinator.navigatorKey,
         builder: (context, state) => const HomeView(),
       ),
       GoRoute(
         name: AppRouteNames.login.name,
         path: AppRouteNames.login.path,
+        parentNavigatorKey: AppCoordinator.navigatorKey,
         builder: (context, state) => const LoginView(),
       ),
       GoRoute(
         name: AppRouteNames.signUp.name,
         path: AppRouteNames.signUp.path,
-        builder: (context, state) => const SignUpView(),
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        builder: (context, state) => const SignUpScreen(),
       ),
     ],
   );

@@ -28,6 +28,10 @@ class SignUpState extends Equatable {
         message: "",
       );
 
+  bool isValid() {
+    return email.isValid && password.isValid && name.isValid;
+  }
+
   @override
   List<Object?> get props => [email, password, name, status];
 
