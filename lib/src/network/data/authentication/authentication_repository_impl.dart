@@ -16,6 +16,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
       }
+      rethrow;
     }
   }
 
