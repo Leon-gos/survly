@@ -1,7 +1,9 @@
 enum AppRouteNames {
-  home(path: '/'),
+  // home(path: '/'),
   login(path: '/login'),
-  signUp(path: '/signUp');
+  signUp(path: '/signUp'),
+  survey(path: '/survey'),
+  user(path: '/user');
 
   const AppRouteNames({
     required this.path,
