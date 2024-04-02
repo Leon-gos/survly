@@ -5,6 +5,7 @@ import 'package:survly/src/features/home/logic/home_bloc.dart';
 import 'package:survly/src/features/home/logic/home_state.dart';
 import 'package:survly/src/features/home/logic/navigation_bar_item.dart';
 import 'package:survly/src/features/home/widget/bottom_navigation_bar.dart';
+import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
@@ -92,14 +93,14 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(
                 width: 8,
               ),
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Leon",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    AdminSingleton.instance().admin?.fullname ?? "",
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
-                  Text("leon@gmail.com"),
+                  Text(AdminSingleton.instance().admin?.email ?? ""),
                 ],
               ),
               const Spacer(),
