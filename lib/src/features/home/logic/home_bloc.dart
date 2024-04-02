@@ -21,7 +21,6 @@ class HomeBloc extends Cubit<HomeState> {
     try {
       await domain.admin.getAdminByEmail(loginInfo!.email).then((value) {
         AdminSingleton.instance().admin = value;
-        print(AdminSingleton.instance().admin?.fullname);
         emit(state.copyWith(status: HomeStatus.done));
       });
     } catch (e) {
