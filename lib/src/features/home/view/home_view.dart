@@ -6,33 +6,19 @@ import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends StatelessWidget {
   const HomeView({super.key});
-
-  @override
-  State<StatefulWidget> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  var currentIndex = 0;
-  late final HomeBloc homeBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    homeBloc = HomeBloc();
-    homeBloc.fetchAdminInfo();
-  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => homeBloc,
+      create: (context) => HomeBloc(),
       child: BlocBuilder<HomeBloc, HomeState>(
+        buildWhen: (previous, current) => previous.status != current.status,
         builder: (context, state) {
           return state.status == HomeStatus.loading
               ? _buildLoadingScreen()
-              : _buildHomeScreen();
+              : _buildHomeScreen(context);
         },
       ),
     );
@@ -44,20 +30,16 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Widget _buildHomeScreen() {
+  Widget _buildHomeScreen(BuildContext context) {
     return Scaffold(
-      appBar: const AppAppBarWidget(
-        leading: SizedBox(),
-        title: "Survey",
+      appBar: AppAppBarWidget(
+        leading: const SizedBox(),
+        title: S.of(context).labelSurvey,
       ),
       body: _buildHomeBody(),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) {
-          setState(() {
-            currentIndex = value;
-          });
         },
-        currentIndex: currentIndex,
         items: [
           BottomNavigationBarItem(
             icon: const Icon(Icons.note_alt_outlined),
