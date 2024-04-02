@@ -30,6 +30,8 @@ enum MyBottomNavBarItems {
   static MyBottomNavBarItems fromLocation(String location) {
     if (location == MyBottomNavBarItems.survey.route.name) {
       return MyBottomNavBarItems.survey;
+    } else if (location == MyBottomNavBarItems.user.route.name) {
+      return MyBottomNavBarItems.user;
     }
 
     return MyBottomNavBarItems.survey;

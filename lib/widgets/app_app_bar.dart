@@ -6,14 +6,14 @@ class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final Widget? leading;
   final List<Widget>? actions;
-  final bool? noActionBar;
+  final bool noActionBar;
 
   const AppAppBarWidget({
     super.key,
     this.title,
     this.leading,
     this.actions,
-    this.noActionBar
+    this.noActionBar = false,
   });
 
   @override
@@ -37,5 +37,5 @@ class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(noActionBar == true ? 0 : kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(noActionBar ? 0 : kToolbarHeight);
 }
