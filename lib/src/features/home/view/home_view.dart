@@ -5,6 +5,7 @@ import 'package:survly/src/features/home/logic/home_bloc.dart';
 import 'package:survly/src/features/home/logic/home_state.dart';
 import 'package:survly/src/features/home/logic/navigation_bar_item.dart';
 import 'package:survly/src/features/home/widget/bottom_navigation_bar.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
@@ -52,7 +53,7 @@ class HomeScreen extends StatelessWidget {
           ),
           body: Column(
             children: [
-              _buildAdminInfo(),
+              _buildAdminInfo(context),
               Expanded(child: body),
             ],
           ),
@@ -62,17 +63,17 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAdminInfo() {
+  Widget _buildAdminInfo(BuildContext context) {
     return Column(
       children: [
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(16),
           color: AppColors.primary,
-          child: const Center(
+          child: Center(
             child: Text(
-              "Admin",
-              style: TextStyle(
+              S.of(context).labelAdmin,
+              style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: AppColors.white),
