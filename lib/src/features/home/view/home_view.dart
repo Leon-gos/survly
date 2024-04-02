@@ -46,9 +46,9 @@ class _HomeViewState extends State<HomeView> {
 
   Widget _buildHomeScreen() {
     return Scaffold(
-      appBar: const AppAppBarWidget(
-        leading: SizedBox(),
-        title: "Survey",
+      appBar: AppAppBarWidget(
+        leading: const SizedBox(),
+        title: S.of(context).labelSurvey,
       ),
       body: const Center(
         child: Text("Hello world"),
