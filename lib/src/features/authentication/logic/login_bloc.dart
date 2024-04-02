@@ -28,7 +28,7 @@ class LoginBloc extends Cubit<LoginState> {
           password: state.password.value,
         ),
       ).then((value) {
-        AppCoordinator.showHomeScreen();
+        AppCoordinator.showSurveyManagementScreen();
       });
     } catch (e) {
       print(e);
@@ -44,7 +44,7 @@ class LoginBloc extends Cubit<LoginState> {
           password: "",
         ),
       ).then((value) {
-        AppCoordinator.showHomeScreen();
+        AppCoordinator.showSurveyManagementScreen();
       });
     }
   }

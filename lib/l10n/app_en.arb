@@ -14,6 +14,9 @@
     "notHaveAccount": "Don't have an account?",
     "labelSurvey": "Survey",
     "labelOutlet": "Outlet",
+    "labelUser": "User",
+    "labelAdmin": "Admin",
+    
     "errorEmptyName": "Empty name",
     "errorPasswordLength": "Password must be at least 6 characters long",
     "errorPasswordMissUpperChar": "Password must contain at least one uppercase letter",
