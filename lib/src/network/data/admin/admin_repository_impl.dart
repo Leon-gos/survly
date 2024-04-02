@@ -17,7 +17,10 @@ class AdminRepositoryImpl implements AdminRepository {
             isEqualTo: email,
           )
           .get();
-      admin = Admin.fromJson(snapshot.docs[0].data() as Map<String, dynamic>);
+      var json = snapshot.docs[0].data() as Map<String, dynamic>;
+      json[AdminCollection.fieldAdminId] = snapshot.docs[0].id;
+      admin = Admin.fromJson(json);
+      print(admin.adminId);
     } catch (e) {
       rethrow;
     }
