@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:survly/src/features/home/logic/bottom_nav_bloc.dart';
-import 'package:survly/src/features/home/logic/navigation_bar_item.dart';
+import 'package:survly/src/features/dashboard/logic/bottom_nav_bloc.dart';
+import 'package:survly/src/features/dashboard/logic/navigation_bar_item.dart';
 
 class MyBottomNavBar extends StatelessWidget {
   const MyBottomNavBar({super.key});

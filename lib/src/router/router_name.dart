@@ -1,5 +1,4 @@
 enum AppRouteNames {
-  // home(path: '/'),
   login(path: '/login'),
   signUp(path: '/signUp'),
   survey(path: '/survey'),

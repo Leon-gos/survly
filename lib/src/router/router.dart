@@ -1,10 +1,10 @@
 import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/authentication/view/login_screen.dart';
 import 'package:survly/src/features/authentication/view/signup_view.dart';
-import 'package:survly/src/features/home/logic/navigation_bar_item.dart';
-import 'package:survly/src/features/home/view/home_view.dart';
-import 'package:survly/src/features/home/view/survey_view.dart';
-import 'package:survly/src/features/home/view/user_view.dart';
+import 'package:survly/src/features/dashboard/logic/navigation_bar_item.dart';
+import 'package:survly/src/features/dashboard/view/dashboard_screen.dart';
+import 'package:survly/src/features/dashboard/view/survey_view.dart';
+import 'package:survly/src/features/dashboard/view/user_view.dart';
 import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/router/router_name.dart';
 
@@ -26,7 +26,7 @@ class AppRouter {
         builder: (context, state) => const SignUpScreen(),
       ),
       ShellRoute(
-        builder: (context, state, child) => HomeScreen(
+        builder: (context, state, child) => DashboardScreen(
           body: child,
           currentItem: MyBottomNavBarItems.survey,
         ),

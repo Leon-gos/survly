@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:survly/src/features/home/logic/navigation_bar_item.dart';
+import 'package:survly/src/features/dashboard/logic/navigation_bar_item.dart';
 import 'package:survly/src/router/coordinator.dart';
 
 class BottomNavBloc extends Cubit<MyBottomNavBarItems> {

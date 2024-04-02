@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:survly/src/domain_manager.dart';
-import 'package:survly/src/features/home/logic/home_state.dart';
+import 'package:survly/src/features/dashboard/logic/dashboard_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/router/coordinator.dart';
 
-class HomeBloc extends Cubit<HomeState> {
-  HomeBloc() : super(HomeState.ds()){
+class DashboardBloc extends Cubit<DashboardState> {
+  DashboardBloc() : super(DashboardState.ds()){
     fetchAdminInfo();
   }
 
@@ -14,7 +14,7 @@ class HomeBloc extends Cubit<HomeState> {
   Future<void> fetchAdminInfo() async {
     var admin = AdminSingleton.instance().admin;
     if (admin != null) {
-      emit(state.copyWith(status: HomeStatus.done));
+      emit(state.copyWith(status: DashboardStatus.done));
       return;
     }
 
@@ -23,7 +23,7 @@ class HomeBloc extends Cubit<HomeState> {
     try {
       await domain.admin.getAdminByEmail(loginInfo!.email).then((value) {
         AdminSingleton.instance().admin = value;
-        emit(state.copyWith(status: HomeStatus.done));
+        emit(state.copyWith(status: DashboardStatus.done));
       });
     } catch (e) {
       print(e);

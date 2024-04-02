@@ -1,39 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:survly/src/features/home/logic/bottom_nav_bloc.dart';
-import 'package:survly/src/features/home/logic/home_bloc.dart';
-import 'package:survly/src/features/home/logic/home_state.dart';
-import 'package:survly/src/features/home/logic/navigation_bar_item.dart';
-import 'package:survly/src/features/home/widget/bottom_navigation_bar.dart';
+import 'package:survly/src/features/dashboard/logic/bottom_nav_bloc.dart';
+import 'package:survly/src/features/dashboard/logic/dashboard_bloc.dart';
+import 'package:survly/src/features/dashboard/logic/dashboard_state.dart';
+import 'package:survly/src/features/dashboard/logic/navigation_bar_item.dart';
+import 'package:survly/src/features/dashboard/widget/bottom_navigation_bar.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_avatar_widget.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 
-class HomeScreen extends StatelessWidget {
+class DashboardScreen extends StatelessWidget {
   final Widget body;
   final MyBottomNavBarItems currentItem;
 
-  const HomeScreen({super.key, required this.body, required this.currentItem});
+  const DashboardScreen({super.key, required this.body, required this.currentItem});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => HomeBloc(),
+          create: (context) => DashboardBloc(),
         ),
         BlocProvider(
           create: (context) => BottomNavBloc(currentItem),
         ),
       ],
-      child: BlocBuilder<HomeBloc, HomeState>(
+      child: BlocBuilder<DashboardBloc, DashboardState>(
         buildWhen: (previous, current) => previous.status != current.status,
         builder: (context, state) {
-          return state.status == HomeStatus.loading
+          return state.status == DashboardStatus.loading
               ? _buildLoadingScreen()
-              : _buildHomeScreen(context);
+              : _buildDashboardScreen(context);
         },
       ),
     );
@@ -45,7 +45,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHomeScreen(BuildContext context) {
+  Widget _buildDashboardScreen(BuildContext context) {
     return BlocBuilder<BottomNavBloc, MyBottomNavBarItems>(
       builder: (context, state) {
         return Scaffold(
