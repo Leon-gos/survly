@@ -8,7 +8,6 @@ import 'package:survly/src/features/dashboard/logic/navigation_bar_item.dart';
 import 'package:survly/src/features/dashboard/widget/bottom_navigation_bar.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/localization/localization_utils.dart';
-import 'package:survly/src/network/model/admin/admin.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
