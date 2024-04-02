@@ -1,5 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/authentication/view/login_screen.dart';
 import 'package:survly/src/features/authentication/view/signup_view.dart';
 import 'package:survly/src/features/home/view/home_view.dart';
@@ -10,18 +9,6 @@ class AppRouter {
   final router = GoRouter(
     initialLocation: AppRouteNames.home.path,
     navigatorKey: AppCoordinator.navigatorKey,
-    // redirect: (context, state) async {
-    //   if (state.path == AppRouteNames.login.path) {
-    //     DomainManager domain = DomainManager();
-    //     var loginInfo = await domain.authenticationLocal.readLoginInfo();
-    //     if (loginInfo?.email != "") {
-    //       return AppRouteNames.home.path;
-    //     } else {
-    //       return AppRouteNames.login.path;
-    //     }
-    //   }
-    //   return state.path;
-    // },
     routes: <RouteBase>[
       GoRoute(
         name: AppRouteNames.home.name,
