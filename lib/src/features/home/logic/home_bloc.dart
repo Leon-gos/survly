@@ -5,7 +5,9 @@ import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/router/coordinator.dart';
 
 class HomeBloc extends Cubit<HomeState> {
-  HomeBloc() : super(HomeState.ds());
+  HomeBloc() : super(HomeState.ds()){
+    fetchAdminInfo();
+  }
 
   DomainManager get domain => DomainManager();
 
