@@ -29,6 +29,7 @@ class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               context.pop();
             },
           ),
+          leadingWidth: leading is SizedBox ? 0 : null,
       actions: actions,
     );
   }

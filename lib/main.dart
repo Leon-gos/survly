@@ -6,6 +6,7 @@ import 'package:survly/src/locator.dart';
 void main() {
   initializeApp(
     firebaseOptions: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(MyApp());
+  ).then((value) {
+    runApp(MyApp());
+  });
 }
