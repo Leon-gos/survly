@@ -6,8 +6,10 @@ class SurveyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(S.of(context).labelSurvey),
+    return Scaffold(
+      body: Center(
+        child: Text(S.of(context).labelSurvey),
+      ),
     );
   }
 

@@ -7,4 +7,5 @@ class AdminCollection {
   static const String fieldGender = "gender";
   static const String fieldBirthDate = "birthDate";
   static const String fieldPhone = "phone";
+  static const String fieldRole = "role";
 }
