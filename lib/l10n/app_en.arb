@@ -12,6 +12,8 @@
     "loginBtnLabel": "Login",
     "loginGoogleBtnLabel": "Continue with Google",
     "notHaveAccount": "Don't have an account?",
+    "labelSurvey": "Survey",
+    "labelOutlet": "Outlet",
     "errorEmptyName": "Empty name",
     "errorPasswordLength": "Password must be at least 6 characters long",
     "errorPasswordMissUpperChar": "Password must contain at least one uppercase letter",

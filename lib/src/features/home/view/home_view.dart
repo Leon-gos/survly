@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:survly/src/features/home/logic/home_bloc.dart';
 import 'package:survly/src/features/home/logic/home_state.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 
@@ -59,14 +60,14 @@ class _HomeViewState extends State<HomeView> {
           });
         },
         currentIndex: currentIndex,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.note_alt_outlined),
-            label: "Survey",
+            icon: const Icon(Icons.note_alt_outlined),
+            label: S.of(context).labelSurvey,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.image),
-            label: "Outlet",
+            icon: const Icon(Icons.image),
+            label: S.of(context).labelOutlet,
           ),
         ],
       ),
