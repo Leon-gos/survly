@@ -8,6 +8,7 @@ import 'package:survly/src/features/home/widget/bottom_navigation_bar.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
+import 'package:survly/widgets/app_avatar_widget.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -84,22 +85,9 @@ class HomeScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Row(
             children: [
-              Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
-                  color: const Color(0xff7c94b6),
-                  image: const DecorationImage(
-                    image: NetworkImage(
-                        "https://images.pexels.com/photos/18254876/pexels-photo-18254876/free-photo-of-waves-by-the-rocky-beach.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"),
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-                  border: Border.all(
-                    color: AppColors.primary,
-                    width: 1.0,
-                  ),
-                ),
+              const AppAvatarWidget(
+                avatarUrl:
+                    "https://images.pexels.com/photos/18254876/pexels-photo-18254876/free-photo-of-waves-by-the-rocky-beach.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               ),
               const SizedBox(
                 width: 8,
