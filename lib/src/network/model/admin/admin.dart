@@ -10,7 +10,7 @@ class Admin extends UserBase {
     required super.gender,
     required super.birthDate,
     required super.phone,
-    required super.role,
+    super.role = UserBase.roleAdmin,
   });
 
   factory Admin.fromMap(Map<String, dynamic> map) {
@@ -21,7 +21,6 @@ class Admin extends UserBase {
       gender: map['gender'] as String,
       birthDate: map['birthDate'] as String,
       phone: map['phone'] as String,
-      role: map['role'],
     );
   }
 
