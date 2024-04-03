@@ -1,16 +1,10 @@
 import 'dart:convert';
 
-enum RoleUserBase {
-  roleAdmin(value: "admin"),
-  roleUser(value: "user");
-
-  final String value;
-
-  const RoleUserBase({required this.value});
-
-}
-
 class UserBase {
+
+  static const String roleAdmin = "admin";
+  static const String roleUser = "user";
+
   final String fullname;
   final String email;
   final String avatar;

@@ -20,7 +20,6 @@ class AdminRepositoryImpl implements AdminRepository {
           .get();
       var json = snapshot.docs[0].data() as Map<String, dynamic>;
       json[AdminCollection.fieldAdminId] = snapshot.docs[0].id;
-      json[AdminCollection.fieldRole] = RoleUserBase.roleAdmin.value;
       admin = Admin.fromMap(json);
     } catch (e) {
       rethrow;

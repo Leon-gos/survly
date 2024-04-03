@@ -50,7 +50,6 @@ class AppRouter {
                 },
               );
             },
-            // builder: (context, state) => const SurveyView(),
           ),
           GoRoute(
             name: AppRouteNames.user.name,
@@ -69,7 +68,6 @@ class AppRouter {
                 },
               );
             },
-            // builder: (context, state) => const UserView(),
           ),
         ],
       )

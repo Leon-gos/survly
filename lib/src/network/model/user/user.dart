@@ -12,7 +12,7 @@ class User extends UserBase {
     required super.gender,
     required super.birthDate,
     required super.phone,
-    required super.role,
+    super.role = UserBase.roleUser,
     required this.balance,
   });
 
@@ -31,7 +31,6 @@ class User extends UserBase {
       gender: map['gender'] as String,
       birthDate: map['birthDate'] as String,
       phone: map['phone'] as String,
-      role: map['role'],
       balance: map['balance'] as double,
     );
   }
