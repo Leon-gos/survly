@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 class UserBase {
-
   static const String roleAdmin = "admin";
   static const String roleUser = "user";
+  static const String genderMale = "male";
+  static const String genderFemale = "female";
 
+  final String id;
   final String fullname;
   final String email;
   final String avatar;
@@ -14,6 +16,7 @@ class UserBase {
   final String role;
 
   UserBase({
+    required this.id,
     required this.fullname,
     required this.email,
     required this.avatar,
@@ -25,6 +28,7 @@ class UserBase {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'fullname': fullname,
       'email': email,
       'avatar': avatar,
@@ -37,17 +41,19 @@ class UserBase {
 
   factory UserBase.fromMap(Map<String, dynamic> map) {
     return UserBase(
-      fullname: map['fullname'] as String,
-      email: map['email'] as String,
-      avatar: map['avatar'] as String,
-      gender: map['gender'] as String,
-      birthDate: map['birthDate'] as String,
-      phone: map['phone'] as String,
-      role: map['role'],
+      id: map['id']?.toString() ?? "",
+      fullname: map['fullname']?.toString() ?? "",
+      email: map['email']?.toString() ?? "",
+      avatar: map['avatar']?.toString() ?? "",
+      gender: map['gender']?.toString() ?? genderMale,
+      birthDate: map['birthDate']?.toString() ?? "",
+      phone: map['phone']?.toString() ?? "",
+      role: map['role']?.toString() ?? roleUser,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory UserBase.fromJson(String source) => UserBase.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UserBase.fromJson(String source) =>
+      UserBase.fromMap(json.decode(source) as Map<String, dynamic>);
 }

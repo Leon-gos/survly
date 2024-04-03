@@ -19,16 +19,17 @@ class AppAvatarWidget extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: AppColors.secondary,
+        color: Colors.grey,
         image: DecorationImage(
           image: NetworkImage(avatarUrl),
           fit: BoxFit.cover,
         ),
         borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-        border: border ?? Border.all(
-          color: AppColors.primary,
-          width: 1.0,
-        ),
+        border: border ??
+            Border.all(
+              color: AppColors.primary,
+              width: 1.0,
+            ),
       ),
     );
   }
