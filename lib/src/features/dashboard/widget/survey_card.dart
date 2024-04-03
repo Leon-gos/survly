@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/theme/colors.dart';
 
@@ -30,7 +31,7 @@ class SurveyCard extends StatelessWidget {
       child: Column(
         children: [
           _buildSurveyThumbnail(),
-          _buildSurveyContent(),
+          _buildSurveyContent(context),
         ],
       ),
     );
@@ -51,7 +52,7 @@ class SurveyCard extends StatelessWidget {
     );
   }
 
-  Widget _buildSurveyContent() {
+  Widget _buildSurveyContent(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(8.0),
@@ -73,11 +74,11 @@ class SurveyCard extends StatelessWidget {
                     const SizedBox(
                       height: 4,
                     ),
-                    Text("${survey.respondentNum}/${survey.respondentMax} respondents"),
+                    Text("${survey.respondentNum}/${survey.respondentMax} ${S.of(context).respondent}"),
                     const SizedBox(
                       height: 4,
                     ),
-                    Text("Closed on ${survey.dateEnd}"),
+                    Text("${S.of(context).closedOn} ${survey.dateEnd}"),
                   ],
                 ),
               ),
@@ -88,7 +89,7 @@ class SurveyCard extends StatelessWidget {
                     borderRadius:
                         BorderRadius.all(Radius.circular(borderRadius))),
                 child: Text(
-                  "${survey.cost/1000}k",
+                  "${survey.cost/1000}${S.of(context).thousand}",
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, color: AppColors.white),
                 ),

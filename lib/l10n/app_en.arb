@@ -16,6 +16,9 @@
     "labelOutlet": "Outlet",
     "labelUser": "User",
     "labelAdmin": "Admin",
+    "respondent": "respondent",
+    "thousand": "k",
+    "closedOn": "Closed on",
     
     "errorEmptyName": "Empty name",
     "errorPasswordLength": "Password must be at least 6 characters long",
