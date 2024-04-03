@@ -16,6 +16,7 @@ class User extends UserBase {
     required this.balance,
   });
 
+  @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'balance': balance,

@@ -16,7 +16,6 @@ class SurveyRepositoryImpl implements SurveyRepository {
         var data = doc.data();
         data[SurveyCollection.fieldSurveyId] = doc.id;
         list.add(Survey.fromMap(data));
-        print(doc.id);
       }
     });
 
