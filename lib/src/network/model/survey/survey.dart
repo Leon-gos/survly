@@ -54,24 +54,25 @@ class Survey {
 
   factory Survey.fromMap(Map<String, dynamic> map) {
     return Survey(
-      surveyId: map['surveyId'] as String,
-      thumbnail: map['thumbnail'] as String,
-      title: map['title'] as String,
-      description: map['description'] as String,
-      cost: map['cost'] as int,
-      dateCreate: map['dateCreate'] as String,
-      dateUpdate: map['dateUpdate'] as String,
-      dateStart: map['dateStart'] as String,
-      dateEnd: map['dateEnd'] as String,
-      respondentMax: map['respondentMax'] as int,
-      respondentNum: map['respondentNum'] as int,
-      status: map['status'] as String,
-      outletId: map['outletId'] as String,
-      adminId: map['adminId'] as String,
+      surveyId: map['surveyId']?.toString() ?? "",
+      thumbnail: map['thumbnail']?.toString() ?? "",
+      title: map['title']?.toString() ?? "",
+      description: map['description']?.toString() ?? "",
+      cost: int.parse(map['cost']?.toString() ?? "0"),
+      dateCreate: map['dateCreate']?.toString() ?? "",
+      dateUpdate: map['dateUpdate']?.toString() ?? "",
+      dateStart: map['dateStart']?.toString() ?? "",
+      dateEnd: map['dateEnd']?.toString() ?? "",
+      respondentMax: int.parse(map['respondentMax']?.toString() ?? "0"),
+      respondentNum: int.parse(map['respondentNum']?.toString() ?? "0"),
+      status: map['status']?.toString() ?? "",
+      outletId: map['outletId']?.toString() ?? "",
+      adminId: map['adminId']?.toString() ?? "",
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Survey.fromJson(String source) => Survey.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Survey.fromJson(String source) =>
+      Survey.fromMap(json.decode(source) as Map<String, dynamic>);
 }

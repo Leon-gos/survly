@@ -20,5 +20,5 @@ class SurveyListState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [surveyList];
+  List<Object?> get props => [surveyList, mySurveyList];
 }

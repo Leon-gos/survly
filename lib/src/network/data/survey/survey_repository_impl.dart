@@ -11,13 +11,12 @@ class SurveyRepositoryImpl implements SurveyRepository {
   Future<List<Survey>> fetchAllSurvey() async {
     List<Survey> list = [];
 
-    await ref.get().then((value) {
-      for (var doc in value.docs) {
-        var data = doc.data();
-        data[SurveyCollection.fieldSurveyId] = doc.id;
-        list.add(Survey.fromMap(data));
-      }
-    });
+    final value = await ref.get();
+    for (var doc in value.docs) {
+      var data = doc.data();
+      data[SurveyCollection.fieldSurveyId] = doc.id;
+      list.add(Survey.fromMap(data));
+    }
 
     return list;
   }
