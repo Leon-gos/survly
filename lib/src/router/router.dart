@@ -68,7 +68,6 @@ class AppRouter {
                 },
               );
             },
-            // builder: (context, state) => const UserView(),
           ),
         ],
       )
