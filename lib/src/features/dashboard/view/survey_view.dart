@@ -16,55 +16,63 @@ class SurveyView extends StatelessWidget {
       create: (context) => SurveyListBloc(),
       child: BlocBuilder<SurveyListBloc, SurveyListState>(
         buildWhen: (previous, current) {
-          return (previous.surveyList != current.surveyList) ||
-              (previous.isShowMySurvey != current.isShowMySurvey);
+          return previous.surveyList != current.surveyList;
         },
         builder: (context, state) {
           return Scaffold(
             body: state.surveyList.isEmpty
                 ? const AppLoadingCircle()
-                : _buildSurveyListView(context, state),
+                : _buildSurveyListView(),
           );
         },
       ),
     );
   }
 
-  Widget _buildSurveyListView(BuildContext context, SurveyListState state) {
-    return Column(
-      children: [
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          child: Row(
-            children: [
-              const Expanded(
-                flex: 1,
-                child: AppTextField(
-                  hintText: "Search",
-                  prefixIcon: Icon(Icons.search),
-                ),
+  Widget _buildSurveyListView() {
+    return BlocBuilder<SurveyListBloc, SurveyListState>(
+      buildWhen: (previous, current) =>
+          previous.isShowMySurvey != current.isShowMySurvey ||
+          previous.surveyFilterList != current.surveyFilterList,
+      builder: (context, state) {
+        return Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: Row(
+                children: [
+                  const Expanded(
+                    flex: 1,
+                    child: AppTextField(
+                      hintText: "Search",
+                      prefixIcon: Icon(Icons.search),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      context
+                          .read<SurveyListBloc>()
+                          .filterSurveyList(!state.isShowMySurvey);
+                    },
+                    icon: Icon(
+                      state.isShowMySurvey
+                          ? Icons.filter_alt
+                          : Icons.filter_alt_outlined,
+                      color: Colors.grey,
+                    ),
+                  )
+                ],
               ),
-              IconButton(
-                onPressed: () {
-                  context
-                      .read<SurveyListBloc>()
-                      .filterSurveyList(!state.isShowMySurvey);
-                },
-                icon: const Icon(
-                  Icons.filter_alt_outlined,
-                  color: Colors.grey,
-                ),
-              )
-            ],
-          ),
-        ),
-        Expanded(
-          child: _buildSurveyList(
-            state.isShowMySurvey ? state.mySurveyList : state.surveyList,
-          ),
-        )
-      ],
+            ),
+            Expanded(
+              child: _buildSurveyList(
+                state.surveyFilterList,
+              ),
+            )
+          ],
+        );
+      },
     );
   }
 
