@@ -2,34 +2,41 @@ import 'dart:convert';
 
 class Survey {
   final String surveyId;
-  String? title;
-  String? description;
-  int? cost;
+  String thumbnail;
+  String title;
+  String description;
+  int cost;
   String dateCreate;
   String dateUpdate;
-  String? dateStart;
-  String? dateEnd;
+  String dateStart;
+  String dateEnd;
+  int respondentMax;
+  int respondentNum;
   String status;
-  String? outletId;
+  String outletId;
   final String adminId;
 
   Survey({
     required this.surveyId,
-    this.title,
-    this.description,
-    this.cost,
+    this.thumbnail = "",
+    this.title = "",
+    this.description = "",
+    this.cost = 0,
     required this.dateCreate,
     required this.dateUpdate,
-    this.dateStart,
-    this.dateEnd,
+    this.dateStart = "",
+    this.dateEnd = "",
+    this.respondentMax = 0,
+    this.respondentNum = 0,
     required this.status,
-    this.outletId,
+    this.outletId = "",
     required this.adminId,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'surveyId': surveyId,
+      'thumbnail': thumbnail,
       'title': title,
       'description': description,
       'cost': cost,
@@ -37,6 +44,8 @@ class Survey {
       'dateUpdate': dateUpdate,
       'dateStart': dateStart,
       'dateEnd': dateEnd,
+      'respondentMax': respondentMax,
+      'respondentNum': respondentNum,
       'status': status,
       'outletId': outletId,
       'adminId': adminId,
@@ -46,15 +55,18 @@ class Survey {
   factory Survey.fromMap(Map<String, dynamic> map) {
     return Survey(
       surveyId: map['surveyId'] as String,
-      title: map['title'] != null ? map['title'] as String : null,
-      description: map['description'] != null ? map['description'] as String : null,
-      cost: map['cost'] != null ? map['cost'] as int : null,
+      thumbnail: map['thumbnail'] as String,
+      title: map['title'] as String,
+      description: map['description'] as String,
+      cost: map['cost'] as int,
       dateCreate: map['dateCreate'] as String,
       dateUpdate: map['dateUpdate'] as String,
-      dateStart: map['dateStart'] != null ? map['dateStart'] as String : null,
-      dateEnd: map['dateEnd'] != null ? map['dateEnd'] as String : null,
+      dateStart: map['dateStart'] as String,
+      dateEnd: map['dateEnd'] as String,
+      respondentMax: map['respondentMax'] as int,
+      respondentNum: map['respondentNum'] as int,
       status: map['status'] as String,
-      outletId: map['outletId'] != null ? map['outletId'] as String : null,
+      outletId: map['outletId'] as String,
       adminId: map['adminId'] as String,
     );
   }

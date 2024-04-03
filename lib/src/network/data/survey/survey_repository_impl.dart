@@ -21,4 +21,20 @@ class SurveyRepositoryImpl implements SurveyRepository {
 
     return list;
   }
+
+  @override
+  Future<void> createSurvey() async {
+    // TODO: not yet done
+    // test only
+    ref.add({}).then((value) {
+      var survey = Survey(
+        surveyId: value.id,
+        dateCreate: "",
+        dateUpdate: "",
+        status: "",
+        adminId: "",
+      );
+      ref.doc("/${value.id}").set(survey.toMap());
+    });
+  }
 }

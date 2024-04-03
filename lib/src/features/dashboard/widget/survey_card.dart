@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/theme/colors.dart';
 
 class SurveyCard extends StatelessWidget {
-  const SurveyCard({super.key});
+  const SurveyCard({
+    super.key,
+    required this.survey,
+    this.borderRadius = 8,
+  });
 
-  final double borderRadius = 8;
+  final double borderRadius;
+  final Survey survey;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +43,7 @@ class SurveyCard extends StatelessWidget {
         topRight: Radius.circular(borderRadius),
       ),
       child: Image.network(
-        "https://www.questionpro.com/blog/wp-content/uploads/2018/10/surveys-what-is.jpg",
+        survey.thumbnail,
         width: double.infinity,
         height: 200,
         fit: BoxFit.cover,
@@ -54,8 +59,8 @@ class SurveyCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Tingkat Efisiensi Penggunaan E-Wallet",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            survey.title,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -65,22 +70,27 @@ class SurveyCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 4,),
-                    Text("25/50 respondents"),
-                    const SizedBox(height: 4,),
-                    Text("Closed on 1 April 2024"),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text("${survey.respondentNum}/${survey.respondentMax} respondents"),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text("Closed on ${survey.dateEnd}"),
                   ],
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.secondary,
-                  borderRadius: BorderRadius.all(Radius.circular(borderRadius))
-                ),
+                    color: AppColors.secondary,
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(borderRadius))),
                 child: Text(
-                  "100k",
-                  style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.white),
+                  "${survey.cost/1000}k",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, color: AppColors.white),
                 ),
               )
             ],

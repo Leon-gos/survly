@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/network/data/admin/admin_repository.dart';
 import 'package:survly/src/network/model/admin/admin.dart';
-import 'package:survly/src/network/model/user_base/user_base.dart';
 
 class AdminRepositoryImpl implements AdminRepository {
   final CollectionReference ref =
