@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/network/data/admin/admin_repository.dart';
-import 'package:survly/src/network/model/admin.dart';
+import 'package:survly/src/network/model/admin/admin.dart';
+import 'package:survly/src/network/model/user_base/user_base.dart';
 
 class AdminRepositoryImpl implements AdminRepository {
   final CollectionReference ref =
@@ -17,7 +18,9 @@ class AdminRepositoryImpl implements AdminRepository {
             isEqualTo: email,
           )
           .get();
-      admin = Admin.fromJson(snapshot.docs[0].data() as Map<String, dynamic>);
+      var json = snapshot.docs[0].data() as Map<String, dynamic>;
+      json[AdminCollection.fieldAdminId] = snapshot.docs[0].id;
+      admin = Admin.fromMap(json);
     } catch (e) {
       rethrow;
     }

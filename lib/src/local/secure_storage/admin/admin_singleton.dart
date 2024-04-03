@@ -1,4 +1,4 @@
-import 'package:survly/src/network/model/admin.dart';
+import 'package:survly/src/network/model/admin/admin.dart';
 
 class AdminSingleton {
 

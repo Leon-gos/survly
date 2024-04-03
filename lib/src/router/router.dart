@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/authentication/view/login_screen.dart';
 import 'package:survly/src/features/authentication/view/signup_view.dart';
@@ -35,12 +36,38 @@ class AppRouter {
           GoRoute(
             name: AppRouteNames.survey.name,
             path: AppRouteNames.survey.path,
-            builder: (context, state) => const SurveyView(),
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                key: state.pageKey,
+                child: const SurveyView(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: CurveTween(curve: Curves.easeInOutCirc)
+                        .animate(animation),
+                    child: child,
+                  );
+                },
+              );
+            },
           ),
           GoRoute(
             name: AppRouteNames.user.name,
             path: AppRouteNames.user.path,
-            builder: (context, state) => const UserView(),
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                key: state.pageKey,
+                child: const UserView(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: CurveTween(curve: Curves.easeInOutCirc)
+                        .animate(animation),
+                    child: child,
+                  );
+                },
+              );
+            },
           ),
         ],
       )
