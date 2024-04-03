@@ -13,6 +13,8 @@ class SurveyView extends StatelessWidget {
     return BlocProvider(
       create: (context) => SurveyListBloc(),
       child: BlocBuilder<SurveyListBloc, SurveyListState>(
+        buildWhen: (previous, current) =>
+            previous.surveyList != current.surveyList,
         builder: (context, state) {
           return Scaffold(
             body: state.surveyList.isEmpty
