@@ -68,12 +68,10 @@ class SurveyView extends StatelessWidget {
             Expanded(
               child: SurveyListWidget(
                 surveyList: state.surveyFilterList,
-                onRefresh: () {
-                  context.read<SurveyListBloc>().fetchFirstPageSurvey();
-                },
-                onLoadMore: () {
-                  context.read<SurveyListBloc>().fetchMoreSurvey();
-                },
+                onRefresh: () =>
+                    context.read<SurveyListBloc>().fetchFirstPageSurvey(),
+                onLoadMore: () =>
+                    context.read<SurveyListBloc>().fetchMoreSurvey(),
               ),
             )
           ],

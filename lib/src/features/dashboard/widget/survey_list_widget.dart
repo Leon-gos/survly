@@ -4,7 +4,7 @@ import 'package:survly/src/network/model/survey/survey.dart';
 
 class SurveyListWidget extends StatefulWidget {
   final List<Survey> surveyList;
-  final Function()? onLoadMore;
+  final Future<void> Function()? onLoadMore;
   final Function()? onRefresh;
 
   const SurveyListWidget({
@@ -20,17 +20,24 @@ class SurveyListWidget extends StatefulWidget {
 
 class _SurveyListWidgetState extends State<SurveyListWidget> {
   final scrollController = ScrollController();
+  bool isLoadingMore = false;
 
   @override
   void initState() {
     super.initState();
     scrollController.addListener(
-      () {
+      () async {
         if (scrollController.offset >=
                 scrollController.position.maxScrollExtent &&
             !scrollController.position.outOfRange &&
             scrollController.position.axisDirection == AxisDirection.down) {
-          widget.onLoadMore?.call();
+          setState(() {
+            isLoadingMore = true;
+          });
+          await widget.onLoadMore?.call();
+          setState(() {
+            isLoadingMore = false;
+          });
         }
       },
     );
@@ -48,14 +55,28 @@ class _SurveyListWidgetState extends State<SurveyListWidget> {
       onRefresh: () async {
         widget.onRefresh?.call();
       },
-      child: ListView.builder(
-        controller: scrollController,
-        itemCount: widget.surveyList.length,
-        itemBuilder: (context, index) {
-          return SurveyCard(
-            survey: widget.surveyList[index],
-          );
-        },
+      child: Column(
+        children: [
+          Expanded(
+            flex: 1,
+            child: ListView.builder(
+              padding: const EdgeInsets.only(bottom: 50),
+              controller: scrollController,
+              itemCount: widget.surveyList.length,
+              itemBuilder: (context, index) {
+                return SurveyCard(
+                  survey: widget.surveyList[index],
+                );
+              },
+            ),
+          ),
+          isLoadingMore
+              ? const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: CircularProgressIndicator(),
+                )
+              : const SizedBox(),
+        ],
       ),
     );
   }
