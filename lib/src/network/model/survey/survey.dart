@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class Survey {
-  final String surveyId;
+  String surveyId;
   String thumbnail;
   String title;
   String description;

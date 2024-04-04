@@ -11,7 +11,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
   Future<List<Survey>> fetchAllSurvey() async {
     List<Survey> list = [];
 
-    final value = await ref.get();
+    var value = await ref.orderBy(SurveyCollection.fieldTitle).limit(4).get();
     for (var doc in value.docs) {
       var data = doc.data();
       data[SurveyCollection.fieldSurveyId] = doc.id;
@@ -22,17 +22,37 @@ class SurveyRepositoryImpl implements SurveyRepository {
   }
 
   @override
-  Future<void> createSurvey() async {
+  Future<List<Survey>> fetchMoreSurvey({required Survey lastSurvey}) async {
+    List<Survey> list = [];
+
+    var lastDoc = await ref.doc(lastSurvey.surveyId).get();
+    var value = await ref
+        .orderBy(SurveyCollection.fieldTitle)
+        .startAfterDocument(lastDoc)
+        .limit(4)
+        .get();
+    for (var doc in value.docs) {
+      var data = doc.data();
+      data[SurveyCollection.fieldSurveyId] = doc.id;
+      list.add(Survey.fromMap(data));
+    }
+
+    return list;
+  }
+
+  @override
+  Future<void> createSurvey(Survey survey) async {
     // TODO: not yet done
     // test only
     ref.add({}).then((value) {
-      var survey = Survey(
-        surveyId: value.id,
-        dateCreate: "",
-        dateUpdate: "",
-        status: "",
-        adminId: "",
-      );
+      // var survey = Survey(
+      //   surveyId: value.id,
+      //   dateCreate: "",
+      //   dateUpdate: "",
+      //   status: "",
+      //   adminId: AdminSingleton.instance().admin?.id ?? "",
+      // );
+      survey.surveyId = value.id;
       ref.doc("/${value.id}").set(survey.toMap());
     });
   }

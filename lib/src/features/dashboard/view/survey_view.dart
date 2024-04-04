@@ -8,7 +8,8 @@ import 'package:survly/widgets/app_loading_circle.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
 class SurveyView extends StatelessWidget {
-  const SurveyView({super.key});
+  SurveyView({super.key});
+  final scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +17,22 @@ class SurveyView extends StatelessWidget {
       create: (context) => SurveyListBloc(),
       child: BlocBuilder<SurveyListBloc, SurveyListState>(
         buildWhen: (previous, current) {
-          return previous.surveyList != current.surveyList;
+          return previous.isLoading != current.isLoading;
         },
         builder: (context, state) {
+          scrollController.addListener(
+            () {
+              if (scrollController.offset >=
+                      scrollController.position.maxScrollExtent &&
+                  !scrollController.position.outOfRange &&
+                  scrollController.position.axisDirection ==
+                      AxisDirection.down) {
+                context.read<SurveyListBloc>().fetchMoreSurvey();
+              }
+            },
+          );
           return Scaffold(
-            body: state.surveyList.isEmpty
+            body: state.isLoading
                 ? const AppLoadingCircle()
                 : _buildSurveyListView(),
           );
@@ -78,6 +90,7 @@ class SurveyView extends StatelessWidget {
 
   Widget _buildSurveyList(List<Survey> surveyList) {
     return ListView.builder(
+      controller: scrollController,
       itemCount: surveyList.length,
       itemBuilder: (context, index) {
         return SurveyCard(

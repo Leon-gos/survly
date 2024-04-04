@@ -43,12 +43,18 @@ class SurveyCard extends StatelessWidget {
         topLeft: Radius.circular(borderRadius),
         topRight: Radius.circular(borderRadius),
       ),
-      child: Image.network(
-        survey.thumbnail,
-        width: double.infinity,
-        height: 200,
-        fit: BoxFit.cover,
-      ),
+      child: survey.thumbnail != ""
+          ? Image.network(
+              survey.thumbnail,
+              width: double.infinity,
+              height: 200,
+              fit: BoxFit.cover,
+            )
+          : Container(
+              width: double.infinity,
+              height: 200,
+              color: Colors.grey,
+            ),
     );
   }
 
@@ -74,7 +80,8 @@ class SurveyCard extends StatelessWidget {
                     const SizedBox(
                       height: 4,
                     ),
-                    Text("${survey.respondentNum}/${survey.respondentMax} ${S.of(context).respondent}"),
+                    Text(
+                        "${survey.respondentNum}/${survey.respondentMax} ${S.of(context).respondent}"),
                     const SizedBox(
                       height: 4,
                     ),
@@ -89,7 +96,7 @@ class SurveyCard extends StatelessWidget {
                     borderRadius:
                         BorderRadius.all(Radius.circular(borderRadius))),
                 child: Text(
-                  "${survey.cost/1000}${S.of(context).thousand}",
+                  "${survey.cost / 1000}${S.of(context).thousand}",
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, color: AppColors.white),
                 ),

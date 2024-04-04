@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:survly/src/theme/colors.dart';
 
 class AppTextField extends StatelessWidget {
   final String? hintText;
