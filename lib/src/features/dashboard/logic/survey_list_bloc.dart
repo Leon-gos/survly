@@ -19,8 +19,15 @@ class SurveyListBloc extends Cubit<SurveyListState> {
 
   Future<void> fetchFirstPageSurvey() async {
     emit(state.copyWith(surveyList: []));
-    var surveyList = await domainManager.survey.fetchFirstPageSurvey();
-    onSurveyListChange(surveyList);
+    try {
+      var surveyList = await domainManager.survey.fetchFirstPageSurvey();
+      onSurveyListChange(surveyList);
+    } catch (e) {
+      Logger().e("Failed to fetch first page of surveys", error: e);
+      emit(
+        state.copyWith(isLoading: false),
+      );
+    }
   }
 
   Future<void> fetchMoreSurvey() async {
