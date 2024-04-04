@@ -2,35 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:survly/src/features/dashboard/logic/survey_list_bloc.dart';
 import 'package:survly/src/features/dashboard/logic/survey_list_state.dart';
-import 'package:survly/src/features/dashboard/widget/survey_card.dart';
-import 'package:survly/src/network/model/survey/survey.dart';
+import 'package:survly/src/features/dashboard/widget/survey_list_widget.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
 class SurveyView extends StatelessWidget {
-  SurveyView({super.key});
-  final scrollController = ScrollController();
+  const SurveyView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
+      lazy: false,
       create: (context) => SurveyListBloc(),
       child: BlocBuilder<SurveyListBloc, SurveyListState>(
         buildWhen: (previous, current) {
           return previous.isLoading != current.isLoading;
         },
         builder: (context, state) {
-          scrollController.addListener(
-            () {
-              if (scrollController.offset >=
-                      scrollController.position.maxScrollExtent &&
-                  !scrollController.position.outOfRange &&
-                  scrollController.position.axisDirection ==
-                      AxisDirection.down) {
-                context.read<SurveyListBloc>().fetchMoreSurvey();
-              }
-            },
-          );
           return Scaffold(
             body: state.isLoading
                 ? const AppLoadingCircle()
@@ -78,23 +66,17 @@ class SurveyView extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: _buildSurveyList(
-                state.surveyFilterList,
+              child: SurveyListWidget(
+                surveyList: state.surveyFilterList,
+                onRefresh: () {
+                  context.read<SurveyListBloc>().fetchFirstPageSurvey();
+                },
+                onLoadMore: () {
+                  context.read<SurveyListBloc>().fetchMoreSurvey();
+                },
               ),
             )
           ],
-        );
-      },
-    );
-  }
-
-  Widget _buildSurveyList(List<Survey> surveyList) {
-    return ListView.builder(
-      controller: scrollController,
-      itemCount: surveyList.length,
-      itemBuilder: (context, index) {
-        return SurveyCard(
-          survey: surveyList[index],
         );
       },
     );

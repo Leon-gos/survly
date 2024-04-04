@@ -6,7 +6,7 @@ import 'package:survly/src/network/model/survey/survey.dart';
 
 class SurveyListBloc extends Cubit<SurveyListState> {
   SurveyListBloc() : super(SurveyListState.ds()) {
-    fetchAllSurvey();
+    fetchFirstPageSurvey();
   }
 
   DomainManager domainManager = DomainManager();
@@ -17,8 +17,9 @@ class SurveyListBloc extends Cubit<SurveyListState> {
     emit(state.copyWith(surveyList: newList, isLoading: false));
   }
 
-  Future<void> fetchAllSurvey() async {
-    var surveyList = await domainManager.survey.fetchAllSurvey();
+  Future<void> fetchFirstPageSurvey() async {
+    emit(state.copyWith(surveyList: []));
+    var surveyList = await domainManager.survey.fetchFirstPageSurvey();
     onSurveyListChange(surveyList);
   }
 

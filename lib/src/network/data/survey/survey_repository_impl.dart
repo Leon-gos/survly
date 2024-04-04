@@ -7,11 +7,14 @@ class SurveyRepositoryImpl implements SurveyRepository {
   final ref =
       FirebaseFirestore.instance.collection(SurveyCollection.collectionName);
 
+  static const int pageSize = 8;
+
   @override
-  Future<List<Survey>> fetchAllSurvey() async {
+  Future<List<Survey>> fetchFirstPageSurvey() async {
     List<Survey> list = [];
 
-    var value = await ref.orderBy(SurveyCollection.fieldTitle).limit(4).get();
+    var value =
+        await ref.orderBy(SurveyCollection.fieldTitle).limit(pageSize).get();
     for (var doc in value.docs) {
       var data = doc.data();
       data[SurveyCollection.fieldSurveyId] = doc.id;
@@ -29,7 +32,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
     var value = await ref
         .orderBy(SurveyCollection.fieldTitle)
         .startAfterDocument(lastDoc)
-        .limit(4)
+        .limit(pageSize)
         .get();
     for (var doc in value.docs) {
       var data = doc.data();

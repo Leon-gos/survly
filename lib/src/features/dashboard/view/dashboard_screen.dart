@@ -31,7 +31,7 @@ class DashboardScreen extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AccountBloc(AdminSingleton.instance().admin!),
-        )
+        ),
       ],
       child: BlocBuilder<DashboardBloc, DashboardState>(
         buildWhen: (previous, current) => previous.status != current.status,
