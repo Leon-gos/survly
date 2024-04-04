@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/create_survey/logic/create_survey_state.dart';
+import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/utils/date_helper.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -13,7 +14,6 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
 
   Future<void> onPickImage() async {
     var imagePath = await ImagePicker().pickImage(source: ImageSource.gallery);
-    Logger().d(imagePath?.path);
     emit(state.copyWith(imageLocalPath: imagePath?.path));
   }
 
@@ -29,6 +29,7 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
   }
 
   void onTitleChange(String newText) {
+    // var newSurvey = state.survey.copyWith();
     emit(
       state.copyWith(survey: state.survey.copyWith(title: newText)),
     );
@@ -54,7 +55,15 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
     );
   }
 
-  void saveSurvey() {
-    domainManager.survey.createSurvey(state.survey);
+  Future<void> saveSurvey() async {
+    try {
+      await domainManager.survey.createSurvey(
+        survey: state.survey,
+        fileLocalPath: state.imageLocalPath,
+      );
+      AppCoordinator.pop();
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 }

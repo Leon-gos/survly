@@ -50,20 +50,28 @@ class CreateSurveyScreen extends StatelessWidget {
                   Container(
                     margin:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                    child: const AppTextField(
+                    child: AppTextField(
                       hintText: "Title",
                       label: "Title",
                       textInputType: TextInputType.text,
+                      onTextChange: (newText) {
+                        context.read<CreateSurveyBloc>().onTitleChange(newText);
+                      },
                     ),
                   ),
                   Container(
                     margin:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                    child: const AppTextField(
+                    child: AppTextField(
                       hintText: "Description",
                       label: "Description",
                       textInputType: TextInputType.multiline,
                       textInputAction: TextInputAction.newline,
+                      onTextChange: (newText) {
+                        context
+                            .read<CreateSurveyBloc>()
+                            .onDescriptionChange(newText);
+                      },
                     ),
                   ),
                   Container(
@@ -71,7 +79,7 @@ class CreateSurveyScreen extends StatelessWidget {
                       vertical: 8,
                       horizontal: 16,
                     ),
-                    child: const Row(
+                    child: Row(
                       children: [
                         Expanded(
                           flex: 1,
@@ -79,9 +87,14 @@ class CreateSurveyScreen extends StatelessWidget {
                             hintText: "Respondent number",
                             label: "Respondent number",
                             textInputType: TextInputType.number,
+                            onTextChange: (newText) {
+                              context
+                                  .read<CreateSurveyBloc>()
+                                  .onRespondentNumberChange(newText);
+                            },
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 16,
                         ),
                         Expanded(
@@ -90,6 +103,11 @@ class CreateSurveyScreen extends StatelessWidget {
                             hintText: "Cost",
                             label: "Cost",
                             textInputType: TextInputType.number,
+                            onTextChange: (newText) {
+                              context
+                                  .read<CreateSurveyBloc>()
+                                  .onCostChange(newText);
+                            },
                           ),
                         )
                       ],

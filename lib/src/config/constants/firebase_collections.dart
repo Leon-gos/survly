@@ -21,4 +21,5 @@ class SurveyCollection {
   static const String fieldStatus = "status";
   static const String fieldOutletId = "outletId";
   static const String fieldAdminId = "adminId";
+  static const String fieldThumbnail = "thumbnail";
 }
