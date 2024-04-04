@@ -32,10 +32,15 @@ class SurveyListBloc extends Cubit<SurveyListState> {
 
   Future<void> fetchMoreSurvey() async {
     if (state.surveyList.length - 1 >= 0) {
-      List<Survey> surveyList = await domainManager.survey.fetchMoreSurvey(
-          lastSurvey: state.surveyList[state.surveyList.length - 1]);
-      Logger().d(surveyList.length);
-      onSurveyListChange(surveyList);
+      try {
+        List<Survey> surveyList = await domainManager.survey.fetchMoreSurvey(
+            lastSurvey: state.surveyList[state.surveyList.length - 1]);
+        Logger().d(surveyList.length);
+        onSurveyListChange(surveyList);
+      } catch (e) {
+        Logger().e("Failed to fetch more surveys", error: e);
+        // Consider emitting a state to reflect the error
+      }
     }
   }
 

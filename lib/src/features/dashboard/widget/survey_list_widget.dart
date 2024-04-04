@@ -37,6 +37,12 @@ class _SurveyListWidgetState extends State<SurveyListWidget> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
