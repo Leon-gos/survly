@@ -52,6 +52,7 @@ dependencies:
   intl: any
   freezed: ^2.4.7
   freezed_annotation: ^2.4.1
+  logger: ^2.2.0
 
 dev_dependencies:
   flutter_test:

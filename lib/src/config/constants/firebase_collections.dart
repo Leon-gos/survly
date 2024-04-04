@@ -1,6 +1,6 @@
 class AdminCollection {
   static const String collectionName = "admin";
-  static const String fieldAdminId = "adminId";
+  static const String fieldAdminId = "id";
   static const String fieldFullname = "fullname";
   static const String fieldEmail = "email";
   static const String fieldAvatar = "avatar";

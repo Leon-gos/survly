@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:survly/src/theme/colors.dart';
 
 class AppTextField extends StatelessWidget {
-
   final String? hintText;
   final Widget? trailing;
   final Function(String newText)? onTextChange;
@@ -10,6 +8,7 @@ class AppTextField extends StatelessWidget {
   final TextInputType? textInputType;
   final bool? obscureText;
   final String? errorText;
+  final Widget? prefixIcon;
 
   const AppTextField({
     super.key,
@@ -19,7 +18,8 @@ class AppTextField extends StatelessWidget {
     this.textInputAction,
     this.textInputType,
     this.obscureText,
-    this.errorText
+    this.errorText,
+    this.prefixIcon,
   });
 
   @override
@@ -29,9 +29,11 @@ class AppTextField extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(8)),
-            borderSide: BorderSide(width: 1, color: AppColors.black)),
+            borderSide: BorderSide(width: 1, color: Colors.grey)),
         hintText: hintText,
         errorText: errorText,
+        prefixIcon: prefixIcon,
+        prefixIconColor: Colors.grey,
       ),
       keyboardType: textInputType,
       obscureText: obscureText ?? false,

@@ -1,11 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/dashboard/logic/dashboard_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/router/coordinator.dart';
 
 class DashboardBloc extends Cubit<DashboardState> {
-  DashboardBloc() : super(DashboardState.ds()){
+  DashboardBloc() : super(DashboardState.ds()) {
     fetchAdminInfo();
   }
 
@@ -26,7 +27,7 @@ class DashboardBloc extends Cubit<DashboardState> {
         emit(state.copyWith(status: DashboardStatus.done));
       });
     } catch (e) {
-      print(e);
+      Logger().d(e);
       AppCoordinator.showLoginScreen();
     }
   }

@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 
 class User extends UserBase {
-  final double balance;
+  final int balance;
 
   User({
+    required super.id,
     required super.fullname,
     required super.email,
     required super.avatar,
@@ -25,18 +26,20 @@ class User extends UserBase {
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      fullname: map['fullname'] as String,
-      email: map['email'] as String,
-      avatar: map['avatar'] as String,
-      gender: map['gender'] as String,
-      birthDate: map['birthDate'] as String,
-      phone: map['phone'] as String,
-      balance: map['balance'] as double,
+      id: map['id']?.toString() ?? "",
+      fullname: map['fullname']?.toString() ?? "",
+      email: map['email']?.toString() ?? "",
+      avatar: map['avatar']?.toString() ?? "",
+      gender: map['gender']?.toString() ?? UserBase.genderMale,
+      birthDate: map['birthDate']?.toString() ?? "",
+      phone: map['phone']?.toString() ?? "",
+      balance: int.parse(map['balance']?.toString() ?? "0"),
     );
   }
 
   @override
   String toJson() => json.encode(toMap());
 
-  factory User.fromJson(String source) => User.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory User.fromJson(String source) =>
+      User.fromMap(json.decode(source) as Map<String, dynamic>);
 }

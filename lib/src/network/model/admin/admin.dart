@@ -4,6 +4,7 @@ import 'package:survly/src/network/model/user_base/user_base.dart';
 
 class Admin extends UserBase {
   Admin({
+    required super.id,
     required super.fullname,
     required super.email,
     required super.avatar,
@@ -15,17 +16,19 @@ class Admin extends UserBase {
 
   factory Admin.fromMap(Map<String, dynamic> map) {
     return Admin(
-      fullname: map['fullname'] as String,
-      email: map['email'] as String,
-      avatar: map['avatar'] as String,
-      gender: map['gender'] as String,
-      birthDate: map['birthDate'] as String,
-      phone: map['phone'] as String,
+      id: map['id']?.toString() ?? "",
+      fullname: map['fullname']?.toString() ?? "",
+      email: map['email']?.toString() ?? "",
+      avatar: map['avatar']?.toString() ?? "",
+      gender: map['gender']?.toString() ?? UserBase.genderMale,
+      birthDate: map['birthDate']?.toString() ?? "",
+      phone: map['phone']?.toString() ?? "",
     );
   }
 
   @override
   String toJson() => json.encode(toMap());
 
-  factory Admin.fromJson(String source) => Admin.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Admin.fromJson(String source) =>
+      Admin.fromMap(json.decode(source) as Map<String, dynamic>);
 }

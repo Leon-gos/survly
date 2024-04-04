@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:logger/logger.dart';
 import 'package:survly/src/network/data/authentication/authentication_repository.dart';
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
@@ -12,9 +13,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        Logger().d('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        Logger().d('Wrong password provided for that user.');
       }
       rethrow;
     }
@@ -54,12 +55,12 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        Logger().d('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        Logger().d('The account already exists for that email.');
       }
     } catch (e) {
-      print(e);
+      Logger().d(e);
     }
   }
 }

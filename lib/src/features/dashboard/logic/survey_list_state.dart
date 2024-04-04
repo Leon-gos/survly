@@ -1,24 +1,50 @@
 import 'package:equatable/equatable.dart';
+import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 
 class SurveyListState extends Equatable {
   final List<Survey> surveyList;
-  final List<Survey> mySurveyList;
+  final bool isLoading;
+  final bool isShowMySurvey;
 
-  const SurveyListState({required this.surveyList, required this.mySurveyList});
+  const SurveyListState({
+    required this.surveyList,
+    required this.isLoading,
+    required this.isShowMySurvey,
+  });
 
-  factory SurveyListState.ds() => const SurveyListState(surveyList: [], mySurveyList: []);
+  factory SurveyListState.ds() => const SurveyListState(
+        surveyList: [],
+        isLoading: true,
+        isShowMySurvey: false,
+      );
+
+  List<Survey> get surveyFilterList {
+    if (isShowMySurvey) {
+      List<Survey> mySurveyList = [];
+      for (var survey in surveyList) {
+        if (survey.adminId == AdminSingleton.instance().admin?.id) {
+          mySurveyList.add(survey);
+        }
+      }
+      return mySurveyList;
+    }
+    return surveyList;
+  }
 
   SurveyListState copyWith({
     List<Survey>? surveyList,
-    List<Survey>? mySurveyList,
+    bool? isLoading,
+    bool? isShowMySurvey,
   }) {
     return SurveyListState(
       surveyList: surveyList ?? this.surveyList,
-      mySurveyList: mySurveyList ?? this.mySurveyList,
+      isLoading: isLoading ?? this.isLoading,
+      isShowMySurvey: isShowMySurvey ?? this.isShowMySurvey,
     );
   }
 
   @override
-  List<Object?> get props => [surveyList, mySurveyList];
+  List<Object?> get props =>
+      [surveyList, surveyFilterList, isLoading, isShowMySurvey];
 }
