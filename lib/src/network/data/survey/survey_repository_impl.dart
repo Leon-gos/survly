@@ -48,13 +48,6 @@ class SurveyRepositoryImpl implements SurveyRepository {
     // TODO: not yet done
     // test only
     ref.add({}).then((value) {
-      // var survey = Survey(
-      //   surveyId: value.id,
-      //   dateCreate: "",
-      //   dateUpdate: "",
-      //   status: "",
-      //   adminId: AdminSingleton.instance().admin?.id ?? "",
-      // );
       survey.surveyId = value.id;
       ref.doc("/${value.id}").set(survey.toMap());
     });

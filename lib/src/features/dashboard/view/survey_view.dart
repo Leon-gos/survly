@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:survly/src/features/dashboard/logic/survey_list_bloc.dart';
 import 'package:survly/src/features/dashboard/logic/survey_list_state.dart';
 import 'package:survly/src/features/dashboard/widget/survey_list_widget.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
@@ -42,11 +43,11 @@ class SurveyView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     flex: 1,
                     child: AppTextField(
-                      hintText: "Search",
-                      prefixIcon: Icon(Icons.search),
+                      hintText: S.of(context).labelSearch,
+                      prefixIcon: const Icon(Icons.search),
                     ),
                   ),
                   IconButton(

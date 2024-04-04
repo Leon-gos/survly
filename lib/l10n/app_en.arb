@@ -19,6 +19,7 @@
     "respondent": "respondent",
     "thousand": "k",
     "closedOn": "Closed on",
+    "labelSearch": "Search",
     
     "errorEmptyName": "Empty name",
     "errorPasswordLength": "Password must be at least 6 characters long",
