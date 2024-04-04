@@ -7,6 +7,7 @@ class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
   final List<Widget>? actions;
   final bool noActionBar;
+  final bool centerTitle;
 
   const AppAppBarWidget({
     super.key,
@@ -14,13 +15,22 @@ class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     this.leading,
     this.actions,
     this.noActionBar = false,
+    this.centerTitle = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: AppColors.primary,
-      title: title != null ? Text(title!) : const SizedBox(),
+      title: title != null
+          ? Text(
+              title!,
+              style: const TextStyle(
+                color: AppColors.onPrimary,
+                fontWeight: FontWeight.bold,
+              ),
+            )
+          : const SizedBox(),
       leading: leading ??
           IconButton(
             icon: Icon(
@@ -31,7 +41,8 @@ class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               context.pop();
             },
           ),
-          leadingWidth: leading is SizedBox ? 0 : null,
+      leadingWidth: leading is SizedBox ? 0 : null,
+      centerTitle: centerTitle,
       actions: actions,
     );
   }

@@ -20,6 +20,7 @@
     "thousand": "k",
     "closedOn": "Closed on",
     "labelSearch": "Search",
+    "titleCreateSurvey": "New survey", 
     
     "errorEmptyName": "Empty name",
     "errorPasswordLength": "Password must be at least 6 characters long",

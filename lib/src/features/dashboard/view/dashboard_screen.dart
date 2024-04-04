@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/dashboard/logic/account_bloc.dart';
 import 'package:survly/src/features/dashboard/logic/bottom_nav_bloc.dart';
 import 'package:survly/src/features/dashboard/logic/dashboard_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:survly/src/features/dashboard/logic/navigation_bar_item.dart';
 import 'package:survly/src/features/dashboard/widget/bottom_navigation_bar.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
+import 'package:survly/src/router/router_name.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_avatar_widget.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
@@ -96,7 +98,12 @@ class DashboardScreen extends StatelessWidget {
                   ],
                 ),
                 const Spacer(),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.settings))
+                IconButton(
+                  onPressed: () {
+                    context.push(AppRouteNames.createSurvey.path);
+                  },
+                  icon: const Icon(Icons.more_vert),
+                )
               ],
             ),
           ),

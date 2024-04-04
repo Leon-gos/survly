@@ -1,4 +1,17 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
+import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
+
+enum SurveyStatus {
+  draft(value: "draft"),
+  openning(value: "openning"),
+  closed(value: "closed"),
+  archive(value: "archived");
+
+  final String value;
+  const SurveyStatus({required this.value});
+}
 
 class Survey {
   String surveyId;
@@ -14,24 +27,29 @@ class Survey {
   int respondentNum;
   String status;
   String outletId;
-  final String adminId;
+  String adminId;
 
   Survey({
-    required this.surveyId,
+    this.surveyId = "",
     this.thumbnail = "",
     this.title = "",
     this.description = "",
     this.cost = 0,
-    required this.dateCreate,
-    required this.dateUpdate,
+    this.dateCreate = "",
+    this.dateUpdate = "",
     this.dateStart = "",
     this.dateEnd = "",
     this.respondentMax = 0,
     this.respondentNum = 0,
-    required this.status,
+    this.status = "",
     this.outletId = "",
-    required this.adminId,
-  });
+    this.adminId = "",
+  }) {
+    dateCreate = DateTime.now().toString();
+    dateUpdate = DateTime.now().toString();
+    status = SurveyStatus.draft.value;
+    adminId = AdminSingleton.instance().admin?.id ?? "";
+  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -75,4 +93,38 @@ class Survey {
 
   factory Survey.fromJson(String source) =>
       Survey.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  Survey copyWith({
+    String? surveyId,
+    String? thumbnail,
+    String? title,
+    String? description,
+    int? cost,
+    String? dateCreate,
+    String? dateUpdate,
+    String? dateStart,
+    String? dateEnd,
+    int? respondentMax,
+    int? respondentNum,
+    String? status,
+    String? outletId,
+    String? adminId,
+  }) {
+    return Survey(
+      surveyId: surveyId ?? this.surveyId,
+      thumbnail: thumbnail ?? this.thumbnail,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      cost: cost ?? this.cost,
+      dateCreate: dateCreate ?? this.dateCreate,
+      dateUpdate: dateUpdate ?? this.dateUpdate,
+      dateStart: dateStart ?? this.dateStart,
+      dateEnd: dateEnd ?? this.dateEnd,
+      respondentMax: respondentMax ?? this.respondentMax,
+      respondentNum: respondentNum ?? this.respondentNum,
+      status: status ?? this.status,
+      outletId: outletId ?? this.outletId,
+      adminId: adminId ?? this.adminId,
+    );
+  }
 }
