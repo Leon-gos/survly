@@ -23,3 +23,12 @@ class SurveyCollection {
   static const String fieldAdminId = "adminId";
   static const String fieldThumbnail = "thumbnail";
 }
+
+class QuestionCollection {
+  static const String collectionName = "question";
+  static const String fieldQuestionId = "questionId";
+  static const String fieldQuestionIndex = "questionIndex";
+  static const String fieldQuestionType = "questionType";
+  static const String fieldQuestion = "question";
+  static const String fieldSurveyId = "surveyId";
+}

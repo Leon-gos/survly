@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
-import 'package:survly/src/network/model/question_option/question_option.dart';
 import 'package:survly/src/router/coordinator.dart';
 
 class QuestionEditorWidget extends StatefulWidget {
   Question question;
   final Function(Question oldQuestion, Question newQuestion) onSavePressed;
   final Function()? onCancelPressed;
+  final Function(Question question) onRemovePressed;
 
   QuestionEditorWidget({
     super.key,
     required this.question,
     required this.onSavePressed,
     this.onCancelPressed,
+    required this.onRemovePressed,
   });
 
   @override
@@ -76,10 +76,17 @@ class _QuestionEditorWidgetState extends State<QuestionEditorWidget> {
                 ),
                 TextButton(
                   onPressed: () {
+                    widget.onRemovePressed.call(widget.question);
+                    AppCoordinator.pop();
+                  },
+                  child: const Text("Remove"),
+                ),
+                TextButton(
+                  onPressed: () {
                     widget.onSavePressed.call(widget.question, questionTemp);
                     AppCoordinator.pop();
                   },
-                  child: const Text("Save"),
+                  child: const Text("Update"),
                 ),
               ],
             )

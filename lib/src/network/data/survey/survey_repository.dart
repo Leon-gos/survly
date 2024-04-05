@@ -1,3 +1,4 @@
+import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 
 abstract class SurveyRepository {
@@ -6,5 +7,6 @@ abstract class SurveyRepository {
   Future<void> createSurvey({
     required Survey survey,
     required String fileLocalPath,
+    required List<Question> questionList,
   });
 }

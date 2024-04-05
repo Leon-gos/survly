@@ -68,6 +68,7 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
       await domainManager.survey.createSurvey(
         survey: state.survey,
         fileLocalPath: state.imageLocalPath,
+        questionList: state.questionList,
       );
       AppCoordinator.pop();
     } catch (e) {
@@ -100,5 +101,14 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
     Logger().d(
       "Question #${state.questionList[state.questionList.length - 1].questionIndex}}",
     );
+  }
+
+  void removeQuestion(Question question) {
+    var list = List.of(state.questionList);
+    list.remove(question);
+    for (int i = 0; i < list.length; i++) {
+      list[i].questionIndex = i + 1;
+    }
+    emit(state.copyWith(questionList: list));
   }
 }

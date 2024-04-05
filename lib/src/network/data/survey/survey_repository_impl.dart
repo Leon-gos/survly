@@ -4,7 +4,9 @@ import 'package:logger/web.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/network/data/file/file_data.dart';
+import 'package:survly/src/network/data/question/question_repository_impl.dart';
 import 'package:survly/src/network/data/survey/survey_repository.dart';
+import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 
@@ -52,14 +54,14 @@ class SurveyRepositoryImpl implements SurveyRepository {
   Future<void> createSurvey({
     required Survey survey,
     required String fileLocalPath,
+    required List<Question> questionList,
   }) async {
     try {
       // 1: insert survey
       survey.adminId = AdminSingleton.instance().admin!.id;
-      await ref.add({}).then((value) {
-        survey.surveyId = value.id;
-        ref.doc("/${value.id}").set(survey.toMap());
-      });
+      final value = await ref.add({});
+      survey.surveyId = value.id;
+      ref.doc("/${value.id}").set(survey.toMap());
 
       if (fileLocalPath == "") {
         return;
@@ -76,6 +78,13 @@ class SurveyRepositoryImpl implements SurveyRepository {
       ref.doc(survey.surveyId).update({
         SurveyCollection.fieldThumbnail: imageUrl,
       });
+
+      // 4: insert questions of survey
+      var questionRepo = QuestionRepositoryImpl();
+      for (var question in questionList) {
+        question.surveyId = survey.surveyId;
+        questionRepo.createQuestion(question);
+      }
     } catch (e) {
       rethrow;
     }

@@ -66,7 +66,6 @@ class CreateSurveyScreen extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
-            // const Text("Questions"),
             SizedBox(
               width: double.infinity,
               child: Wrap(
@@ -86,6 +85,11 @@ class CreateSurveyScreen extends StatelessWidget {
                                   .read<CreateSurveyBloc>()
                                   .onQuestionListItemChange(
                                       oldQuestion, newQuestion);
+                            },
+                            onRemovePressed: (question) {
+                              context
+                                  .read<CreateSurveyBloc>()
+                                  .removeQuestion(question);
                             },
                             onCancelPressed: () {},
                           );
