@@ -24,7 +24,7 @@ class QuestionWithOption extends Question {
       'question': question,
       'questionType': questionType,
       'surveyId': surveyId,
-      'optionList': optionList
+      // 'optionList': optionList
     };
   }
 
