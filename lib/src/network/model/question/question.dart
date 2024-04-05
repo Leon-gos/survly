@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 enum QuestionType {
@@ -49,4 +50,20 @@ class Question {
 
   factory Question.fromJson(String source) =>
       Question.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  Question copyWith({
+    String? questionId,
+    int? questionIndex,
+    String? question,
+    String? questionType,
+    String? surveyId,
+  }) {
+    return Question(
+      questionId: questionId ?? this.questionId,
+      questionIndex: questionIndex ?? this.questionIndex,
+      question: question ?? this.question,
+      questionType: questionType ?? this.questionType,
+      surveyId: surveyId ?? this.surveyId,
+    );
+  }
 }

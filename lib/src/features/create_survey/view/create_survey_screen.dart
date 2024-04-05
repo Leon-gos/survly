@@ -1,9 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/features/create_survey/logic/create_survey_bloc.dart';
 import 'package:survly/src/features/create_survey/logic/create_survey_state.dart';
+import 'package:survly/src/features/create_survey/widget/question_editor_widget.dart';
+import 'package:survly/src/features/create_survey/widget/question_widget.dart';
 import 'package:survly/src/features/create_survey/widget/text_button_icon_widget.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/question/question.dart';
@@ -57,79 +61,56 @@ class CreateSurveyScreen extends StatelessWidget {
 
   Widget _buildQuestionList() {
     return BlocBuilder<CreateSurveyBloc, CreateSurveyState>(
+      buildWhen: (previous, current) =>
+          previous.questionList != current.questionList,
       builder: (context, state) {
         return Column(
           children: [
-            const Text("Questions"),
+            // const Text("Questions"),
+            SizedBox(
+              width: double.infinity,
+              child: Wrap(
+                direction: Axis.vertical,
+                crossAxisAlignment: WrapCrossAlignment.start,
+                children: state.questionList.map((e) {
+                  return QuestionWidget(
+                    question: e,
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (dialogContext) {
+                          return QuestionEditorWidget(
+                            question: e,
+                            onSavePressed: (oldQuestion, newQuestion) {
+                              context
+                                  .read<CreateSurveyBloc>()
+                                  .onQuestionListItemChange(
+                                      oldQuestion, newQuestion);
+                            },
+                            onCancelPressed: () {},
+                          );
+                        },
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
+            ),
             ElevatedButton.icon(
               onPressed: () {
                 showDialog(
                   context: context,
                   builder: (dialogContext) {
-                    return Dialog(
-                      child: Container(
-                        width: (MediaQuery.of(context).size.width / 10) * 8,
-                        padding: const EdgeInsets.all(16),
-                        color: AppColors.white,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.all(16),
-                              child: const Text(
-                                "Question type",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            TextIconButtonWidget(
-                              text: "Text",
-                              icon: const Icon(Icons.abc),
-                              onPressed: () {
-                                context
-                                    .read<CreateSurveyBloc>()
-                                    .addQuestion(QuestionType.text);
-                              },
-                            ),
-                            TextIconButtonWidget(
-                              text: "Single option",
-                              icon: const Icon(Icons.radio_button_checked),
-                              onPressed: () {
-                                context
-                                    .read<CreateSurveyBloc>()
-                                    .addQuestion(QuestionType.singleOption);
-                              },
-                            ),
-                            TextIconButtonWidget(
-                              text: "Multiple option",
-                              icon: const Icon(Icons.check_box),
-                              onPressed: () {
-                                context
-                                    .read<CreateSurveyBloc>()
-                                    .addQuestion(QuestionType.multiOption);
-                              },
-                            ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                                onPressed: () {
-                                  context.pop();
-                                },
-                                child: const Text("Cancel"),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
+                    return _buildDialogSelectQuestionType(context);
                   },
                 );
               },
               icon: const Icon(Icons.add_box_outlined),
               label: const Text("Add question"),
             ),
+            const SizedBox(
+              height: 100,
+            )
           ],
         );
       },
@@ -273,6 +254,65 @@ class CreateSurveyScreen extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildDialogSelectQuestionType(BuildContext context) {
+    return Dialog(
+      child: Container(
+        width: (MediaQuery.of(context).size.width / 10) * 8,
+        padding: const EdgeInsets.all(16),
+        color: AppColors.white,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              margin: const EdgeInsets.all(16),
+              child: const Text(
+                "Question type",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            TextIconButtonWidget(
+              text: "Text",
+              icon: const Icon(Icons.abc),
+              onPressed: () {
+                context.read<CreateSurveyBloc>().addQuestion(QuestionType.text);
+              },
+            ),
+            TextIconButtonWidget(
+              text: "Single option",
+              icon: const Icon(Icons.radio_button_checked),
+              onPressed: () {
+                context
+                    .read<CreateSurveyBloc>()
+                    .addQuestion(QuestionType.singleOption);
+              },
+            ),
+            TextIconButtonWidget(
+              text: "Multiple option",
+              icon: const Icon(Icons.check_box),
+              onPressed: () {
+                context
+                    .read<CreateSurveyBloc>()
+                    .addQuestion(QuestionType.multiOption);
+              },
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () {
+                  context.pop();
+                },
+                child: const Text("Cancel"),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

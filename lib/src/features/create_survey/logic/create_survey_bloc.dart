@@ -4,6 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/create_survey/logic/create_survey_state.dart';
 import 'package:survly/src/network/model/question/question.dart';
+import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/utils/date_helper.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -56,6 +57,12 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
     );
   }
 
+  void onQuestionListItemChange(Question oldQuestion, Question newQuestion) {
+    var list = List.of(state.questionList);
+    list[list.indexOf(oldQuestion)] = newQuestion;
+    emit(state.copyWith(questionList: list));
+  }
+
   Future<void> saveSurvey() async {
     try {
       await domainManager.survey.createSurvey(
@@ -70,12 +77,25 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
 
   void addQuestion(QuestionType questionType) {
     List<Question> list = List.of(state.questionList);
-    list.add(
-      Question(
+    if (questionType == QuestionType.text) {
+      list.add(
+        Question(
+            questionIndex: list.length + 1,
+            questionType: questionType.value,
+            question: "Question ${list.length + 1}"),
+      );
+    } else {
+      var question = QuestionWithOption(
         questionIndex: list.length + 1,
         questionType: questionType.value,
-      ),
-    );
+        question: "Question ${list.length + 1}",
+        optionList: [],
+      );
+      question.addOption();
+      question.addOption();
+      question.addOption();
+      list.add(question);
+    }
     emit(state.copyWith(questionList: list));
     Logger().d(
       "Question #${state.questionList[state.questionList.length - 1].questionIndex}}",
