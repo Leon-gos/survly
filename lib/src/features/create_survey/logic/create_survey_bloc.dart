@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/create_survey/logic/create_survey_state.dart';
+import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/utils/date_helper.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -65,5 +66,19 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
     } catch (e) {
       Logger().e(e);
     }
+  }
+
+  void addQuestion(QuestionType questionType) {
+    List<Question> list = List.of(state.questionList);
+    list.add(
+      Question(
+        questionIndex: list.length + 1,
+        questionType: questionType.value,
+      ),
+    );
+    emit(state.copyWith(questionList: list));
+    Logger().d(
+      "Question #${state.questionList[state.questionList.length - 1].questionIndex}}",
+    );
   }
 }
