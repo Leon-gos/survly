@@ -7,6 +7,7 @@ import 'package:survly/src/features/dashboard/logic/navigation_bar_item.dart';
 import 'package:survly/src/features/dashboard/view/dashboard_screen.dart';
 import 'package:survly/src/features/dashboard/view/survey_view.dart';
 import 'package:survly/src/features/dashboard/view/user_view.dart';
+import 'package:survly/src/features/select_location/view/select_location_screen.dart';
 import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/router/router_name.dart';
 
@@ -32,6 +33,12 @@ class AppRouter {
         path: AppRouteNames.createSurvey.path,
         parentNavigatorKey: AppCoordinator.navigatorKey,
         builder: (context, state) => const CreateSurveyScreen(),
+      ),
+      GoRoute(
+        name: AppRouteNames.selectLocation.name,
+        path: AppRouteNames.selectLocation.path,
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        builder: (context, state) => const SelectLocationScreen(),
       ),
       ShellRoute(
         builder: (context, state, child) => DashboardScreen(

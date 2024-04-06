@@ -3,7 +3,8 @@ enum AppRouteNames {
   signUp(path: '/signUp'),
   survey(path: '/survey'),
   user(path: '/user'),
-  createSurvey(path: '/createSurvey');
+  createSurvey(path: '/createSurvey'),
+  selectLocation(path: '/selectLocation');
 
   const AppRouteNames({
     required this.path,
