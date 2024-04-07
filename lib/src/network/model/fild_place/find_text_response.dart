@@ -1,14 +1,14 @@
-class FindPlaceResponse {
-  List<Candidates>? candidates;
+class FindTextResponse {
+  List<Results>? results;
   String? status;
 
-  FindPlaceResponse({this.candidates, this.status});
+  FindTextResponse({this.results, this.status});
 
-  FindPlaceResponse.fromJson(Map<String, dynamic> json) {
-    if (json['candidates'] != null) {
-      candidates = <Candidates>[];
-      json['candidates'].forEach((v) {
-        candidates!.add(new Candidates.fromJson(v));
+  FindTextResponse.fromJson(Map<String, dynamic> json) {
+    if (json['results'] != null) {
+      results = <Results>[];
+      json['results'].forEach((v) {
+        results!.add(new Results.fromJson(v));
       });
     }
     status = json['status'];
@@ -16,31 +16,25 @@ class FindPlaceResponse {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.candidates != null) {
-      data['candidates'] = this.candidates!.map((v) => v.toJson()).toList();
+    if (this.results != null) {
+      data['results'] = this.results!.map((v) => v.toJson()).toList();
     }
     data['status'] = this.status;
     return data;
   }
 }
 
-class Candidates {
+class Results {
   String? formattedAddress;
   Geometry? geometry;
-  String? name;
 
-  Candidates({
-    this.formattedAddress,
-    this.geometry,
-    this.name,
-  });
+  Results({this.formattedAddress, this.geometry});
 
-  Candidates.fromJson(Map<String, dynamic> json) {
+  Results.fromJson(Map<String, dynamic> json) {
     formattedAddress = json['formatted_address'];
     geometry = json['geometry'] != null
         ? new Geometry.fromJson(json['geometry'])
         : null;
-    name = json['name'];
   }
 
   Map<String, dynamic> toJson() {
@@ -49,7 +43,6 @@ class Candidates {
     if (this.geometry != null) {
       data['geometry'] = this.geometry!.toJson();
     }
-    data['name'] = this.name;
     return data;
   }
 }
@@ -123,22 +116,6 @@ class Viewport {
     if (this.southwest != null) {
       data['southwest'] = this.southwest!.toJson();
     }
-    return data;
-  }
-}
-
-class OpeningHours {
-  bool? openNow;
-
-  OpeningHours({this.openNow});
-
-  OpeningHours.fromJson(Map<String, dynamic> json) {
-    openNow = json['open_now'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['open_now'] = this.openNow;
     return data;
   }
 }

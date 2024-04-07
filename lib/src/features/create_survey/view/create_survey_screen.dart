@@ -8,7 +8,6 @@ import 'package:survly/src/features/create_survey/widget/question_editor_widget.
 import 'package:survly/src/features/create_survey/widget/question_widget.dart';
 import 'package:survly/src/features/create_survey/widget/text_button_icon_widget.dart';
 import 'package:survly/src/localization/localization_utils.dart';
-import 'package:survly/src/network/data/location/location_data.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';

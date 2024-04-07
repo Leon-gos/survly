@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/features/select_location/logic/select_location_bloc.dart';
 import 'package:survly/src/features/select_location/logic/select_location_state.dart';
+import 'package:survly/src/features/select_location/widget/location_search_dialog.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 
@@ -28,7 +29,13 @@ class SelectLocationScreen extends StatelessWidget {
               return Stack(
                 children: [
                   _buildMap(),
-                  _buildSearchBox(),
+                  // _buildSearchBox(),
+                  LocationSearchDialog(
+                    findText: (text) =>
+                        context.read<SelectLocationBloc>().findText(text),
+                    onSelected: (result) =>
+                        context.read<SelectLocationBloc>().moveCamera(result),
+                  ),
                 ],
               );
             }

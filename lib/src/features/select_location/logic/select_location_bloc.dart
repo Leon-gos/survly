@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/features/select_location/logic/select_location_state.dart';
 import 'package:survly/src/network/data/location/location_data.dart';
+import 'package:survly/src/network/model/fild_place/find_text_response.dart';
 
 class SelectLocationBloc extends Cubit<SelectLocationState> {
   SelectLocationBloc() : super(SelectLocationState.ds()) {
@@ -11,26 +12,49 @@ class SelectLocationBloc extends Cubit<SelectLocationState> {
   }
 
   Future<void> searchLocationByText() async {
-    final findPlaceResponse =
-        await LocationData().getLocationData(state.searchText);
-    if (findPlaceResponse.status == "OK") {
-      try {
-        LatLng newLatLng = LatLng(
-          findPlaceResponse.candidates![0].geometry!.location!.lat!,
-          findPlaceResponse.candidates![0].geometry!.location!.lng!,
-        );
-        emit(
-          state.copyWith(
-            searchedLocation: newLatLng,
-          ),
-        );
-        state.mapController?.animateCamera(
-          CameraUpdate.newLatLngZoom(state.searchedLocation!, 10),
-        );
-      } catch (e) {
-        Logger().e(e);
-      }
+    LocationData().findText(state.searchText, state.currentLocation!);
+    // final findPlaceResponse = await LocationData().findPlace(state.searchText);
+    // if (findPlaceResponse.status == "OK") {
+    //   try {
+    //     LatLng newLatLng = LatLng(
+    //       findPlaceResponse.candidates![0].geometry!.location!.lat!,
+    //       findPlaceResponse.candidates![0].geometry!.location!.lng!,
+    //     );
+    //     emit(
+    //       state.copyWith(
+    //         searchedLocation: newLatLng,
+    //       ),
+    //     );
+    //     state.mapController?.animateCamera(
+    //       CameraUpdate.newLatLngZoom(state.searchedLocation!, 10),
+    //     );
+    //   } catch (e) {
+    //     Logger().e(e);
+    //   }
+    // }
+  }
+
+  void moveCamera(Results result) {
+    try {
+      LatLng newLatLng = LatLng(
+        result.geometry!.location!.lat!,
+        result.geometry!.location!.lng!,
+      );
+      emit(
+        state.copyWith(
+          searchedLocation: newLatLng,
+        ),
+      );
+      state.mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(state.searchedLocation!, 14),
+      );
+    } catch (e) {
+      Logger().e(e);
     }
+  }
+
+  Future<FindTextResponse> findText(String text) async {
+    return await LocationData().findText(text, state.currentLocation!);
   }
 
   void onSearchTextChange(String text) {
