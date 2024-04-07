@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
+import 'package:survly/src/network/model/fild_place/find_place_response.dart';
 
 class LocationData {
-  Future<http.Response> getLocationData(String text) async {
+  Future<FindPlaceResponse> getLocationData(String text) async {
     http.Response response;
 
     response = await http.get(
@@ -22,6 +23,6 @@ class LocationData {
     );
 
     Logger().d(jsonDecode(response.body));
-    return response;
+    return FindPlaceResponse.fromJson(jsonDecode(response.body));
   }
 }

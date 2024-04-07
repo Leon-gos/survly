@@ -8,27 +8,37 @@ class SelectLocationState extends Equatable {
   // List<Prediction> predictionList = [];
   final String searchText;
   final LatLng? searchedLocation;
+  final LatLng? currentLocation;
+  final GoogleMapController? mapController;
 
   const SelectLocationState({
     required this.searchText,
-    required this.searchedLocation,
+    this.searchedLocation,
+    this.currentLocation,
+    this.mapController,
   });
 
   factory SelectLocationState.ds() => const SelectLocationState(
         searchText: "",
         searchedLocation: null,
+        mapController: null,
       );
 
   @override
-  List<Object?> get props => [searchText, searchedLocation];
+  List<Object?> get props =>
+      [searchText, searchedLocation, currentLocation, mapController];
 
   SelectLocationState copyWith({
     LatLng? searchedLocation,
+    LatLng? currentLocation,
     String? searchText,
+    GoogleMapController? mapController,
   }) {
     return SelectLocationState(
       searchedLocation: searchedLocation ?? this.searchedLocation,
+      currentLocation: currentLocation ?? this.currentLocation,
       searchText: searchText ?? this.searchText,
+      mapController: mapController ?? this.mapController,
     );
   }
 }

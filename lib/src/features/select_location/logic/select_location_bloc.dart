@@ -10,13 +10,27 @@ class SelectLocationBloc extends Cubit<SelectLocationState> {
     getCurrentLocation();
   }
 
-  void searchLocationByText() {
-    LocationData().getLocationData(state.searchText);
-    emit(
-      state.copyWith(
-        searchedLocation: const LatLng(11.9038989, 108.3683207),
-      ),
-    );
+  Future<void> searchLocationByText() async {
+    final findPlaceResponse =
+        await LocationData().getLocationData(state.searchText);
+    if (findPlaceResponse.status == "OK") {
+      try {
+        LatLng newLatLng = LatLng(
+          findPlaceResponse.candidates![0].geometry!.location!.lat!,
+          findPlaceResponse.candidates![0].geometry!.location!.lng!,
+        );
+        emit(
+          state.copyWith(
+            searchedLocation: newLatLng,
+          ),
+        );
+        state.mapController?.animateCamera(
+          CameraUpdate.newLatLngZoom(state.searchedLocation!, 10),
+        );
+      } catch (e) {
+        Logger().e(e);
+      }
+    }
   }
 
   void onSearchTextChange(String text) {
@@ -30,7 +44,7 @@ class SelectLocationBloc extends Cubit<SelectLocationState> {
           desiredAccuracy: LocationAccuracy.high);
       emit(
         state.copyWith(
-          searchedLocation: LatLng(position.latitude, position.longitude),
+          currentLocation: LatLng(position.latitude, position.longitude),
         ),
       );
       Logger()
@@ -38,5 +52,9 @@ class SelectLocationBloc extends Cubit<SelectLocationState> {
     } catch (e) {
       Logger().e(e);
     }
+  }
+
+  void onMapControllerChange(GoogleMapController mapController) {
+    emit(state.copyWith(mapController: mapController));
   }
 }
