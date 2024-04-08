@@ -8,18 +8,18 @@ class FindPlaceResponse {
     if (json['candidates'] != null) {
       candidates = <Candidates>[];
       json['candidates'].forEach((v) {
-        candidates!.add(new Candidates.fromJson(v));
+        candidates!.add(Candidates.fromJson(v));
       });
     }
     status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.candidates != null) {
-      data['candidates'] = this.candidates!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = {};
+    if (candidates != null) {
+      data['candidates'] = candidates!.map((v) => v.toJson()).toList();
     }
-    data['status'] = this.status;
+    data['status'] = status;
     return data;
   }
 }
@@ -37,19 +37,18 @@ class Candidates {
 
   Candidates.fromJson(Map<String, dynamic> json) {
     formattedAddress = json['formatted_address'];
-    geometry = json['geometry'] != null
-        ? new Geometry.fromJson(json['geometry'])
-        : null;
+    geometry =
+        json['geometry'] != null ? Geometry.fromJson(json['geometry']) : null;
     name = json['name'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['formatted_address'] = this.formattedAddress;
-    if (this.geometry != null) {
-      data['geometry'] = this.geometry!.toJson();
+    final Map<String, dynamic> data = {};
+    data['formatted_address'] = formattedAddress;
+    if (geometry != null) {
+      data['geometry'] = geometry!.toJson();
     }
-    data['name'] = this.name;
+    data['name'] = name;
     return data;
   }
 }
@@ -61,21 +60,19 @@ class Geometry {
   Geometry({this.location, this.viewport});
 
   Geometry.fromJson(Map<String, dynamic> json) {
-    location = json['location'] != null
-        ? new Location.fromJson(json['location'])
-        : null;
-    viewport = json['viewport'] != null
-        ? new Viewport.fromJson(json['viewport'])
-        : null;
+    location =
+        json['location'] != null ? Location.fromJson(json['location']) : null;
+    viewport =
+        json['viewport'] != null ? Viewport.fromJson(json['viewport']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
+    final Map<String, dynamic> data = {};
+    if (location != null) {
+      data['location'] = location!.toJson();
     }
-    if (this.viewport != null) {
-      data['viewport'] = this.viewport!.toJson();
+    if (viewport != null) {
+      data['viewport'] = viewport!.toJson();
     }
     return data;
   }
@@ -93,9 +90,9 @@ class Location {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['lat'] = this.lat;
-    data['lng'] = this.lng;
+    final Map<String, dynamic> data = {};
+    data['lat'] = lat;
+    data['lng'] = lng;
     return data;
   }
 }
@@ -107,21 +104,19 @@ class Viewport {
   Viewport({this.northeast, this.southwest});
 
   Viewport.fromJson(Map<String, dynamic> json) {
-    northeast = json['northeast'] != null
-        ? new Location.fromJson(json['northeast'])
-        : null;
-    southwest = json['southwest'] != null
-        ? new Location.fromJson(json['southwest'])
-        : null;
+    northeast =
+        json['northeast'] != null ? Location.fromJson(json['northeast']) : null;
+    southwest =
+        json['southwest'] != null ? Location.fromJson(json['southwest']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.northeast != null) {
-      data['northeast'] = this.northeast!.toJson();
+    final Map<String, dynamic> data = {};
+    if (northeast != null) {
+      data['northeast'] = northeast!.toJson();
     }
-    if (this.southwest != null) {
-      data['southwest'] = this.southwest!.toJson();
+    if (southwest != null) {
+      data['southwest'] = southwest!.toJson();
     }
     return data;
   }
@@ -137,8 +132,8 @@ class OpeningHours {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['open_now'] = this.openNow;
+    final Map<String, dynamic> data = {};
+    data['open_now'] = openNow;
     return data;
   }
 }

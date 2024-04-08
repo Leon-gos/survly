@@ -8,6 +8,7 @@ import 'package:survly/src/features/create_survey/widget/question_editor_widget.
 import 'package:survly/src/features/create_survey/widget/question_widget.dart';
 import 'package:survly/src/features/create_survey/widget/text_button_icon_widget.dart';
 import 'package:survly/src/localization/localization_utils.dart';
+import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
@@ -48,17 +49,18 @@ class CreateSurveyScreen extends StatelessWidget {
                 children: [
                   _buildImagePicker(),
                   _buildSurveyTextfields(),
+                  _buildOutletSelector(),
                   const Divider(),
                   _buildQuestionList(),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.push(AppRouteNames.selectLocation.path);
-                      // MapHelper.openMap(10.788373, 106.6647133);
-                      // MapHelper.openMap();
-                      // LocationData().getLocationData("Bình Dương");
-                    },
-                    child: const Text("Select outlet location"),
-                  )
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     context.push(AppRouteNames.selectLocation.path);
+                  //     // MapHelper.openMap(10.788373, 106.6647133);
+                  //     // MapHelper.openMap();
+                  //     // LocationData().getLocationData("Bình Dương");
+                  //   },
+                  //   child: const Text("Select outlet location"),
+                  // )
                 ],
               ),
             ),
@@ -263,7 +265,7 @@ class CreateSurveyScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                 ),
               ),
-            )
+            ),
           ],
         );
       },
@@ -326,6 +328,54 @@ class CreateSurveyScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildOutletSelector() {
+    return BlocBuilder<CreateSurveyBloc, CreateSurveyState>(
+      buildWhen: (previous, current) => previous.outlet != current.outlet,
+      builder: (context, state) {
+        return GestureDetector(
+          onTap: () async {
+            context.push(AppRouteNames.selectLocation.path).then(
+              (value) {
+                var outlet = value as Outlet?;
+                context.read<CreateSurveyBloc>().onOutletLocationChange(outlet);
+                Logger().d("(${outlet?.latitude}, ${outlet?.longitude})");
+              },
+            );
+          },
+          child: Container(
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            decoration: BoxDecoration(
+              border: Border.all(width: 1.5, color: Colors.grey),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(8),
+              ),
+            ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Outlet in ${state.outlet?.address ?? "_"}",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                  ),
+                  Text(
+                    "Coordinate (${state.outlet?.latitude ?? "_"} , ${state.outlet?.longitude ?? "_"})",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

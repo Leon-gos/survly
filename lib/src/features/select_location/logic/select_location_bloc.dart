@@ -5,6 +5,8 @@ import 'package:logger/logger.dart';
 import 'package:survly/src/features/select_location/logic/select_location_state.dart';
 import 'package:survly/src/network/data/location/location_data.dart';
 import 'package:survly/src/network/model/fild_place/find_text_response.dart';
+import 'package:survly/src/network/model/outlet/outlet.dart';
+import 'package:survly/src/router/coordinator.dart';
 
 class SelectLocationBloc extends Cubit<SelectLocationState> {
   SelectLocationBloc() : super(SelectLocationState.ds()) {
@@ -36,17 +38,22 @@ class SelectLocationBloc extends Cubit<SelectLocationState> {
 
   void moveCamera(Results result) {
     try {
-      LatLng newLatLng = LatLng(
-        result.geometry!.location!.lat!,
-        result.geometry!.location!.lng!,
+      Outlet outlet = Outlet(
+        latitude: result.geometry!.location!.lat!,
+        longitude: result.geometry!.location!.lng!,
+        address: result.formattedAddress,
       );
       emit(
         state.copyWith(
-          searchedLocation: newLatLng,
+          searchedLocation: outlet,
         ),
       );
       state.mapController?.animateCamera(
-        CameraUpdate.newLatLngZoom(state.searchedLocation!, 14),
+        CameraUpdate.newLatLngZoom(
+          LatLng(state.searchedLocation!.latitude,
+              state.searchedLocation!.longitude),
+          14,
+        ),
       );
     } catch (e) {
       Logger().e(e);
@@ -66,7 +73,10 @@ class SelectLocationBloc extends Cubit<SelectLocationState> {
   void onMapLongPressed(LatLng latLng) {
     emit(
       state.copyWith(
-        searchedLocation: latLng,
+        searchedLocation: Outlet(
+          latitude: latLng.latitude,
+          longitude: latLng.longitude,
+        ),
       ),
     );
   }
@@ -98,5 +108,9 @@ class SelectLocationBloc extends Cubit<SelectLocationState> {
 
   void onMapControllerChange(GoogleMapController mapController) {
     emit(state.copyWith(mapController: mapController));
+  }
+
+  void pop() {
+    AppCoordinator.pop(state.searchedLocation);
   }
 }

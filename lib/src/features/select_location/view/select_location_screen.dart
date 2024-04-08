@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/features/select_location/logic/select_location_bloc.dart';
@@ -74,7 +73,10 @@ class SelectLocationScreen extends StatelessWidget {
           markers: {
             Marker(
               markerId: const MarkerId("outlet-place"),
-              position: state.searchedLocation ?? state.currentLocation!,
+              position: state.searchedLocation != null
+                  ? LatLng(state.searchedLocation!.latitude,
+                      state.searchedLocation!.longitude)
+                  : state.currentLocation!,
               infoWindow: const InfoWindow(
                 title: "Outlet location",
                 snippet: "Take photo here",
@@ -112,23 +114,37 @@ class SelectLocationScreen extends StatelessWidget {
                 context.read<SelectLocationBloc>().moveCamera(result),
           ),
         ),
-        IconButton(
-          onPressed: () {
-            context.pop();
-          },
-          icon: const Icon(Icons.check),
-          color: AppColors.primary,
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.white),
-            shadowColor: MaterialStateProperty.all(Colors.black87),
-            elevation: MaterialStateProperty.all(4),
-            side: MaterialStateProperty.all(
-              const BorderSide(
-                width: 2,
-                color: AppColors.primary,
+        BlocBuilder<SelectLocationBloc, SelectLocationState>(
+          buildWhen: (previous, current) =>
+              previous.searchedLocation != current.searchedLocation,
+          builder: (context, state) {
+            return IconButton(
+              onPressed: () {
+                context.read<SelectLocationBloc>().pop();
+              },
+              icon: Icon(
+                state.searchedLocation != null
+                    ? Icons.check
+                    : Icons.pending_outlined,
               ),
-            ),
-          ),
+              color: state.searchedLocation != null
+                  ? AppColors.primary
+                  : AppColors.secondary,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.white),
+                shadowColor: MaterialStateProperty.all(Colors.black87),
+                elevation: MaterialStateProperty.all(4),
+                side: MaterialStateProperty.all(
+                  BorderSide(
+                    width: 2,
+                    color: state.searchedLocation != null
+                        ? AppColors.primary
+                        : AppColors.secondary,
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ]),
     );
