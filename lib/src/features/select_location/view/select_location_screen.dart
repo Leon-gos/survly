@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logger/logger.dart';
@@ -19,6 +18,7 @@ class SelectLocationScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => SelectLocationBloc(),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: BlocBuilder<SelectLocationBloc, SelectLocationState>(
           buildWhen: (previous, current) =>
               previous.currentLocation != current.currentLocation,

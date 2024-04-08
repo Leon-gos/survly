@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logger/logger.dart';
-import 'package:survly/src/network/data/location/location_data.dart';
 import 'package:survly/src/network/model/fild_place/find_text_response.dart';
 
 class LocationSearchDialog extends StatelessWidget {
@@ -24,11 +22,9 @@ class LocationSearchDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _controller = TextEditingController();
-
     return Container(
-      margin: EdgeInsets.only(top: 150),
-      padding: EdgeInsets.all(5),
+      margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+      padding: const EdgeInsets.all(5),
       alignment: Alignment.topCenter,
       child: Material(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
@@ -50,7 +46,7 @@ class LocationSearchDialog extends StatelessWidget {
                   autofocus: true,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'City',
+                    labelText: 'Find place',
                   ));
             },
             itemBuilder: (context, result) {
