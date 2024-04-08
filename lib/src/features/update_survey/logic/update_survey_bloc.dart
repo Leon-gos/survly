@@ -7,12 +7,14 @@ import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
+import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/utils/date_helper.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
-  UpdateSurveyBloc() : super(UpdateSurveyState.ds()) {
+  UpdateSurveyBloc(Survey survey)
+      : super(UpdateSurveyState.ds(survey: survey)) {
     fetchSurveyDetail();
   }
 

@@ -10,6 +10,7 @@ import 'package:survly/src/features/update_survey/logic/update_survey_state.dart
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/network/model/question/question.dart';
+import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
@@ -18,12 +19,17 @@ import 'package:survly/widgets/app_text_field.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class UpdateSurveyScreen extends StatelessWidget {
-  const UpdateSurveyScreen({super.key});
+  const UpdateSurveyScreen({
+    super.key,
+    required this.survey,
+  });
+
+  final Survey survey;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<UpdateSurveyBloc>(
-      create: (context) => UpdateSurveyBloc(),
+      create: (context) => UpdateSurveyBloc(survey),
       lazy: false,
       child: BlocBuilder<UpdateSurveyBloc, UpdateSurveyState>(
         buildWhen: (previous, current) => false,
@@ -132,6 +138,7 @@ class UpdateSurveyScreen extends StatelessWidget {
             context.read<UpdateSurveyBloc>().onPickImage();
           },
           imagePath: state.imageLocalPath,
+          defaultImageUrl: state.survey.thumbnail,
         );
       },
     );

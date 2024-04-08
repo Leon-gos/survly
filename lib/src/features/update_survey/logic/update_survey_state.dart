@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 
@@ -8,8 +7,8 @@ class UpdateSurveyState extends Equatable {
   final String imageLocalPath;
   final List<Question> questionList;
 
-  factory UpdateSurveyState.ds() => UpdateSurveyState(
-        survey: Survey(adminId: AdminSingleton.instance().admin?.id ?? ""),
+  factory UpdateSurveyState.ds({required Survey survey}) => UpdateSurveyState(
+        survey: survey,
         imageLocalPath: "",
         questionList: const [],
       );
