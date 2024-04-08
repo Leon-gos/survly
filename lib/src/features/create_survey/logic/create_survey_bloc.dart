@@ -116,6 +116,10 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
   }
 
   void onOutletLocationChange(Outlet? outlet) {
-    emit(state.copyWith(outlet: outlet));
+    emit(
+      state.copyWith(
+        survey: state.survey.copyWith(outlet: outlet),
+      ),
+    );
   }
 }
