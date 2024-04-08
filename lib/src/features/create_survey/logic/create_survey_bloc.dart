@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/create_survey/logic/create_survey_state.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/router/coordinator.dart';
@@ -31,7 +32,6 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
   }
 
   void onTitleChange(String newText) {
-    // var newSurvey = state.survey.copyWith();
     emit(
       state.copyWith(survey: state.survey.copyWith(title: newText)),
     );
@@ -83,13 +83,13 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
         Question(
             questionIndex: list.length + 1,
             questionType: questionType.value,
-            question: "Question ${list.length + 1}"),
+            question: "${S.text.questionSampleText} ${list.length + 1}"),
       );
     } else {
       var question = QuestionWithOption(
         questionIndex: list.length + 1,
         questionType: questionType.value,
-        question: "Question ${list.length + 1}",
+        question: "${S.text.questionSampleText} ${list.length + 1}",
         optionList: [],
       );
       question.addOption();
@@ -98,9 +98,6 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
       list.add(question);
     }
     emit(state.copyWith(questionList: list));
-    Logger().d(
-      "Question #${state.questionList[state.questionList.length - 1].questionIndex}}",
-    );
   }
 
   void removeQuestion(Question question) {

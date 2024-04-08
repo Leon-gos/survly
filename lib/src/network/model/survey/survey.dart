@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
+import 'package:survly/src/network/model/user_base/user_base.dart';
 
 enum SurveyStatus {
   draft(value: "draft"),
@@ -126,5 +128,9 @@ class Survey {
       outletId: outletId ?? this.outletId,
       adminId: adminId ?? this.adminId,
     );
+  }
+
+  String genThumbnailImageFileKey() {
+    return "${UserBase.roleAdmin}/${SurveyCollection.collectionName}/$surveyId";
   }
 }

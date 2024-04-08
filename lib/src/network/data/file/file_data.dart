@@ -15,7 +15,7 @@ class FileData {
 
   FileData._();
 
-  Future<String?> uploadFile(
+  Future<String?> uploadFileImage(
       {required String filePath, required String fileKey}) async {
     try {
       await storageRef.child(fileKey).putFile(

@@ -8,7 +8,6 @@ import 'package:survly/src/network/data/question/question_repository_impl.dart';
 import 'package:survly/src/network/data/survey/survey_repository.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
-import 'package:survly/src/network/model/user_base/user_base.dart';
 
 class SurveyRepositoryImpl implements SurveyRepository {
   final ref =
@@ -69,10 +68,10 @@ class SurveyRepositoryImpl implements SurveyRepository {
 
       // 2: upload image
       Logger().d(fileLocalPath);
-      String? imageUrl = await FileData.instance().uploadFile(
-          filePath: fileLocalPath,
-          fileKey:
-              "${UserBase.roleAdmin}/${SurveyCollection.collectionName}/${survey.surveyId}");
+      String? imageUrl = await FileData.instance().uploadFileImage(
+        filePath: fileLocalPath,
+        fileKey: survey.genThumbnailImageFileKey(),
+      );
 
       // 3: update survey thumbnail
       ref.doc(survey.surveyId).update({
