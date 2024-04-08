@@ -22,46 +22,36 @@ class LocationSearchDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-      padding: const EdgeInsets.all(5),
-      alignment: Alignment.topCenter,
-      child: Material(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        child: SizedBox(
-          width: 350,
-          child: TypeAheadField<Results>(
-            suggestionsCallback: (search) async {
-              var response = await findText.call(search);
-              // var list = await LocationData().findText(
-              //   search,
-              //   const LatLng(10, 10),
-              // );
-              return response.results;
-            },
-            builder: (context, controller, focusNode) {
-              return TextField(
-                  controller: controller,
-                  focusNode: focusNode,
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Find place',
-                  ));
-            },
-            itemBuilder: (context, result) {
-              return ListTile(
-                title: Text(result.formattedAddress ?? "No name"),
-                subtitle: Text(
-                  "(${result.geometry?.location?.lat}, ${result.geometry?.location?.lng})",
-                ),
-              );
-            },
-            onSelected: (result) {
-              Logger().d(result.formattedAddress);
-              onSelected.call(result);
-            },
-          ),
+    return Material(
+      child: SizedBox(
+        width: double.infinity,
+        child: TypeAheadField<Results>(
+          suggestionsCallback: (search) async {
+            var response = await findText.call(search);
+            return response.results;
+          },
+          builder: (context, controller, focusNode) {
+            return TextField(
+                controller: controller,
+                focusNode: focusNode,
+                autofocus: true,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Find place',
+                ));
+          },
+          itemBuilder: (context, result) {
+            return ListTile(
+              title: Text(result.formattedAddress ?? "No name"),
+              subtitle: Text(
+                "(${result.geometry?.location?.lat}, ${result.geometry?.location?.lng})",
+              ),
+            );
+          },
+          onSelected: (result) {
+            Logger().d(result.formattedAddress);
+            onSelected.call(result);
+          },
         ),
       ),
     );

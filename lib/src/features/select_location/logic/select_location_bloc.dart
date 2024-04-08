@@ -53,6 +53,24 @@ class SelectLocationBloc extends Cubit<SelectLocationState> {
     }
   }
 
+  void moveCameraToMyLocation() {
+    try {
+      state.mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(state.currentLocation!, 16),
+      );
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
+  void onMapLongPressed(LatLng latLng) {
+    emit(
+      state.copyWith(
+        searchedLocation: latLng,
+      ),
+    );
+  }
+
   Future<FindTextResponse> findText(String text) async {
     return await LocationData().findText(text, state.currentLocation!);
   }
