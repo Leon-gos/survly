@@ -6,12 +6,14 @@ class SurveyListWidget extends StatefulWidget {
   final List<Survey> surveyList;
   final Future<void> Function()? onLoadMore;
   final Function()? onRefresh;
+  final Function(Survey survey)? onItemClick;
 
   const SurveyListWidget({
     super.key,
     required this.surveyList,
     this.onLoadMore,
     this.onRefresh,
+    this.onItemClick,
   });
 
   @override
@@ -64,8 +66,13 @@ class _SurveyListWidgetState extends State<SurveyListWidget> {
               controller: scrollController,
               itemCount: widget.surveyList.length,
               itemBuilder: (context, index) {
-                return SurveyCard(
-                  survey: widget.surveyList[index],
+                return GestureDetector(
+                  onTap: () {
+                    widget.onItemClick?.call(widget.surveyList[index]);
+                  },
+                  child: SurveyCard(
+                    survey: widget.surveyList[index],
+                  ),
                 );
               },
             ),
