@@ -100,9 +100,6 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
         question: "${S.text.questionSampleText} ${list.length + 1}",
         optionList: [],
       );
-      question.addOption();
-      question.addOption();
-      question.addOption();
       list.add(question);
     }
     emit(state.copyWith(questionList: list));

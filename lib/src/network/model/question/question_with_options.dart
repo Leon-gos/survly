@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question_option/question_option.dart';
 
 class QuestionWithOption extends Question {
+  static const int defaultSampleOptionNum = 3;
+
   List<QuestionOption> optionList;
 
   QuestionWithOption({
@@ -13,7 +16,11 @@ class QuestionWithOption extends Question {
     required super.questionType,
     super.surveyId = "",
     required this.optionList,
-  });
+  }) {
+    for (int i = 0; i < defaultSampleOptionNum; i++) {
+      addOption();
+    }
+  }
 
   @override
   Map<String, dynamic> toMap() {
@@ -23,7 +30,6 @@ class QuestionWithOption extends Question {
       'question': question,
       'questionType': questionType,
       'surveyId': surveyId,
-      // 'optionList': optionList
     };
   }
 
@@ -73,7 +79,7 @@ class QuestionWithOption extends Question {
     optionList.add(
       QuestionOption(
         questionOptionIndex: optionList.length + 1,
-        option: "Option ${optionList.length + 1}",
+        option: "${S.text.hintSurveyOption} ${optionList.length + 1}",
       ),
     );
   }

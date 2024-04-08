@@ -24,6 +24,7 @@ class CreateSurveyScreen extends StatelessWidget {
       create: (context) => CreateSurveyBloc(),
       lazy: false,
       child: BlocBuilder<CreateSurveyBloc, CreateSurveyState>(
+        buildWhen: (previous, current) => false,
         builder: (context, state) {
           return Scaffold(
             appBar: AppAppBarWidget(
