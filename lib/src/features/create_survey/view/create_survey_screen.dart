@@ -247,7 +247,7 @@ class CreateSurveyScreen extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  "${S.of(context).hintDateFrom} ${state.survey.dateStart} {S.of(context).hintDateTo} ${state.survey.dateEnd}",
+                  "${S.of(context).hintDateFrom} ${state.survey.dateStart} ${S.of(context).hintDateTo} ${state.survey.dateEnd}",
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                 ),
