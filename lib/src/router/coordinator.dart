@@ -26,6 +26,8 @@ class AppCoordinator {
       );
 
   static void showLoginScreen() => context.goNamed(AppRouteNames.login.name);
-  static void showSurveyManagementScreen() => context.goNamed(AppRouteNames.survey.name);
-  static void showUserManagementScreen() => context.goNamed(AppRouteNames.user.name);
+  static void showSurveyManagementScreen() =>
+      context.goNamed(AppRouteNames.survey.name);
+  static void showUserManagementScreen() =>
+      context.goNamed(AppRouteNames.user.name);
 }

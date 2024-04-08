@@ -21,4 +21,22 @@ class SurveyCollection {
   static const String fieldStatus = "status";
   static const String fieldOutletId = "outletId";
   static const String fieldAdminId = "adminId";
+  static const String fieldThumbnail = "thumbnail";
+}
+
+class QuestionCollection {
+  static const String collectionName = "question";
+  static const String fieldQuestionId = "questionId";
+  static const String fieldQuestionIndex = "questionIndex";
+  static const String fieldQuestionType = "questionType";
+  static const String fieldQuestion = "question";
+  static const String fieldSurveyId = "surveyId";
+}
+
+class OptionCollection {
+  static const String collectionName = "option";
+  static const String fieldQuestionOptionId = "questionOptionId";
+  static const String fieldQuestionOptionIndex = "questionOptionIndex";
+  static const String fieldOption = "option";
+  static const String fieldQuestionId = "questionId";
 }

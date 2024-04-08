@@ -53,6 +53,10 @@ dependencies:
   freezed: ^2.4.7
   freezed_annotation: ^2.4.1
   logger: ^2.2.0
+  image_picker: ^1.0.7
+  syncfusion_flutter_datepicker: ^25.1.38
+  firebase_storage: ^11.7.0
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:

@@ -9,6 +9,8 @@ class AppTextField extends StatelessWidget {
   final bool? obscureText;
   final String? errorText;
   final Widget? prefixIcon;
+  final bool isDisable;
+  final String? label;
 
   const AppTextField({
     super.key,
@@ -20,6 +22,8 @@ class AppTextField extends StatelessWidget {
     this.obscureText,
     this.errorText,
     this.prefixIcon,
+    this.isDisable = false,
+    this.label,
   });
 
   @override
@@ -34,11 +38,14 @@ class AppTextField extends StatelessWidget {
         errorText: errorText,
         prefixIcon: prefixIcon,
         prefixIconColor: Colors.grey,
+        enabled: !isDisable,
+        label: label != null ? Text(label!) : null,
       ),
       keyboardType: textInputType,
       obscureText: obscureText ?? false,
       onChanged: onTextChange,
       textInputAction: textInputAction ?? TextInputAction.done,
+      maxLines: textInputType == TextInputType.multiline ? 5 : 1,
     );
   }
 }

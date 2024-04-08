@@ -1,5 +1,18 @@
 import 'dart:convert';
 
+import 'package:survly/src/config/constants/firebase_collections.dart';
+import 'package:survly/src/network/model/user_base/user_base.dart';
+
+enum SurveyStatus {
+  draft(value: "draft"),
+  openning(value: "openning"),
+  closed(value: "closed"),
+  archive(value: "archived");
+
+  final String value;
+  const SurveyStatus({required this.value});
+}
+
 class Survey {
   String surveyId;
   String thumbnail;
@@ -14,24 +27,29 @@ class Survey {
   int respondentNum;
   String status;
   String outletId;
-  final String adminId;
+  String adminId;
 
   Survey({
-    required this.surveyId,
+    this.surveyId = "",
     this.thumbnail = "",
     this.title = "",
     this.description = "",
     this.cost = 0,
-    required this.dateCreate,
-    required this.dateUpdate,
+    this.dateCreate = "",
+    this.dateUpdate = "",
     this.dateStart = "",
     this.dateEnd = "",
     this.respondentMax = 0,
     this.respondentNum = 0,
-    required this.status,
+    this.status = "",
     this.outletId = "",
     required this.adminId,
-  });
+  }) {
+    dateCreate = DateTime.now().toString();
+    dateUpdate = DateTime.now().toString();
+    status = SurveyStatus.draft.value;
+    adminId = adminId;
+  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -75,4 +93,42 @@ class Survey {
 
   factory Survey.fromJson(String source) =>
       Survey.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  Survey copyWith({
+    String? surveyId,
+    String? thumbnail,
+    String? title,
+    String? description,
+    int? cost,
+    String? dateCreate,
+    String? dateUpdate,
+    String? dateStart,
+    String? dateEnd,
+    int? respondentMax,
+    int? respondentNum,
+    String? status,
+    String? outletId,
+    String? adminId,
+  }) {
+    return Survey(
+      surveyId: surveyId ?? this.surveyId,
+      thumbnail: thumbnail ?? this.thumbnail,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      cost: cost ?? this.cost,
+      dateCreate: dateCreate ?? this.dateCreate,
+      dateUpdate: dateUpdate ?? this.dateUpdate,
+      dateStart: dateStart ?? this.dateStart,
+      dateEnd: dateEnd ?? this.dateEnd,
+      respondentMax: respondentMax ?? this.respondentMax,
+      respondentNum: respondentNum ?? this.respondentNum,
+      status: status ?? this.status,
+      outletId: outletId ?? this.outletId,
+      adminId: adminId ?? this.adminId,
+    );
+  }
+
+  String genThumbnailImageFileKey() {
+    return "${UserBase.roleAdmin}/${SurveyCollection.collectionName}/$surveyId";
+  }
 }

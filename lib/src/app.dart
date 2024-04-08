@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(
             seedColor: AppColors.primary,
             primary: AppColors.primary,
+            onPrimary: AppColors.onPrimary,
             secondary: AppColors.secondary,
           ),
           fontFamily: FontFamily.quicksand,

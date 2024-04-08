@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/authentication/view/login_screen.dart';
 import 'package:survly/src/features/authentication/view/signup_view.dart';
+import 'package:survly/src/features/create_survey/view/create_survey_screen.dart';
 import 'package:survly/src/features/dashboard/logic/navigation_bar_item.dart';
 import 'package:survly/src/features/dashboard/view/dashboard_screen.dart';
 import 'package:survly/src/features/dashboard/view/survey_view.dart';
@@ -25,6 +26,12 @@ class AppRouter {
         path: AppRouteNames.signUp.path,
         parentNavigatorKey: AppCoordinator.navigatorKey,
         builder: (context, state) => const SignUpScreen(),
+      ),
+      GoRoute(
+        name: AppRouteNames.createSurvey.name,
+        path: AppRouteNames.createSurvey.path,
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        builder: (context, state) => const CreateSurveyScreen(),
       ),
       ShellRoute(
         builder: (context, state, child) => DashboardScreen(
