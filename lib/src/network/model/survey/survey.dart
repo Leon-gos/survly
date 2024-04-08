@@ -1,8 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:survly/src/config/constants/firebase_collections.dart';
-import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 
 enum SurveyStatus {
@@ -45,12 +43,12 @@ class Survey {
     this.respondentNum = 0,
     this.status = "",
     this.outletId = "",
-    this.adminId = "",
+    required this.adminId,
   }) {
     dateCreate = DateTime.now().toString();
     dateUpdate = DateTime.now().toString();
     status = SurveyStatus.draft.value;
-    adminId = AdminSingleton.instance().admin?.id ?? "";
+    adminId = adminId;
   }
 
   Map<String, dynamic> toMap() {

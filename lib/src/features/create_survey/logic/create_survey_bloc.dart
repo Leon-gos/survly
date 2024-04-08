@@ -13,7 +13,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 class CreateSurveyBloc extends Cubit<CreateSurveyState> {
   CreateSurveyBloc() : super(CreateSurveyState.ds());
 
-  DomainManager domainManager = DomainManager();
+  get domainManager => DomainManager();
 
   Future<void> onPickImage() async {
     var imagePath = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -44,17 +44,25 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
   }
 
   void onRespondentNumberChange(String newText) {
-    emit(
-      state.copyWith(
-        survey: state.survey.copyWith(respondentMax: int.parse(newText)),
-      ),
-    );
+    try {
+      emit(
+        state.copyWith(
+          survey: state.survey.copyWith(respondentMax: int.parse(newText)),
+        ),
+      );
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 
   void onCostChange(String newText) {
-    emit(
-      state.copyWith(survey: state.survey.copyWith(cost: int.parse(newText))),
-    );
+    try {
+      emit(
+        state.copyWith(survey: state.survey.copyWith(cost: int.parse(newText))),
+      );
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 
   void onQuestionListItemChange(Question oldQuestion, Question newQuestion) {
