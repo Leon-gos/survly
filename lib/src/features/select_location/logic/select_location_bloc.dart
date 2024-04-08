@@ -7,6 +7,7 @@ import 'package:survly/src/network/data/location/location_data.dart';
 import 'package:survly/src/network/model/fild_place/find_text_response.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/router/coordinator.dart';
+import 'package:survly/src/service/permission_service.dart';
 
 class SelectLocationBloc extends Cubit<SelectLocationState> {
   SelectLocationBloc() : super(SelectLocationState.ds()) {
@@ -67,6 +68,12 @@ class SelectLocationBloc extends Cubit<SelectLocationState> {
   }
 
   Future<void> getCurrentLocation() async {
+    if (!(await PermissionService.requestLocationPermission())) {
+      Logger().e("No permission");
+      AppCoordinator.pop();
+      return;
+    }
+
     Logger().d("start get current location");
     try {
       Position position = await Geolocator.getCurrentPosition(
