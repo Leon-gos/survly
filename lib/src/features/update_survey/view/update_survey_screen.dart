@@ -153,6 +153,7 @@ class UpdateSurveyScreen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: AppTextField(
+                textController: state.titleController,
                 hintText: S.of(context).hintSurveyTitle,
                 label: S.of(context).hintSurveyTitle,
                 textInputType: TextInputType.text,

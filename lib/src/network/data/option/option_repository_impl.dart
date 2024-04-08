@@ -18,4 +18,13 @@ class OptionRepositoryImpl implements OptionRepository {
       rethrow;
     }
   }
+
+  Future<void> deleteAllOptionOfQuestion(String questionId) async {
+    var value = await ref
+        .where(OptionCollection.fieldQuestionId, isEqualTo: questionId)
+        .get();
+    for (var doc in value.docs) {
+      ref.doc(doc.id).delete();
+    }
+  }
 }

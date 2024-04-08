@@ -9,4 +9,10 @@ abstract class SurveyRepository {
     required String fileLocalPath,
     required List<Question> questionList,
   });
+
+  Future<void> updateSurvey({
+    required Survey survey,
+    required String fileLocalPath,
+    required List<Question> questionList,
+  });
 }

@@ -29,4 +29,15 @@ class QuestionRepositoryImpl implements QuestionRepository {
       rethrow;
     }
   }
+
+  Future<void> deleteAllQuestionOfSurvey(String surveyId) async {
+    final optionRepo = OptionRepositoryImpl();
+    var value = await ref
+        .where(QuestionCollection.fieldSurveyId, isEqualTo: surveyId)
+        .get();
+    for (var doc in value.docs) {
+      optionRepo.deleteAllOptionOfQuestion(doc.id);
+      ref.doc(doc.id).delete();
+    }
+  }
 }

@@ -78,7 +78,7 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
 
   Future<void> saveSurvey() async {
     try {
-      await domainManager.survey.createSurvey(
+      await domainManager.survey.updateSurvey(
         survey: state.survey,
         fileLocalPath: state.imageLocalPath,
         questionList: state.questionList,

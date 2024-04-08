@@ -91,4 +91,49 @@ class SurveyRepositoryImpl implements SurveyRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<void> updateSurvey({
+    required Survey survey,
+    required String fileLocalPath,
+    required List<Question> questionList,
+  }) async {
+    try {
+      // 1: insert survey
+      ref.doc("/${survey.surveyId}").set({
+        ...survey.toMap(),
+        ...(survey.outlet?.toMap() ?? {}),
+      });
+
+      if (fileLocalPath == "") {
+        return;
+      }
+
+      // 2.1: upload image
+      Logger().d(fileLocalPath);
+      String? imageUrl = await FileData.instance().uploadFileImage(
+        filePath: fileLocalPath,
+        fileKey: survey.genThumbnailImageFileKey(),
+      );
+
+      // 2.2: update survey thumbnail
+      ref.doc(survey.surveyId).update({
+        SurveyCollection.fieldThumbnail: imageUrl,
+      });
+
+      // 3: insert questions of survey
+      var questionRepo = QuestionRepositoryImpl();
+
+      // 3.1: remove all old question
+      questionRepo.deleteAllQuestionOfSurvey(survey.surveyId);
+
+      // 3.2: reinsert questions
+      // for (var question in questionList) {
+      //   question.surveyId = survey.surveyId;
+      //   questionRepo.createQuestion(question);
+      // }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
