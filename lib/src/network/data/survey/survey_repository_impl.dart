@@ -60,7 +60,10 @@ class SurveyRepositoryImpl implements SurveyRepository {
       survey.adminId = AdminSingleton.instance().admin!.id;
       final value = await ref.add({});
       survey.surveyId = value.id;
-      ref.doc("/${value.id}").set(survey.toMap());
+      ref.doc("/${value.id}").set({
+        ...survey.toMap(),
+        ...(survey.outlet?.toMap() ?? {}),
+      });
 
       if (fileLocalPath == "") {
         return;
