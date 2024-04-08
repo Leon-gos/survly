@@ -5,6 +5,7 @@ import 'package:logger/logger.dart';
 import 'package:survly/src/features/select_location/logic/select_location_bloc.dart';
 import 'package:survly/src/features/select_location/logic/select_location_state.dart';
 import 'package:survly/src/features/select_location/widget/location_search_dialog.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 
@@ -77,9 +78,9 @@ class SelectLocationScreen extends StatelessWidget {
                   ? LatLng(state.searchedLocation!.latitude,
                       state.searchedLocation!.longitude)
                   : state.currentLocation!,
-              infoWindow: const InfoWindow(
-                title: "Outlet location",
-                snippet: "Take photo here",
+              infoWindow: InfoWindow(
+                title: S.of(context).titleMarker,
+                snippet: S.of(context).snippetMarker,
               ),
             ),
           },
@@ -101,7 +102,6 @@ class SelectLocationScreen extends StatelessWidget {
       width: double.infinity,
       margin: EdgeInsets.only(
         top: MediaQuery.of(context).padding.top,
-        // right: 16,
         left: 16,
       ),
       child: Row(children: [

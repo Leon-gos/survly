@@ -37,7 +37,11 @@
     "labelBtnRemove": "Remove",
     "labelBtnUpdate": "Update",
     "hintSurveyOption": "Option",
-
+    "hintOutlet": "Outlet in",
+    "hintOutletCoordinate": "Coordinate",
+    "titleMarker": "Outlet locatio",
+    "snippetMarker": "Take photo here",
+    "labelFindPlace": "Find place",
     
     "errorEmptyName": "Empty name",
     "errorPasswordLength": "Password must be at least 6 characters long",

@@ -51,15 +51,6 @@ class CreateSurveyScreen extends StatelessWidget {
                   _buildSurveyTextfields(),
                   const Divider(),
                   _buildQuestionList(),
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     context.push(AppRouteNames.selectLocation.path);
-                  //     // MapHelper.openMap(10.788373, 106.6647133);
-                  //     // MapHelper.openMap();
-                  //     // LocationData().getLocationData("Bình Dương");
-                  //   },
-                  //   child: const Text("Select outlet location"),
-                  // )
                 ],
               ),
             ),
@@ -294,12 +285,12 @@ class CreateSurveyScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Outlet in ${state.survey.outlet?.address ?? "_"}",
+                        "${S.of(context).hintOutlet} ${state.survey.outlet?.address ?? "_"}",
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                       ),
                       Text(
-                        "Coordinate (${state.survey.outlet?.latitude ?? "_"} , ${state.survey.outlet?.longitude ?? "_"})",
+                        "${S.of(context).hintOutletCoordinate} (${state.survey.outlet?.latitude ?? "_"} , ${state.survey.outlet?.longitude ?? "_"})",
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                       )

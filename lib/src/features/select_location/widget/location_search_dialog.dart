@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:logger/logger.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/fild_place/find_text_response.dart';
 
 class LocationSearchDialog extends StatelessWidget {
@@ -10,15 +11,8 @@ class LocationSearchDialog extends StatelessWidget {
     required this.onSelected,
   });
 
-  // final GoogleMapController? mapController;
   final Future<FindTextResponse> Function(String text) findText;
   final void Function(Results result) onSelected;
-
-  // const LocationSearchDialog({
-  //   super.key,
-  //   required this.mapController,
-  //   required this.findText,
-  // });
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +26,18 @@ class LocationSearchDialog extends StatelessWidget {
           },
           builder: (context, controller, focusNode) {
             return TextField(
-                controller: controller,
-                focusNode: focusNode,
-                autofocus: true,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Find place',
-                ));
+              controller: controller,
+              focusNode: focusNode,
+              autofocus: true,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: S.of(context).labelFindPlace,
+              ),
+            );
           },
           itemBuilder: (context, result) {
             return ListTile(
-              title: Text(result.formattedAddress ?? "No name"),
+              title: Text(result.formattedAddress ?? "_"),
               subtitle: Text(
                 "(${result.geometry?.location?.lat}, ${result.geometry?.location?.lng})",
               ),

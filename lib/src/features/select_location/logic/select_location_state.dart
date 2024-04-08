@@ -3,8 +3,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
 
 class SelectLocationState extends Equatable {
-  // Placemark pickPlaceMark = const Placemark();
-  // List<Prediction> predictionList = [];
   final String searchText;
   final Outlet? searchedLocation;
   final LatLng? currentLocation;
