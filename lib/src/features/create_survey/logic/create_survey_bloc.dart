@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/create_survey/logic/create_survey_state.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/router/coordinator.dart';
@@ -12,7 +13,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 class CreateSurveyBloc extends Cubit<CreateSurveyState> {
   CreateSurveyBloc() : super(CreateSurveyState.ds());
 
-  DomainManager domainManager = DomainManager();
+  get domainManager => DomainManager();
 
   Future<void> onPickImage() async {
     var imagePath = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -31,7 +32,6 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
   }
 
   void onTitleChange(String newText) {
-    // var newSurvey = state.survey.copyWith();
     emit(
       state.copyWith(survey: state.survey.copyWith(title: newText)),
     );
@@ -44,17 +44,25 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
   }
 
   void onRespondentNumberChange(String newText) {
-    emit(
-      state.copyWith(
-        survey: state.survey.copyWith(respondentMax: int.parse(newText)),
-      ),
-    );
+    try {
+      emit(
+        state.copyWith(
+          survey: state.survey.copyWith(respondentMax: int.parse(newText)),
+        ),
+      );
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 
   void onCostChange(String newText) {
-    emit(
-      state.copyWith(survey: state.survey.copyWith(cost: int.parse(newText))),
-    );
+    try {
+      emit(
+        state.copyWith(survey: state.survey.copyWith(cost: int.parse(newText))),
+      );
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 
   void onQuestionListItemChange(Question oldQuestion, Question newQuestion) {
@@ -83,24 +91,18 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
         Question(
             questionIndex: list.length + 1,
             questionType: questionType.value,
-            question: "Question ${list.length + 1}"),
+            question: "${S.text.questionSampleText} ${list.length + 1}"),
       );
     } else {
       var question = QuestionWithOption(
         questionIndex: list.length + 1,
         questionType: questionType.value,
-        question: "Question ${list.length + 1}",
+        question: "${S.text.questionSampleText} ${list.length + 1}",
         optionList: [],
       );
-      question.addOption();
-      question.addOption();
-      question.addOption();
       list.add(question);
     }
     emit(state.copyWith(questionList: list));
-    Logger().d(
-      "Question #${state.questionList[state.questionList.length - 1].questionIndex}}",
-    );
   }
 
   void removeQuestion(Question question) {

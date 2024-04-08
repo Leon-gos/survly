@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
@@ -49,9 +50,10 @@ class _QuestionEditorWidgetState extends State<QuestionEditorWidget> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Question content:"),
-                    TextFormField(
-                      initialValue: questionTemp.question,
+                    Text(S.of(context).labelQuestionContent),
+                    TextField(
+                      decoration:
+                          InputDecoration(hintText: questionTemp.question),
                       onChanged: (value) {
                         setState(() {
                           questionTemp.question = value;
@@ -72,21 +74,21 @@ class _QuestionEditorWidgetState extends State<QuestionEditorWidget> {
                     widget.onCancelPressed?.call();
                     AppCoordinator.pop();
                   },
-                  child: const Text("Cancel"),
+                  child: Text(S.of(context).labelBtnCancel),
                 ),
                 TextButton(
                   onPressed: () {
                     widget.onRemovePressed.call(widget.question);
                     AppCoordinator.pop();
                   },
-                  child: const Text("Remove"),
+                  child: Text(S.of(context).labelBtnRemove),
                 ),
                 TextButton(
                   onPressed: () {
                     widget.onSavePressed.call(widget.question, questionTemp);
                     AppCoordinator.pop();
                   },
-                  child: const Text("Update"),
+                  child: Text(S.of(context).labelBtnUpdate),
                 ),
               ],
             )
@@ -102,7 +104,7 @@ class _QuestionEditorWidgetState extends State<QuestionEditorWidget> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("Options:"),
+          Text(S.of(context).labelOptions),
           SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Wrap(
@@ -118,8 +120,9 @@ class _QuestionEditorWidgetState extends State<QuestionEditorWidget> {
                         Expanded(
                           flex: 1,
                           child: TextField(
-                            decoration:
-                                InputDecoration(hintText: "Option ${e.option}"),
+                            decoration: InputDecoration(
+                                hintText:
+                                    "${S.of(context).hintSurveyOption} ${e.option}"),
                             onChanged: (value) {
                               setState(() {
                                 e.option = value;

@@ -25,6 +25,7 @@ class CreateSurveyScreen extends StatelessWidget {
       create: (context) => CreateSurveyBloc(),
       lazy: false,
       child: BlocBuilder<CreateSurveyBloc, CreateSurveyState>(
+        buildWhen: (previous, current) => false,
         builder: (context, state) {
           return Scaffold(
             appBar: AppAppBarWidget(
@@ -118,7 +119,7 @@ class CreateSurveyScreen extends StatelessWidget {
                 );
               },
               icon: const Icon(Icons.add_box_outlined),
-              label: const Text("Add question"),
+              label: Text(S.of(context).labelBtnAddQuestion),
             ),
             const SizedBox(
               height: 100,
@@ -153,8 +154,8 @@ class CreateSurveyScreen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: AppTextField(
-                hintText: "Title",
-                label: "Title",
+                hintText: S.of(context).hintSurveyTitle,
+                label: S.of(context).hintSurveyTitle,
                 textInputType: TextInputType.text,
                 onTextChange: (newText) {
                   context.read<CreateSurveyBloc>().onTitleChange(newText);
@@ -164,8 +165,8 @@ class CreateSurveyScreen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: AppTextField(
-                hintText: "Description",
-                label: "Description",
+                hintText: S.of(context).hintSurveyDescription,
+                label: S.of(context).hintSurveyDescription,
                 textInputType: TextInputType.multiline,
                 textInputAction: TextInputAction.newline,
                 onTextChange: (newText) {
@@ -183,8 +184,8 @@ class CreateSurveyScreen extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: AppTextField(
-                      hintText: "Respondent number",
-                      label: "Respondent number",
+                      hintText: S.of(context).hintSurveyRespondentNumber,
+                      label: S.of(context).hintSurveyRespondentNumber,
                       textInputType: TextInputType.number,
                       onTextChange: (newText) {
                         context
@@ -199,8 +200,8 @@ class CreateSurveyScreen extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: AppTextField(
-                      hintText: "Cost",
-                      label: "Cost",
+                      hintText: S.of(context).hintSurveyCost,
+                      label: S.of(context).hintSurveyCost,
                       textInputType: TextInputType.number,
                       onTextChange: (newText) {
                         context.read<CreateSurveyBloc>().onCostChange(newText);
@@ -221,8 +222,8 @@ class CreateSurveyScreen extends StatelessWidget {
                       height: 400,
                       child: SfDateRangePicker(
                         backgroundColor: AppColors.white,
-                        confirmText: "OK",
-                        cancelText: "Cancel",
+                        confirmText: S.of(context).labelBtnOk,
+                        cancelText: S.of(context).labelBtnCancel,
                         showActionButtons: true,
                         onSubmit: (p0) {
                           Logger().d(p0);
@@ -257,7 +258,7 @@ class CreateSurveyScreen extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  "From ${state.survey.dateStart} to ${state.survey.dateEnd}",
+                  "${S.of(context).hintDateFrom} ${state.survey.dateStart} ${S.of(context).hintDateTo} ${state.survey.dateEnd}",
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                 ),
@@ -280,23 +281,23 @@ class CreateSurveyScreen extends StatelessWidget {
           children: [
             Container(
               margin: const EdgeInsets.all(16),
-              child: const Text(
-                "Question type",
-                style: TextStyle(
+              child: Text(
+                S.of(context).titleDialogQuestionType,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             TextIconButtonWidget(
-              text: "Text",
+              text: QuestionType.text.label,
               icon: const Icon(Icons.abc),
               onPressed: () {
                 context.read<CreateSurveyBloc>().addQuestion(QuestionType.text);
               },
             ),
             TextIconButtonWidget(
-              text: "Single option",
+              text: QuestionType.singleOption.label,
               icon: const Icon(Icons.radio_button_checked),
               onPressed: () {
                 context
@@ -305,7 +306,7 @@ class CreateSurveyScreen extends StatelessWidget {
               },
             ),
             TextIconButtonWidget(
-              text: "Multiple option",
+              text: QuestionType.multiOption.label,
               icon: const Icon(Icons.check_box),
               onPressed: () {
                 context
@@ -319,7 +320,7 @@ class CreateSurveyScreen extends StatelessWidget {
                 onPressed: () {
                   context.pop();
                 },
-                child: const Text("Cancel"),
+                child: Text(S.of(context).labelBtnCancel),
               ),
             )
           ],
