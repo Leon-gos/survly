@@ -11,7 +11,10 @@ import 'package:survly/src/service/permission_service.dart';
 import 'package:geocoding/geocoding.dart';
 
 class SelectLocationBloc extends Cubit<SelectLocationState> {
-  SelectLocationBloc() : super(SelectLocationState.ds()) {
+  SelectLocationBloc({Outlet? searchedLocation})
+      : super(SelectLocationState.ds(
+          searchedLocation: searchedLocation,
+        )) {
     getCurrentLocation();
   }
 

@@ -15,9 +15,10 @@ class SelectLocationState extends Equatable {
     this.mapController,
   });
 
-  factory SelectLocationState.ds() => const SelectLocationState(
+  factory SelectLocationState.ds({Outlet? searchedLocation}) =>
+      SelectLocationState(
         searchText: "",
-        searchedLocation: null,
+        searchedLocation: searchedLocation,
         mapController: null,
       );
 

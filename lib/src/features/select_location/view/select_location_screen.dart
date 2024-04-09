@@ -6,16 +6,21 @@ import 'package:survly/src/features/select_location/logic/select_location_bloc.d
 import 'package:survly/src/features/select_location/logic/select_location_state.dart';
 import 'package:survly/src/features/select_location/widget/location_search_dialog.dart';
 import 'package:survly/src/localization/localization_utils.dart';
+import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 
 class SelectLocationScreen extends StatelessWidget {
-  const SelectLocationScreen({super.key});
+  const SelectLocationScreen({super.key, this.searchedLocation});
+
+  final Outlet? searchedLocation;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SelectLocationBloc(),
+      create: (context) => SelectLocationBloc(
+        searchedLocation: searchedLocation,
+      ),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: BlocBuilder<SelectLocationBloc, SelectLocationState>(
@@ -63,7 +68,12 @@ class SelectLocationScreen extends StatelessWidget {
       builder: (context, state) {
         return GoogleMap(
           initialCameraPosition: CameraPosition(
-            target: state.currentLocation!,
+            target: state.searchedLocation != null
+                ? LatLng(
+                    state.searchedLocation!.latitude,
+                    state.searchedLocation!.longitude,
+                  )
+                : state.currentLocation!,
             zoom: 16,
           ),
           onMapCreated: (controller) {
