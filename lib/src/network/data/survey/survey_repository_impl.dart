@@ -45,7 +45,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
 
     var lastDoc = await ref.doc(lastSurvey.surveyId).get();
     var value = await ref
-        .orderBy(SurveyCollection.fieldTitle)
+        .orderBy(SurveyCollection.fieldDateCreate)
         .startAfterDocument(lastDoc)
         .limit(pageSize)
         .get();
@@ -118,6 +118,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
       ref.doc("/${survey.surveyId}").set({
         ...survey.toMap(),
         ...(survey.outlet?.toMap() ?? {}),
+        SurveyCollection.fieldDateUpdate: DateTime.now().toString(),
       });
 
       if (fileLocalPath != "") {

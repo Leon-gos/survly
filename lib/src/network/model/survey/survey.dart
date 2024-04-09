@@ -31,25 +31,59 @@ class Survey {
   String adminId;
 
   Survey({
-    this.surveyId = "",
-    this.thumbnail = "",
-    this.title = "",
-    this.description = "",
-    this.cost = 0,
-    this.dateCreate = "",
-    this.dateUpdate = "",
-    this.dateStart = "",
-    this.dateEnd = "",
-    this.respondentMax = 0,
-    this.respondentNum = 0,
-    this.status = "",
+    required this.surveyId,
+    required this.thumbnail,
+    required this.title,
+    required this.description,
+    required this.cost,
+    required this.dateCreate,
+    required this.dateUpdate,
+    required this.dateStart,
+    required this.dateEnd,
+    required this.respondentMax,
+    required this.respondentNum,
+    required this.status,
     this.outlet,
     required this.adminId,
+  });
+
+  factory Survey.draft({
+    surveyId = "",
+    thumbnail = "",
+    title = "",
+    description = "",
+    cost = 0,
+    dateCreate = "",
+    dateUpdate = "",
+    dateStart = "",
+    dateEnd = "",
+    respondentMax = 0,
+    respondentNum = 0,
+    status = "",
+    outlet,
+    required adminId,
   }) {
-    dateCreate = DateTime.now().toString();
-    dateUpdate = DateTime.now().toString();
+    Survey survey = Survey(
+      surveyId: surveyId,
+      thumbnail: thumbnail,
+      title: title,
+      description: description,
+      cost: cost,
+      dateCreate: dateCreate,
+      dateUpdate: dateUpdate,
+      dateStart: dateStart,
+      dateEnd: dateEnd,
+      respondentMax: respondentMax,
+      respondentNum: respondentNum,
+      status: status,
+      outlet: outlet,
+      adminId: adminId,
+    );
+    dateCreate = dateCreate != "" ? dateCreate : DateTime.now().toString();
+    dateUpdate = dateUpdate != "" ? dateUpdate : DateTime.now().toString();
     status = SurveyStatus.draft.value;
     adminId = adminId;
+    return survey;
   }
 
   Map<String, dynamic> toMap() {
