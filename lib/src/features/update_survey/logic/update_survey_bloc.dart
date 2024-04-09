@@ -18,7 +18,7 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
     fetchSurveyDetail();
   }
 
-  get domainManager => DomainManager();
+  DomainManager get domainManager => DomainManager();
 
   Future<void> onPickImage() async {
     var imagePath = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -99,7 +99,7 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
             question: "${S.text.questionSampleText} ${list.length + 1}"),
       );
     } else {
-      var question = QuestionWithOption(
+      var question = QuestionWithOption.sample(
         questionIndex: list.length + 1,
         questionType: questionType.value,
         question: "${S.text.questionSampleText} ${list.length + 1}",
@@ -127,5 +127,12 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
     );
   }
 
-  void fetchSurveyDetail() {}
+  Future<void> fetchSurveyDetail() async {
+    emit(
+      state.copyWith(
+        questionList: await domainManager.question
+            .fetchAllQuestionOfSurvey(state.survey.surveyId),
+      ),
+    );
+  }
 }

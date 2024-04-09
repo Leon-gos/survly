@@ -75,8 +75,8 @@ class SelectLocationScreen extends StatelessWidget {
             Marker(
               markerId: const MarkerId("outlet-place"),
               position: state.searchedLocation != null
-                  ? LatLng(state.searchedLocation!.latitude,
-                      state.searchedLocation!.longitude)
+                  ? LatLng(state.searchedLocation!.latitude!,
+                      state.searchedLocation!.longitude!)
                   : state.currentLocation!,
               infoWindow: InfoWindow(
                 title: S.of(context).titleMarker,

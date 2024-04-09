@@ -95,7 +95,7 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
             question: "${S.text.questionSampleText} ${list.length + 1}"),
       );
     } else {
-      var question = QuestionWithOption(
+      var question = QuestionWithOption.sample(
         questionIndex: list.length + 1,
         questionType: questionType.value,
         question: "${S.text.questionSampleText} ${list.length + 1}",

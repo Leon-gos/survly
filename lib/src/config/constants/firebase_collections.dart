@@ -34,6 +34,7 @@ class QuestionCollection {
   static const String fieldQuestionType = "questionType";
   static const String fieldQuestion = "question";
   static const String fieldSurveyId = "surveyId";
+  static const String fieldOptionList = "optionList";
 }
 
 class OptionCollection {

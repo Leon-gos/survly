@@ -28,8 +28,8 @@ class SelectLocationBloc extends Cubit<SelectLocationState> {
       );
       state.mapController?.animateCamera(
         CameraUpdate.newLatLngZoom(
-          LatLng(state.searchedLocation!.latitude,
-              state.searchedLocation!.longitude),
+          LatLng(state.searchedLocation!.latitude!,
+              state.searchedLocation!.longitude!),
           14,
         ),
       );

@@ -20,8 +20,10 @@ class SurveyRepositoryImpl implements SurveyRepository {
   Future<List<Survey>> fetchFirstPageSurvey() async {
     List<Survey> list = [];
 
-    var value =
-        await ref.orderBy(SurveyCollection.fieldTitle).limit(pageSize).get();
+    var value = await ref
+        .orderBy(SurveyCollection.fieldDateCreate)
+        .limit(pageSize)
+        .get();
     for (var doc in value.docs) {
       var data = doc.data();
       data[SurveyCollection.fieldSurveyId] = doc.id;
@@ -118,33 +120,31 @@ class SurveyRepositoryImpl implements SurveyRepository {
         ...(survey.outlet?.toMap() ?? {}),
       });
 
-      if (fileLocalPath == "") {
-        return;
+      if (fileLocalPath != "") {
+        // 2.1: upload image
+        Logger().d(fileLocalPath);
+        String? imageUrl = await FileData.instance().uploadFileImage(
+          filePath: fileLocalPath,
+          fileKey: survey.genThumbnailImageFileKey(),
+        );
+
+        // 2.2: update survey thumbnail
+        ref.doc(survey.surveyId).update({
+          SurveyCollection.fieldThumbnail: imageUrl,
+        });
       }
-
-      // 2.1: upload image
-      Logger().d(fileLocalPath);
-      String? imageUrl = await FileData.instance().uploadFileImage(
-        filePath: fileLocalPath,
-        fileKey: survey.genThumbnailImageFileKey(),
-      );
-
-      // 2.2: update survey thumbnail
-      ref.doc(survey.surveyId).update({
-        SurveyCollection.fieldThumbnail: imageUrl,
-      });
 
       // 3: insert questions of survey
       var questionRepo = QuestionRepositoryImpl();
 
       // 3.1: remove all old question
-      questionRepo.deleteAllQuestionOfSurvey(survey.surveyId);
+      await questionRepo.deleteAllQuestionOfSurvey(survey.surveyId);
 
       // 3.2: reinsert questions
-      // for (var question in questionList) {
-      //   question.surveyId = survey.surveyId;
-      //   questionRepo.createQuestion(question);
-      // }
+      for (var question in questionList) {
+        question.surveyId = survey.surveyId;
+        questionRepo.createQuestion(question);
+      }
     } catch (e) {
       rethrow;
     }
