@@ -8,6 +8,7 @@ import 'package:survly/src/network/model/fild_place/find_text_response.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/service/permission_service.dart';
+import 'package:geocoding/geocoding.dart';
 
 class SelectLocationBloc extends Cubit<SelectLocationState> {
   SelectLocationBloc() : super(SelectLocationState.ds()) {
@@ -48,12 +49,18 @@ class SelectLocationBloc extends Cubit<SelectLocationState> {
     }
   }
 
-  void onMapLongPressed(LatLng latLng) {
+  Future<void> onMapLongPressed(LatLng latLng) async {
+    var placemarks =
+        await placemarkFromCoordinates(latLng.latitude, latLng.longitude);
+    var nearestCandidate = placemarks[0];
+    String address =
+        "${nearestCandidate.street}, ${nearestCandidate.subAdministrativeArea}, ${nearestCandidate.administrativeArea}, ${nearestCandidate.country}";
     emit(
       state.copyWith(
         searchedLocation: Outlet(
           latitude: latLng.latitude,
           longitude: latLng.longitude,
+          address: address,
         ),
       ),
     );
