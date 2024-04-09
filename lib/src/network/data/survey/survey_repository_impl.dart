@@ -30,7 +30,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
       var survey = Survey.fromMap(data);
       survey.outlet = Outlet(
         address: data[SurveyCollection.fieldAddress],
-        latitude: data[SurveyCollection.fieldLatittude],
+        latitude: data[SurveyCollection.fieldLatitude],
         longitude: data[SurveyCollection.fieldLongitude],
       );
       list.add(survey);
@@ -55,7 +55,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
       var survey = Survey.fromMap(data);
       survey.outlet = Outlet(
         address: data[SurveyCollection.fieldAddress],
-        latitude: data[SurveyCollection.fieldLatittude],
+        latitude: data[SurveyCollection.fieldLatitude],
         longitude: data[SurveyCollection.fieldLongitude],
       );
       list.add(survey);

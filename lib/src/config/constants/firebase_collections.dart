@@ -23,7 +23,7 @@ class SurveyCollection {
   static const String fieldAdminId = "adminId";
   static const String fieldThumbnail = "thumbnail";
   static const String fieldAddress = "address";
-  static const String fieldLatittude = "latitude";
+  static const String fieldLatitude = "latitude";
   static const String fieldLongitude = "longitude";
 }
 

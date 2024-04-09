@@ -18,7 +18,7 @@ import 'package:survly/widgets/app_image_picker.dart';
 import 'package:survly/widgets/app_text_field.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-class UpdateSurveyScreen extends StatelessWidget {
+class UpdateSurveyScreen extends StatefulWidget {
   const UpdateSurveyScreen({
     super.key,
     required this.survey,
@@ -27,9 +27,45 @@ class UpdateSurveyScreen extends StatelessWidget {
   final Survey survey;
 
   @override
+  State<StatefulWidget> createState() => _UpdateSurveyScreenState();
+}
+
+class _UpdateSurveyScreenState extends State<UpdateSurveyScreen> {
+  late final TextEditingController titleController;
+  late final TextEditingController descriptionController;
+  late final TextEditingController respondentController;
+  late final TextEditingController costController;
+
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController(
+      text: widget.survey.title,
+    );
+    descriptionController = TextEditingController(
+      text: widget.survey.description,
+    );
+    respondentController = TextEditingController(
+      text: widget.survey.respondentMax.toString(),
+    );
+    costController = TextEditingController(
+      text: widget.survey.cost.toString(),
+    );
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    respondentController.dispose();
+    costController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider<UpdateSurveyBloc>(
-      create: (context) => UpdateSurveyBloc(survey),
+      create: (context) => UpdateSurveyBloc(widget.survey),
       lazy: false,
       child: BlocBuilder<UpdateSurveyBloc, UpdateSurveyState>(
         buildWhen: (previous, current) => false,
@@ -153,7 +189,7 @@ class UpdateSurveyScreen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: AppTextField(
-                textController: state.titleController,
+                textController: titleController,
                 hintText: S.of(context).hintSurveyTitle,
                 label: S.of(context).hintSurveyTitle,
                 textInputType: TextInputType.text,
@@ -165,7 +201,7 @@ class UpdateSurveyScreen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: AppTextField(
-                textController: state.descriptionController,
+                textController: descriptionController,
                 hintText: S.of(context).hintSurveyDescription,
                 label: S.of(context).hintSurveyDescription,
                 textInputType: TextInputType.multiline,
@@ -185,7 +221,7 @@ class UpdateSurveyScreen extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: AppTextField(
-                      textController: state.respondentController,
+                      textController: respondentController,
                       hintText: S.of(context).hintSurveyRespondentNumber,
                       label: S.of(context).hintSurveyRespondentNumber,
                       textInputType: TextInputType.number,
@@ -202,7 +238,7 @@ class UpdateSurveyScreen extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: AppTextField(
-                      textController: state.costController,
+                      textController: costController,
                       hintText: S.of(context).hintSurveyCost,
                       label: S.of(context).hintSurveyCost,
                       textInputType: TextInputType.number,
