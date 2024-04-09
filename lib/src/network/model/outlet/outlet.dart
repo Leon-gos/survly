@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Outlet {
   String? address;
   double? latitude;
@@ -18,17 +16,4 @@ class Outlet {
       'longitude': longitude,
     };
   }
-
-  factory Outlet.fromMap(Map<String, dynamic> map) {
-    return Outlet(
-      address: map['address'] != null ? map['address'] as String : null,
-      latitude: double.parse(map['latitude']?.toString() ?? "0"),
-      longitude: double.parse(map['longitude']?.toString() ?? "0"),
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory Outlet.fromJson(String source) =>
-      Outlet.fromMap(json.decode(source) as Map<String, dynamic>);
 }
