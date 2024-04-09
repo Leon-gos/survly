@@ -14,7 +14,6 @@ import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
-import 'package:survly/widgets/app_dialog.dart';
 import 'package:survly/widgets/app_image_picker.dart';
 import 'package:survly/widgets/app_text_field.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -78,50 +77,25 @@ class _UpdateSurveyScreenState extends State<UpdateSurveyScreen> {
               actions: [
                 IconButton(
                   onPressed: () {
-                    //TODO: publish
+                    context.read<UpdateSurveyBloc>().saveSurvey();
                   },
                   icon: const Icon(
-                    Icons.share,
+                    Icons.save,
                     color: AppColors.white,
                   ),
                 ),
-                PopupMenuButton(
-                  iconColor: AppColors.onPrimary,
-                  itemBuilder: (context) {
-                    return [
-                      PopupMenuItem(
-                        child: Text("Save changes"),
-                        onTap: () {
-                          context.read<UpdateSurveyBloc>().saveSurvey();
-                        },
-                      ),
-                      PopupMenuItem(
-                        child: Text("Remove survey"),
-                        onTap: () {},
-                      )
-                    ];
-                  },
-                )
               ],
             ),
-            body: Column(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        _buildImagePicker(),
-                        _buildSurveyTextfields(),
-                        const Divider(),
-                        _buildQuestionList(),
-                        // _buildSurveyStatus(),
-                      ],
-                    ),
-                  ),
-                ),
-                _buildSurveyStatus(),
-              ],
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildImagePicker(),
+                  _buildSurveyTextfields(),
+                  const Divider(),
+                  _buildQuestionList(),
+                  // _buildSurveyStatus(),
+                ],
+              ),
             ),
           );
         },
@@ -435,82 +409,6 @@ class _UpdateSurveyScreenState extends State<UpdateSurveyScreen> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildSurveyStatus() {
-    return BlocBuilder<UpdateSurveyBloc, UpdateSurveyState>(
-      buildWhen: (previous, current) => previous.survey != current.survey,
-      builder: (context, state) {
-        return GestureDetector(
-          onTap: () {
-            Logger().d("Tap tap tap");
-            if (state.survey.status == SurveyStatus.draft.value) {
-              //TODO: show dialog publish
-              Logger().d("Show dialog");
-              showDialog(
-                context: context,
-                builder: (dialogContext) {
-                  return AppDialog(
-                    title: "Publish survey",
-                    body: "Are you sure to publish this survey?",
-                    onConfirmPressed: () {
-                      context.read<UpdateSurveyBloc>().publishSurvey();
-                    },
-                    onCancelPressed: () {},
-                  );
-                },
-              );
-            } else if (state.survey.status == SurveyStatus.openning.value) {
-              //TODO: show dialog draft
-            }
-          },
-          child: Container(
-            decoration: const BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 2,
-                  color: Colors.black26,
-                )
-              ],
-              color: AppColors.white,
-            ),
-            child: Container(
-              width: double.infinity,
-              margin: const EdgeInsets.all(8),
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                color: AppColors.secondary,
-                borderRadius: BorderRadius.all(Radius.circular(0)),
-              ),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      state.survey.status == SurveyStatus.draft.value
-                          ? Icons.text_snippet_outlined
-                          : Icons.public,
-                      color: AppColors.white,
-                      size: 16,
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    Text(
-                      state.survey.status,
-                      style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.white),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }

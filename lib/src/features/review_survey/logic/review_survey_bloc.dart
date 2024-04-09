@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
-import 'package:survly/src/features/update_survey/logic/update_survey_state.dart';
+import 'package:survly/src/features/review_survey/logic/review_survey_state.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/network/model/question/question.dart';
@@ -13,10 +15,25 @@ import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/utils/date_helper.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
-  UpdateSurveyBloc(Survey survey)
-      : super(UpdateSurveyState.ds(survey: survey)) {
+class ReviewSurveyBloc extends Cubit<ReviewSurveyState> {
+  ReviewSurveyBloc(Survey survey)
+      : super(ReviewSurveyState.ds(survey: survey)) {
     fetchSurveyDetail();
+  }
+
+  Future<Survey?> onRefresh() async {
+    try {
+      emit(
+        state.copyWith(
+          survey:
+              await domainManager.survey.fetchSurveyById(state.survey.surveyId),
+        ),
+      );
+      return state.survey;
+    } catch (e) {
+      Fluttertoast.showToast(msg: S.text.errorGeneral);
+    }
+    return null;
   }
 
   DomainManager get domainManager => DomainManager();

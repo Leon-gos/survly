@@ -150,4 +150,23 @@ class SurveyRepositoryImpl implements SurveyRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<Survey?> fetchSurveyById(String surveyId) async {
+    try {
+      var value = await ref
+          .where(SurveyCollection.fieldSurveyId, isEqualTo: surveyId)
+          .get();
+      var data = value.docs[0].data();
+      Survey survey = Survey.fromMap(data);
+      survey.outlet = Outlet(
+        address: data[SurveyCollection.fieldAddress],
+        latitude: data[SurveyCollection.fieldLatitude],
+        longitude: data[SurveyCollection.fieldLongitude],
+      );
+      return survey;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

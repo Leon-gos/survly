@@ -44,6 +44,9 @@
     "labelFindPlace": "Find place",
     "titleUpdateSurvey": "Edit survey",
     "labelBtnConfirm": "Confirm",
+    "labelBtnEdit": "Edit",
+    "titleReviewSurvey": "Review survey",
+    "errorGeneral": "Something went wrong",
     
     "errorEmptyName": "Empty name",
     "errorPasswordLength": "Password must be at least 6 characters long",
