@@ -59,17 +59,6 @@ class AppRouter {
           );
         },
       ),
-      GoRoute(
-        name: AppRouteNames.updateSurvey.name,
-        path: AppRouteNames.updateSurvey.path,
-        parentNavigatorKey: AppCoordinator.navigatorKey,
-        builder: (context, state) {
-          final survey = state.extra as Survey;
-          return UpdateSurveyScreen(
-            survey: survey,
-          );
-        },
-      ),
       ShellRoute(
         builder: (context, state, child) => DashboardScreen(
           body: child,
