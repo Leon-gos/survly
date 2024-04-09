@@ -165,6 +165,7 @@ class UpdateSurveyScreen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: AppTextField(
+                textController: state.descriptionController,
                 hintText: S.of(context).hintSurveyDescription,
                 label: S.of(context).hintSurveyDescription,
                 textInputType: TextInputType.multiline,
@@ -184,6 +185,7 @@ class UpdateSurveyScreen extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: AppTextField(
+                      textController: state.respondentController,
                       hintText: S.of(context).hintSurveyRespondentNumber,
                       label: S.of(context).hintSurveyRespondentNumber,
                       textInputType: TextInputType.number,
@@ -200,6 +202,7 @@ class UpdateSurveyScreen extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: AppTextField(
+                      textController: state.costController,
                       hintText: S.of(context).hintSurveyCost,
                       label: S.of(context).hintSurveyCost,
                       textInputType: TextInputType.number,

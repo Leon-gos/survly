@@ -6,6 +6,7 @@ import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/network/data/file/file_data.dart';
 import 'package:survly/src/network/data/question/question_repository_impl.dart';
 import 'package:survly/src/network/data/survey/survey_repository.dart';
+import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 
@@ -24,7 +25,13 @@ class SurveyRepositoryImpl implements SurveyRepository {
     for (var doc in value.docs) {
       var data = doc.data();
       data[SurveyCollection.fieldSurveyId] = doc.id;
-      list.add(Survey.fromMap(data));
+      var survey = Survey.fromMap(data);
+      survey.outlet = Outlet(
+        address: data[SurveyCollection.fieldAddress],
+        latitude: data[SurveyCollection.fieldLatittude],
+        longitude: data[SurveyCollection.fieldLongitude],
+      );
+      list.add(survey);
     }
 
     return list;
@@ -43,7 +50,13 @@ class SurveyRepositoryImpl implements SurveyRepository {
     for (var doc in value.docs) {
       var data = doc.data();
       data[SurveyCollection.fieldSurveyId] = doc.id;
-      list.add(Survey.fromMap(data));
+      var survey = Survey.fromMap(data);
+      survey.outlet = Outlet(
+        address: data[SurveyCollection.fieldAddress],
+        latitude: data[SurveyCollection.fieldLatittude],
+        longitude: data[SurveyCollection.fieldLongitude],
+      );
+      list.add(survey);
     }
 
     return list;
