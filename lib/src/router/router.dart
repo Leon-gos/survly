@@ -8,6 +8,7 @@ import 'package:survly/src/features/dashboard/view/dashboard_screen.dart';
 import 'package:survly/src/features/dashboard/view/survey_view.dart';
 import 'package:survly/src/features/dashboard/view/user_view.dart';
 import 'package:survly/src/features/select_location/view/select_location_screen.dart';
+import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/router/router_name.dart';
 
@@ -38,7 +39,12 @@ class AppRouter {
         name: AppRouteNames.selectLocation.name,
         path: AppRouteNames.selectLocation.path,
         parentNavigatorKey: AppCoordinator.navigatorKey,
-        builder: (context, state) => const SelectLocationScreen(),
+        builder: (context, state) {
+          Outlet? outlet = state.extra as Outlet?;
+          return SelectLocationScreen(
+            searchedLocation: outlet,
+          );
+        },
       ),
       ShellRoute(
         builder: (context, state, child) => DashboardScreen(
