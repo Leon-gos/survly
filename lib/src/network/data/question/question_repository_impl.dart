@@ -32,6 +32,7 @@ class QuestionRepositoryImpl implements QuestionRepository {
     }
   }
 
+  @override
   Future<void> deleteAllQuestionOfSurvey(String surveyId) async {
     final optionRepo = OptionRepositoryImpl();
     var value = await ref
@@ -44,6 +45,7 @@ class QuestionRepositoryImpl implements QuestionRepository {
     }
   }
 
+  @override
   Future<List<Question>> fetchAllQuestionOfSurvey(String surveyId) async {
     List<Question> questionList = [];
     var value = await ref

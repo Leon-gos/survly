@@ -19,6 +19,7 @@ class OptionRepositoryImpl implements OptionRepository {
     }
   }
 
+  @override
   Future<void> deleteAllOptionOfQuestion(String questionId) async {
     var value = await ref
         .where(OptionCollection.fieldQuestionId, isEqualTo: questionId)
@@ -28,6 +29,7 @@ class OptionRepositoryImpl implements OptionRepository {
     }
   }
 
+  @override
   Future<List<QuestionOption>> fetchAllOptionOfQuestion(
     String questionId,
   ) async {
