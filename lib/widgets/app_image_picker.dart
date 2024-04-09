@@ -6,6 +6,7 @@ class AppImagePicker extends StatelessWidget {
   final double? height;
   final String imagePath;
   final Function() onPickImage;
+  final String? defaultImageUrl;
 
   const AppImagePicker({
     super.key,
@@ -13,6 +14,7 @@ class AppImagePicker extends StatelessWidget {
     this.height,
     required this.imagePath,
     required this.onPickImage,
+    this.defaultImageUrl,
   });
 
   @override
@@ -30,20 +32,33 @@ class AppImagePicker extends StatelessWidget {
           ],
           borderRadius: const BorderRadius.all(Radius.circular(8)),
         ),
-        child: imagePath != ""
-            ? ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                child: Image.file(
-                  File(imagePath),
-                  fit: BoxFit.cover,
-                ),
-              )
-            : const Center(
-                child: Icon(
-                  Icons.image_search,
-                  size: 64,
-                ),
-              ),
+        child: _buildImage(),
+      ),
+    );
+  }
+
+  Widget _buildImage() {
+    if (imagePath != "") {
+      return ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        child: Image.file(
+          File(imagePath),
+          fit: BoxFit.cover,
+        ),
+      );
+    } else if (defaultImageUrl != null && defaultImageUrl != "") {
+      return ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        child: Image.network(
+          defaultImageUrl!,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+    return const Center(
+      child: Icon(
+        Icons.image_search,
+        size: 64,
       ),
     );
   }

@@ -11,6 +11,7 @@ class AppTextField extends StatelessWidget {
   final Widget? prefixIcon;
   final bool isDisable;
   final String? label;
+  final TextEditingController? textController;
 
   const AppTextField({
     super.key,
@@ -24,11 +25,13 @@ class AppTextField extends StatelessWidget {
     this.prefixIcon,
     this.isDisable = false,
     this.label,
+    this.textController,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: textController,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         border: const OutlineInputBorder(

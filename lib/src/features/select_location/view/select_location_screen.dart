@@ -70,8 +70,8 @@ class SelectLocationScreen extends StatelessWidget {
           initialCameraPosition: CameraPosition(
             target: state.searchedLocation != null
                 ? LatLng(
-                    state.searchedLocation!.latitude,
-                    state.searchedLocation!.longitude,
+                    state.searchedLocation!.latitude!,
+                    state.searchedLocation!.longitude!,
                   )
                 : state.currentLocation!,
             zoom: 16,
@@ -85,8 +85,8 @@ class SelectLocationScreen extends StatelessWidget {
             Marker(
               markerId: const MarkerId("outlet-place"),
               position: state.searchedLocation != null
-                  ? LatLng(state.searchedLocation!.latitude,
-                      state.searchedLocation!.longitude)
+                  ? LatLng(state.searchedLocation!.latitude!,
+                      state.searchedLocation!.longitude!)
                   : state.currentLocation!,
               infoWindow: InfoWindow(
                 title: S.of(context).titleMarker,

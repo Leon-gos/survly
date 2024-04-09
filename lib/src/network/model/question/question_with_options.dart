@@ -16,10 +16,25 @@ class QuestionWithOption extends Question {
     required super.questionType,
     super.surveyId = "",
     required this.optionList,
+  });
+
+  factory QuestionWithOption.sample({
+    required int questionIndex,
+    String question = "",
+    required String questionType,
+    String surveyId = "",
+    required List<QuestionOption> optionList,
   }) {
+    var questionWithOption = QuestionWithOption(
+      questionIndex: questionIndex,
+      questionType: questionType,
+      question: question,
+      optionList: optionList,
+    );
     for (int i = 0; i < defaultSampleOptionNum; i++) {
-      addOption();
+      questionWithOption.addOption();
     }
+    return questionWithOption;
   }
 
   @override

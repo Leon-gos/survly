@@ -6,6 +6,7 @@ import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/network/data/file/file_data.dart';
 import 'package:survly/src/network/data/question/question_repository_impl.dart';
 import 'package:survly/src/network/data/survey/survey_repository.dart';
+import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 
@@ -19,12 +20,20 @@ class SurveyRepositoryImpl implements SurveyRepository {
   Future<List<Survey>> fetchFirstPageSurvey() async {
     List<Survey> list = [];
 
-    var value =
-        await ref.orderBy(SurveyCollection.fieldTitle).limit(pageSize).get();
+    var value = await ref
+        .orderBy(SurveyCollection.fieldDateCreate)
+        .limit(pageSize)
+        .get();
     for (var doc in value.docs) {
       var data = doc.data();
       data[SurveyCollection.fieldSurveyId] = doc.id;
-      list.add(Survey.fromMap(data));
+      var survey = Survey.fromMap(data);
+      survey.outlet = Outlet(
+        address: data[SurveyCollection.fieldAddress],
+        latitude: data[SurveyCollection.fieldLatitude],
+        longitude: data[SurveyCollection.fieldLongitude],
+      );
+      list.add(survey);
     }
 
     return list;
@@ -36,14 +45,20 @@ class SurveyRepositoryImpl implements SurveyRepository {
 
     var lastDoc = await ref.doc(lastSurvey.surveyId).get();
     var value = await ref
-        .orderBy(SurveyCollection.fieldTitle)
+        .orderBy(SurveyCollection.fieldDateCreate)
         .startAfterDocument(lastDoc)
         .limit(pageSize)
         .get();
     for (var doc in value.docs) {
       var data = doc.data();
       data[SurveyCollection.fieldSurveyId] = doc.id;
-      list.add(Survey.fromMap(data));
+      var survey = Survey.fromMap(data);
+      survey.outlet = Outlet(
+        address: data[SurveyCollection.fieldAddress],
+        latitude: data[SurveyCollection.fieldLatitude],
+        longitude: data[SurveyCollection.fieldLongitude],
+      );
+      list.add(survey);
     }
 
     return list;
@@ -83,6 +98,50 @@ class SurveyRepositoryImpl implements SurveyRepository {
 
       // 4: insert questions of survey
       var questionRepo = QuestionRepositoryImpl();
+      for (var question in questionList) {
+        question.surveyId = survey.surveyId;
+        questionRepo.createQuestion(question);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateSurvey({
+    required Survey survey,
+    required String fileLocalPath,
+    required List<Question> questionList,
+  }) async {
+    try {
+      // 1: insert survey
+      ref.doc("/${survey.surveyId}").set({
+        ...survey.toMap(),
+        ...(survey.outlet?.toMap() ?? {}),
+        SurveyCollection.fieldDateUpdate: DateTime.now().toString(),
+      });
+
+      if (fileLocalPath != "") {
+        // 2.1: upload image
+        Logger().d(fileLocalPath);
+        String? imageUrl = await FileData.instance().uploadFileImage(
+          filePath: fileLocalPath,
+          fileKey: survey.genThumbnailImageFileKey(),
+        );
+
+        // 2.2: update survey thumbnail
+        ref.doc(survey.surveyId).update({
+          SurveyCollection.fieldThumbnail: imageUrl,
+        });
+      }
+
+      // 3: insert questions of survey
+      var questionRepo = QuestionRepositoryImpl();
+
+      // 3.1: remove all old question
+      await questionRepo.deleteAllQuestionOfSurvey(survey.surveyId);
+
+      // 3.2: reinsert questions
       for (var question in questionList) {
         question.surveyId = survey.surveyId;
         questionRepo.createQuestion(question);

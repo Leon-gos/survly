@@ -22,6 +22,9 @@ class SurveyCollection {
   static const String fieldOutletId = "outletId";
   static const String fieldAdminId = "adminId";
   static const String fieldThumbnail = "thumbnail";
+  static const String fieldAddress = "address";
+  static const String fieldLatitude = "latitude";
+  static const String fieldLongitude = "longitude";
 }
 
 class QuestionCollection {
@@ -31,6 +34,7 @@ class QuestionCollection {
   static const String fieldQuestionType = "questionType";
   static const String fieldQuestion = "question";
   static const String fieldSurveyId = "surveyId";
+  static const String fieldOptionList = "optionList";
 }
 
 class OptionCollection {
