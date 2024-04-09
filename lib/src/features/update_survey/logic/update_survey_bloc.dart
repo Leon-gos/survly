@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
@@ -134,5 +135,14 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
             .fetchAllQuestionOfSurvey(state.survey.surveyId),
       ),
     );
+  }
+
+  void publishSurvey() {
+    emit(
+      state.copyWith(
+        survey: state.survey.copyWith(status: SurveyStatus.openning.value),
+      ),
+    );
+    Fluttertoast.showToast(msg: "Change status successfully");
   }
 }

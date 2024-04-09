@@ -43,6 +43,7 @@
     "snippetMarker": "Take photo here",
     "labelFindPlace": "Find place",
     "titleUpdateSurvey": "Edit survey",
+    "labelBtnConfirm": "Confirm",
     
     "errorEmptyName": "Empty name",
     "errorPasswordLength": "Password must be at least 6 characters long",

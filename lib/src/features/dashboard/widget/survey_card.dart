@@ -92,11 +92,13 @@ class SurveyCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                    color: AppColors.secondary,
+                    color: survey.status == SurveyStatus.draft.value
+                        ? AppColors.secondary
+                        : AppColors.primary,
                     borderRadius:
                         BorderRadius.all(Radius.circular(borderRadius))),
                 child: Text(
-                  "${survey.cost / 1000}${S.of(context).thousand}",
+                  survey.status,
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, color: AppColors.white),
                 ),
