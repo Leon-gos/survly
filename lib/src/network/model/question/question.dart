@@ -18,6 +18,13 @@ class Question {
   String questionType;
   String surveyId;
 
+  String? getError() {
+    if (question == "") {
+      return "Question empty";
+    }
+    return null;
+  }
+
   Question({
     this.questionId = "",
     required this.questionIndex,

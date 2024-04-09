@@ -5,6 +5,14 @@ class QuestionOption {
   int questionOptionIndex;
   String option;
   String questionId;
+
+  String? getError() {
+    if (option == "") {
+      return "Option content empty";
+    }
+    return null;
+  }
+
   QuestionOption({
     this.questionOptionId = "",
     required this.questionOptionIndex,

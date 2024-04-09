@@ -30,6 +30,34 @@ class Survey {
   Outlet? outlet;
   String adminId;
 
+  String? getError() {
+    if (thumbnail == "") {
+      return "Thumbnail empty";
+    }
+    if (title == "") {
+      return "Title empty";
+    }
+    if (description == "") {
+      return "Description empty";
+    }
+    if (cost <= 0) {
+      return "Cost invalid";
+    }
+    if (dateStart == "") {
+      return "Start date empty";
+    }
+    if (dateEnd == "") {
+      return "End date empty";
+    }
+    if (respondentMax <= 0) {
+      return "Respondent invalid";
+    }
+    if (outlet == null) {
+      return "Outlet missing";
+    }
+    return null;
+  }
+
   Survey({
     required this.surveyId,
     required this.thumbnail,

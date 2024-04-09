@@ -171,12 +171,11 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
 
   Widget _buildImagePicker() {
     return BlocBuilder<ReviewSurveyBloc, ReviewSurveyState>(
-      buildWhen: (previous, current) =>
-          previous.imageLocalPath != current.imageLocalPath,
+      buildWhen: (previous, current) => previous.survey != current.survey,
       builder: (context, state) {
         return AppImagePicker(
           onPickImage: () {},
-          imagePath: state.imageLocalPath,
+          imagePath: "",
           defaultImageUrl: state.survey.thumbnail,
         );
       },
