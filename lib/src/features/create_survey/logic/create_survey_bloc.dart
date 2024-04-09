@@ -4,6 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/create_survey/logic/create_survey_state.dart';
 import 'package:survly/src/localization/localization_utils.dart';
+import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/router/coordinator.dart';
@@ -112,5 +113,13 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
       list[i].questionIndex = i + 1;
     }
     emit(state.copyWith(questionList: list));
+  }
+
+  void onOutletLocationChange(Outlet? outlet) {
+    emit(
+      state.copyWith(
+        survey: state.survey.copyWith(outlet: outlet),
+      ),
+    );
   }
 }

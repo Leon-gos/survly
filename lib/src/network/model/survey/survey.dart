@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:survly/src/config/constants/firebase_collections.dart';
+import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 
 enum SurveyStatus {
@@ -26,7 +27,7 @@ class Survey {
   int respondentMax;
   int respondentNum;
   String status;
-  String outletId;
+  Outlet? outlet;
   String adminId;
 
   Survey({
@@ -42,7 +43,7 @@ class Survey {
     this.respondentMax = 0,
     this.respondentNum = 0,
     this.status = "",
-    this.outletId = "",
+    this.outlet,
     required this.adminId,
   }) {
     dateCreate = DateTime.now().toString();
@@ -65,7 +66,6 @@ class Survey {
       'respondentMax': respondentMax,
       'respondentNum': respondentNum,
       'status': status,
-      'outletId': outletId,
       'adminId': adminId,
     };
   }
@@ -84,7 +84,6 @@ class Survey {
       respondentMax: int.parse(map['respondentMax']?.toString() ?? "0"),
       respondentNum: int.parse(map['respondentNum']?.toString() ?? "0"),
       status: map['status']?.toString() ?? "",
-      outletId: map['outletId']?.toString() ?? "",
       adminId: map['adminId']?.toString() ?? "",
     );
   }
@@ -107,7 +106,7 @@ class Survey {
     int? respondentMax,
     int? respondentNum,
     String? status,
-    String? outletId,
+    Outlet? outlet,
     String? adminId,
   }) {
     return Survey(
@@ -123,7 +122,7 @@ class Survey {
       respondentMax: respondentMax ?? this.respondentMax,
       respondentNum: respondentNum ?? this.respondentNum,
       status: status ?? this.status,
-      outletId: outletId ?? this.outletId,
+      outlet: outlet ?? this.outlet,
       adminId: adminId ?? this.adminId,
     );
   }

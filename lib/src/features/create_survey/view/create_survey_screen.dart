@@ -8,7 +8,9 @@ import 'package:survly/src/features/create_survey/widget/question_editor_widget.
 import 'package:survly/src/features/create_survey/widget/question_widget.dart';
 import 'package:survly/src/features/create_survey/widget/text_button_icon_widget.dart';
 import 'package:survly/src/localization/localization_utils.dart';
+import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/network/model/question/question.dart';
+import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_image_picker.dart';
@@ -251,6 +253,49 @@ class CreateSurveyScreen extends StatelessWidget {
                   "${S.of(context).hintDateFrom} ${state.survey.dateStart} ${S.of(context).hintDateTo} ${state.survey.dateEnd}",
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () async {
+                context.push(AppRouteNames.selectLocation.path).then(
+                  (value) {
+                    var outlet = value as Outlet?;
+                    context
+                        .read<CreateSurveyBloc>()
+                        .onOutletLocationChange(outlet);
+                    Logger().d("(${outlet?.latitude}, ${outlet?.longitude})");
+                  },
+                );
+              },
+              child: Container(
+                width: double.infinity,
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1.5, color: Colors.grey),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(8),
+                  ),
+                ),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${S.of(context).hintOutlet} ${state.survey.outlet?.address ?? "_"}",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                      ),
+                      Text(
+                        "${S.of(context).hintOutletCoordinate} (${state.survey.outlet?.latitude ?? "_"} , ${state.survey.outlet?.longitude ?? "_"})",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                      )
+                    ],
+                  ),
                 ),
               ),
             )
