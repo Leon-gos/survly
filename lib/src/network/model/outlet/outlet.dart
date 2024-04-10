@@ -16,4 +16,11 @@ class Outlet {
       'longitude': longitude,
     };
   }
+
+  String? getError() {
+    if (latitude == null || longitude == null) {
+      return "Outlet empty";
+    }
+    return null;
+  }
 }

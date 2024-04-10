@@ -140,7 +140,7 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
   void publishSurvey() {
     emit(
       state.copyWith(
-        survey: state.survey.copyWith(status: SurveyStatus.openning.value),
+        survey: state.survey.copyWith(status: SurveyStatus.public.value),
       ),
     );
     Fluttertoast.showToast(msg: "Change status successfully");

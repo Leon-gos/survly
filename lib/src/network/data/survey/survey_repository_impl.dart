@@ -21,7 +21,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
     List<Survey> list = [];
 
     var value = await ref
-        .orderBy(SurveyCollection.fieldDateCreate)
+        .orderBy(SurveyCollection.fieldDateCreate, descending: true)
         .limit(pageSize)
         .get();
     for (var doc in value.docs) {
@@ -45,7 +45,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
 
     var lastDoc = await ref.doc(lastSurvey.surveyId).get();
     var value = await ref
-        .orderBy(SurveyCollection.fieldDateCreate)
+        .orderBy(SurveyCollection.fieldDateCreate, descending: true)
         .startAfterDocument(lastDoc)
         .limit(pageSize)
         .get();

@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
+import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 
 enum SurveyStatus {
   draft(value: "draft"),
-  openning(value: "openning"),
-  closed(value: "closed"),
-  archive(value: "archived");
+  public(value: "public"),
+  archived(value: "archived");
 
   final String value;
   const SurveyStatus({required this.value});
@@ -30,7 +30,7 @@ class Survey {
   Outlet? outlet;
   String adminId;
 
-  String? getError() {
+  String? _getSurveyError() {
     if (thumbnail == "") {
       return "Thumbnail empty";
     }
@@ -40,7 +40,7 @@ class Survey {
     if (description == "") {
       return "Description empty";
     }
-    if (cost <= 0) {
+    if (cost < 0) {
       return "Cost invalid";
     }
     if (dateStart == "") {
@@ -52,9 +52,66 @@ class Survey {
     if (respondentMax <= 0) {
       return "Respondent invalid";
     }
-    if (outlet == null) {
-      return "Outlet missing";
+
+    String? outletError = outlet?.getError();
+    if (outletError != null) {
+      return outletError;
     }
+
+    return null;
+  }
+
+  bool ableToEdit(String? adminId) {
+    if (this.adminId != adminId) {
+      return false;
+    }
+    if (status != SurveyStatus.draft.value) {
+      return false;
+    }
+    return true;
+  }
+
+  String? getDraftError(String? adminId) {
+    if (this.adminId != adminId) {
+      return "Not have permission";
+    }
+    if (status != SurveyStatus.public.value) {
+      return "Can only draft public survey";
+    }
+    if (respondentNum > 0) {
+      return "Can only draft public with no respondent";
+    }
+    return null;
+  }
+
+  String? getPublishError(String? adminId, List<Question> questionList) {
+    if (this.adminId != adminId) {
+      return "Not have permission";
+    }
+    if (status != SurveyStatus.draft.value) {
+      return "Can only publish draft survey";
+    }
+
+    String? surveyError = _getSurveyError();
+    if (surveyError != null) {
+      return surveyError;
+    }
+
+    if (questionList.isEmpty) {
+      return "Empty question";
+    }
+
+    String? questionListError;
+    for (var question in questionList) {
+      questionListError = question.getError();
+      if (questionListError != null) {
+        break;
+      }
+    }
+    if (questionListError != null) {
+      return questionListError;
+    }
+
     return null;
   }
 
@@ -107,10 +164,12 @@ class Survey {
       outlet: outlet,
       adminId: adminId,
     );
-    dateCreate = dateCreate != "" ? dateCreate : DateTime.now().toString();
-    dateUpdate = dateUpdate != "" ? dateUpdate : DateTime.now().toString();
-    status = SurveyStatus.draft.value;
-    adminId = adminId;
+    survey.dateCreate =
+        dateCreate != "" ? dateCreate : DateTime.now().toString();
+    survey.dateUpdate =
+        dateUpdate != "" ? dateUpdate : DateTime.now().toString();
+    survey.status = SurveyStatus.draft.value;
+    survey.adminId = adminId;
     return survey;
   }
 

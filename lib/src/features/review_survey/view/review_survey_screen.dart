@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/features/create_survey/widget/question_widget.dart';
 import 'package:survly/src/features/review_survey/logic/review_survey_bloc.dart';
 import 'package:survly/src/features/review_survey/logic/review_survey_state.dart';
+import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/router_name.dart';
@@ -92,18 +94,25 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                   itemBuilder: (context) {
                     return [
                       PopupMenuItem(
-                        child: Text(S.of(context).labelBtnEdit),
-                        onTap: () {
-                          context.push(
-                            AppRouteNames.updateSurvey.path,
-                            extra: state.survey,
-                          );
-                        },
-                      ),
-                      PopupMenuItem(
-                        child: Text(S.of(context).labelBtnRemove),
+                        child: Text(S.of(context).labelBtnViewAsUser),
                         onTap: () {},
-                      )
+                      ),
+                      if (state.survey
+                          .ableToEdit(AdminSingleton.instance().admin?.id)) ...[
+                        PopupMenuItem(
+                          child: Text(S.of(context).labelBtnEdit),
+                          onTap: () {
+                            context.push(
+                              AppRouteNames.updateSurvey.path,
+                              extra: state.survey,
+                            );
+                          },
+                        ),
+                        PopupMenuItem(
+                          child: Text(S.of(context).labelBtnRemove),
+                          onTap: () {},
+                        ),
+                      ],
                     ];
                   },
                 )
@@ -301,36 +310,49 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
       builder: (context, state) {
         return GestureDetector(
           onTap: () {
-            Logger().d("Tap tap tap");
             if (state.survey.status == SurveyStatus.draft.value) {
-              Logger().d("Show dialog");
-              showDialog(
-                context: context,
-                builder: (dialogContext) {
-                  return AppDialog(
-                    title: "Publish survey",
-                    body: "Are you sure to publish this survey?",
-                    onConfirmPressed: () {
-                      context.read<ReviewSurveyBloc>().publishSurvey();
-                    },
-                    onCancelPressed: () {},
-                  );
-                },
+              String? publishError = state.survey.getPublishError(
+                AdminSingleton.instance().admin?.id,
+                state.questionList,
               );
-            } else if (state.survey.status == SurveyStatus.openning.value) {
-              showDialog(
-                context: context,
-                builder: (dialogContext) {
-                  return AppDialog(
-                    title: "Draft survey",
-                    body: "Are you sure to draft this survey?",
-                    onConfirmPressed: () {
-                      context.read<ReviewSurveyBloc>().draftSurvey();
-                    },
-                    onCancelPressed: () {},
-                  );
-                },
+              if (publishError != null) {
+                Fluttertoast.showToast(msg: publishError);
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (dialogContext) {
+                    return AppDialog(
+                      title: "Publish survey",
+                      body: "Are you sure to publish this survey?",
+                      onConfirmPressed: () {
+                        context.read<ReviewSurveyBloc>().publishSurvey();
+                      },
+                      onCancelPressed: () {},
+                    );
+                  },
+                );
+              }
+            } else if (state.survey.status == SurveyStatus.public.value) {
+              String? draftError = state.survey.getDraftError(
+                AdminSingleton.instance().admin?.id,
               );
+              if (draftError != null) {
+                Fluttertoast.showToast(msg: draftError);
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (dialogContext) {
+                    return AppDialog(
+                      title: "Draft survey",
+                      body: "Are you sure to draft this survey?",
+                      onConfirmPressed: () {
+                        context.read<ReviewSurveyBloc>().draftSurvey();
+                      },
+                      onCancelPressed: () {},
+                    );
+                  },
+                );
+              }
             }
           },
           child: Container(

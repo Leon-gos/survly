@@ -46,8 +46,9 @@
     "labelBtnConfirm": "Confirm",
     "labelBtnEdit": "Edit",
     "titleReviewSurvey": "Review survey",
+    "labelBtnViewAsUser": "View as user",
+
     "errorGeneral": "Something went wrong",
-    
     "errorEmptyName": "Empty name",
     "errorPasswordLength": "Password must be at least 6 characters long",
     "errorPasswordMissUpperChar": "Password must contain at least one uppercase letter",
