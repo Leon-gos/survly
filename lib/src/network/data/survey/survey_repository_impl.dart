@@ -21,7 +21,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
     List<Survey> list = [];
 
     var value = await ref
-        .orderBy(SurveyCollection.fieldDateCreate)
+        .orderBy(SurveyCollection.fieldDateCreate, descending: true)
         .limit(pageSize)
         .get();
     for (var doc in value.docs) {
@@ -45,7 +45,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
 
     var lastDoc = await ref.doc(lastSurvey.surveyId).get();
     var value = await ref
-        .orderBy(SurveyCollection.fieldDateCreate)
+        .orderBy(SurveyCollection.fieldDateCreate, descending: true)
         .startAfterDocument(lastDoc)
         .limit(pageSize)
         .get();
@@ -146,6 +146,36 @@ class SurveyRepositoryImpl implements SurveyRepository {
         question.surveyId = survey.surveyId;
         questionRepo.createQuestion(question);
       }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Survey?> fetchSurveyById(String surveyId) async {
+    try {
+      var value = await ref
+          .where(SurveyCollection.fieldSurveyId, isEqualTo: surveyId)
+          .get();
+      var data = value.docs[0].data();
+      Survey survey = Survey.fromMap(data);
+      survey.outlet = Outlet(
+        address: data[SurveyCollection.fieldAddress],
+        latitude: data[SurveyCollection.fieldLatitude],
+        longitude: data[SurveyCollection.fieldLongitude],
+      );
+      return survey;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> changeSurveyStatus(String surveyId, String newStatus) async {
+    try {
+      await ref.doc(surveyId).update({
+        SurveyCollection.fieldStatus: newStatus,
+      });
     } catch (e) {
       rethrow;
     }

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:survly/src/localization/localization_utils.dart';
+
 enum QuestionType {
   text(value: "text", label: "Text"),
   singleOption(value: "singleOption", label: "Single option"),
@@ -17,6 +19,13 @@ class Question {
   String question;
   String questionType;
   String surveyId;
+
+  String? getError() {
+    if (question == "") {
+      return S.text.errorQuestionContentEmpty;
+    }
+    return null;
+  }
 
   Question({
     this.questionId = "",

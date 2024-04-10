@@ -9,6 +9,20 @@ class QuestionWithOption extends Question {
 
   List<QuestionOption> optionList;
 
+  @override
+  String? getError() {
+    super.getError();
+    if (optionList.isEmpty) {
+      return S.text.errorOptionEmpty;
+    }
+    for (var option in optionList) {
+      if (option.getError() != null) {
+        return option.getError();
+      }
+    }
+    return null;
+  }
+
   QuestionWithOption({
     super.questionId = "",
     required super.questionIndex,

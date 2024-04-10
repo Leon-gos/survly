@@ -76,7 +76,7 @@ class SurveyView extends StatelessWidget {
                 onLoadMore: () =>
                     context.read<SurveyListBloc>().fetchMoreSurvey(),
                 onItemClick: (survey) {
-                  context.push(AppRouteNames.updateSurvey.path, extra: survey);
+                  context.push(AppRouteNames.reviewSurvey.path, extra: survey);
                 },
               ),
             )

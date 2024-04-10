@@ -15,4 +15,8 @@ abstract class SurveyRepository {
     required String fileLocalPath,
     required List<Question> questionList,
   });
+
+  Future<Survey?> fetchSurveyById(String surveyId);
+
+  Future<void> changeSurveyStatus(String surveyId, String newStatus);
 }

@@ -1,3 +1,5 @@
+import 'package:survly/src/localization/localization_utils.dart';
+
 class Outlet {
   String? address;
   double? latitude;
@@ -15,5 +17,12 @@ class Outlet {
       'latitude': latitude,
       'longitude': longitude,
     };
+  }
+
+  String? getError() {
+    if (latitude == null || longitude == null) {
+      return S.text.errorOutletEmpty;
+    }
+    return null;
   }
 }

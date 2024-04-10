@@ -9,7 +9,7 @@ class AppTextField extends StatelessWidget {
   final bool? obscureText;
   final String? errorText;
   final Widget? prefixIcon;
-  final bool isDisable;
+  final bool readOnly;
   final String? label;
   final TextEditingController? textController;
 
@@ -23,7 +23,7 @@ class AppTextField extends StatelessWidget {
     this.obscureText,
     this.errorText,
     this.prefixIcon,
-    this.isDisable = false,
+    this.readOnly = false,
     this.label,
     this.textController,
   });
@@ -41,9 +41,9 @@ class AppTextField extends StatelessWidget {
         errorText: errorText,
         prefixIcon: prefixIcon,
         prefixIconColor: Colors.grey,
-        enabled: !isDisable,
         label: label != null ? Text(label!) : null,
       ),
+      readOnly: readOnly,
       keyboardType: textInputType,
       obscureText: obscureText ?? false,
       onChanged: onTextChange,

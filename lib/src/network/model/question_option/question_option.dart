@@ -1,10 +1,20 @@
 import 'dart:convert';
 
+import 'package:survly/src/localization/localization_utils.dart';
+
 class QuestionOption {
   String questionOptionId;
   int questionOptionIndex;
   String option;
   String questionId;
+
+  String? getError() {
+    if (option == "") {
+      return S.text.errorOptionContentEmpty;
+    }
+    return null;
+  }
+
   QuestionOption({
     this.questionOptionId = "",
     required this.questionOptionIndex,
