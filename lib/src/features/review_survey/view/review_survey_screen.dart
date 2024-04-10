@@ -201,7 +201,6 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: AppTextField(
                 textController: titleController,
-                hintText: S.of(context).hintSurveyTitle,
                 label: S.of(context).hintSurveyTitle,
                 readOnly: true,
               ),
@@ -210,7 +209,6 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: AppTextField(
                 textController: descriptionController,
-                hintText: S.of(context).hintSurveyDescription,
                 label: S.of(context).hintSurveyDescription,
                 textInputType: TextInputType.multiline,
                 readOnly: true,
@@ -227,7 +225,6 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                     flex: 1,
                     child: AppTextField(
                       textController: respondentController,
-                      hintText: S.of(context).hintSurveyRespondentNumber,
                       label: S.of(context).hintSurveyRespondentNumber,
                       readOnly: true,
                     ),
@@ -239,7 +236,6 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                     flex: 1,
                     child: AppTextField(
                       textController: costController,
-                      hintText: S.of(context).hintSurveyCost,
                       label: S.of(context).hintSurveyCost,
                       readOnly: true,
                     ),
