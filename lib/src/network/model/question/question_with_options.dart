@@ -13,7 +13,7 @@ class QuestionWithOption extends Question {
   String? getError() {
     super.getError();
     if (optionList.isEmpty) {
-      return "Option empty";
+      return S.text.errorOptionEmpty;
     }
     for (var option in optionList) {
       if (option.getError() != null) {

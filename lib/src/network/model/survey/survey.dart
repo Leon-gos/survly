@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:survly/src/config/constants/firebase_collections.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
@@ -32,25 +33,25 @@ class Survey {
 
   String? _getSurveyError() {
     if (thumbnail == "") {
-      return "Thumbnail empty";
+      return S.text.errorThumbnailEmpty;
     }
     if (title == "") {
-      return "Title empty";
+      return S.text.errorTitleEmpty;
     }
     if (description == "") {
-      return "Description empty";
+      return S.text.errorDescriptionEmpty;
     }
     if (cost < 0) {
-      return "Cost invalid";
+      return S.text.errorCostInvalid;
     }
     if (dateStart == "") {
-      return "Start date empty";
+      return S.text.errorStartDateEmpty;
     }
     if (dateEnd == "") {
-      return "End date empty";
+      return S.text.errorEndDateEmpty;
     }
     if (respondentMax <= 0) {
-      return "Respondent invalid";
+      return S.text.errorRespondentInvalid;
     }
 
     String? outletError = outlet?.getError();
@@ -73,23 +74,23 @@ class Survey {
 
   String? getDraftError(String? adminId) {
     if (this.adminId != adminId) {
-      return "Not have permission";
+      return S.text.errorNoPermission;
     }
     if (status != SurveyStatus.public.value) {
-      return "Can only draft public survey";
+      return S.text.errorPublicToDraft;
     }
     if (respondentNum > 0) {
-      return "Can only draft public with no respondent";
+      return S.text.errorAlreadyHaveResponsent;
     }
     return null;
   }
 
   String? getPublishError(String? adminId, List<Question> questionList) {
     if (this.adminId != adminId) {
-      return "Not have permission";
+      return S.text.errorNoPermission;
     }
     if (status != SurveyStatus.draft.value) {
-      return "Can only publish draft survey";
+      return S.text.errorDraftToPublic;
     }
 
     String? surveyError = _getSurveyError();
@@ -98,7 +99,7 @@ class Survey {
     }
 
     if (questionList.isEmpty) {
-      return "Empty question";
+      return S.text.errorQuestionEmpty;
     }
 
     String? questionListError;
