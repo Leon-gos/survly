@@ -93,7 +93,6 @@ class _UpdateSurveyScreenState extends State<UpdateSurveyScreen> {
                   _buildSurveyTextfields(),
                   const Divider(),
                   _buildQuestionList(),
-                  // _buildSurveyStatus(),
                 ],
               ),
             ),
