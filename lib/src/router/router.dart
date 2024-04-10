@@ -9,6 +9,7 @@ import 'package:survly/src/features/dashboard/view/survey_view.dart';
 import 'package:survly/src/features/dashboard/view/user_view.dart';
 import 'package:survly/src/features/review_survey/view/review_survey_screen.dart';
 import 'package:survly/src/features/select_location/view/select_location_screen.dart';
+import 'package:survly/src/features/survey_request/view/survey_requests_screen.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/features/update_survey/view/update_survey_screen.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
@@ -68,6 +69,17 @@ class AppRouter {
           final survey = state.extra as Survey;
           return ReviewSurveyScreen(
             survey: survey,
+          );
+        },
+      ),
+      GoRoute(
+        name: AppRouteNames.surveyRequest.name,
+        path: AppRouteNames.surveyRequest.path,
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        builder: (context, state) {
+          final surveyId = state.extra as String?;
+          return SurveyRequestScreen(
+            surveyId: surveyId,
           );
         },
       ),

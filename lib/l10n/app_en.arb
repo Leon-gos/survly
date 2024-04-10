@@ -55,6 +55,7 @@
     "dialogBodyPublishSurvey": "Are you sure to publish this survey?",
     "dialogTitleDraftSurvey": "Draft survey",
     "dialogBodyDraftSurvey": "Are you sure to draft this survey?",
+    "labelBtnViewRequestList": "View requests",
 
     "errorGeneral": "Something went wrong",
     "errorEmptyName": "Empty name",

@@ -97,6 +97,16 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                         child: Text(S.of(context).labelBtnViewAsUser),
                         onTap: () {},
                       ),
+                      if (state.survey.status == SurveyStatus.public.value)
+                        PopupMenuItem(
+                          child: Text(S.of(context).labelBtnViewRequestList),
+                          onTap: () {
+                            context.push(
+                              AppRouteNames.surveyRequest.path,
+                              extra: state.survey.surveyId,
+                            );
+                          },
+                        ),
                       if (state.survey
                           .ableToEdit(AdminSingleton.instance().admin?.id)) ...[
                         PopupMenuItem(
