@@ -11,7 +11,7 @@ class UserRepositoryImpl implements UserRepository {
       FirebaseFirestore.instance.collection(UserCollection.collectionName);
 
   @override
-  Future<UserBase?> getUserByEmail(String email) async {
+  Future<UserBase?> fetchUserByEmail(String email) async {
     try {
       var value =
           await ref.where(UserCollection.fieldEmail, isEqualTo: email).get();
@@ -23,6 +23,17 @@ class UserRepositoryImpl implements UserRepository {
       }
     } catch (e) {
       Logger().e("Get user info error", error: e);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<User?> fetchUserById(String userId) async {
+    try {
+      var doc = await ref.doc(userId).get();
+      return User.fromMap(doc.data()!);
+    } catch (e) {
+      Logger().e("Error get user by id", error: e);
       rethrow;
     }
   }

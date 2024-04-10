@@ -23,7 +23,7 @@ class DashboardBloc extends Cubit<DashboardState> {
     var loginInfo = await domain.authenticationLocal.readLoginInfo();
 
     try {
-      await domain.user.getUserByEmail(loginInfo!.email).then((value) {
+      await domain.user.fetchUserByEmail(loginInfo!.email).then((value) {
         AdminSingleton.instance().admin = value as Admin;
         emit(state.copyWith(status: DashboardStatus.done));
       });

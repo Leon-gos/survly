@@ -53,4 +53,5 @@ class SurveyRequestCollection {
   static const String fieldUserId = "userId";
   static const String fieldDateCreate = "dateCreate";
   static const String fieldStatus = "status";
+  static const String fieldMessage = "message";
 }

@@ -13,4 +13,8 @@ class AppColors {
 
   // white
   static const white = Colors.white;
+
+  static const positive = Colors.green;
+
+  static const negative = Colors.red;
 }

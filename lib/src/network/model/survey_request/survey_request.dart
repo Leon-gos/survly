@@ -18,6 +18,7 @@ class SurveyRequest {
   String userId;
   String dateRequest;
   String status;
+  String message;
   User? user;
 
   SurveyRequest({
@@ -26,6 +27,7 @@ class SurveyRequest {
     required this.userId,
     required this.dateRequest,
     required this.status,
+    required this.message,
     this.user,
   });
 
@@ -35,6 +37,7 @@ class SurveyRequest {
       'surveyId': surveyId,
       'userId': userId,
       'dateRequest': dateRequest,
+      'message': message,
       'status': status,
     };
   }
@@ -46,6 +49,7 @@ class SurveyRequest {
       userId: map['userId']?.toString() ?? "",
       dateRequest: map['dateRequest']?.toString() ?? "",
       status: map['status']?.toString() ?? "",
+      message: map['message']?.toString() ?? "",
     );
   }
 

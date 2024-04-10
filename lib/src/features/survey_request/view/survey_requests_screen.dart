@@ -34,7 +34,13 @@ class SurveyRequestScreen extends StatelessWidget {
           itemCount: state.surveyRequestList.length,
           itemBuilder: (context, index) {
             var request = state.surveyRequestList[index];
-            return RequestCard(request: request);
+            return Container(
+              margin: const EdgeInsets.symmetric(
+                vertical: 8,
+                horizontal: 16,
+              ),
+              child: RequestCard(request: request),
+            );
           },
         );
       },
