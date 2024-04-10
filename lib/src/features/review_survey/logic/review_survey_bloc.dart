@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/review_survey/logic/review_survey_state.dart';
 import 'package:survly/src/localization/localization_utils.dart';
@@ -40,55 +41,41 @@ class ReviewSurveyBloc extends Cubit<ReviewSurveyState> {
     );
   }
 
-  void publishSurvey() {
-    emit(
-      state.copyWith(
-        survey: state.survey.copyWith(status: SurveyStatus.public.value),
-      ),
-    );
-    Fluttertoast.showToast(msg: "Change status successfully");
-
-    // if (surveyInfoValid() && questionListValid()) {
-    //   emit(
-    //     state.copyWith(
-    //       survey: state.survey.copyWith(status: SurveyStatus.public.value),
-    //     ),
-    //   );
-    //   Fluttertoast.showToast(msg: "Change status successfully");
-    // } else {
-    //   Fluttertoast.showToast(msg: "Change status failed");
-    // }
+  Future<void> publishSurvey() async {
+    try {
+      await domainManager.survey.changeSurveyStatus(
+        state.survey.surveyId,
+        SurveyStatus.public.value,
+      );
+      emit(
+        state.copyWith(
+          survey: state.survey.copyWith(status: SurveyStatus.public.value),
+        ),
+      );
+      Fluttertoast.showToast(msg: S.text.toastPublishSurveySuccess);
+    } catch (e) {
+      Logger().e("Publish error", error: e);
+      Fluttertoast.showToast(msg: S.text.errorGeneral);
+      Fluttertoast.showToast(msg: S.text.toastPublishSurveyFail);
+    }
   }
 
-  void draftSurvey() {
-    emit(
-      state.copyWith(
-        survey: state.survey.copyWith(status: SurveyStatus.draft.value),
-      ),
-    );
-    Fluttertoast.showToast(msg: "Change status successfully");
+  Future<void> draftSurvey() async {
+    try {
+      await domainManager.survey.changeSurveyStatus(
+        state.survey.surveyId,
+        SurveyStatus.draft.value,
+      );
+      emit(
+        state.copyWith(
+          survey: state.survey.copyWith(status: SurveyStatus.draft.value),
+        ),
+      );
+      Fluttertoast.showToast(msg: S.text.toastDraftSurveySuccess);
+    } catch (e) {
+      Logger().e("Draft error", error: e);
+      Fluttertoast.showToast(msg: S.text.errorGeneral);
+      Fluttertoast.showToast(msg: S.text.toastDraftSurveyFail);
+    }
   }
-
-  // bool surveyInfoValid() {
-  //   var error = state.survey.getError();
-  //   if (error != null) {
-  //     Fluttertoast.showToast(msg: error);
-  //     return false;
-  //   }
-  //   return true;
-  // }
-
-  // bool questionListValid() {
-  //   if (state.questionList.isEmpty) {
-  //     Fluttertoast.showToast(msg: "Question list empty");
-  //     return false;
-  //   }
-  //   for (var question in state.questionList) {
-  //     if (question.getError() != null) {
-  //       Fluttertoast.showToast(msg: question.getError()!);
-  //       return false;
-  //     }
-  //   }
-  //   return true;
-  // }
 }

@@ -73,7 +73,7 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
       create: (context) => ReviewSurveyBloc(widget.survey),
       lazy: false,
       child: BlocBuilder<ReviewSurveyBloc, ReviewSurveyState>(
-        buildWhen: (previous, current) => false,
+        buildWhen: (previous, current) => previous.survey != current.survey,
         builder: (context, state) {
           return Scaffold(
             appBar: AppAppBarWidget(
@@ -265,7 +265,10 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
             ),
             GestureDetector(
               onTap: () async {
-                context.push(AppRouteNames.selectLocation.path);
+                context.push(
+                  AppRouteNames.selectLocation.path,
+                  extra: state.survey.outlet,
+                );
               },
               child: Container(
                 width: double.infinity,
@@ -306,7 +309,6 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
 
   Widget _buildSurveyStatus() {
     return BlocBuilder<ReviewSurveyBloc, ReviewSurveyState>(
-      buildWhen: (previous, current) => previous.survey != current.survey,
       builder: (context, state) {
         return GestureDetector(
           onTap: () {
@@ -322,8 +324,8 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                   context: context,
                   builder: (dialogContext) {
                     return AppDialog(
-                      title: "Publish survey",
-                      body: "Are you sure to publish this survey?",
+                      title: S.of(context).dialogTitlePublishSurvey,
+                      body: S.of(context).dialogBodyPublishSurvey,
                       onConfirmPressed: () {
                         context.read<ReviewSurveyBloc>().publishSurvey();
                       },
@@ -343,8 +345,8 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                   context: context,
                   builder: (dialogContext) {
                     return AppDialog(
-                      title: "Draft survey",
-                      body: "Are you sure to draft this survey?",
+                      title: S.of(context).dialogTitleDraftSurvey,
+                      body: S.of(context).dialogBodyDraftSurvey,
                       onConfirmPressed: () {
                         context.read<ReviewSurveyBloc>().draftSurvey();
                       },
@@ -369,9 +371,11 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
               width: double.infinity,
               margin: const EdgeInsets.all(8),
               padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                color: AppColors.secondary,
-                borderRadius: BorderRadius.all(Radius.circular(0)),
+              decoration: BoxDecoration(
+                color: state.survey.status == SurveyStatus.public.value
+                    ? AppColors.primary
+                    : AppColors.secondary,
+                borderRadius: const BorderRadius.all(Radius.circular(0)),
               ),
               child: Center(
                 child: Row(

@@ -169,4 +169,15 @@ class SurveyRepositoryImpl implements SurveyRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<void> changeSurveyStatus(String surveyId, String newStatus) async {
+    try {
+      await ref.doc(surveyId).update({
+        SurveyCollection.fieldStatus: newStatus,
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

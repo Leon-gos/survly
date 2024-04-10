@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:logger/logger.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
@@ -99,6 +100,7 @@ class Survey {
     }
 
     if (questionList.isEmpty) {
+      Logger().e(questionList.length);
       return S.text.errorQuestionEmpty;
     }
 

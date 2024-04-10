@@ -17,4 +17,6 @@ abstract class SurveyRepository {
   });
 
   Future<Survey?> fetchSurveyById(String surveyId);
+
+  Future<void> changeSurveyStatus(String surveyId, String newStatus);
 }

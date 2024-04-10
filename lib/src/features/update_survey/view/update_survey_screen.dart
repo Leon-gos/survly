@@ -306,7 +306,10 @@ class _UpdateSurveyScreenState extends State<UpdateSurveyScreen> {
             ),
             GestureDetector(
               onTap: () async {
-                context.push(AppRouteNames.selectLocation.path).then(
+                context
+                    .push(AppRouteNames.selectLocation.path,
+                        extra: state.survey.outlet)
+                    .then(
                   (value) {
                     var outlet = value as Outlet?;
                     context

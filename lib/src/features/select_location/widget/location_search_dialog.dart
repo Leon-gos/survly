@@ -28,7 +28,6 @@ class LocationSearchDialog extends StatelessWidget {
             return TextField(
               controller: controller,
               focusNode: focusNode,
-              autofocus: true,
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
                 labelText: S.of(context).labelFindPlace,
