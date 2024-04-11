@@ -102,7 +102,7 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
         fileLocalPath: state.imageLocalPath,
         questionList: state.questionList,
       );
-      Fluttertoast.showToast(msg: "Update survey successfully");
+      Fluttertoast.showToast(msg: S.text.toastUpdateSurveySuccess);
       popScreen();
     } catch (e) {
       Logger().e(e);

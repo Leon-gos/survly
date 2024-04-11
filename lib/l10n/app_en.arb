@@ -67,6 +67,11 @@
     "message": "Message: ",
     "labelBtnAccept": "Accept",
     "labelBtnDeny": "Deny",
+    "dialogTitleArchiveSurvey": "Remove survey",
+    "dialogBodyArchiveSurvey": "Are you sure to remove this survey?",
+    "toastUpdateSurveySuccess": "Update survey successfully",
+    "dialogTitleUpdateSurvey": "Update survey",
+    "dialogBodyUpdateSurvey": "Are you sure to save change?",
 
     "errorGeneral": "Something went wrong",
     "errorEmptyName": "Empty name",

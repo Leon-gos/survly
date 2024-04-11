@@ -422,8 +422,8 @@ class _UpdateSurveyScreenState extends State<UpdateSurveyScreen> {
           context: context,
           builder: (dialogContext) {
             return AppDialog(
-              title: "Update survey",
-              body: "Are you sure to save change?",
+              title: S.text.dialogTitleUpdateSurvey,
+              body: S.text.dialogBodyUpdateSurvey,
               onCancelPressed: () {},
               onConfirmPressed: () {
                 context.read<UpdateSurveyBloc>().saveSurvey();

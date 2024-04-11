@@ -144,8 +144,8 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                               context: context,
                               builder: (dialogContext) {
                                 return AppDialog(
-                                  title: "Remove survey",
-                                  body: "Are you sure to remove this survey?",
+                                  title: S.of(context).dialogTitleArchiveSurvey,
+                                  body: S.of(context).dialogBodyArchiveSurvey,
                                   onCancelPressed: () {},
                                   onConfirmPressed: () {
                                     context
