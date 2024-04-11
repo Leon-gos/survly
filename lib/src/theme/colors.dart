@@ -14,7 +14,9 @@ class AppColors {
   // white
   static const white = Colors.white;
 
+  // Use for positive feedback, typically success messages
   static const positive = Colors.green;
 
+  // Use for negative feedback, typically error messages
   static const negative = Colors.red;
 }

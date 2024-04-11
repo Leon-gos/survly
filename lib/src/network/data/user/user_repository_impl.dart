@@ -16,6 +16,7 @@ class UserRepositoryImpl implements UserRepository {
       var value =
           await ref.where(UserCollection.fieldEmail, isEqualTo: email).get();
       var docData = value.docs[0].data();
+      docData[UserCollection.fieldUserId] = value.docs[0].id;
       if (docData[UserCollection.fieldRole] == UserBase.roleAdmin) {
         return Admin.fromMap(docData);
       } else {

@@ -3,24 +3,35 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:survly/src/features/survey_request/logic/survey_request_bloc.dart';
 import 'package:survly/src/features/survey_request/logic/survey_request_state.dart';
 import 'package:survly/src/features/survey_request/widget/request_card.dart';
+import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
+import 'package:survly/src/network/model/survey/survey.dart';
+import 'package:survly/src/network/model/survey_request/survey_request.dart';
 import 'package:survly/widgets/app_app_bar.dart';
+import 'package:survly/widgets/app_dialog.dart';
+import 'package:survly/widgets/app_loading_circle.dart';
 
 class SurveyRequestScreen extends StatelessWidget {
-  const SurveyRequestScreen({super.key, this.surveyId});
+  const SurveyRequestScreen({super.key, required this.survey});
 
-  final String? surveyId;
+  final Survey survey;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SurveyRequestBloc(surveyId),
+      create: (context) => SurveyRequestBloc(survey),
       child: BlocBuilder<SurveyRequestBloc, SurveyRequestState>(
+        buildWhen: (previous, current) =>
+            previous.isLoading != current.isLoading,
         builder: (context, state) {
           return Scaffold(
             appBar: const AppAppBarWidget(
               title: "Request list",
             ),
-            body: _buildRequestList(),
+            body: state.isLoading
+                ? const Center(
+                    child: AppLoadingCircle(),
+                  )
+                : _buildRequestList(),
           );
         },
       ),
@@ -30,7 +41,60 @@ class SurveyRequestScreen extends StatelessWidget {
   Widget _buildRequestList() {
     return BlocBuilder<SurveyRequestBloc, SurveyRequestState>(
       builder: (context, state) {
+        if (state.survey.ableToResponseRequest(
+          AdminSingleton.instance().admin?.id,
+        )) {
+          return ListView.builder(
+            padding: const EdgeInsets.only(top: 8, bottom: 32),
+            itemCount: state.surveyRequestList.length,
+            itemBuilder: (context, index) {
+              var request = state.surveyRequestList[index];
+              return Container(
+                margin: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 16,
+                ),
+                child: RequestCard(
+                  request: request,
+                  onAccept: () {
+                    showDialog(
+                      context: context,
+                      builder: (dialogContext) {
+                        return AppDialog(
+                          title: "Accept request",
+                          body: "Are you sure to accept this request?",
+                          onConfirmPressed: () {
+                            context.read<SurveyRequestBloc>().reponseRequest(
+                                request, SurveyRequestStatus.accepted);
+                          },
+                          onCancelPressed: () {},
+                        );
+                      },
+                    );
+                  },
+                  onDeny: () {
+                    showDialog(
+                      context: context,
+                      builder: (dialogContext) {
+                        return AppDialog(
+                          title: "Deny request",
+                          body: "Are you sure to deny this request?",
+                          onConfirmPressed: () {
+                            context.read<SurveyRequestBloc>().reponseRequest(
+                                request, SurveyRequestStatus.denied);
+                          },
+                          onCancelPressed: () {},
+                        );
+                      },
+                    );
+                  },
+                ),
+              );
+            },
+          );
+        }
         return ListView.builder(
+          padding: const EdgeInsets.only(top: 8, bottom: 32),
           itemCount: state.surveyRequestList.length,
           itemBuilder: (context, index) {
             var request = state.surveyRequestList[index];

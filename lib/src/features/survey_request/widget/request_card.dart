@@ -5,8 +5,15 @@ import 'package:survly/widgets/app_avatar_widget.dart';
 
 class RequestCard extends StatelessWidget {
   final SurveyRequest request;
+  final Function()? onAccept;
+  final Function()? onDeny;
 
-  const RequestCard({super.key, required this.request});
+  const RequestCard({
+    super.key,
+    required this.request,
+    this.onAccept,
+    this.onDeny,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -73,20 +80,47 @@ class RequestCard extends StatelessWidget {
 
   Widget _buildStatusIcon() {
     if (request.status == SurveyRequestStatus.accepted.value) {
-      return const Icon(
-        Icons.check_circle_outline_outlined,
-        color: AppColors.primary,
+      return const Padding(
+        padding: EdgeInsets.all(12.0),
+        child: Icon(
+          Icons.check_box_outlined,
+          color: AppColors.primary,
+        ),
       );
     }
     if (request.status == SurveyRequestStatus.denied.value) {
-      return const Icon(
-        Icons.disabled_by_default_outlined,
-        color: AppColors.negative,
+      return const Padding(
+        padding: EdgeInsets.all(12.0),
+        child: Icon(
+          Icons.disabled_by_default_outlined,
+          color: AppColors.negative,
+        ),
       );
     }
-    return IconButton(
-      onPressed: () {},
-      icon: const Icon(Icons.more_vert),
-    );
+    if (onAccept != null && onDeny != null) {
+      return PopupMenuButton(
+        icon: const Icon(Icons.more_vert),
+        color: AppColors.white,
+        itemBuilder: (context) {
+          return [
+            PopupMenuItem(
+              onTap: onAccept,
+              child: const ListTile(
+                title: Text("Accept"),
+                leading: Icon(Icons.check_box_outlined),
+              ),
+            ),
+            PopupMenuItem(
+              onTap: onDeny,
+              child: const ListTile(
+                title: Text("Deny"),
+                leading: Icon(Icons.disabled_by_default_outlined),
+              ),
+            ),
+          ];
+        },
+      );
+    }
+    return const SizedBox();
   }
 }

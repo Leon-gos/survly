@@ -103,7 +103,7 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                           onTap: () {
                             context.push(
                               AppRouteNames.surveyRequest.path,
-                              extra: state.survey.surveyId,
+                              extra: state.survey,
                             );
                           },
                         ),

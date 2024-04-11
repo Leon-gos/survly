@@ -77,9 +77,9 @@ class AppRouter {
         path: AppRouteNames.surveyRequest.path,
         parentNavigatorKey: AppCoordinator.navigatorKey,
         builder: (context, state) {
-          final surveyId = state.extra as String?;
+          final survey = state.extra as Survey;
           return SurveyRequestScreen(
-            surveyId: surveyId,
+            survey: survey,
           );
         },
       ),

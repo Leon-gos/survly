@@ -57,4 +57,24 @@ class SurveyRequest {
 
   factory SurveyRequest.fromJson(String source) =>
       SurveyRequest.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  SurveyRequest copyWith({
+    String? requestId,
+    String? surveyId,
+    String? userId,
+    String? dateRequest,
+    String? status,
+    String? message,
+    User? user,
+  }) {
+    return SurveyRequest(
+      requestId: requestId ?? this.requestId,
+      surveyId: surveyId ?? this.surveyId,
+      userId: userId ?? this.userId,
+      dateRequest: dateRequest ?? this.dateRequest,
+      status: status ?? this.status,
+      message: message ?? this.message,
+      user: user ?? this.user,
+    );
+  }
 }
