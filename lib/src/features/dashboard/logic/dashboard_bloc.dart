@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/dashboard/logic/dashboard_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
+import 'package:survly/src/network/model/admin/admin.dart';
 import 'package:survly/src/router/coordinator.dart';
 
 class DashboardBloc extends Cubit<DashboardState> {
@@ -22,8 +23,8 @@ class DashboardBloc extends Cubit<DashboardState> {
     var loginInfo = await domain.authenticationLocal.readLoginInfo();
 
     try {
-      await domain.admin.getAdminByEmail(loginInfo!.email).then((value) {
-        AdminSingleton.instance().admin = value;
+      await domain.user.fetchUserByEmail(loginInfo!.email).then((value) {
+        AdminSingleton.instance().admin = value as Admin;
         emit(state.copyWith(status: DashboardStatus.done));
       });
     } catch (e) {

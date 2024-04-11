@@ -25,4 +25,8 @@ class Outlet {
     }
     return null;
   }
+
+  bool hasCoordinate() {
+    return latitude != null && longitude != null;
+  }
 }

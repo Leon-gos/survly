@@ -68,7 +68,7 @@ class SelectLocationScreen extends StatelessWidget {
       builder: (context, state) {
         return GoogleMap(
           initialCameraPosition: CameraPosition(
-            target: state.searchedLocation != null
+            target: state.searchedLocation!.hasCoordinate()
                 ? LatLng(
                     state.searchedLocation!.latitude!,
                     state.searchedLocation!.longitude!,
@@ -84,7 +84,7 @@ class SelectLocationScreen extends StatelessWidget {
           markers: {
             Marker(
               markerId: const MarkerId("outlet-place"),
-              position: state.searchedLocation != null
+              position: state.searchedLocation!.hasCoordinate()
                   ? LatLng(state.searchedLocation!.latitude!,
                       state.searchedLocation!.longitude!)
                   : state.currentLocation!,
@@ -133,11 +133,11 @@ class SelectLocationScreen extends StatelessWidget {
                 context.read<SelectLocationBloc>().pop();
               },
               icon: Icon(
-                state.searchedLocation != null
+                state.searchedLocation!.hasCoordinate()
                     ? Icons.check
                     : Icons.pending_outlined,
               ),
-              color: state.searchedLocation != null
+              color: state.searchedLocation!.hasCoordinate()
                   ? AppColors.primary
                   : AppColors.secondary,
               style: ButtonStyle(
@@ -147,7 +147,7 @@ class SelectLocationScreen extends StatelessWidget {
                 side: MaterialStateProperty.all(
                   BorderSide(
                     width: 2,
-                    color: state.searchedLocation != null
+                    color: state.searchedLocation!.hasCoordinate()
                         ? AppColors.primary
                         : AppColors.secondary,
                   ),

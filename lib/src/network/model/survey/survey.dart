@@ -6,6 +6,7 @@ import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
+import 'package:survly/src/utils/date_helper.dart';
 
 enum SurveyStatus {
   draft(value: "draft"),
@@ -69,6 +70,28 @@ class Survey {
     }
     if (status != SurveyStatus.draft.value) {
       return false;
+    }
+    return true;
+  }
+
+  bool ableToResponseRequest(String? adminId) {
+    if (this.adminId != adminId) {
+      return false;
+    }
+    if (status != SurveyStatus.public.value) {
+      return false;
+    }
+    try {
+      // check if today is before survey start date at least 2 days
+      if (!DateTime.now().isBefore(
+        DateHelper.parseDateOnly(dateStart)!.add(
+          const Duration(days: -1),
+        ),
+      )) {
+        return false;
+      }
+    } catch (e) {
+      Logger().e("Cannot parse date", error: e);
     }
     return true;
   }

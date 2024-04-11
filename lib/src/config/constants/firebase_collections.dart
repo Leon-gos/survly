@@ -1,6 +1,6 @@
-class AdminCollection {
-  static const String collectionName = "admin";
-  static const String fieldAdminId = "id";
+class UserCollection {
+  static const String collectionName = "user";
+  static const String fieldUserId = "id";
   static const String fieldFullname = "fullname";
   static const String fieldEmail = "email";
   static const String fieldAvatar = "avatar";
@@ -8,6 +8,7 @@ class AdminCollection {
   static const String fieldBirthDate = "birthDate";
   static const String fieldPhone = "phone";
   static const String fieldRole = "role";
+  static const String fieldBalance = "balance";
 }
 
 class SurveyCollection {
@@ -43,4 +44,14 @@ class OptionCollection {
   static const String fieldQuestionOptionIndex = "questionOptionIndex";
   static const String fieldOption = "option";
   static const String fieldQuestionId = "questionId";
+}
+
+class SurveyRequestCollection {
+  static const String collectionName = "surveyRequest";
+  static const String fieldRequestId = "requestId";
+  static const String fieldSurveyId = "surveyId";
+  static const String fieldUserId = "userId";
+  static const String fieldDateCreate = "dateCreate";
+  static const String fieldStatus = "status";
+  static const String fieldMessage = "message";
 }
