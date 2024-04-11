@@ -63,6 +63,7 @@ class _SurveyListWidgetState extends State<SurveyListWidget> {
             flex: 1,
             child: ListView.builder(
               padding: const EdgeInsets.only(bottom: 50),
+              physics: const AlwaysScrollableScrollPhysics(),
               controller: scrollController,
               itemCount: widget.surveyList.length,
               itemBuilder: (context, index) {
