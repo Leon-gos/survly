@@ -139,7 +139,23 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                           },
                         ),
                         PopupMenuItem(
-                          onTap: context.read<ReviewSurveyBloc>().archiveSurvey,
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (dialogContext) {
+                                return AppDialog(
+                                  title: "Remove survey",
+                                  body: "Are you sure to remove this survey?",
+                                  onCancelPressed: () {},
+                                  onConfirmPressed: () {
+                                    context
+                                        .read<ReviewSurveyBloc>()
+                                        .archiveSurvey();
+                                  },
+                                );
+                              },
+                            );
+                          },
                           child: Text(S.of(context).labelBtnRemove),
                         ),
                       ],

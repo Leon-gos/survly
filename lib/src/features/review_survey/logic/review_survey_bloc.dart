@@ -89,15 +89,19 @@ class ReviewSurveyBloc extends Cubit<ReviewSurveyState> {
         SurveyStatus.archived.value,
       );
       emit(state.copyWith(isChanged: true));
-      popScreen();
+      popScreen(isArchive: true);
     } catch (e) {
       Logger().e("Archive error", error: e);
       Fluttertoast.showToast(msg: S.text.errorGeneral);
     }
   }
 
-  void popScreen() {
-    AppCoordinator.pop(state.isChanged);
+  void popScreen({bool? isArchive}) {
+    if (isArchive == true) {
+      AppCoordinator.pop(isArchive);
+    } else {
+      AppCoordinator.pop(state.survey);
+    }
   }
 
   void hasUpdate() {
