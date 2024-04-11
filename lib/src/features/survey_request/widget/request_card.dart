@@ -49,8 +49,6 @@ class RequestCard extends StatelessWidget {
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   Text(request.user?.email ?? ""),
-                  // Text(request.dateRequest),
-                  // Text(request.status),
                 ],
               ),
               const Spacer(),
