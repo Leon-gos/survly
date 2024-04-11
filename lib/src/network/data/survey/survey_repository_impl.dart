@@ -26,6 +26,11 @@ class SurveyRepositoryImpl implements SurveyRepository {
         .get();
     for (var doc in value.docs) {
       var data = doc.data();
+
+      if (data[SurveyCollection.fieldStatus] == SurveyStatus.archived.value) {
+        continue;
+      }
+
       data[SurveyCollection.fieldSurveyId] = doc.id;
       var survey = Survey.fromMap(data);
       survey.outlet = Outlet(
@@ -51,6 +56,11 @@ class SurveyRepositoryImpl implements SurveyRepository {
         .get();
     for (var doc in value.docs) {
       var data = doc.data();
+
+      if (data[SurveyCollection.fieldStatus] == SurveyStatus.archived.value) {
+        continue;
+      }
+
       data[SurveyCollection.fieldSurveyId] = doc.id;
       var survey = Survey.fromMap(data);
       survey.outlet = Outlet(

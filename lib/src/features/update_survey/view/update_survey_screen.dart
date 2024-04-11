@@ -14,7 +14,9 @@ import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
+import 'package:survly/widgets/app_dialog.dart';
 import 'package:survly/widgets/app_image_picker.dart';
+import 'package:survly/widgets/app_loading_circle.dart';
 import 'package:survly/widgets/app_text_field.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -68,22 +70,21 @@ class _UpdateSurveyScreenState extends State<UpdateSurveyScreen> {
       create: (context) => UpdateSurveyBloc(widget.survey),
       lazy: false,
       child: BlocBuilder<UpdateSurveyBloc, UpdateSurveyState>(
-        buildWhen: (previous, current) => false,
+        buildWhen: (previous, current) =>
+            previous.isLoading != current.isLoading ||
+            previous.isChanged != current.isChanged,
         builder: (context, state) {
+          if (state.isLoading) {
+            return const Scaffold(
+              body: AppLoadingCircle(),
+            );
+          }
           return Scaffold(
             appBar: AppAppBarWidget(
               title: S.of(context).titleUpdateSurvey,
               centerTitle: true,
               actions: [
-                IconButton(
-                  onPressed: () {
-                    context.read<UpdateSurveyBloc>().saveSurvey();
-                  },
-                  icon: const Icon(
-                    Icons.save,
-                    color: AppColors.white,
-                  ),
-                ),
+                if (state.isChanged) _buildSaveButton(context),
               ],
             ),
             body: SingleChildScrollView(
@@ -410,6 +411,30 @@ class _UpdateSurveyScreenState extends State<UpdateSurveyScreen> {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildSaveButton(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (dialogContext) {
+            return AppDialog(
+              title: S.text.dialogTitleUpdateSurvey,
+              body: S.text.dialogBodyUpdateSurvey,
+              onCancelPressed: () {},
+              onConfirmPressed: () {
+                context.read<UpdateSurveyBloc>().saveSurvey();
+              },
+            );
+          },
+        );
+      },
+      icon: const Icon(
+        Icons.save,
+        color: AppColors.white,
       ),
     );
   }

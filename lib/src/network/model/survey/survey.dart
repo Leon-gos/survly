@@ -187,7 +187,6 @@ class Survey {
       respondentMax: respondentMax,
       respondentNum: respondentNum,
       status: status,
-      outlet: outlet,
       adminId: adminId,
     );
     survey.dateCreate =
@@ -195,6 +194,7 @@ class Survey {
     survey.dateUpdate =
         dateUpdate != "" ? dateUpdate : DateTime.now().toString();
     survey.status = SurveyStatus.draft.value;
+    survey.outlet = Outlet(latitude: null, longitude: null);
     survey.adminId = adminId;
     return survey;
   }

@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/dashboard/logic/survey_list_state.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 
 class SurveyListBloc extends Cubit<SurveyListState> {
@@ -11,7 +12,7 @@ class SurveyListBloc extends Cubit<SurveyListState> {
 
   DomainManager domainManager = DomainManager();
 
-  void onSurveyListChange(List<Survey> list) {
+  void concatSurveyList(List<Survey> list) {
     List<Survey> newList = List.from(state.surveyList);
     newList.addAll(list);
     emit(state.copyWith(surveyList: newList, isLoading: false));
@@ -21,7 +22,7 @@ class SurveyListBloc extends Cubit<SurveyListState> {
     emit(state.copyWith(surveyList: []));
     try {
       var surveyList = await domainManager.survey.fetchFirstPageSurvey();
-      onSurveyListChange(surveyList);
+      concatSurveyList(surveyList);
     } catch (e) {
       Logger().e("Failed to fetch first page of surveys", error: e);
       emit(
@@ -36,15 +37,34 @@ class SurveyListBloc extends Cubit<SurveyListState> {
         List<Survey> surveyList = await domainManager.survey.fetchMoreSurvey(
             lastSurvey: state.surveyList[state.surveyList.length - 1]);
         Logger().d(surveyList.length);
-        onSurveyListChange(surveyList);
+        concatSurveyList(surveyList);
       } catch (e) {
         Logger().e("Failed to fetch more surveys", error: e);
-        // Consider emitting a state to reflect the error
       }
     }
   }
 
   void filterSurveyList(bool isShowMySurvey) {
     emit(state.copyWith(isShowMySurvey: isShowMySurvey));
+  }
+
+  void onSurveyListItemChange(Survey oldSurvey, Survey newSurvey) {
+    try {
+      List<Survey> newList = List.from(state.surveyList);
+      newList[state.surveyList.indexOf(oldSurvey)] = newSurvey;
+      emit(state.copyWith(surveyList: newList));
+    } catch (e) {
+      Logger().e(S.text.errorGeneral, error: e);
+    }
+  }
+
+  void archiveSurvey(Survey survey) {
+    try {
+      List<Survey> newList = List.from(state.surveyList);
+      newList.removeAt(state.surveyList.indexOf(survey));
+      emit(state.copyWith(surveyList: newList));
+    } catch (e) {
+      Logger().e(S.text.errorGeneral, error: e);
+    }
   }
 }

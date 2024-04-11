@@ -7,6 +7,7 @@ import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/review_survey/logic/review_survey_state.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
+import 'package:survly/src/router/coordinator.dart';
 
 class ReviewSurveyBloc extends Cubit<ReviewSurveyState> {
   ReviewSurveyBloc(Survey survey)
@@ -50,6 +51,7 @@ class ReviewSurveyBloc extends Cubit<ReviewSurveyState> {
       emit(
         state.copyWith(
           survey: state.survey.copyWith(status: SurveyStatus.public.value),
+          isChanged: true,
         ),
       );
       Fluttertoast.showToast(msg: S.text.toastPublishSurveySuccess);
@@ -69,6 +71,7 @@ class ReviewSurveyBloc extends Cubit<ReviewSurveyState> {
       emit(
         state.copyWith(
           survey: state.survey.copyWith(status: SurveyStatus.draft.value),
+          isChanged: true,
         ),
       );
       Fluttertoast.showToast(msg: S.text.toastDraftSurveySuccess);
@@ -77,5 +80,31 @@ class ReviewSurveyBloc extends Cubit<ReviewSurveyState> {
       Fluttertoast.showToast(msg: S.text.errorGeneral);
       Fluttertoast.showToast(msg: S.text.toastDraftSurveyFail);
     }
+  }
+
+  Future<void> archiveSurvey() async {
+    try {
+      await domainManager.survey.changeSurveyStatus(
+        state.survey.surveyId,
+        SurveyStatus.archived.value,
+      );
+      emit(state.copyWith(isChanged: true));
+      popScreen(isArchive: true);
+    } catch (e) {
+      Logger().e("Archive error", error: e);
+      Fluttertoast.showToast(msg: S.text.errorGeneral);
+    }
+  }
+
+  void popScreen({bool? isArchive}) {
+    if (isArchive == true) {
+      AppCoordinator.pop(isArchive);
+    } else {
+      AppCoordinator.pop(state.survey);
+    }
+  }
+
+  void hasUpdate() {
+    emit(state.copyWith(isChanged: true));
   }
 }

@@ -5,6 +5,7 @@ import 'package:survly/src/features/dashboard/logic/survey_list_bloc.dart';
 import 'package:survly/src/features/dashboard/logic/survey_list_state.dart';
 import 'package:survly/src/features/dashboard/widget/survey_list_widget.dart';
 import 'package:survly/src/localization/localization_utils.dart';
+import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 import 'package:survly/widgets/app_text_field.dart';
@@ -75,8 +76,24 @@ class SurveyView extends StatelessWidget {
                     context.read<SurveyListBloc>().fetchFirstPageSurvey(),
                 onLoadMore: () =>
                     context.read<SurveyListBloc>().fetchMoreSurvey(),
-                onItemClick: (survey) {
-                  context.push(AppRouteNames.reviewSurvey.path, extra: survey);
+                onItemClick: (survey) async {
+                  await context
+                      .push(AppRouteNames.reviewSurvey.path, extra: survey)
+                      .then(
+                    (value) {
+                      if (value != null) {
+                        if (value == true) {
+                          // is archived
+                          context.read<SurveyListBloc>().archiveSurvey(survey);
+                        } else {
+                          // is updated
+                          context
+                              .read<SurveyListBloc>()
+                              .onSurveyListItemChange(survey, value as Survey);
+                        }
+                      }
+                    },
+                  );
                 },
               ),
             )

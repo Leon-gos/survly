@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
@@ -22,7 +23,10 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
 
   Future<void> onPickImage() async {
     var imagePath = await ImagePicker().pickImage(source: ImageSource.gallery);
-    emit(state.copyWith(imageLocalPath: imagePath?.path));
+    emit(state.copyWith(
+      imageLocalPath: imagePath?.path,
+      isChanged: true,
+    ));
   }
 
   void onDateRangeChange(PickerDateRange dateRange) {
@@ -32,19 +36,26 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
           dateStart: DateHelper.getDateOnly(dateRange.startDate!),
           dateEnd: DateHelper.getDateOnly(dateRange.endDate!),
         ),
+        isChanged: true,
       ),
     );
   }
 
   void onTitleChange(String newText) {
     emit(
-      state.copyWith(survey: state.survey.copyWith(title: newText)),
+      state.copyWith(
+        survey: state.survey.copyWith(title: newText),
+        isChanged: true,
+      ),
     );
   }
 
   void onDescriptionChange(String newText) {
     emit(
-      state.copyWith(survey: state.survey.copyWith(description: newText)),
+      state.copyWith(
+        survey: state.survey.copyWith(description: newText),
+        isChanged: true,
+      ),
     );
   }
 
@@ -53,6 +64,7 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
       emit(
         state.copyWith(
           survey: state.survey.copyWith(respondentMax: int.parse(newText)),
+          isChanged: true,
         ),
       );
     } catch (e) {
@@ -63,7 +75,10 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
   void onCostChange(String newText) {
     try {
       emit(
-        state.copyWith(survey: state.survey.copyWith(cost: int.parse(newText))),
+        state.copyWith(
+          survey: state.survey.copyWith(cost: int.parse(newText)),
+          isChanged: true,
+        ),
       );
     } catch (e) {
       Logger().e(e);
@@ -73,20 +88,26 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
   void onQuestionListItemChange(Question oldQuestion, Question newQuestion) {
     var list = List.of(state.questionList);
     list[list.indexOf(oldQuestion)] = newQuestion;
-    emit(state.copyWith(questionList: list));
+    emit(state.copyWith(
+      questionList: list,
+      isChanged: true,
+    ));
   }
 
   Future<void> saveSurvey() async {
+    emit(state.copyWith(isLoading: true));
     try {
       await domainManager.survey.updateSurvey(
         survey: state.survey,
         fileLocalPath: state.imageLocalPath,
         questionList: state.questionList,
       );
-      AppCoordinator.pop();
+      Fluttertoast.showToast(msg: S.text.toastUpdateSurveySuccess);
+      popScreen();
     } catch (e) {
       Logger().e(e);
     }
+    emit(state.copyWith(isLoading: false));
   }
 
   void addQuestion(QuestionType questionType) {
@@ -107,7 +128,10 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
       );
       list.add(question);
     }
-    emit(state.copyWith(questionList: list));
+    emit(state.copyWith(
+      questionList: list,
+      isChanged: true,
+    ));
   }
 
   void removeQuestion(Question question) {
@@ -116,13 +140,17 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
     for (int i = 0; i < list.length; i++) {
       list[i].questionIndex = i + 1;
     }
-    emit(state.copyWith(questionList: list));
+    emit(state.copyWith(
+      questionList: list,
+      isChanged: true,
+    ));
   }
 
   void onOutletLocationChange(Outlet? outlet) {
     emit(
       state.copyWith(
         survey: state.survey.copyWith(outlet: outlet),
+        isChanged: true,
       ),
     );
   }
@@ -134,5 +162,9 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
             .fetchAllQuestionOfSurvey(state.survey.surveyId),
       ),
     );
+  }
+
+  void popScreen() {
+    AppCoordinator.pop(state.isChanged);
   }
 }

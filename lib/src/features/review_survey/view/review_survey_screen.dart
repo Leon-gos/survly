@@ -79,6 +79,12 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
             appBar: AppAppBarWidget(
               title: S.of(context).titleReviewSurvey,
               centerTitle: true,
+              leading: IconButton(
+                  onPressed: context.read<ReviewSurveyBloc>().popScreen,
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new,
+                    color: AppColors.white,
+                  )),
               actions: [
                 IconButton(
                   onPressed: () {
@@ -112,15 +118,45 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                         PopupMenuItem(
                           child: Text(S.of(context).labelBtnEdit),
                           onTap: () {
-                            context.push(
+                            context
+                                .push(
                               AppRouteNames.updateSurvey.path,
                               extra: state.survey,
+                            )
+                                .then(
+                              (value) {
+                                if (value == true) {
+                                  context.read<ReviewSurveyBloc>().hasUpdate();
+                                  context
+                                      .read<ReviewSurveyBloc>()
+                                      .onRefresh()
+                                      .then((value) {
+                                    refreshTextController(value);
+                                  });
+                                }
+                              },
                             );
                           },
                         ),
                         PopupMenuItem(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (dialogContext) {
+                                return AppDialog(
+                                  title: S.of(context).dialogTitleArchiveSurvey,
+                                  body: S.of(context).dialogBodyArchiveSurvey,
+                                  onCancelPressed: () {},
+                                  onConfirmPressed: () {
+                                    context
+                                        .read<ReviewSurveyBloc>()
+                                        .archiveSurvey();
+                                  },
+                                );
+                              },
+                            );
+                          },
                           child: Text(S.of(context).labelBtnRemove),
-                          onTap: () {},
                         ),
                       ],
                     ];
