@@ -4,6 +4,7 @@ import 'package:survly/src/features/survey_request/logic/survey_request_bloc.dar
 import 'package:survly/src/features/survey_request/logic/survey_request_state.dart';
 import 'package:survly/src/features/survey_request/widget/request_card.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/network/model/survey_request/survey_request.dart';
 import 'package:survly/widgets/app_app_bar.dart';
@@ -24,8 +25,8 @@ class SurveyRequestScreen extends StatelessWidget {
             previous.isLoading != current.isLoading,
         builder: (context, state) {
           return Scaffold(
-            appBar: const AppAppBarWidget(
-              title: "Request list",
+            appBar: AppAppBarWidget(
+              title: S.of(context).titleRequestList,
             ),
             body: state.isLoading
                 ? const Center(
@@ -61,8 +62,8 @@ class SurveyRequestScreen extends StatelessWidget {
                       context: context,
                       builder: (dialogContext) {
                         return AppDialog(
-                          title: "Accept request",
-                          body: "Are you sure to accept this request?",
+                          title: S.of(context).dialogTitleAcceptRequest,
+                          body: S.of(context).dialogBodyAcceptRequest,
                           onConfirmPressed: () {
                             context.read<SurveyRequestBloc>().reponseRequest(
                                 request, SurveyRequestStatus.accepted);
@@ -77,8 +78,8 @@ class SurveyRequestScreen extends StatelessWidget {
                       context: context,
                       builder: (dialogContext) {
                         return AppDialog(
-                          title: "Deny request",
-                          body: "Are you sure to deny this request?",
+                          title: S.of(context).dialogTitleDenyRequest,
+                          body: S.of(context).dialogBodyDenyRequest,
                           onConfirmPressed: () {
                             context.read<SurveyRequestBloc>().reponseRequest(
                                 request, SurveyRequestStatus.denied);

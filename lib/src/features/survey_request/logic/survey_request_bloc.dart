@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/survey_request/logic/survey_request_state.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/network/model/survey_request/survey_request.dart';
 
@@ -34,9 +35,9 @@ class SurveyRequestBloc extends Cubit<SurveyRequestState> {
       newList[state.surveyRequestList.indexOf(request)] =
           request.copyWith(status: status.value);
       emit(state.copyWith(surveyRequestList: newList));
-      Fluttertoast.showToast(msg: "Response successfully");
+      Fluttertoast.showToast(msg: S.text.toastResponseSurveySuccess);
     } catch (e) {
-      Fluttertoast.showToast(msg: "Response fail");
+      Fluttertoast.showToast(msg: S.text.toastResponseSurveyFail);
       Logger().e("Something went wrong", error: e);
     }
     emit(state.copyWith(isLoading: false));

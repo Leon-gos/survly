@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey_request/survey_request.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_avatar_widget.dart';
@@ -43,11 +44,11 @@ class RequestCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    request.user?.fullname ?? "Leon",
+                    request.user?.fullname ?? "",
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
-                  Text(request.user?.email ?? "aaa@gmail.com"),
+                  Text(request.user?.email ?? ""),
                   // Text(request.dateRequest),
                   // Text(request.status),
                 ],
@@ -61,12 +62,12 @@ class RequestCard extends StatelessWidget {
           ),
           Row(
             children: [
-              const Text("Request on "),
+              Text(S.of(context).requestOn),
               Text(request.dateRequest),
             ],
           ),
           if (request.message != "") ...[
-            const Text("Message: "),
+            Text(S.of(context).message),
             Text(
               request.message,
               maxLines: 3,
@@ -105,16 +106,16 @@ class RequestCard extends StatelessWidget {
           return [
             PopupMenuItem(
               onTap: onAccept,
-              child: const ListTile(
-                title: Text("Accept"),
-                leading: Icon(Icons.check_box_outlined),
+              child: ListTile(
+                title: Text(S.of(context).labelBtnAccept),
+                leading: const Icon(Icons.check_box_outlined),
               ),
             ),
             PopupMenuItem(
               onTap: onDeny,
-              child: const ListTile(
-                title: Text("Deny"),
-                leading: Icon(Icons.disabled_by_default_outlined),
+              child: ListTile(
+                title: Text(S.of(context).labelBtnDeny),
+                leading: const Icon(Icons.disabled_by_default_outlined),
               ),
             ),
           ];
