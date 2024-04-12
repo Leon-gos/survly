@@ -10,6 +10,7 @@ import 'package:survly/src/features/dashboard/view/user_view.dart';
 import 'package:survly/src/features/review_survey/view/review_survey_screen.dart';
 import 'package:survly/src/features/select_location/view/select_location_screen.dart';
 import 'package:survly/src/features/survey_request/view/survey_requests_screen.dart';
+import 'package:survly/src/features/test/user_location.dart';
 import 'package:survly/src/features/user_profile/view/user_profile_screen.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/features/update_survey/view/update_survey_screen.dart';
@@ -20,9 +21,15 @@ import 'package:survly/src/router/router_name.dart';
 
 class AppRouter {
   final router = GoRouter(
-    initialLocation: AppRouteNames.survey.path,
+    initialLocation: AppRouteNames.userLocation.path,
     navigatorKey: AppCoordinator.navigatorKey,
     routes: <RouteBase>[
+      GoRoute(
+        name: AppRouteNames.userLocation.name,
+        path: AppRouteNames.userLocation.path,
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        builder: (context, state) => const UserLocationScreen(),
+      ),
       GoRoute(
         name: AppRouteNames.login.name,
         path: AppRouteNames.login.path,
