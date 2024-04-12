@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/dashboard/logic/user_list_bloc.dart';
 import 'package:survly/src/features/dashboard/logic/user_list_state.dart';
 import 'package:survly/src/features/dashboard/widget/user_card.dart';
 import 'package:survly/src/network/model/user/user.dart';
+import 'package:survly/src/router/router_name.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 
 class UserView extends StatelessWidget {
@@ -44,6 +46,9 @@ class UserView extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: UserCard(
                   user: user,
+                  onPressed: () {
+                    context.push(AppRouteNames.userProfile.path, extra: user);
+                  },
                 ),
               );
             },

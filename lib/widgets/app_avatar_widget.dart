@@ -24,7 +24,7 @@ class AppAvatarWidget extends StatelessWidget {
           image: NetworkImage(avatarUrl),
           fit: BoxFit.cover,
         ),
-        borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+        borderRadius: BorderRadius.all(Radius.circular(size ?? 50.0)),
         border: border ??
             Border.all(
               color: AppColors.primary,

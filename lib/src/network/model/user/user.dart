@@ -4,6 +4,9 @@ import 'package:survly/src/network/model/user_base/user_base.dart';
 
 class User extends UserBase {
   final int balance;
+  final String intro;
+  int? countDoing;
+  int? countDone;
 
   User({
     required super.id,
@@ -15,6 +18,9 @@ class User extends UserBase {
     required super.phone,
     super.role = UserBase.roleUser,
     required this.balance,
+    required this.intro,
+    this.countDoing,
+    this.countDone,
   });
 
   factory User.newUser({required String email, required String fullname}) =>
@@ -27,6 +33,7 @@ class User extends UserBase {
         birthDate: "",
         phone: "",
         balance: 0,
+        intro: "",
       );
 
   @override
@@ -34,6 +41,7 @@ class User extends UserBase {
     return <String, dynamic>{
       ...super.toMap(),
       'balance': balance,
+      'intro': intro,
     };
   }
 
@@ -47,6 +55,7 @@ class User extends UserBase {
       birthDate: map['birthDate']?.toString() ?? "",
       phone: map['phone']?.toString() ?? "",
       balance: int.parse(map['balance']?.toString() ?? "0"),
+      intro: map['intro']?.toString() ?? "",
     );
   }
 

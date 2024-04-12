@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
+import 'package:survly/src/network/data/do_survey/do_survey_repository_impl.dart';
 import 'package:survly/src/network/data/user/user_repository.dart';
 import 'package:survly/src/network/model/admin/admin.dart';
+import 'package:survly/src/network/model/do_survey/do_survey.dart';
 import 'package:survly/src/network/model/user/user.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 
@@ -41,12 +43,18 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<List<User>> fetchAllUser() async {
+    var doSurveyRepo = DoSurveyRepositoryImpl();
     List<User> list = [];
     var value = await ref
         .where(UserCollection.fieldRole, isEqualTo: UserBase.roleUser)
         .get();
     for (var doc in value.docs) {
-      list.add(User.fromMap(doc.data()));
+      var user = User.fromMap(doc.data());
+      user.countDoing = await doSurveyRepo.countDoSurvey(
+          userId: doc.id, status: DoSurveyStatus.doing);
+      user.countDone = await doSurveyRepo.countDoSurvey(
+          userId: doc.id, status: DoSurveyStatus.approved);
+      list.add(user);
     }
 
     return list;
