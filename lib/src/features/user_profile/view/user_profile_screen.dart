@@ -52,7 +52,6 @@ class UserProfileScreen extends StatelessWidget {
                     height: 32,
                   ),
                   Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Expanded(
                         flex: 1,
