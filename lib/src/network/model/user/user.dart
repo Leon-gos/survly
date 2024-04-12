@@ -17,9 +17,22 @@ class User extends UserBase {
     required this.balance,
   });
 
+  factory User.newUser({required String email, required String fullname}) =>
+      User(
+        id: "",
+        fullname: fullname,
+        email: email,
+        avatar: "",
+        gender: "",
+        birthDate: "",
+        phone: "",
+        balance: 0,
+      );
+
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      ...super.toMap(),
       'balance': balance,
     };
   }

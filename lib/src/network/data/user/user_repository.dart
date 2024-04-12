@@ -5,4 +5,10 @@ abstract class UserRepository {
   Future<UserBase?> fetchUserByEmail(String email);
 
   Future<User?> fetchUserById(String userId);
+
+  Future<List<User>> fetchAllUser();
+
+  Future<void> createUser(User userInfo);
+
+  Future<bool> checkEmailExisted(String email);
 }

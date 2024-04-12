@@ -38,4 +38,41 @@ class UserRepositoryImpl implements UserRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<List<User>> fetchAllUser() async {
+    List<User> list = [];
+    var value = await ref
+        .where(UserCollection.fieldRole, isEqualTo: UserBase.roleUser)
+        .get();
+    for (var doc in value.docs) {
+      list.add(User.fromMap(doc.data()));
+    }
+
+    return list;
+  }
+
+  @override
+  Future<void> createUser(User user) async {
+    try {
+      if (await checkEmailExisted(user.email)) {
+        return;
+      }
+      var value = await ref.add({});
+      ref.doc(value.id).set(user.toMap());
+    } catch (e) {
+      Logger().e("Create user error", error: e);
+    }
+  }
+
+  @override
+  Future<bool> checkEmailExisted(String email) async {
+    var value = await ref
+        .where(
+          UserCollection.fieldEmail,
+          isEqualTo: email,
+        )
+        .get();
+    return value.docs.isNotEmpty;
+  }
 }
