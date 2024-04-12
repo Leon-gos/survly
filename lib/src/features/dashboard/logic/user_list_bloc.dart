@@ -5,13 +5,30 @@ import 'package:survly/src/network/model/user/user.dart';
 
 class UserListBloc extends Cubit<UserListState> {
   UserListBloc() : super(UserListState.ds()) {
-    fetchUserList();
+    // fetchUserList();
+    fetchUserFirstPage();
   }
 
   DomainManager get domainManager => DomainManager();
 
-  Future<void> fetchUserList() async {
-    List<User> list = await domainManager.user.fetchAllUser();
+  // Future<void> fetchUserList() async {
+  //   List<User> list = await domainManager.user.fetchAllUser();
+  //   emit(state.copyWith(userList: list, isLoading: false));
+  // }
+
+  Future<void> fetchUserFirstPage() async {
+    List<User> list = await domainManager.user.fetchFirstPageUser();
+    emit(state.copyWith(userList: []));
     emit(state.copyWith(userList: list, isLoading: false));
+  }
+
+  Future<void> fetchUserNexPage() async {
+    var lastUser = state.userList[state.userList.length - 1];
+    List<User> nextPageList = await domainManager.user.fetchNextPageUser(
+      lastUserId: lastUser.id,
+    );
+    var newList = List.from(state.userList);
+    newList.addAll(nextPageList);
+    emit(state.copyWith(userList: nextPageList));
   }
 }

@@ -16,52 +16,50 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: const BoxDecoration(
-          color: AppColors.white,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 2,
-              color: Colors.black26,
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            AppAvatarWidget(
-              avatarUrl: user.avatar,
-              size: 48,
-            ),
-            const SizedBox(width: 8),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  user.fullname,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                Text(user.email),
-              ],
-            ),
-            const Spacer(),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-              decoration: BoxDecoration(
-                color: AppColors.secondary,
-                borderRadius: BorderRadius.circular(4),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(16),
+      decoration: const BoxDecoration(
+        color: AppColors.white,
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 2,
+            color: Colors.black26,
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          AppAvatarWidget(
+            avatarUrl: user.avatar,
+            size: 48,
+          ),
+          const SizedBox(width: 8),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                user.fullname,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-              child: Text(
-                "${user.balance / 1000}${S.of(context).thousand}",
-                style: const TextStyle(color: AppColors.white),
-              ),
-            )
-          ],
-        ),
+              Text(user.email),
+            ],
+          ),
+          const Spacer(),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+            decoration: BoxDecoration(
+              color: AppColors.secondary,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              "${user.balance / 1000}${S.of(context).thousand}",
+              style: const TextStyle(color: AppColors.white),
+            ),
+          )
+        ],
       ),
     );
   }

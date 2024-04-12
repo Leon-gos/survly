@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/dashboard/logic/user_list_bloc.dart';
 import 'package:survly/src/features/dashboard/logic/user_list_state.dart';
-import 'package:survly/src/features/dashboard/widget/user_card.dart';
-import 'package:survly/src/network/model/user/user.dart';
+import 'package:survly/src/features/dashboard/widget/user_list_widget.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
+import 'package:survly/widgets/app_text_field.dart';
 
 class UserView extends StatelessWidget {
   const UserView({super.key});
@@ -35,23 +36,32 @@ class UserView extends StatelessWidget {
 
   Widget _buildUserList() {
     return BlocBuilder<UserListBloc, UserListState>(
-      buildWhen: (previous, current) => false,
+      buildWhen: (previous, current) => previous.userList != current.userList,
       builder: (context, state) {
         return Expanded(
-          child: ListView.builder(
-            itemCount: state.userList.length,
-            itemBuilder: (context, index) {
-              User user = state.userList[index];
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: UserCard(
-                  user: user,
-                  onPressed: () {
+          child: Column(
+            children: [
+              Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                child: AppTextField(
+                  hintText: S.of(context).labelSearch,
+                  prefixIcon: const Icon(Icons.search),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: UserListWidget(
+                  userList: state.userList,
+                  onItemClick: (user) {
                     context.push(AppRouteNames.userProfile.path, extra: user);
                   },
+                  onLoadMore: context.read<UserListBloc>().fetchUserNexPage,
+                  onRefresh: context.read<UserListBloc>().fetchUserFirstPage,
                 ),
-              );
-            },
+              ),
+            ],
           ),
         );
       },
