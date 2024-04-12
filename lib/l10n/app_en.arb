@@ -72,6 +72,9 @@
     "toastUpdateSurveySuccess": "Update survey successfully",
     "dialogTitleUpdateSurvey": "Update survey",
     "dialogBodyUpdateSurvey": "Are you sure to save change?",
+    "labelDoing": "Doing",
+    "labelDone": "Done",
+    "lableBalance": "Balance",
 
     "errorGeneral": "Something went wrong",
     "errorEmptyName": "Empty name",

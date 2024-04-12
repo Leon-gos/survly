@@ -29,58 +29,37 @@ class UserCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            Row(
+            AppAvatarWidget(
+              avatarUrl: user.avatar,
+              size: 48,
+            ),
+            const SizedBox(width: 8),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppAvatarWidget(
-                  avatarUrl: user.avatar,
-                  size: 48,
+                Text(
+                  user.fullname,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
                 ),
-                const SizedBox(width: 8),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      user.fullname,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                    Text(user.email),
-                  ],
-                ),
-                const Spacer(),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                  decoration: BoxDecoration(
-                    color: AppColors.secondary,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Text(
-                    "${user.balance / 1000}${S.of(context).thousand}",
-                    style: const TextStyle(color: AppColors.white),
-                  ),
-                )
+                Text(user.email),
               ],
             ),
-            const Divider(
-              height: 32,
-            ),
-            Row(
-              children: [
-                Text("Joined on "),
-                Text("11/04/2024"),
-              ],
-            ),
-            Row(
-              children: [
-                Text("Live in "),
-                Text("Bình Dương"),
-              ],
-            ),
+            const Spacer(),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              decoration: BoxDecoration(
+                color: AppColors.secondary,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Text(
+                "${user.balance / 1000}${S.of(context).thousand}",
+                style: const TextStyle(color: AppColors.white),
+              ),
+            )
           ],
         ),
       ),

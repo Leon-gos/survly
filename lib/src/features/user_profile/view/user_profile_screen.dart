@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:survly/src/features/user_profile/logic/user_profile_bloc.dart';
 import 'package:survly/src/features/user_profile/logic/user_profile_state.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/user/user.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_avatar_widget.dart';
@@ -58,8 +59,8 @@ class UserProfileScreen extends StatelessWidget {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.timer_outlined),
-                            Text("Doing"),
+                            const Icon(Icons.timer_outlined),
+                            Text(S.of(context).labelDoing),
                             Text("${user.countDoing}"),
                           ],
                         ),
@@ -69,8 +70,8 @@ class UserProfileScreen extends StatelessWidget {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.check_circle_outline_outlined),
-                            Text("Done"),
+                            const Icon(Icons.check_circle_outline_outlined),
+                            Text(S.of(context).labelDone),
                             Text("${user.countDone}"),
                           ],
                         ),
@@ -80,8 +81,8 @@ class UserProfileScreen extends StatelessWidget {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.attach_money_outlined),
-                            Text("Balance"),
+                            const Icon(Icons.attach_money_outlined),
+                            Text(S.of(context).lableBalance),
                             Text(user.balance.toString()),
                           ],
                         ),
