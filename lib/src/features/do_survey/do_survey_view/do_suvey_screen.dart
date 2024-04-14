@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:survly/src/network/data/do_survey/do_survey_repository_impl.dart';
 import 'package:survly/src/network/model/do_survey/do_survey.dart';
-import 'package:survly/src/network/model/survey/survey.dart';
 
 // Test only
-// TODO: deliver later
+// TODO: do later
 class DoSurveyScreen extends StatefulWidget {
   const DoSurveyScreen({super.key});
 
