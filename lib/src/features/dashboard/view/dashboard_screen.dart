@@ -8,6 +8,7 @@ import 'package:survly/src/features/dashboard/logic/dashboard_state.dart';
 import 'package:survly/src/features/dashboard/logic/navigation_bar_item.dart';
 import 'package:survly/src/features/dashboard/widget/bottom_navigation_bar.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/widgets/app_app_bar.dart';
@@ -98,12 +99,36 @@ class DashboardScreen extends StatelessWidget {
                   ],
                 ),
                 const Spacer(),
-                IconButton(
-                  onPressed: () {
-                    context.push(AppRouteNames.createSurvey.path);
+                PopupMenuButton(
+                  itemBuilder: (context) {
+                    return [
+                      PopupMenuItem(
+                        onTap: () {
+                          context.push(AppRouteNames.createSurvey.path);
+                        },
+                        child: Text(S.of(context).titleCreateSurvey),
+                      ),
+                      PopupMenuItem(
+                        onTap: () {
+                          context.push(AppRouteNames.userLocation.path);
+                        },
+                        child: const Text("Demo update location"),
+                      ),
+                      PopupMenuItem(
+                        onTap: () {
+                          context.push(AppRouteNames.userLocationTrack.path);
+                        },
+                        child: const Text("Demo location track"),
+                      ),
+                    ];
                   },
-                  icon: const Icon(Icons.more_vert),
-                )
+                ),
+                // IconButton(
+                //   onPressed: () {
+                //     context.push(AppRouteNames.createSurvey.path);
+                //   },
+                //   icon: const Icon(Icons.more_vert),
+                // )
               ],
             ),
           ),

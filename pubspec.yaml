@@ -67,6 +67,7 @@ dependencies:
   flutter_config: ^2.0.2
   permission_handler: ^11.3.1
   fluttertoast: ^8.2.4
+  location: ^5.0.3
 
 dev_dependencies:
   flutter_test:

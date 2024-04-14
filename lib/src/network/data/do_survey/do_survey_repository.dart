@@ -5,4 +5,6 @@ abstract class DoSurveyRepository {
     required String userId,
     required DoSurveyStatus status,
   });
+
+  Future<void> updateCurrentLocation(DoSurvey doSurvey);
 }

@@ -19,4 +19,17 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
         .get();
     return value.size;
   }
+
+  @override
+  Future<void> updateCurrentLocation(DoSurvey doSurvey) async {
+    await ref.doc(doSurvey.doSurveyId).update({
+      DoSurveyCollection.fieldCurrentLat: doSurvey.currentLat,
+      DoSurveyCollection.fieldCurrentLng: doSurvey.currentLng,
+    });
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getDoSurveySnapshot(
+      DoSurvey doSurvey) {
+    return ref.doc(doSurvey.doSurveyId).snapshots();
+  }
 }

@@ -9,7 +9,8 @@ enum AppRouteNames {
   reviewSurvey(path: '/reviewSurvey'),
   surveyRequest(path: '/surveyRequest'),
   userProfile(path: '/userProfile'),
-  userLocation(path: '/userLocation');
+  userLocation(path: '/userLocation'),
+  userLocationTrack(path: '/userLocationTrack');
 
   const AppRouteNames({
     required this.path,
