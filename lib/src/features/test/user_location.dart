@@ -24,29 +24,29 @@ class UserLocationScreenState extends State<UserLocationScreen> {
   void initState() {
     super.initState();
     doSurvey = DoSurvey(doSurveyId: "Ermd203XOKlrg1A1QdWu", status: "doing");
-    locationSub = location.onLocationChanged.listen((event) {
-      doSurvey.currentLat = event.latitude;
-      doSurvey.currentLng = event.longitude;
-      DoSurveyRepositoryImpl().updateCurrentLocation(doSurvey);
-      setState(() {
-        doSurvey.currentLat = event.latitude;
-        doSurvey.currentLng = event.longitude;
-        // DoSurveyRepositoryImpl().updateCurrentLocation(doSurvey);
-      });
-    });
+    // locationSub = location.onLocationChanged.listen((event) {
+    //   doSurvey.currentLat = event.latitude;
+    //   doSurvey.currentLng = event.longitude;
+    //   DoSurveyRepositoryImpl().updateCurrentLocation(doSurvey);
+    //   setState(() {
+    //     doSurvey.currentLat = event.latitude;
+    //     doSurvey.currentLng = event.longitude;
+    //     // DoSurveyRepositoryImpl().updateCurrentLocation(doSurvey);
+    //   });
+    // });
 
     timer = Timer.periodic(
       const Duration(seconds: 1),
-      (timer) {
-        // var event = await location.getLocation();
-        // doSurvey.currentLat = event.latitude;
-        // doSurvey.currentLng = event.longitude;
-        // DoSurveyRepositoryImpl().updateCurrentLocation(doSurvey);
-        // setState(() {
-        //   doSurvey.currentLat = event.latitude;
-        //   doSurvey.currentLng = event.longitude;
-        // });
-        Logger().d("blahaaaa");
+      (timer) async {
+        var event = await location.getLocation();
+        doSurvey.currentLat = event.latitude;
+        doSurvey.currentLng = event.longitude;
+        DoSurveyRepositoryImpl().updateCurrentLocation(doSurvey);
+        setState(() {
+          doSurvey.currentLat = event.latitude;
+          doSurvey.currentLng = event.longitude;
+        });
+        // Logger().d("blahaaaa");
       },
     );
 
@@ -63,7 +63,7 @@ class UserLocationScreenState extends State<UserLocationScreen> {
   @override
   void dispose() {
     timer.cancel();
-    locationSub.cancel();
+    // locationSub.cancel();
     super.dispose();
   }
 
