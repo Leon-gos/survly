@@ -110,13 +110,13 @@ class DashboardScreen extends StatelessWidget {
                       ),
                       PopupMenuItem(
                         onTap: () {
-                          context.push(AppRouteNames.userLocation.path);
+                          context.push(AppRouteNames.doSurvey.path);
                         },
                         child: const Text("Demo update location"),
                       ),
                       PopupMenuItem(
                         onTap: () {
-                          context.push(AppRouteNames.userLocationTrack.path);
+                          context.push(AppRouteNames.doSurveyTracking.path);
                         },
                         child: const Text("Demo location track"),
                       ),

@@ -35,12 +35,10 @@ class DoSurvey {
 
   factory DoSurvey.fromMap(Map<String, dynamic> map) {
     return DoSurvey(
-      doSurveyId: map['doSurveyId'] as String,
-      currentLat:
-          map['currentLat'] != null ? map['currentLat'] as double : null,
-      currentLng:
-          map['currentLng'] != null ? map['currentLng'] as double : null,
-      status: map['status'] as String,
+      doSurveyId: map['doSurveyId']?.toString() ?? "",
+      currentLat: double.parse(map['currentLat']?.toString() ?? "0"),
+      currentLng: double.parse(map['currentLng']?.toString() ?? "0"),
+      status: map['status']?.toString() ?? "",
     );
   }
 

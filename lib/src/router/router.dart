@@ -7,11 +7,11 @@ import 'package:survly/src/features/dashboard/logic/navigation_bar_item.dart';
 import 'package:survly/src/features/dashboard/view/dashboard_screen.dart';
 import 'package:survly/src/features/dashboard/view/survey_view.dart';
 import 'package:survly/src/features/dashboard/view/user_view.dart';
+import 'package:survly/src/features/do_survey/do_survey_view/do_suvey_screen.dart';
+import 'package:survly/src/features/do_survey_tracking/view/do_survey_tracking_screen.dart';
 import 'package:survly/src/features/review_survey/view/review_survey_screen.dart';
 import 'package:survly/src/features/select_location/view/select_location_screen.dart';
 import 'package:survly/src/features/survey_request/view/survey_requests_screen.dart';
-import 'package:survly/src/features/test/location_tracking.dart';
-import 'package:survly/src/features/test/user_location.dart';
 import 'package:survly/src/features/user_profile/view/user_profile_screen.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/features/update_survey/view/update_survey_screen.dart';
@@ -99,16 +99,16 @@ class AppRouter {
         },
       ),
       GoRoute(
-        name: AppRouteNames.userLocation.name,
-        path: AppRouteNames.userLocation.path,
+        name: AppRouteNames.doSurvey.name,
+        path: AppRouteNames.doSurvey.path,
         parentNavigatorKey: AppCoordinator.navigatorKey,
-        builder: (context, state) => const UserLocationScreen(),
+        builder: (context, state) => const DoSurveyScreen(),
       ),
       GoRoute(
-        name: AppRouteNames.userLocationTrack.name,
-        path: AppRouteNames.userLocationTrack.path,
+        name: AppRouteNames.doSurveyTracking.name,
+        path: AppRouteNames.doSurveyTracking.path,
         parentNavigatorKey: AppCoordinator.navigatorKey,
-        builder: (context, state) => LocationTracking(),
+        builder: (context, state) => const DoSurveyTrackingScreen(),
       ),
       ShellRoute(
         builder: (context, state, child) => DashboardScreen(

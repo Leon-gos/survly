@@ -28,8 +28,17 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
     });
   }
 
+  @override
   Stream<DocumentSnapshot<Map<String, dynamic>>> getDoSurveySnapshot(
-      DoSurvey doSurvey) {
+    DoSurvey doSurvey,
+  ) {
     return ref.doc(doSurvey.doSurveyId).snapshots();
+  }
+
+  @override
+  Future<DoSurvey> getDoSurvey(String doSurveyId) async {
+    var value = await ref.doc(doSurveyId).get();
+    var doSurvey = DoSurvey.fromMap(value[0].data());
+    return doSurvey;
   }
 }
