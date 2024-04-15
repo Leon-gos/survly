@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:survly/src/features/dashboard/widget/user_card.dart';
-import 'package:survly/src/network/model/user/user.dart';
+import 'package:survly/src/features/dashboard_admin/widget/survey_card.dart';
+import 'package:survly/src/network/model/survey/survey.dart';
 
-class UserListWidget extends StatefulWidget {
-  final List<User> userList;
+class SurveyListWidget extends StatefulWidget {
+  final List<Survey> surveyList;
   final Future<void> Function()? onLoadMore;
   final Function()? onRefresh;
-  final Function(User user)? onItemClick;
+  final Function(Survey survey)? onItemClick;
 
-  const UserListWidget({
+  const SurveyListWidget({
     super.key,
-    required this.userList,
+    required this.surveyList,
     this.onLoadMore,
     this.onRefresh,
     this.onItemClick,
   });
 
   @override
-  State<StatefulWidget> createState() => _UserListWidgetState();
+  State<StatefulWidget> createState() => _SurveyListWidgetState();
 }
 
-class _UserListWidgetState extends State<UserListWidget> {
+class _SurveyListWidgetState extends State<SurveyListWidget> {
   final scrollController = ScrollController();
   bool isLoadingMore = false;
 
@@ -65,14 +65,14 @@ class _UserListWidgetState extends State<UserListWidget> {
               padding: const EdgeInsets.only(bottom: 50),
               physics: const AlwaysScrollableScrollPhysics(),
               controller: scrollController,
-              itemCount: widget.userList.length,
+              itemCount: widget.surveyList.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    widget.onItemClick?.call(widget.userList[index]);
+                    widget.onItemClick?.call(widget.surveyList[index]);
                   },
-                  child: UserCard(
-                    user: widget.userList[index],
+                  child: SurveyCard(
+                    survey: widget.surveyList[index],
                   ),
                 );
               },

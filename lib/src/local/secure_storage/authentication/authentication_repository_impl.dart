@@ -24,4 +24,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     await _storage.write(key: keyEmail, value: loginInfo.email);
     await _storage.write(key: keyPassword, value: loginInfo.password);
   }
+
+  @override
+  Future<void> clearLoginInfo() async {
+    await _storage.deleteAll();
+  }
 }

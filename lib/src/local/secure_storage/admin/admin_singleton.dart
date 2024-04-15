@@ -1,14 +1,13 @@
-import 'package:survly/src/network/model/admin/admin.dart';
+import 'package:survly/src/network/model/user_base/user_base.dart';
 
-class AdminSingleton {
+class UserBaseSingleton {
+  static UserBaseSingleton? _instance;
+  UserBase? userBase;
 
-  static AdminSingleton? _instance;
-  Admin? admin;
-
-  factory AdminSingleton.instance() {
-    _instance ??= AdminSingleton._();
+  factory UserBaseSingleton.instance() {
+    _instance ??= UserBaseSingleton._();
     return _instance!;
   }
 
-  AdminSingleton._();
+  UserBaseSingleton._();
 }

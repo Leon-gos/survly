@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:survly/src/domain_manager.dart';
-import 'package:survly/src/features/dashboard/logic/user_list_state.dart';
+import 'package:survly/src/features/dashboard_admin/logic/user_list_state.dart';
 import 'package:survly/src/network/model/user/user.dart';
 
 class UserListBloc extends Cubit<UserListState> {

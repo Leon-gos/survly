@@ -9,8 +9,8 @@ class CreateSurveyState extends Equatable {
   final List<Question> questionList;
 
   factory CreateSurveyState.ds() => CreateSurveyState(
-        survey:
-            Survey.draft(adminId: AdminSingleton.instance().admin?.id ?? ""),
+        survey: Survey.draft(
+            adminId: UserBaseSingleton.instance().userBase?.id ?? ""),
         imageLocalPath: "",
         questionList: const [],
       );

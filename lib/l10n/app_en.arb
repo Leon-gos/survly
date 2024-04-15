@@ -75,6 +75,7 @@
     "labelDoing": "Doing",
     "labelDone": "Done",
     "lableBalance": "Balance",
+    "labelBtnLogout": "Logout",
 
     "errorGeneral": "Something went wrong",
     "errorEmptyName": "Empty name",

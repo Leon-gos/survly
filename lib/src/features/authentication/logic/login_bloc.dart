@@ -6,6 +6,7 @@ import 'package:survly/src/features/authentication/model/email_fomz_input.dart';
 import 'package:survly/src/features/authentication/model/password_fomz_input.dart';
 import 'package:survly/src/local/model/login_info.dart';
 import 'package:survly/src/router/coordinator.dart';
+import 'package:survly/src/router/router_name.dart';
 
 class LoginBloc extends Cubit<LoginState> {
   LoginBloc() : super(LoginState.ds());
@@ -32,7 +33,7 @@ class LoginBloc extends Cubit<LoginState> {
         ),
       )
           .then((value) {
-        AppCoordinator.showSurveyManagementScreen();
+        AppCoordinator.goNamed(AppRouteNames.dashboard.path);
       });
     } catch (e) {
       Logger().d(e);
@@ -51,7 +52,7 @@ class LoginBloc extends Cubit<LoginState> {
         ),
       )
           .then((value) {
-        AppCoordinator.showSurveyManagementScreen();
+        AppCoordinator.goNamed(AppRouteNames.dashboard.path);
       });
     }
   }

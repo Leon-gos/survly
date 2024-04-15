@@ -23,7 +23,7 @@ class SurveyListState extends Equatable {
     if (isShowMySurvey) {
       List<Survey> mySurveyList = [];
       for (var survey in surveyList) {
-        if (survey.adminId == AdminSingleton.instance().admin?.id) {
+        if (survey.adminId == UserBaseSingleton.instance().userBase?.id) {
           mySurveyList.add(survey);
         }
       }

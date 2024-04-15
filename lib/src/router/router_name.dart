@@ -1,6 +1,8 @@
 enum AppRouteNames {
   login(path: '/login'),
   signUp(path: '/signUp'),
+  dashboard(path: '/dashboard'),
+  dashboardUser(path: '/dashboardUser'),
   survey(path: '/survey'),
   user(path: '/user'),
   createSurvey(path: '/createSurvey'),
