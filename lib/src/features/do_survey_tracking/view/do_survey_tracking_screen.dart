@@ -13,8 +13,6 @@ class DoSurveyTrackingScreen extends StatefulWidget {
 }
 
 class DoSurveyTrackingScreenState extends State<DoSurveyTrackingScreen> {
-  double zoomRatio = 15;
-
   @override
   void initState() {
     super.initState();
@@ -23,8 +21,10 @@ class DoSurveyTrackingScreenState extends State<DoSurveyTrackingScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DoSurveyTrackingBloc("Ermd203XOKlrg1A1QdWu"),
+      create: (context) =>
+          DoSurveyTrackingBloc("Ermd203XOKlrg1A1QdWu"), //test only
       child: BlocBuilder<DoSurveyTrackingBloc, DoSurveyTrackingState>(
+        buildWhen: (previous, current) => previous.doSurvey != current.doSurvey,
         builder: (context, state) {
           if (state.doSurvey == null) {
             return const AppLoadingCircle();
@@ -35,7 +35,7 @@ class DoSurveyTrackingScreenState extends State<DoSurveyTrackingScreen> {
             body: GoogleMap(
               initialCameraPosition: CameraPosition(
                 target: latLng,
-                zoom: zoomRatio,
+                zoom: 15,
               ),
               onMapCreated: (controller) {
                 context

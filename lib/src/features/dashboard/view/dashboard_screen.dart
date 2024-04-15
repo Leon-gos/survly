@@ -123,12 +123,6 @@ class DashboardScreen extends StatelessWidget {
                     ];
                   },
                 ),
-                // IconButton(
-                //   onPressed: () {
-                //     context.push(AppRouteNames.createSurvey.path);
-                //   },
-                //   icon: const Icon(Icons.more_vert),
-                // )
               ],
             ),
           ),
