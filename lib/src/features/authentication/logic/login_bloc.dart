@@ -41,12 +41,12 @@ class LoginBloc extends Cubit<LoginState> {
 
   Future<void> loginWithGoogle() async {
     var user = await domain.authentication.loginWithGoogle();
-    if (user.user?.email != "") {
+    if (user?.user?.email != null && user?.user?.email != "") {
       // sign in successful
       domain.authenticationLocal
           .storeLoginInfo(
         LoginInfo(
-          email: user.user!.email!,
+          email: user!.user!.email!,
           password: "",
         ),
       )

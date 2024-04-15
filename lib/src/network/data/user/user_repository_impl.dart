@@ -1,14 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
+import 'package:survly/src/network/data/do_survey/do_survey_repository_impl.dart';
 import 'package:survly/src/network/data/user/user_repository.dart';
 import 'package:survly/src/network/model/admin/admin.dart';
+import 'package:survly/src/network/model/do_survey/do_survey.dart';
 import 'package:survly/src/network/model/user/user.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final ref =
       FirebaseFirestore.instance.collection(UserCollection.collectionName);
+
+  static const int limitUserPage = 20;
 
   @override
   Future<UserBase?> fetchUserByEmail(String email) async {
@@ -37,5 +41,90 @@ class UserRepositoryImpl implements UserRepository {
       Logger().e("Error get user by id", error: e);
       rethrow;
     }
+  }
+
+  @override
+  Future<List<User>> fetchAllUser() async {
+    var doSurveyRepo = DoSurveyRepositoryImpl();
+    List<User> list = [];
+    var value = await ref
+        .where(UserCollection.fieldRole, isEqualTo: UserBase.roleUser)
+        .get();
+    for (var doc in value.docs) {
+      var user = User.fromMap(doc.data());
+      user.countDoing = await doSurveyRepo.countDoSurvey(
+          userId: doc.id, status: DoSurveyStatus.doing);
+      user.countDone = await doSurveyRepo.countDoSurvey(
+          userId: doc.id, status: DoSurveyStatus.approved);
+      list.add(user);
+    }
+
+    return list;
+  }
+
+  @override
+  Future<List<User>> fetchFirstPageUser() async {
+    var doSurveyRepo = DoSurveyRepositoryImpl();
+    List<User> list = [];
+    var value = await ref
+        .where(UserCollection.fieldRole, isEqualTo: UserBase.roleUser)
+        .limit(limitUserPage)
+        .get();
+    for (var doc in value.docs) {
+      var user = User.fromMap(doc.data());
+      user.countDoing = await doSurveyRepo.countDoSurvey(
+          userId: doc.id, status: DoSurveyStatus.doing);
+      user.countDone = await doSurveyRepo.countDoSurvey(
+          userId: doc.id, status: DoSurveyStatus.approved);
+      list.add(user);
+    }
+
+    return list;
+  }
+
+  @override
+  Future<List<User>> fetchNextPageUser({required String lastUserId}) async {
+    var doSurveyRepo = DoSurveyRepositoryImpl();
+    List<User> list = [];
+    var lastDoc = await ref.doc(lastUserId).get();
+    var value = await ref
+        .where(UserCollection.fieldRole, isEqualTo: UserBase.roleUser)
+        .startAfterDocument(lastDoc)
+        .limit(limitUserPage)
+        .get();
+    for (var doc in value.docs) {
+      var user = User.fromMap(doc.data());
+      user.countDoing = await doSurveyRepo.countDoSurvey(
+          userId: doc.id, status: DoSurveyStatus.doing);
+      user.countDone = await doSurveyRepo.countDoSurvey(
+          userId: doc.id, status: DoSurveyStatus.approved);
+      list.add(user);
+    }
+
+    return list;
+  }
+
+  @override
+  Future<void> createUser(User user) async {
+    try {
+      if (await checkEmailExisted(user.email)) {
+        return;
+      }
+      var value = await ref.add({});
+      ref.doc(value.id).set(user.toMap());
+    } catch (e) {
+      Logger().e("Create user error", error: e);
+    }
+  }
+
+  @override
+  Future<bool> checkEmailExisted(String email) async {
+    var value = await ref
+        .where(
+          UserCollection.fieldEmail,
+          isEqualTo: email,
+        )
+        .get();
+    return value.docs.isNotEmpty;
   }
 }

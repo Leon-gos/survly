@@ -55,3 +55,9 @@ class SurveyRequestCollection {
   static const String fieldStatus = "status";
   static const String fieldMessage = "message";
 }
+
+class DoSurveyCollection {
+  static const String collectionName = "doSurvey";
+  static const String fieldStatus = "status";
+  static const String fieldUserId = "userId";
+}

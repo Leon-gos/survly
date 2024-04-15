@@ -5,4 +5,12 @@ abstract class UserRepository {
   Future<UserBase?> fetchUserByEmail(String email);
 
   Future<User?> fetchUserById(String userId);
+
+  Future<List<User>> fetchAllUser();
+  Future<List<User>> fetchFirstPageUser();
+  Future<List<User>> fetchNextPageUser({required String lastUserId});
+
+  Future<void> createUser(User userInfo);
+
+  Future<bool> checkEmailExisted(String email);
 }

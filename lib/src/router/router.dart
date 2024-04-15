@@ -10,9 +10,11 @@ import 'package:survly/src/features/dashboard/view/user_view.dart';
 import 'package:survly/src/features/review_survey/view/review_survey_screen.dart';
 import 'package:survly/src/features/select_location/view/select_location_screen.dart';
 import 'package:survly/src/features/survey_request/view/survey_requests_screen.dart';
+import 'package:survly/src/features/user_profile/view/user_profile_screen.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/features/update_survey/view/update_survey_screen.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
+import 'package:survly/src/network/model/user/user.dart';
 import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/router/router_name.dart';
 
@@ -80,6 +82,17 @@ class AppRouter {
           final survey = state.extra as Survey;
           return SurveyRequestScreen(
             survey: survey,
+          );
+        },
+      ),
+      GoRoute(
+        name: AppRouteNames.userProfile.name,
+        path: AppRouteNames.userProfile.path,
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        builder: (context, state) {
+          final user = state.extra as User;
+          return UserProfileScreen(
+            user: user,
           );
         },
       ),

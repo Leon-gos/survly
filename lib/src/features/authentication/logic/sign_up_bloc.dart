@@ -22,6 +22,7 @@ class SignUpBloc extends Cubit<SignUpState> {
     domain.authentication.signUpEmailPassword(
       state.email.value,
       state.password.value,
+      state.name.value,
     );
   }
 
