@@ -108,6 +108,7 @@ class DashboardAdminScreen extends StatelessWidget {
                       PopupMenuItem(
                         onTap: () {
                           AuthenticationRepositoryImpl().clearLoginInfo();
+                          UserBaseSingleton.instance().userBase = null;
                           context.goNamed(AppRouteNames.login.path);
                         },
                         child: Text(S.of(context).labelBtnLogout),

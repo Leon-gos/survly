@@ -41,7 +41,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     var userBase = UserBaseSingleton.instance().userBase;
     if (userBase != null) {
       if (userBase.role == UserBase.roleAdmin) {
-        AppCoordinator.goNamed(AppRouteNames.survey.path);
+        AppCoordinator.showSurveyManagementScreen();
         return;
       } else {
         AppCoordinator.goNamed(AppRouteNames.dashboardUser.path);
@@ -49,21 +49,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
 
     var loginInfo = await AuthenticationRepositoryImpl().readLoginInfo();
-
-    try {
-      await UserRepositoryImpl()
-          .fetchUserByEmail(loginInfo!.email)
-          .then((value) {
-        UserBaseSingleton.instance().userBase = value;
-        if (value?.role == UserBase.roleAdmin) {
-          AppCoordinator.goNamed(AppRouteNames.survey.path);
-        } else {
-          AppCoordinator.goNamed(AppRouteNames.dashboardUser.path);
-        }
-      });
-    } catch (e) {
-      Logger().d(e);
-      AppCoordinator.showLoginScreen();
+    if (loginInfo != null &&
+        loginInfo.email != "" &&
+        loginInfo.password != "") {
+      try {
+        await UserRepositoryImpl()
+            .fetchUserByEmail(loginInfo.email)
+            .then((value) {
+          UserBaseSingleton.instance().userBase = value;
+          if (value?.role == UserBase.roleAdmin) {
+            AppCoordinator.goNamed(AppRouteNames.survey.path);
+          } else {
+            AppCoordinator.goNamed(AppRouteNames.dashboardUser.path);
+          }
+          return;
+        });
+      } catch (e) {
+        AppCoordinator.goNamed(AppRouteNames.login.path);
+        Logger().d(e);
+      }
+    } else {
+      AppCoordinator.goNamed(AppRouteNames.login.path);
     }
   }
 }
