@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 enum DoSurveyStatus {
   doing(value: "doing"),
   approved(value: "approved"),
@@ -46,4 +45,18 @@ class DoSurvey {
 
   factory DoSurvey.fromJson(String source) =>
       DoSurvey.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  DoSurvey copyWith({
+    String? doSurveyId,
+    double? currentLat,
+    double? currentLng,
+    String? status,
+  }) {
+    return DoSurvey(
+      doSurveyId: doSurveyId ?? this.doSurveyId,
+      currentLat: currentLat ?? this.currentLat,
+      currentLng: currentLng ?? this.currentLng,
+      status: status ?? this.status,
+    );
+  }
 }

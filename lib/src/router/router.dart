@@ -7,7 +7,7 @@ import 'package:survly/src/features/dashboard/logic/navigation_bar_item.dart';
 import 'package:survly/src/features/dashboard/view/dashboard_screen.dart';
 import 'package:survly/src/features/dashboard/view/survey_view.dart';
 import 'package:survly/src/features/dashboard/view/user_view.dart';
-import 'package:survly/src/features/do_survey/do_survey_view/do_suvey_screen.dart';
+import 'package:survly/src/features/do_survey/view/do_suvey_screen.dart';
 import 'package:survly/src/features/do_survey_tracking/view/do_survey_tracking_screen.dart';
 import 'package:survly/src/features/review_survey/view/review_survey_screen.dart';
 import 'package:survly/src/features/select_location/view/select_location_screen.dart';
