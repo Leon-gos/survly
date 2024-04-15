@@ -8,4 +8,5 @@ enum DoSurveyStatus {
   const DoSurveyStatus({required this.value});
 }
 
+//TODO: implement this class
 class DoSurvey {}
