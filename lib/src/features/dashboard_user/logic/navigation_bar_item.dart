@@ -10,7 +10,7 @@ enum UserBottomNavBarItems {
   ),
   doing(
     label: 'Doing',
-    route: AppRouteNames.doingSurvey,
+    route: AppRouteNames.mySurvey,
     icon: Icons.pending_actions_outlined,
     selectedIcon: Icons.pending_actions_rounded,
   );

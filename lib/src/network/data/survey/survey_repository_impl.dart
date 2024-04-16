@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:logger/web.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
+import 'package:survly/src/network/data/do_survey/do_survey_repository_impl.dart';
 import 'package:survly/src/network/data/file/file_data.dart';
 import 'package:survly/src/network/data/question/question_repository_impl.dart';
 import 'package:survly/src/network/data/survey/survey_repository.dart';
@@ -248,6 +249,19 @@ class SurveyRepositoryImpl implements SurveyRepository {
       list.add(survey);
     }
 
+    return list;
+  }
+
+  Future<List<Survey>> fetchUserDoingSurvey(String userId) async {
+    List<Survey> list = [];
+    var doSurveyRepo = DoSurveyRepositoryImpl();
+    var surveyIdList = await doSurveyRepo.fetchUserDoingSurveyId(userId);
+    for (var surveyId in surveyIdList) {
+      var survey = await fetchSurveyById(surveyId);
+      if (survey != null) {
+        list.add(survey);
+      }
+    }
     return list;
   }
 }

@@ -2,18 +2,18 @@ import 'package:equatable/equatable.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 
-class SurveyListState extends Equatable {
+class ExploreSurveyState extends Equatable {
   final List<Survey> surveyList;
   final bool isLoading;
   final bool isShowMySurvey;
 
-  const SurveyListState({
+  const ExploreSurveyState({
     required this.surveyList,
     required this.isLoading,
     required this.isShowMySurvey,
   });
 
-  factory SurveyListState.ds() => const SurveyListState(
+  factory ExploreSurveyState.ds() => const ExploreSurveyState(
         surveyList: [],
         isLoading: true,
         isShowMySurvey: false,
@@ -32,12 +32,12 @@ class SurveyListState extends Equatable {
     return surveyList;
   }
 
-  SurveyListState copyWith({
+  ExploreSurveyState copyWith({
     List<Survey>? surveyList,
     bool? isLoading,
     bool? isShowMySurvey,
   }) {
-    return SurveyListState(
+    return ExploreSurveyState(
       surveyList: surveyList ?? this.surveyList,
       isLoading: isLoading ?? this.isLoading,
       isShowMySurvey: isShowMySurvey ?? this.isShowMySurvey,

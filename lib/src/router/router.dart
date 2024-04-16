@@ -10,8 +10,8 @@ import 'package:survly/src/features/dashboard_admin/view/survey_view.dart';
 import 'package:survly/src/features/dashboard_admin/view/user_view.dart';
 import 'package:survly/src/features/dashboard_user/logic/navigation_bar_item.dart';
 import 'package:survly/src/features/dashboard_user/view/dashboard_user_screen.dart';
-import 'package:survly/src/features/dashboard_user/view/explore_view.dart';
-import 'package:survly/src/features/dashboard_user/view/doing_survey_view.dart';
+import 'package:survly/src/features/dashboard_user/view/explore_survey_view.dart';
+import 'package:survly/src/features/dashboard_user/view/doing_survey_list_view.dart';
 import 'package:survly/src/features/do_survey/view/do_suvey_screen.dart';
 import 'package:survly/src/features/do_survey_tracking/view/do_survey_tracking_screen.dart';
 import 'package:survly/src/features/review_survey/view/review_survey_screen.dart';
@@ -179,7 +179,7 @@ class AppRouter {
             pageBuilder: (context, state) {
               return CustomTransitionPage(
                 key: state.pageKey,
-                child: const ExploreView(),
+                child: const ExploreSurveyView(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                   return FadeTransition(
@@ -192,12 +192,12 @@ class AppRouter {
             },
           ),
           GoRoute(
-            name: AppRouteNames.doingSurvey.name,
-            path: AppRouteNames.doingSurvey.path,
+            name: AppRouteNames.mySurvey.name,
+            path: AppRouteNames.mySurvey.path,
             pageBuilder: (context, state) {
               return CustomTransitionPage(
                 key: state.pageKey,
-                child: const DoingSurvey(),
+                child: const DoingSurveyListView(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                   return FadeTransition(

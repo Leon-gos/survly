@@ -46,4 +46,19 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
     }
     throw Exception("${S.text.errorDoSurveyNotFound}: $doSurveyId");
   }
+
+  Future<List<String>> fetchUserDoingSurveyId(String userId) async {
+    List<String> list = [];
+
+    var value = await ref
+        .where(DoSurveyCollection.fieldUserId, isEqualTo: userId)
+        .get();
+    for (var doc in value.docs) {
+      var surveyId = doc.data()[DoSurveyCollection.fieldSurveyId];
+      if (surveyId != null) {
+        list.add(surveyId);
+      }
+    }
+    return list;
+  }
 }
