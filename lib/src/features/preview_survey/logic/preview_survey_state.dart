@@ -1,32 +1,44 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
 import 'package:survly/src/network/model/survey/survey.dart';
+import 'package:survly/src/network/model/survey_request/survey_request.dart';
 
 class PreviewSurveyState extends Equatable {
   final Survey survey;
-  final bool hasRequested;
+  final SurveyRequest? latestRequest;
+  final String requestMessage;
 
   const PreviewSurveyState({
     required this.survey,
-    required this.hasRequested,
+    this.latestRequest,
+    required this.requestMessage,
   });
 
   factory PreviewSurveyState.ds({required survey}) => PreviewSurveyState(
         survey: survey,
-        hasRequested: false,
+        requestMessage: "",
       );
 
   @override
-  List<Object?> get props => [survey, hasRequested];
+  List<Object?> get props => [survey, latestRequest, requestMessage];
 
   PreviewSurveyState copyWith({
     Survey? survey,
-    bool? hasRequested,
+    SurveyRequest? latestRequest,
+    String? requestMessage,
   }) {
     return PreviewSurveyState(
       survey: survey ?? this.survey,
-      hasRequested: hasRequested ?? this.hasRequested,
+      latestRequest: latestRequest ?? this.latestRequest,
+      requestMessage: requestMessage ?? this.requestMessage,
+    );
+  }
+
+  PreviewSurveyState removeRequest() {
+    return PreviewSurveyState(
+      survey: survey,
+      latestRequest: null,
+      requestMessage: requestMessage,
     );
   }
 }

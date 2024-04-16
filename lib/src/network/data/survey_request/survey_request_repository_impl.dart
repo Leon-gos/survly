@@ -51,4 +51,38 @@ class SurveyRequestRepositoryImpl implements SurveyRequestRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<void> requestSurvey(SurveyRequest request) async {
+    var value = await ref.add({});
+    request.requestId = value.id;
+    await ref.doc(value.id).set(request.toMap());
+  }
+
+  @override
+  Future<void> cancelRequestSurvey(SurveyRequest request) async {
+    await ref.doc(request.requestId).delete();
+  }
+
+  @override
+  Future<SurveyRequest?> fetchLatestRequest({
+    required String surveyId,
+    required String userId,
+  }) async {
+    var value = await ref
+        .where(SurveyRequestCollection.fieldSurveyId, isEqualTo: surveyId)
+        .where(SurveyRequestCollection.fieldUserId, isEqualTo: userId)
+        .get();
+    Logger().d(value.docs.length);
+    for (var doc in value.docs) {
+      if (doc.data()[SurveyRequestCollection.fieldStatus] ==
+              SurveyRequestStatus.pending.value ||
+          doc.data()[SurveyRequestCollection.fieldStatus] ==
+              SurveyRequestStatus.accepted.value) {
+        Logger().d("yesssssssss");
+        return SurveyRequest.fromMap(doc.data());
+      }
+    }
+    return null;
+  }
 }

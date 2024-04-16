@@ -3,8 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:survly/src/features/preview_survey/logic/preview_survey_bloc.dart';
 import 'package:survly/src/features/preview_survey/logic/preview_survey_state.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
+import 'package:survly/src/network/model/survey_request/survey_request.dart';
 import 'package:survly/src/theme/colors.dart';
+import 'package:survly/src/utils/number_format.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_dialog.dart';
 import 'package:survly/widgets/app_text_field.dart';
@@ -25,7 +28,7 @@ class PreviewSurveyScreen extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             appBar: AppAppBarWidget(
-              title: "Survey preview",
+              title: S.of(context).titlePreviewSurvey,
               centerTitle: true,
               actions: [
                 IconButton(
@@ -84,9 +87,11 @@ class PreviewSurveyScreen extends StatelessWidget {
                       "From ${state.survey.dateStart} to ${state.survey.dateEnd}",
                     ),
                     const SizedBox(height: 8),
-                    Text("You will earn VNĐ ${state.survey.cost} if approved"),
+                    Text(
+                        "You will earn ${NumberHelper.formatCurrency(state.survey.cost)} if approved"),
                     const SizedBox(height: 8),
-                    Text("Survey in ${survey.outlet?.address}"),
+                    Text(
+                        "${S.of(context).hintOutlet} ${survey.outlet?.address}"),
                     const SizedBox(height: 8),
                     if (state.survey.outlet != null &&
                         state.survey.outlet!.hasCoordinate())
@@ -137,15 +142,19 @@ class PreviewSurveyScreen extends StatelessWidget {
   Widget _buildRequestButton() {
     return BlocBuilder<PreviewSurveyBloc, PreviewSurveyState>(
       buildWhen: (previous, current) =>
-          previous.hasRequested != current.hasRequested,
+          previous.latestRequest != current.latestRequest,
       builder: (context, state) {
+        if (state.latestRequest?.status == SurveyRequestStatus.accepted.value) {
+          return const SizedBox();
+        }
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           width: double.infinity,
           child: Theme(
             data: ThemeData(
               colorScheme: ColorScheme.fromSeed(
-                seedColor: state.hasRequested
+                seedColor: state.latestRequest?.status ==
+                        SurveyRequestStatus.pending.value
                     ? AppColors.secondary
                     : AppColors.primary,
               ),
@@ -155,21 +164,27 @@ class PreviewSurveyScreen extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (dialogContext) {
-                    if (state.hasRequested) {
+                    if (state.latestRequest?.status ==
+                        SurveyRequestStatus.pending.value) {
                       return AppDialog(
-                        title: "Cancel request survey",
-                        body: "Cancel request to do this survey?",
+                        title: S.of(context).dialogTitleCancelSurvey,
+                        body: S.of(context).dialogBodyCancelSurvey,
                         onCancelPressed: () {},
                         onConfirmPressed: () {
-                          context.read<PreviewSurveyBloc>().requestSurvey();
+                          context.read<PreviewSurveyBloc>().cancelRequest();
                         },
                       );
                     } else {
                       return AppDialog(
-                        title: "Request survey",
-                        body: "Send request to do this survey?",
-                        child: const AppTextField(
-                          hintText: "Your message (not required)",
+                        title: S.of(context).dialogTitleRequestSurvey,
+                        body: S.of(context).dialogBodyRequestSurvey,
+                        child: AppTextField(
+                          hintText: S.of(context).hintRequestSurveyMess,
+                          onTextChange: (newText) {
+                            context
+                                .read<PreviewSurveyBloc>()
+                                .onRequestMessageChange(newText);
+                          },
                         ),
                         onCancelPressed: () {},
                         onConfirmPressed: () {
@@ -178,16 +193,19 @@ class PreviewSurveyScreen extends StatelessWidget {
                       );
                     }
                   },
-                );
+                ).then((value) {
+                  context.read<PreviewSurveyBloc>().onRequestMessageChange("");
+                });
               },
               style: const ButtonStyle(
                 shape: MaterialStatePropertyAll(
                   RoundedRectangleBorder(),
                 ),
               ),
-              child: state.hasRequested
-                  ? const Text("Request pending")
-                  : const Text("Request"),
+              child: state.latestRequest?.status ==
+                      SurveyRequestStatus.pending.value
+                  ? Text(S.of(context).labelBtnCancelRequest)
+                  : Text(S.of(context).labelBtnRequest),
             ),
           ),
         );
