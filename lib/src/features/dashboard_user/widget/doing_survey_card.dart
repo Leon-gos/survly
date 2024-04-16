@@ -3,8 +3,8 @@ import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/theme/colors.dart';
 
-class SurveyCard extends StatelessWidget {
-  const SurveyCard({
+class DoingSurveyCard extends StatelessWidget {
+  const DoingSurveyCard({
     super.key,
     required this.survey,
     this.borderRadius = 8,
@@ -61,7 +61,7 @@ class SurveyCard extends StatelessWidget {
   Widget _buildSurveyContent(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -81,28 +81,29 @@ class SurveyCard extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                        "${survey.respondentNum}/${survey.respondentMax} ${S.of(context).respondent}"),
+                        "${S.of(context).hintDateFrom} ${survey.dateStart} ${S.of(context).hintDateTo} ${survey.dateEnd}"),
                     const SizedBox(
                       height: 4,
                     ),
-                    Text("${S.of(context).closedOn} ${survey.dateEnd}"),
+                    Text(
+                        "${S.of(context).hintOutlet} ${survey.outlet?.address}"),
                   ],
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                    color: survey.status == SurveyStatus.draft.value
-                        ? AppColors.secondary
-                        : AppColors.primary,
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(borderRadius))),
-                child: Text(
-                  survey.status,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, color: AppColors.white),
-                ),
-              )
+              // Container(
+              //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              //   decoration: BoxDecoration(
+              //       color: survey.status == SurveyStatus.draft.value
+              //           ? AppColors.secondary
+              //           : AppColors.primary,
+              //       borderRadius:
+              //           BorderRadius.all(Radius.circular(borderRadius))),
+              //   child: Text(
+              //     survey.status,
+              //     style: const TextStyle(
+              //         fontWeight: FontWeight.bold, color: AppColors.white),
+              //   ),
+              // )
             ],
           )
         ],

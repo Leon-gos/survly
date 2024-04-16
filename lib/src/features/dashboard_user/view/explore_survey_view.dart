@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:survly/src/features/dashboard_user/logic/explore_survey_bloc.dart';
 import 'package:survly/src/features/dashboard_user/logic/explore_survey_state.dart';
-import 'package:survly/src/features/dashboard_user/widget/survey_list_widget.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
+import 'package:survly/widgets/app_survey_list_widget.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
 class ExploreSurveyView extends StatelessWidget {
@@ -63,7 +63,7 @@ class ExploreSurveyView extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: SurveyListWidget(
+              child: AppSurveyListWidget(
                 surveyList: state.surveyFilterList,
                 onRefresh: () =>
                     context.read<ExploreSurveyBloc>().fetchFirstPageSurvey(),

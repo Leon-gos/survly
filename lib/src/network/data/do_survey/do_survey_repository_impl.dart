@@ -17,6 +17,10 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
     var value = await ref
         .where(DoSurveyCollection.fieldUserId, isEqualTo: userId)
         .where(DoSurveyCollection.fieldStatus, isEqualTo: status.value)
+        .where(
+          DoSurveyCollection.fieldStatus,
+          isEqualTo: DoSurveyStatus.doing.value,
+        )
         .get();
     return value.size;
   }
