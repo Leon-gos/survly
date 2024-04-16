@@ -6,7 +6,6 @@ class NumberHelper {
       locale: 'vi',
       customPattern: '#,### \u00a4',
       symbol: 'VNĐ',
-      // decimalDigits: 2,
     );
     return formater.format(money);
   }

@@ -89,7 +89,6 @@ class SurveyRequestRepositoryImpl implements SurveyRequestRepository {
               SurveyRequestStatus.pending.value ||
           doc.data()[SurveyRequestCollection.fieldStatus] ==
               SurveyRequestStatus.accepted.value) {
-        Logger().d("yesssssssss");
         return SurveyRequest.fromMap(doc.data());
       }
     }

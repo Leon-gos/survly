@@ -84,6 +84,8 @@
     "hintRequestSurveyMess": "Your message (not required)",
     "labelBtnRequest": "Request",
     "labelBtnCancelRequest": "Request pending",
+    "labelSurveyEarn": "You will earn {cost} if approved",
+    "labelSurveyNumQuestion": "You need to answer {numQuestion} question",
 
     "errorGeneral": "Something went wrong",
     "errorEmptyName": "Empty name",

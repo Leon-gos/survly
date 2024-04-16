@@ -11,6 +11,7 @@ class PreviewSurveyBloc extends Cubit<PreviewSurveyState> {
   PreviewSurveyBloc(Survey survey)
       : super(PreviewSurveyState.ds(survey: survey)) {
     fetchLatestRequest();
+    countNumberQuestion();
   }
 
   DomainManager get domainManager => DomainManager();
@@ -61,5 +62,11 @@ class PreviewSurveyBloc extends Cubit<PreviewSurveyState> {
       Logger().e("Request survey failed", error: e);
       Fluttertoast.showToast(msg: "Cancel failed");
     }
+  }
+
+  Future<void> countNumberQuestion() async {
+    var numQuestion =
+        await domainManager.question.countQuestion(state.survey.surveyId);
+    emit(state.copyWith(numQuestion: numQuestion));
   }
 }

@@ -7,7 +7,7 @@ import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/network/model/survey_request/survey_request.dart';
 import 'package:survly/src/theme/colors.dart';
-import 'package:survly/src/utils/number_format.dart';
+import 'package:survly/src/utils/number_helper.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_dialog.dart';
 import 'package:survly/widgets/app_text_field.dart';
@@ -24,38 +24,36 @@ class PreviewSurveyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PreviewSurveyBloc(survey),
-      child: BlocBuilder<PreviewSurveyBloc, PreviewSurveyState>(
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppAppBarWidget(
-              title: S.of(context).titlePreviewSurvey,
-              centerTitle: true,
-              actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.share),
-                  color: Colors.white,
-                )
-              ],
+      child: Scaffold(
+        appBar: AppAppBarWidget(
+          title: S.of(context).titlePreviewSurvey,
+          centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.share),
+              color: Colors.white,
+            )
+          ],
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: _buildSurveyPreview(),
             ),
-            body: Column(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: _buildSurveyPreview(),
-                ),
-                _buildRequestButton()
-              ],
-            ),
-          );
-        },
+            _buildRequestButton()
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildSurveyPreview() {
     return BlocBuilder<PreviewSurveyBloc, PreviewSurveyState>(
-      buildWhen: (previous, current) => previous.survey != current.survey,
+      buildWhen: (previous, current) =>
+          previous.survey != current.survey ||
+          previous.numQuestion != current.numQuestion,
       builder: (context, state) {
         return SingleChildScrollView(
           child: Column(
@@ -81,14 +79,18 @@ class PreviewSurveyScreen extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(state.survey.description),
                     const SizedBox(height: 8),
-                    const Text("You need to answer 3 question"),
-                    const SizedBox(height: 8),
                     Text(
-                      "From ${state.survey.dateStart} to ${state.survey.dateEnd}",
+                      S.of(context).labelSurveyNumQuestion(state.numQuestion),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                        "You will earn ${NumberHelper.formatCurrency(state.survey.cost)} if approved"),
+                      "${S.of(context).hintDateFrom} ${state.survey.dateStart} ${S.of(context).hintDateTo} ${state.survey.dateEnd}",
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      S.of(context).labelSurveyEarn(
+                          NumberHelper.formatCurrency(state.survey.cost)),
+                    ),
                     const SizedBox(height: 8),
                     Text(
                         "${S.of(context).hintOutlet} ${survey.outlet?.address}"),
