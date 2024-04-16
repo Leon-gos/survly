@@ -90,20 +90,6 @@ class DoingSurveyCard extends StatelessWidget {
                   ],
                 ),
               ),
-              // Container(
-              //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              //   decoration: BoxDecoration(
-              //       color: survey.status == SurveyStatus.draft.value
-              //           ? AppColors.secondary
-              //           : AppColors.primary,
-              //       borderRadius:
-              //           BorderRadius.all(Radius.circular(borderRadius))),
-              //   child: Text(
-              //     survey.status,
-              //     style: const TextStyle(
-              //         fontWeight: FontWeight.bold, color: AppColors.white),
-              //   ),
-              // )
             ],
           )
         ],
