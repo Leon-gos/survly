@@ -60,4 +60,13 @@ class DoSurveyCollection {
   static const String collectionName = "doSurvey";
   static const String fieldStatus = "status";
   static const String fieldUserId = "userId";
+  static const String fieldCurrentLat = "currentLat";
+  static const String fieldCurrentLng = "currentLng";
+}
+
+class DsLocationLog {
+  static const String collectionName = "dsLocationLog";
+  static const String fieldDoSurveyId = "doSurveyId";
+  static const String fieldLatitude = "latitude";
+  static const String fieldLongitude = "longitude";
 }

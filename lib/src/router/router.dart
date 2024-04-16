@@ -7,6 +7,8 @@ import 'package:survly/src/features/dashboard/logic/navigation_bar_item.dart';
 import 'package:survly/src/features/dashboard/view/dashboard_screen.dart';
 import 'package:survly/src/features/dashboard/view/survey_view.dart';
 import 'package:survly/src/features/dashboard/view/user_view.dart';
+import 'package:survly/src/features/do_survey/view/do_suvey_screen.dart';
+import 'package:survly/src/features/do_survey_tracking/view/do_survey_tracking_screen.dart';
 import 'package:survly/src/features/review_survey/view/review_survey_screen.dart';
 import 'package:survly/src/features/select_location/view/select_location_screen.dart';
 import 'package:survly/src/features/survey_request/view/survey_requests_screen.dart';
@@ -95,6 +97,18 @@ class AppRouter {
             user: user,
           );
         },
+      ),
+      GoRoute(
+        name: AppRouteNames.doSurvey.name,
+        path: AppRouteNames.doSurvey.path,
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        builder: (context, state) => const DoSurveyScreen(),
+      ),
+      GoRoute(
+        name: AppRouteNames.doSurveyTracking.name,
+        path: AppRouteNames.doSurveyTracking.path,
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        builder: (context, state) => const DoSurveyTrackingScreen(),
       ),
       ShellRoute(
         builder: (context, state, child) => DashboardScreen(
