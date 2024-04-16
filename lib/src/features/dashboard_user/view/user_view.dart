@@ -9,8 +9,8 @@ import 'package:survly/src/router/router_name.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
-class UserView extends StatelessWidget {
-  const UserView({super.key});
+class DoingSurvey extends StatelessWidget {
+  const DoingSurvey({super.key});
 
   @override
   Widget build(BuildContext context) {

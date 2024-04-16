@@ -60,7 +60,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           if (value?.role == UserBase.roleAdmin) {
             AppCoordinator.goNamed(AppRouteNames.survey.path);
           } else {
-            AppCoordinator.goNamed(AppRouteNames.dashboardUser.path);
+            AppCoordinator.goNamed(AppRouteNames.explore.path);
           }
           return;
         });

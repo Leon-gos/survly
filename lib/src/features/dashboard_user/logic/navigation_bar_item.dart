@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:survly/src/router/router_name.dart';
 
 enum UserBottomNavBarItems {
-  survey(
-    label: 'Survey',
-    route: AppRouteNames.survey,
-    icon: Icons.note_alt_outlined,
-    selectedIcon: Icons.note_alt_outlined,
+  explore(
+    label: 'Explore',
+    route: AppRouteNames.explore,
+    icon: Icons.explore_outlined,
+    selectedIcon: Icons.explore_rounded,
   ),
-  user(
-    label: 'User',
-    route: AppRouteNames.user,
+  doing(
+    label: 'Doing',
+    route: AppRouteNames.doingSurvey,
     icon: Icons.pending_actions_outlined,
-    selectedIcon: Icons.supervisor_account_rounded,
+    selectedIcon: Icons.pending_actions_rounded,
   );
 
   const UserBottomNavBarItems({
@@ -28,12 +28,12 @@ enum UserBottomNavBarItems {
   final IconData? selectedIcon;
 
   static UserBottomNavBarItems fromLocation(String location) {
-    if (location == UserBottomNavBarItems.survey.route.name) {
-      return UserBottomNavBarItems.survey;
-    } else if (location == UserBottomNavBarItems.user.route.name) {
-      return UserBottomNavBarItems.user;
+    if (location == UserBottomNavBarItems.explore.route.name) {
+      return UserBottomNavBarItems.explore;
+    } else if (location == UserBottomNavBarItems.doing.route.name) {
+      return UserBottomNavBarItems.doing;
     }
 
-    return UserBottomNavBarItems.survey;
+    return UserBottomNavBarItems.explore;
   }
 }

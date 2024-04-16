@@ -11,7 +11,7 @@ class BottomNavBloc extends Cubit<UserBottomNavBarItems> {
   }
 
   void goHome() {
-    emit(UserBottomNavBarItems.survey);
+    emit(UserBottomNavBarItems.explore);
     AppCoordinator.goNamed(state.route.name);
   }
 }
