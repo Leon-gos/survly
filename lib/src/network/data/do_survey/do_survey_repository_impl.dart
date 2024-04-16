@@ -17,10 +17,6 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
     var value = await ref
         .where(DoSurveyCollection.fieldUserId, isEqualTo: userId)
         .where(DoSurveyCollection.fieldStatus, isEqualTo: status.value)
-        .where(
-          DoSurveyCollection.fieldStatus,
-          isEqualTo: DoSurveyStatus.doing.value,
-        )
         .get();
     return value.size;
   }
@@ -51,6 +47,7 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
     throw Exception("${S.text.errorDoSurveyNotFound}: $doSurveyId");
   }
 
+  @override
   Future<List<String>> fetchUserDoingSurveyId(String userId) async {
     List<String> list = [];
 

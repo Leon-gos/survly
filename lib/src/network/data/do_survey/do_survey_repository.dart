@@ -11,4 +11,5 @@ abstract class DoSurveyRepository {
     DoSurvey doSurvey,
   );
   Future<DoSurvey> getDoSurvey(String doSurveyId);
+  Future<List<String>> fetchUserDoingSurveyId(String userId);
 }
