@@ -8,7 +8,6 @@ import 'package:survly/src/features/dashboard_admin/logic/navigation_bar_item.da
 import 'package:survly/src/features/dashboard_admin/view/dashboard_admin_screen.dart';
 import 'package:survly/src/features/dashboard_admin/view/survey_view.dart';
 import 'package:survly/src/features/dashboard_admin/view/user_view.dart';
-import 'package:survly/src/features/dashboard_user/view/dash_board_user_screen.dart';
 import 'package:survly/src/features/do_survey/view/do_suvey_screen.dart';
 import 'package:survly/src/features/do_survey_tracking/view/do_survey_tracking_screen.dart';
 import 'package:survly/src/features/review_survey/view/review_survey_screen.dart';
@@ -45,12 +44,12 @@ class AppRouter {
         parentNavigatorKey: AppCoordinator.navigatorKey,
         builder: (context, state) => const DashboardScreen(),
       ),
-      GoRoute(
-        name: AppRouteNames.dashboardUser.name,
-        path: AppRouteNames.dashboardUser.path,
-        parentNavigatorKey: AppCoordinator.navigatorKey,
-        builder: (context, state) => const DashboardUserScreen(),
-      ),
+      // GoRoute(
+      //   name: AppRouteNames.dashboardUser.name,
+      //   path: AppRouteNames.dashboardUser.path,
+      //   parentNavigatorKey: AppCoordinator.navigatorKey,
+      //   builder: (context, state) => const DashboardUserScreen(body: ,currentItem: ,),
+      // ),
       GoRoute(
         name: AppRouteNames.createSurvey.name,
         path: AppRouteNames.createSurvey.path,
@@ -127,7 +126,7 @@ class AppRouter {
       ShellRoute(
         builder: (context, state, child) => DashboardAdminScreen(
           body: child,
-          currentItem: MyBottomNavBarItems.survey,
+          currentItem: AdminBottomNavBarItems.survey,
         ),
         navigatorKey: AppCoordinator.shellKey,
         routes: [

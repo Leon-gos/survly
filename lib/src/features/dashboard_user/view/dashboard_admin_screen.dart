@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:survly/src/features/dashboard_admin/logic/account_bloc.dart';
-import 'package:survly/src/features/dashboard_admin/logic/bottom_nav_bloc.dart';
-import 'package:survly/src/features/dashboard_admin/logic/navigation_bar_item.dart';
-import 'package:survly/src/features/dashboard_admin/widget/bottom_navigation_bar.dart';
+import 'package:survly/src/features/dashboard_user/logic/account_bloc.dart';
+import 'package:survly/src/features/dashboard_user/logic/bottom_nav_bloc.dart';
+import 'package:survly/src/features/dashboard_user/logic/navigation_bar_item.dart';
+import 'package:survly/src/features/dashboard_user/widget/bottom_navigation_bar.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/local/secure_storage/authentication/authentication_repository_impl.dart';
 import 'package:survly/src/localization/localization_utils.dart';
@@ -14,11 +14,11 @@ import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_avatar_widget.dart';
 
-class DashboardAdminScreen extends StatelessWidget {
+class DashboardUserScreen extends StatelessWidget {
   final Widget body;
-  final AdminBottomNavBarItems currentItem;
+  final UserBottomNavBarItems currentItem;
 
-  const DashboardAdminScreen(
+  const DashboardUserScreen(
       {super.key, required this.body, required this.currentItem});
 
   @override
@@ -38,7 +38,7 @@ class DashboardAdminScreen extends StatelessWidget {
   }
 
   Widget _buildDashboardScreen(BuildContext context) {
-    return BlocBuilder<BottomNavBloc, AdminBottomNavBarItems>(
+    return BlocBuilder<BottomNavBloc, UserBottomNavBarItems>(
       builder: (context, state) {
         return Scaffold(
           appBar: const AppAppBarWidget(
@@ -51,7 +51,7 @@ class DashboardAdminScreen extends StatelessWidget {
               Expanded(child: body),
             ],
           ),
-          bottomNavigationBar: const MyBottomNavBar(),
+          bottomNavigationBar: const UserBottomNavBar(),
         );
       },
     );
