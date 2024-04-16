@@ -8,7 +8,10 @@ import 'package:survly/src/features/dashboard_admin/logic/navigation_bar_item.da
 import 'package:survly/src/features/dashboard_admin/view/dashboard_admin_screen.dart';
 import 'package:survly/src/features/dashboard_admin/view/survey_view.dart';
 import 'package:survly/src/features/dashboard_admin/view/user_view.dart';
-import 'package:survly/src/features/dashboard_user/view/dash_board_user_screen.dart';
+import 'package:survly/src/features/dashboard_user/logic/navigation_bar_item.dart';
+import 'package:survly/src/features/dashboard_user/view/dashboard_user_screen.dart';
+import 'package:survly/src/features/dashboard_user/view/explore_survey_view.dart';
+import 'package:survly/src/features/dashboard_user/view/doing_survey_list_view.dart';
 import 'package:survly/src/features/do_survey/view/do_suvey_screen.dart';
 import 'package:survly/src/features/do_survey_tracking/view/do_survey_tracking_screen.dart';
 import 'package:survly/src/features/review_survey/view/review_survey_screen.dart';
@@ -44,12 +47,6 @@ class AppRouter {
         path: AppRouteNames.dashboard.path,
         parentNavigatorKey: AppCoordinator.navigatorKey,
         builder: (context, state) => const DashboardScreen(),
-      ),
-      GoRoute(
-        name: AppRouteNames.dashboardUser.name,
-        path: AppRouteNames.dashboardUser.path,
-        parentNavigatorKey: AppCoordinator.navigatorKey,
-        builder: (context, state) => const DashboardUserScreen(),
       ),
       GoRoute(
         name: AppRouteNames.createSurvey.name,
@@ -127,7 +124,7 @@ class AppRouter {
       ShellRoute(
         builder: (context, state, child) => DashboardAdminScreen(
           body: child,
-          currentItem: MyBottomNavBarItems.survey,
+          currentItem: AdminBottomNavBarItems.survey,
         ),
         navigatorKey: AppCoordinator.shellKey,
         routes: [
@@ -156,6 +153,51 @@ class AppRouter {
               return CustomTransitionPage(
                 key: state.pageKey,
                 child: const UserView(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: CurveTween(curve: Curves.easeInOutCirc)
+                        .animate(animation),
+                    child: child,
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
+      ShellRoute(
+        builder: (context, state, child) => DashboardUserScreen(
+          body: child,
+          currentItem: UserBottomNavBarItems.explore,
+        ),
+        navigatorKey: AppCoordinator.shellKey,
+        routes: [
+          GoRoute(
+            name: AppRouteNames.explore.name,
+            path: AppRouteNames.explore.path,
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                key: state.pageKey,
+                child: const ExploreSurveyView(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: CurveTween(curve: Curves.easeInOutCirc)
+                        .animate(animation),
+                    child: child,
+                  );
+                },
+              );
+            },
+          ),
+          GoRoute(
+            name: AppRouteNames.mySurvey.name,
+            path: AppRouteNames.mySurvey.path,
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                key: state.pageKey,
+                child: const DoingSurveyListView(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                   return FadeTransition(

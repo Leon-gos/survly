@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:survly/src/router/router_name.dart';
 
-enum MyBottomNavBarItems {
+enum AdminBottomNavBarItems {
   survey(
     label: 'Survey',
     route: AppRouteNames.survey,
@@ -15,7 +15,7 @@ enum MyBottomNavBarItems {
     selectedIcon: Icons.supervisor_account_rounded,
   );
 
-  const MyBottomNavBarItems({
+  const AdminBottomNavBarItems({
     required this.label,
     required this.route,
     required this.icon,
@@ -27,13 +27,13 @@ enum MyBottomNavBarItems {
   final IconData icon;
   final IconData? selectedIcon;
 
-  static MyBottomNavBarItems fromLocation(String location) {
-    if (location == MyBottomNavBarItems.survey.route.name) {
-      return MyBottomNavBarItems.survey;
-    } else if (location == MyBottomNavBarItems.user.route.name) {
-      return MyBottomNavBarItems.user;
+  static AdminBottomNavBarItems fromLocation(String location) {
+    if (location == AdminBottomNavBarItems.survey.route.name) {
+      return AdminBottomNavBarItems.survey;
+    } else if (location == AdminBottomNavBarItems.user.route.name) {
+      return AdminBottomNavBarItems.user;
     }
 
-    return MyBottomNavBarItems.survey;
+    return AdminBottomNavBarItems.survey;
   }
 }

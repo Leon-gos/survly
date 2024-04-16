@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:logger/web.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
+import 'package:survly/src/network/data/do_survey/do_survey_repository_impl.dart';
 import 'package:survly/src/network/data/file/file_data.dart';
 import 'package:survly/src/network/data/question/question_repository_impl.dart';
 import 'package:survly/src/network/data/survey/survey_repository.dart';
@@ -190,5 +191,77 @@ class SurveyRepositoryImpl implements SurveyRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  Future<List<Survey>> fetchFirstPageExploreSurvey() async {
+    List<Survey> list = [];
+
+    var value = await ref
+        .where(SurveyCollection.fieldStatus,
+            isEqualTo: SurveyStatus.public.value)
+        .orderBy(SurveyCollection.fieldDateCreate, descending: true)
+        .limit(pageSize)
+        .get();
+    for (var doc in value.docs) {
+      var data = doc.data();
+      data[SurveyCollection.fieldSurveyId] = doc.id;
+      var survey = Survey.fromMap(data);
+      survey.outlet = Outlet(
+        address: data[SurveyCollection.fieldAddress],
+        latitude: data[SurveyCollection.fieldLatitude],
+        longitude: data[SurveyCollection.fieldLongitude],
+      );
+      list.add(survey);
+    }
+
+    return list;
+  }
+
+  @override
+  Future<List<Survey>> fetchMoreExploreSurvey({
+    required Survey lastSurvey,
+  }) async {
+    List<Survey> list = [];
+
+    var lastDoc = await ref.doc(lastSurvey.surveyId).get();
+    var value = await ref
+        .where(SurveyCollection.fieldStatus,
+            isEqualTo: SurveyStatus.public.value)
+        .orderBy(SurveyCollection.fieldDateCreate, descending: true)
+        .startAfterDocument(lastDoc)
+        .limit(pageSize)
+        .get();
+    for (var doc in value.docs) {
+      var data = doc.data();
+
+      if (data[SurveyCollection.fieldStatus] == SurveyStatus.archived.value) {
+        continue;
+      }
+
+      data[SurveyCollection.fieldSurveyId] = doc.id;
+      var survey = Survey.fromMap(data);
+      survey.outlet = Outlet(
+        address: data[SurveyCollection.fieldAddress],
+        latitude: data[SurveyCollection.fieldLatitude],
+        longitude: data[SurveyCollection.fieldLongitude],
+      );
+      list.add(survey);
+    }
+
+    return list;
+  }
+
+  Future<List<Survey>> fetchUserDoingSurvey(String userId) async {
+    List<Survey> list = [];
+    var doSurveyRepo = DoSurveyRepositoryImpl();
+    var surveyIdList = await doSurveyRepo.fetchUserDoingSurveyId(userId);
+    for (var surveyId in surveyIdList) {
+      var survey = await fetchSurveyById(surveyId);
+      if (survey != null) {
+        list.add(survey);
+      }
+    }
+    return list;
   }
 }

@@ -3,8 +3,8 @@ import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/theme/colors.dart';
 
-class SurveyCard extends StatelessWidget {
-  const SurveyCard({
+class AppSurveyCard extends StatelessWidget {
+  const AppSurveyCard({
     super.key,
     required this.survey,
     this.borderRadius = 8,

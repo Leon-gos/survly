@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:survly/src/features/dashboard_admin/logic/survey_list_bloc.dart';
-import 'package:survly/src/features/dashboard_admin/logic/survey_list_state.dart';
-import 'package:survly/widgets/app_survey_list_widget.dart';
+import 'package:survly/src/features/dashboard_user/logic/explore_survey_bloc.dart';
+import 'package:survly/src/features/dashboard_user/logic/explore_survey_state.dart';
 import 'package:survly/src/localization/localization_utils.dart';
-import 'package:survly/src/network/model/survey/survey.dart';
-import 'package:survly/src/router/router_name.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
+import 'package:survly/widgets/app_survey_list_widget.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
-class SurveyView extends StatelessWidget {
-  const SurveyView({super.key});
+class ExploreSurveyView extends StatelessWidget {
+  const ExploreSurveyView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       lazy: false,
-      create: (context) => SurveyListBloc(),
-      child: BlocBuilder<SurveyListBloc, SurveyListState>(
+      create: (context) => ExploreSurveyBloc(),
+      child: BlocBuilder<ExploreSurveyBloc, ExploreSurveyState>(
         buildWhen: (previous, current) {
           return previous.isLoading != current.isLoading;
         },
@@ -34,7 +31,7 @@ class SurveyView extends StatelessWidget {
   }
 
   Widget _buildSurveyListView() {
-    return BlocBuilder<SurveyListBloc, SurveyListState>(
+    return BlocBuilder<ExploreSurveyBloc, ExploreSurveyState>(
       buildWhen: (previous, current) =>
           previous.isShowMySurvey != current.isShowMySurvey ||
           previous.surveyFilterList != current.surveyFilterList,
@@ -54,11 +51,7 @@ class SurveyView extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {
-                      context
-                          .read<SurveyListBloc>()
-                          .filterSurveyList(!state.isShowMySurvey);
-                    },
+                    onPressed: () {},
                     icon: Icon(
                       state.isShowMySurvey
                           ? Icons.filter_alt
@@ -73,28 +66,10 @@ class SurveyView extends StatelessWidget {
               child: AppSurveyListWidget(
                 surveyList: state.surveyFilterList,
                 onRefresh: () =>
-                    context.read<SurveyListBloc>().fetchFirstPageSurvey(),
+                    context.read<ExploreSurveyBloc>().fetchFirstPageSurvey(),
                 onLoadMore: () =>
-                    context.read<SurveyListBloc>().fetchMoreSurvey(),
-                onItemClick: (survey) async {
-                  await context
-                      .push(AppRouteNames.reviewSurvey.path, extra: survey)
-                      .then(
-                    (value) {
-                      if (value != null) {
-                        if (value == true) {
-                          // is archived
-                          context.read<SurveyListBloc>().archiveSurvey(survey);
-                        } else {
-                          // is updated
-                          context
-                              .read<SurveyListBloc>()
-                              .onSurveyListItemChange(survey, value as Survey);
-                        }
-                      }
-                    },
-                  );
-                },
+                    context.read<ExploreSurveyBloc>().fetchMoreSurvey(),
+                onItemClick: (survey) {},
               ),
             )
           ],
