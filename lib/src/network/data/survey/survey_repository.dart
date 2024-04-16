@@ -19,4 +19,6 @@ abstract class SurveyRepository {
   Future<Survey?> fetchSurveyById(String surveyId);
 
   Future<void> changeSurveyStatus(String surveyId, String newStatus);
+  Future<List<Survey>> fetchFirstPageExploreSurvey();
+  Future<List<Survey>> fetchMoreExploreSurvey({required Survey lastSurvey});
 }

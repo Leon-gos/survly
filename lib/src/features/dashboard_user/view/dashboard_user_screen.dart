@@ -89,24 +89,6 @@ class DashboardUserScreen extends StatelessWidget {
                     return [
                       PopupMenuItem(
                         onTap: () {
-                          context.push(AppRouteNames.createSurvey.path);
-                        },
-                        child: Text(S.of(context).titleCreateSurvey),
-                      ),
-                      PopupMenuItem(
-                        onTap: () {
-                          context.push(AppRouteNames.doSurvey.path);
-                        },
-                        child: const Text("Demo update location"),
-                      ),
-                      PopupMenuItem(
-                        onTap: () {
-                          context.push(AppRouteNames.doSurveyTracking.path);
-                        },
-                        child: const Text("Demo location track"),
-                      ),
-                      PopupMenuItem(
-                        onTap: () {
                           AuthenticationRepositoryImpl().clearLoginInfo();
                           UserBaseSingleton.instance().userBase = null;
                           context.goNamed(AppRouteNames.login.path);

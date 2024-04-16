@@ -9,9 +9,9 @@ import 'package:survly/src/features/dashboard_admin/view/dashboard_admin_screen.
 import 'package:survly/src/features/dashboard_admin/view/survey_view.dart';
 import 'package:survly/src/features/dashboard_admin/view/user_view.dart';
 import 'package:survly/src/features/dashboard_user/logic/navigation_bar_item.dart';
-import 'package:survly/src/features/dashboard_user/view/dashboard_admin_screen.dart';
-import 'package:survly/src/features/dashboard_user/view/survey_view.dart';
-import 'package:survly/src/features/dashboard_user/view/user_view.dart';
+import 'package:survly/src/features/dashboard_user/view/dashboard_user_screen.dart';
+import 'package:survly/src/features/dashboard_user/view/explore_view.dart';
+import 'package:survly/src/features/dashboard_user/view/doing_survey_view.dart';
 import 'package:survly/src/features/do_survey/view/do_suvey_screen.dart';
 import 'package:survly/src/features/do_survey_tracking/view/do_survey_tracking_screen.dart';
 import 'package:survly/src/features/review_survey/view/review_survey_screen.dart';
