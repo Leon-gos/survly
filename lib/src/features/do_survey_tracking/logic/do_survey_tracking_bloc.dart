@@ -10,6 +10,7 @@ class DoSurveyTrackingBloc extends Cubit<DoSurveyTrackingState> {
   DoSurveyTrackingBloc(String doSurveyId) : super(DoSurveyTrackingState.ds()) {
     fetchDoSurvey(doSurveyId);
   }
+  GoogleMapController? mapController;
 
   Future<void> fetchDoSurvey(String doSurveyId) async {
     var doSurvey = await DoSurveyRepositoryImpl().getDoSurvey(doSurveyId);
@@ -27,7 +28,7 @@ class DoSurveyTrackingBloc extends Cubit<DoSurveyTrackingState> {
 
       emit(state.copyWith(doSurvey: newDoSurvey));
 
-      state.mapController?.animateCamera(
+      mapController?.animateCamera(
         CameraUpdate.newLatLngZoom(latLng, 15),
       );
 
@@ -41,7 +42,7 @@ class DoSurveyTrackingBloc extends Cubit<DoSurveyTrackingState> {
   }
 
   void onMapControllerChange(GoogleMapController controller) {
-    emit(state.copyWith(mapController: controller));
+    mapController = controller;
   }
 
   @override

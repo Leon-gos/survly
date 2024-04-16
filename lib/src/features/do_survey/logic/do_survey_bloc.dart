@@ -9,9 +9,15 @@ import 'package:survly/src/network/model/do_survey/do_survey.dart';
 import 'package:survly/src/network/model/location_log/location_log.dart';
 
 class DoSurveyBloc extends Cubit<DoSurveyState> {
+  Timer? timer;
+
   DoSurveyBloc(DoSurvey doSurvey)
       : super(DoSurveyState.ds(doSurvey: doSurvey)) {
-    var timer = Timer.periodic(
+    setupTimer();
+  }
+
+  void setupTimer() {
+    timer = Timer.periodic(
       DoSurveyState.updateDuration,
       (timer) async {
         var event = await state.location.getLocation();
@@ -38,12 +44,11 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
         }
       },
     );
-    emit(state.copyWith(timer: timer));
   }
 
   @override
   Future<void> close() {
-    state.timer?.cancel();
+    timer?.cancel();
     return super.close();
   }
 }
