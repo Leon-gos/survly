@@ -49,9 +49,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
 
     var loginInfo = await AuthenticationRepositoryImpl().readLoginInfo();
-    if (loginInfo != null &&
-        loginInfo.email != "" &&
-        loginInfo.password != "") {
+    if (loginInfo != null && loginInfo.isNotEmpty) {
       try {
         await UserRepositoryImpl()
             .fetchUserByEmail(loginInfo.email)
