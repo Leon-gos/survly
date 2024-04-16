@@ -113,8 +113,8 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                             );
                           },
                         ),
-                      if (state.survey
-                          .ableToEdit(AdminSingleton.instance().admin?.id)) ...[
+                      if (state.survey.ableToEdit(
+                          UserBaseSingleton.instance().userBase?.id)) ...[
                         PopupMenuItem(
                           child: Text(S.of(context).labelBtnEdit),
                           onTap: () {
@@ -356,7 +356,7 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
           onTap: () {
             if (state.survey.status == SurveyStatus.draft.value) {
               String? publishError = state.survey.getPublishError(
-                AdminSingleton.instance().admin?.id,
+                UserBaseSingleton.instance().userBase?.id,
                 state.questionList,
               );
               if (publishError != null) {
@@ -378,7 +378,7 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
               }
             } else if (state.survey.status == SurveyStatus.public.value) {
               String? draftError = state.survey.getDraftError(
-                AdminSingleton.instance().admin?.id,
+                UserBaseSingleton.instance().userBase?.id,
               );
               if (draftError != null) {
                 Fluttertoast.showToast(msg: draftError);

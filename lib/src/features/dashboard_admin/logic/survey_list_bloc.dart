@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
-import 'package:survly/src/features/dashboard/logic/survey_list_state.dart';
+import 'package:survly/src/features/dashboard_admin/logic/survey_list_state.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 

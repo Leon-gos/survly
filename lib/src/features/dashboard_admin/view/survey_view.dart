@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:survly/src/features/dashboard/logic/survey_list_bloc.dart';
-import 'package:survly/src/features/dashboard/logic/survey_list_state.dart';
-import 'package:survly/src/features/dashboard/widget/survey_list_widget.dart';
+import 'package:survly/src/features/dashboard_admin/logic/survey_list_bloc.dart';
+import 'package:survly/src/features/dashboard_admin/logic/survey_list_state.dart';
+import 'package:survly/src/features/dashboard_admin/widget/survey_list_widget.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/router_name.dart';

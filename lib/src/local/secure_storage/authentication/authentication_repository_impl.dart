@@ -16,12 +16,20 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     var password = await _storage
         .read(key: keyPassword)
         .timeout(const Duration(seconds: Timeout.readLocalStorageTimeout));
-    return LoginInfo(email: email ?? "", password: password ?? "");
+    if (email != null && password != null) {
+      return LoginInfo(email: email, password: password);
+    }
+    return null;
   }
 
   @override
   Future<void> storeLoginInfo(LoginInfo loginInfo) async {
     await _storage.write(key: keyEmail, value: loginInfo.email);
     await _storage.write(key: keyPassword, value: loginInfo.password);
+  }
+
+  @override
+  Future<void> clearLoginInfo() async {
+    await _storage.deleteAll();
   }
 }

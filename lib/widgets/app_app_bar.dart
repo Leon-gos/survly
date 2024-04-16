@@ -8,6 +8,7 @@ class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final bool noActionBar;
   final bool centerTitle;
+  final Color? backgroundColor;
 
   const AppAppBarWidget({
     super.key,
@@ -16,12 +17,13 @@ class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.noActionBar = false,
     this.centerTitle = false,
+    this.backgroundColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColors.primary,
+      backgroundColor: backgroundColor ?? AppColors.primary,
       title: title != null
           ? Text(
               title!,

@@ -3,10 +3,12 @@ import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/authentication/view/login_screen.dart';
 import 'package:survly/src/features/authentication/view/signup_view.dart';
 import 'package:survly/src/features/create_survey/view/create_survey_screen.dart';
-import 'package:survly/src/features/dashboard/logic/navigation_bar_item.dart';
 import 'package:survly/src/features/dashboard/view/dashboard_screen.dart';
-import 'package:survly/src/features/dashboard/view/survey_view.dart';
-import 'package:survly/src/features/dashboard/view/user_view.dart';
+import 'package:survly/src/features/dashboard_admin/logic/navigation_bar_item.dart';
+import 'package:survly/src/features/dashboard_admin/view/dashboard_admin_screen.dart';
+import 'package:survly/src/features/dashboard_admin/view/survey_view.dart';
+import 'package:survly/src/features/dashboard_admin/view/user_view.dart';
+import 'package:survly/src/features/dashboard_user/view/dash_board_user_screen.dart';
 import 'package:survly/src/features/do_survey/view/do_suvey_screen.dart';
 import 'package:survly/src/features/do_survey_tracking/view/do_survey_tracking_screen.dart';
 import 'package:survly/src/features/review_survey/view/review_survey_screen.dart';
@@ -22,7 +24,7 @@ import 'package:survly/src/router/router_name.dart';
 
 class AppRouter {
   final router = GoRouter(
-    initialLocation: AppRouteNames.survey.path,
+    initialLocation: AppRouteNames.dashboard.path,
     navigatorKey: AppCoordinator.navigatorKey,
     routes: <RouteBase>[
       GoRoute(
@@ -36,6 +38,18 @@ class AppRouter {
         path: AppRouteNames.signUp.path,
         parentNavigatorKey: AppCoordinator.navigatorKey,
         builder: (context, state) => const SignUpScreen(),
+      ),
+      GoRoute(
+        name: AppRouteNames.dashboard.name,
+        path: AppRouteNames.dashboard.path,
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        builder: (context, state) => const DashboardScreen(),
+      ),
+      GoRoute(
+        name: AppRouteNames.dashboardUser.name,
+        path: AppRouteNames.dashboardUser.path,
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        builder: (context, state) => const DashboardUserScreen(),
       ),
       GoRoute(
         name: AppRouteNames.createSurvey.name,
@@ -111,7 +125,7 @@ class AppRouter {
         builder: (context, state) => const DoSurveyTrackingScreen(),
       ),
       ShellRoute(
-        builder: (context, state, child) => DashboardScreen(
+        builder: (context, state, child) => DashboardAdminScreen(
           body: child,
           currentItem: MyBottomNavBarItems.survey,
         ),

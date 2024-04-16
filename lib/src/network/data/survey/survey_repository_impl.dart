@@ -83,7 +83,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
   }) async {
     try {
       // 1: insert survey
-      survey.adminId = AdminSingleton.instance().admin!.id;
+      survey.adminId = UserBaseSingleton.instance().userBase!.id;
       final value = await ref.add({});
       survey.surveyId = value.id;
       ref.doc("/${value.id}").set({

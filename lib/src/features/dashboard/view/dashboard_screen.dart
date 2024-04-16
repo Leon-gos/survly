@@ -1,133 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:survly/src/features/dashboard/logic/account_bloc.dart';
-import 'package:survly/src/features/dashboard/logic/bottom_nav_bloc.dart';
-import 'package:survly/src/features/dashboard/logic/dashboard_bloc.dart';
-import 'package:survly/src/features/dashboard/logic/dashboard_state.dart';
-import 'package:survly/src/features/dashboard/logic/navigation_bar_item.dart';
-import 'package:survly/src/features/dashboard/widget/bottom_navigation_bar.dart';
+import 'package:logger/logger.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
-import 'package:survly/src/localization/localization_utils.dart';
+import 'package:survly/src/local/secure_storage/authentication/authentication_repository_impl.dart';
+import 'package:survly/src/network/data/user/user_repository_impl.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
+import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/router/router_name.dart';
+import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
-import 'package:survly/widgets/app_avatar_widget.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 
-class DashboardScreen extends StatelessWidget {
-  final Widget body;
-  final MyBottomNavBarItems currentItem;
+class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
 
-  const DashboardScreen(
-      {super.key, required this.body, required this.currentItem});
+  @override
+  State<StatefulWidget> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  @override
+  void initState() {
+    loadUser();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => DashboardBloc(),
-        ),
-        BlocProvider(
-          create: (context) => BottomNavBloc(currentItem),
-        ),
-        BlocProvider(
-          create: (context) => AccountBloc(AdminSingleton.instance().admin!),
-        ),
-      ],
-      child: BlocBuilder<DashboardBloc, DashboardState>(
-        buildWhen: (previous, current) => previous.status != current.status,
-        builder: (context, state) {
-          return state.status == DashboardStatus.loading
-              ? _buildLoadingScreen()
-              : _buildDashboardScreen(context);
-        },
+    return const Scaffold(
+      appBar: AppAppBarWidget(
+        noActionBar: true,
+        backgroundColor: AppColors.white,
+      ),
+      body: Center(
+        child: AppLoadingCircle(),
       ),
     );
   }
 
-  Widget _buildLoadingScreen() {
-    return const Scaffold(
-      body: AppLoadingCircle(),
-    );
-  }
+  Future<void> loadUser() async {
+    var userBase = UserBaseSingleton.instance().userBase;
+    if (userBase != null) {
+      if (userBase.role == UserBase.roleAdmin) {
+        AppCoordinator.showSurveyManagementScreen();
+        return;
+      } else {
+        AppCoordinator.goNamed(AppRouteNames.dashboardUser.path);
+      }
+    }
 
-  Widget _buildDashboardScreen(BuildContext context) {
-    return BlocBuilder<BottomNavBloc, MyBottomNavBarItems>(
-      builder: (context, state) {
-        return Scaffold(
-          appBar: const AppAppBarWidget(
-            noActionBar: true,
-          ),
-          body: Column(
-            children: [
-              _buildAdminInfo(context),
-              Expanded(child: body),
-            ],
-          ),
-          bottomNavigationBar: const MyBottomNavBar(),
-        );
-      },
-    );
-  }
-
-  Widget _buildAdminInfo(BuildContext context) {
-    return BlocBuilder<AccountBloc, UserBase>(builder: (context, state) {
-      return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                AppAvatarWidget(
-                  avatarUrl: state.avatar,
-                  size: 48,
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      state.fullname,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                    Text(state.email),
-                  ],
-                ),
-                const Spacer(),
-                PopupMenuButton(
-                  itemBuilder: (context) {
-                    return [
-                      PopupMenuItem(
-                        onTap: () {
-                          context.push(AppRouteNames.createSurvey.path);
-                        },
-                        child: Text(S.of(context).titleCreateSurvey),
-                      ),
-                      PopupMenuItem(
-                        onTap: () {
-                          context.push(AppRouteNames.doSurvey.path);
-                        },
-                        child: const Text("Demo update location"),
-                      ),
-                      PopupMenuItem(
-                        onTap: () {
-                          context.push(AppRouteNames.doSurveyTracking.path);
-                        },
-                        child: const Text("Demo location track"),
-                      ),
-                    ];
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
-      );
-    });
+    var loginInfo = await AuthenticationRepositoryImpl().readLoginInfo();
+    if (loginInfo != null && loginInfo.isNotEmpty) {
+      try {
+        await UserRepositoryImpl()
+            .fetchUserByEmail(loginInfo.email)
+            .then((value) {
+          UserBaseSingleton.instance().userBase = value;
+          if (value?.role == UserBase.roleAdmin) {
+            AppCoordinator.goNamed(AppRouteNames.survey.path);
+          } else {
+            AppCoordinator.goNamed(AppRouteNames.dashboardUser.path);
+          }
+          return;
+        });
+      } catch (e) {
+        AppCoordinator.goNamed(AppRouteNames.login.path);
+        Logger().d(e);
+      }
+    } else {
+      AppCoordinator.goNamed(AppRouteNames.login.path);
+    }
   }
 }

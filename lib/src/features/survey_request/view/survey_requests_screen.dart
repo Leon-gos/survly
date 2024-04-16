@@ -43,7 +43,7 @@ class SurveyRequestScreen extends StatelessWidget {
     return BlocBuilder<SurveyRequestBloc, SurveyRequestState>(
       builder: (context, state) {
         if (state.survey.ableToResponseRequest(
-          AdminSingleton.instance().admin?.id,
+          UserBaseSingleton.instance().userBase?.id,
         )) {
           return ListView.builder(
             padding: const EdgeInsets.only(top: 8, bottom: 32),
