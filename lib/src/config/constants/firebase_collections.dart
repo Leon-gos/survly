@@ -58,6 +58,7 @@ class SurveyRequestCollection {
 
 class DoSurveyCollection {
   static const String collectionName = "doSurvey";
+  static const String fieldDoSurveyId = "doSurveyId";
   static const String fieldStatus = "status";
   static const String fieldSurveyId = "surveyId";
   static const String fieldUserId = "userId";
