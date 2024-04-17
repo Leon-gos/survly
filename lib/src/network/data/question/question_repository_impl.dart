@@ -73,4 +73,12 @@ class QuestionRepositoryImpl implements QuestionRepository {
     }
     return questionList;
   }
+
+  @override
+  Future<int> countQuestion(String surveyId) async {
+    var value = await ref
+        .where(QuestionCollection.fieldSurveyId, isEqualTo: surveyId)
+        .get();
+    return value.docs.length;
+  }
 }

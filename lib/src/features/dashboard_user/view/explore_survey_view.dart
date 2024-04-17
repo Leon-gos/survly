@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/dashboard_user/logic/explore_survey_bloc.dart';
 import 'package:survly/src/features/dashboard_user/logic/explore_survey_state.dart';
 import 'package:survly/src/localization/localization_utils.dart';
+import 'package:survly/src/router/router_name.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 import 'package:survly/widgets/app_survey_list_widget.dart';
 import 'package:survly/widgets/app_text_field.dart';
@@ -69,7 +71,9 @@ class ExploreSurveyView extends StatelessWidget {
                     context.read<ExploreSurveyBloc>().fetchFirstPageSurvey(),
                 onLoadMore: () =>
                     context.read<ExploreSurveyBloc>().fetchMoreSurvey(),
-                onItemClick: (survey) {},
+                onItemClick: (survey) {
+                  context.push(AppRouteNames.previewSurvey.path, extra: survey);
+                },
               ),
             )
           ],

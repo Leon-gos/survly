@@ -11,6 +11,7 @@ class AppDialog extends StatelessWidget {
     this.onOkPressed,
     this.onCancelPressed,
     this.onConfirmPressed,
+    this.child,
   });
 
   final String title;
@@ -18,6 +19,7 @@ class AppDialog extends StatelessWidget {
   final Function()? onOkPressed;
   final Function()? onCancelPressed;
   final Function()? onConfirmPressed;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,15 @@ class AppDialog extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
+            if (child != null)
+              Column(
+                children: [
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  child!
+                ],
+              ),
             const SizedBox(
               height: 16,
             ),

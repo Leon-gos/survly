@@ -4,4 +4,5 @@ abstract class QuestionRepository {
   Future<void> createQuestion(Question question);
   Future<void> deleteAllQuestionOfSurvey(String surveyId);
   Future<List<Question>> fetchAllQuestionOfSurvey(String surveyId);
+  Future<int> countQuestion(String surveyId);
 }
