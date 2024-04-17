@@ -29,9 +29,14 @@ class _QuestionSingleOptionWidgetState
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           "Question ${widget.question.questionIndex}: ${widget.question.question}",
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         for (var option in widget.question.optionList)
           RadioListTile(

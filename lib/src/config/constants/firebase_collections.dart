@@ -72,3 +72,16 @@ class DsLocationLog {
   static const String fieldLatitude = "latitude";
   static const String fieldLongitude = "longitude";
 }
+
+class AnswerQuestionCollection {
+  static const String collectionName = "answerQuestion";
+  static const String fieldQuestionId = "questionId";
+  static const String fieldUserId = "userId";
+  static const String fieldAnswer = "answer";
+}
+
+class AnswerOptionCollection {
+  static const String collectionName = "answerOption";
+  static const String fieldOptionId = "questionId";
+  static const String fieldUserId = "userId";
+}

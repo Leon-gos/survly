@@ -38,9 +38,14 @@ class _QuestionTextWidgetState extends State<QuestionTextWidget> {
   Widget build(BuildContext context) {
     textController.text = widget.answer;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           "Question ${widget.question.questionIndex}: ${widget.question.question}",
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         TextField(
           controller: textController,

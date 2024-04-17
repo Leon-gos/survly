@@ -1,3 +1,5 @@
+import 'package:survly/src/network/data/answer_option/answer_option_repository_impl.dart';
+import 'package:survly/src/network/data/answer_question/answer_question_repository_impl.dart';
 import 'package:survly/src/network/data/authentication/authentication_repository_impl.dart';
 import 'package:survly/src/local/secure_storage/authentication/authentication_repository_impl.dart'
     as authentication_local;
@@ -23,4 +25,6 @@ class DomainManager {
   final question = QuestionRepositoryImpl();
   final surveyRequest = SurveyRequestRepositoryImpl();
   final doSurvey = DoSurveyRepositoryImpl();
+  final answerQuestion = AnswerQuestionRepositoryImpl();
+  final answerOption = AnswerOptionRepositoryImpl();
 }

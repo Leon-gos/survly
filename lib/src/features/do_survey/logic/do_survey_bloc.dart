@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/do_survey/logic/do_survey_state.dart';
@@ -9,8 +12,10 @@ import 'package:survly/src/network/data/do_survey/do_survey_repository_impl.dart
 import 'package:survly/src/network/data/location_log/location_log_repository_impl.dart';
 import 'package:survly/src/network/model/location_log/location_log.dart';
 import 'package:survly/src/network/model/question/question.dart';
+import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/coordinator.dart';
+import 'package:survly/widgets/app_dialog.dart';
 
 class DoSurveyBloc extends Cubit<DoSurveyState> {
   Timer? timer;
@@ -76,11 +81,29 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
       state.survey.surveyId,
     );
 
-    // test
     List<Set<String>> answerList = [];
-    for (int i = 0; i < questionList.length; i++) {
-      answerList.add(
-          questionList[i].questionType == QuestionType.text.value ? {""} : {});
+    for (var question in questionList) {
+      if (question.questionType == QuestionType.text.value) {
+        answerList.add(
+          {
+            await domainManager.answerQuestion.fetchQuestionAnswer(
+                  questionId: question.questionId,
+                  userId: UserBaseSingleton.instance().userBase!.id,
+                ) ??
+                ""
+          },
+        );
+      } else {
+        Set<String> answerSet = {};
+        for (var option in (question as QuestionWithOption).optionList) {
+          if (await domainManager.answerOption.isOptionChecked(
+              optionId: option.questionOptionId,
+              userId: UserBaseSingleton.instance().userBase!.id)) {
+            answerSet.add(option.questionOptionId);
+          }
+        }
+        answerList.add(answerSet);
+      }
     }
 
     emit(state.copyWith(
@@ -89,17 +112,31 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     ));
   }
 
-  void goNextPage() {
+  void goNextPage(BuildContext context) {
     if (state.currentPage < state.questionList.length) {
       emit(state.copyWith(currentPage: state.currentPage + 1));
-      // Logger().d(state.currentPage);
+    } else {
+      //TODO: submit survey
     }
   }
 
-  void goPreviousPage() {
+  void goPreviousPage(BuildContext context) {
     if (state.currentPage > 0) {
       emit(state.copyWith(currentPage: state.currentPage - 1));
-      // Logger().d(state.currentPage);
+    } else {
+      showDialog(
+        context: context,
+        builder: (dialogContext) {
+          return AppDialog(
+            title: "Exit without save",
+            body: "Your recent changes will not be saved",
+            onCancelPressed: () {},
+            onConfirmPressed: () {
+              context.pop();
+            },
+          );
+        },
+      );
     }
   }
 
@@ -113,5 +150,50 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     }
     emit(state.copyWith(answerList: list));
     Logger().d(state.answerList);
+  }
+
+  Future<void> saveDraft() async {
+    for (int i = 0; i < state.questionList.length; i++) {
+      var question = state.questionList[i];
+      var answer = state.answerList[i];
+      if (question.questionType == QuestionType.text.value) {
+        await domainManager.answerQuestion.answerQuestion(
+          questionId: question.questionId,
+          userId: UserBaseSingleton.instance().userBase!.id,
+          answer: answer.firstOrNull ?? "",
+        );
+      } else {
+        question = question as QuestionWithOption;
+        await domainManager.answerOption.answerOption(
+          optionList: question.optionList,
+          optionIdCheckedList: answer,
+          userId: UserBaseSingleton.instance().userBase!.id,
+        );
+      }
+    }
+    Fluttertoast.showToast(msg: "Save draft survey successfully");
+  }
+
+  void onSaveDraftSurveyBtnPressed(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return AppDialog(
+          title: "Save draft survey",
+          body:
+              "Save your survey as draft, you can edit it continuously next time",
+          option2Text: "Save and exit",
+          onOption2Pressed: () async {
+            await saveDraft().then((value) {
+              context.pop();
+            });
+          },
+          option1Text: "Save",
+          onOption1Pressed: () {
+            saveDraft();
+          },
+        );
+      },
+    );
   }
 }

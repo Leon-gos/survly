@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:survly/src/features/do_survey/logic/do_survey_bloc.dart';
 import 'package:survly/src/features/do_survey/logic/do_survey_state.dart';
 import 'package:survly/src/features/do_survey/widget/question_multi_option_widget.dart';
@@ -26,13 +25,16 @@ class DoSurveyScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => DoSurveyBloc(survey),
       child: BlocBuilder<DoSurveyBloc, DoSurveyState>(
-        buildWhen: (previous, current) => previous.doSurvey != current.doSurvey,
+        buildWhen: (previous, current) =>
+            previous.doSurvey != current.doSurvey ||
+            previous.questionList != current.questionList,
         builder: (context, state) {
           return Scaffold(
             appBar: const AppAppBarWidget(
               noActionBar: true,
             ),
-            body: state.doSurvey == null
+            resizeToAvoidBottomInset: false,
+            body: state.doSurvey == null || state.questionList.isEmpty
                 ? const AppLoadingCircle()
                 : _buildSurveyForm(),
           );
@@ -44,22 +46,19 @@ class DoSurveyScreen extends StatelessWidget {
   Widget _buildSurveyForm() {
     return BlocBuilder<DoSurveyBloc, DoSurveyState>(
       buildWhen: (previous, current) =>
-          previous.doSurvey != current.doSurvey ||
-          previous.questionList != current.questionList ||
           previous.currentPage != current.currentPage,
       builder: (context, state) {
         return Column(
           children: [
             Container(
               width: double.infinity,
-              // height: 100,
               color: AppColors.primary,
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Row(
                 children: [
                   IconButton(
                     onPressed: () {
-                      context.read<DoSurveyBloc>().goPreviousPage();
+                      context.read<DoSurveyBloc>().goPreviousPage(context);
                     },
                     icon: const Icon(Icons.arrow_back_ios_new),
                     color: AppColors.onPrimary,
@@ -78,7 +77,7 @@ class DoSurveyScreen extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {
-                      context.read<DoSurveyBloc>().goNextPage();
+                      context.read<DoSurveyBloc>().goNextPage(context);
                     },
                     icon: const Icon(
                       Icons.arrow_forward_ios,
@@ -89,11 +88,36 @@ class DoSurveyScreen extends StatelessWidget {
               ),
             ),
             Expanded(
+              flex: 1,
               child: state.getPageType == PageType.intro
                   ? _buildIntro(context, state)
                   : state.getPageType == PageType.question
                       ? _buildQuestion(context, state)
                       : _buildOutlet(context, state),
+            ),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              child: ElevatedButton(
+                onPressed: () {
+                  context
+                      .read<DoSurveyBloc>()
+                      .onSaveDraftSurveyBtnPressed(context);
+                },
+                style: ButtonStyle(
+                  shape: MaterialStatePropertyAll(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                  ),
+                  backgroundColor:
+                      const MaterialStatePropertyAll(AppColors.secondary),
+                ),
+                child: const Text(
+                  "Save draft",
+                  style: TextStyle(color: AppColors.white),
+                ),
+              ),
             )
           ],
         );
@@ -102,7 +126,6 @@ class DoSurveyScreen extends StatelessWidget {
   }
 
   Widget _buildQuestion(BuildContext context, DoSurveyState state) {
-    Logger().d("build quest");
     int questionPosition = state.currentPage - 1;
     Question question = state.questionList[questionPosition];
 
@@ -143,8 +166,27 @@ class DoSurveyScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(state.survey.title),
-        Text(state.survey.description),
+        Image.network(
+          state.survey.thumbnail,
+          fit: BoxFit.cover,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                state.survey.title,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(state.survey.description),
+            ],
+          ),
+        )
       ],
     );
   }
