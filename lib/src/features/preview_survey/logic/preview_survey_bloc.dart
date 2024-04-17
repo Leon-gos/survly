@@ -4,6 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/preview_survey/logic/preview_survey_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/network/model/survey_request/survey_request.dart';
 
@@ -41,10 +42,10 @@ class PreviewSurveyBloc extends Cubit<PreviewSurveyState> {
           requestMessage: "",
         ),
       );
-      Fluttertoast.showToast(msg: "Request successfully");
+      Fluttertoast.showToast(msg: S.text.toastRequestSurveySuccess);
     } catch (e) {
       Logger().e("Request survey failed", error: e);
-      Fluttertoast.showToast(msg: "Request failed");
+      Fluttertoast.showToast(msg: S.text.toastRequestSurveyFail);
     }
   }
 
@@ -57,10 +58,10 @@ class PreviewSurveyBloc extends Cubit<PreviewSurveyState> {
       await domainManager.surveyRequest
           .cancelRequestSurvey(state.latestRequest!);
       emit(state.removeRequest());
-      Fluttertoast.showToast(msg: "Cancel successfully");
+      Fluttertoast.showToast(msg: S.text.toastCancelRequestSurveySuccess);
     } catch (e) {
       Logger().e("Request survey failed", error: e);
-      Fluttertoast.showToast(msg: "Cancel failed");
+      Fluttertoast.showToast(msg: S.text.toastCancelRequestSurveyFailed);
     }
   }
 

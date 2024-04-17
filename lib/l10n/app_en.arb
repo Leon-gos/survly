@@ -86,6 +86,10 @@
     "labelBtnCancelRequest": "Request pending",
     "labelSurveyEarn": "You will earn {cost} if approved",
     "labelSurveyNumQuestion": "You need to answer {numQuestion} question",
+    "toastRequestSurveySuccess": "Request successfully",
+    "toastRequestSurveyFail": "Request failed",
+    "toastCancelRequestSurveySuccess": "Cancel successfully",
+    "toastCancelRequestSurveyFailed": "Cancel failed",
 
     "errorGeneral": "Something went wrong",
     "errorEmptyName": "Empty name",
