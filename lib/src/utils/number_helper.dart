@@ -1,11 +1,15 @@
 import 'package:intl/intl.dart';
 
 class NumberHelper {
-  static String formatCurrency(int money) {
+  static String formatCurrency(
+    int money, {
+    String locale = 'vi',
+    String symbol = 'VNĐ',
+  }) {
     final formater = NumberFormat.currency(
-      locale: 'vi',
+      locale: locale,
       customPattern: '#,### \u00a4',
-      symbol: 'VNĐ',
+      symbol: symbol,
     );
     return formater.format(money);
   }
