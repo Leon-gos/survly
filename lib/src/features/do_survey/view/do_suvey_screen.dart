@@ -5,6 +5,7 @@ import 'package:survly/src/features/do_survey/logic/do_survey_state.dart';
 import 'package:survly/src/features/do_survey/widget/question_multi_option_widget.dart';
 import 'package:survly/src/features/do_survey/widget/question_single_option_widget.dart';
 import 'package:survly/src/features/do_survey/widget/question_text_widget.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
@@ -66,7 +67,10 @@ class DoSurveyScreen extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Text(
-                      "Page ${state.currentPage}",
+                      S.of(context).labelPage(
+                            state.currentPage,
+                            state.questionList.length + 2,
+                          ),
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 18,
@@ -113,9 +117,9 @@ class DoSurveyScreen extends StatelessWidget {
                   backgroundColor:
                       const MaterialStatePropertyAll(AppColors.secondary),
                 ),
-                child: const Text(
-                  "Save draft",
-                  style: TextStyle(color: AppColors.white),
+                child: Text(
+                  S.of(context).labelBtnSaveDraft,
+                  style: const TextStyle(color: AppColors.white),
                 ),
               ),
             )

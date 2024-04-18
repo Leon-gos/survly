@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 
 class QuestionSingleOptionWidget extends StatefulWidget {
@@ -32,7 +33,10 @@ class _QuestionSingleOptionWidgetState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Question ${widget.question.questionIndex}: ${widget.question.question}",
+          S.of(context).labelQuestion(
+                widget.question.questionIndex,
+                widget.question.question,
+              ),
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,

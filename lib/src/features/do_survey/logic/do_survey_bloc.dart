@@ -8,6 +8,7 @@ import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/do_survey/logic/do_survey_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/data/do_survey/do_survey_repository_impl.dart';
 import 'package:survly/src/network/data/location_log/location_log_repository_impl.dart';
 import 'package:survly/src/network/model/location_log/location_log.dart';
@@ -128,8 +129,8 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
         context: context,
         builder: (dialogContext) {
           return AppDialog(
-            title: "Exit without save",
-            body: "Your recent changes will not be saved",
+            title: S.text.dialogTitleExitWithoutSave,
+            body: S.text.dialogBodyExitWithoutSave,
             onCancelPressed: () {},
             onConfirmPressed: () {
               context.pop();
@@ -171,7 +172,7 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
         );
       }
     }
-    Fluttertoast.showToast(msg: "Save draft survey successfully");
+    Fluttertoast.showToast(msg: S.text.toastSaveDraftSurveySuccess);
   }
 
   void onSaveDraftSurveyBtnPressed(BuildContext context) {
@@ -179,16 +180,15 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
       context: context,
       builder: (dialogContext) {
         return AppDialog(
-          title: "Save draft survey",
-          body:
-              "Save your survey as draft, you can edit it continuously next time",
-          option2Text: "Save and exit",
+          title: S.text.dialogTitleSaveDraft,
+          body: S.text.dialogBodySaveDraft,
+          option2Text: S.text.labelBtnSaveAndExit,
           onOption2Pressed: () async {
             await saveDraft().then((value) {
               context.pop();
             });
           },
-          option1Text: "Save",
+          option1Text: S.text.labelBtnSave,
           onOption1Pressed: () {
             saveDraft();
           },
