@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_editor/image_editor.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart' as image_picker;
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/do_survey/logic/do_survey_state.dart';
@@ -16,10 +20,14 @@ import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/coordinator.dart';
+import 'package:survly/src/service/permission_service.dart';
 import 'package:survly/widgets/app_dialog.dart';
 
 class DoSurveyBloc extends Cubit<DoSurveyState> {
   Timer? timer;
+  static const fontSize = 128;
+  static const photoWidth = 1920;
+  static const photoHeight = 1080;
 
   DoSurveyBloc(Survey survey) : super(DoSurveyState.ds(survey: survey)) {
     fetchDoSurveyInfo(survey);
@@ -114,7 +122,7 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
   }
 
   void goNextPage(BuildContext context) {
-    if (state.currentPage < state.questionList.length) {
+    if (state.currentPage <= state.questionList.length) {
       emit(state.copyWith(currentPage: state.currentPage + 1));
     } else {
       //TODO: submit survey
@@ -151,6 +159,41 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     }
     emit(state.copyWith(answerList: list));
     Logger().d(state.answerList);
+  }
+
+  Future<void> onTakeOutletPhoto() async {
+    if (await PermissionService.requestCameraPermission()) {
+      await ImagePicker()
+          .pickImage(source: image_picker.ImageSource.camera)
+          .then((value) async {
+        const scaleOption = ScaleOption(
+          photoWidth,
+          photoHeight,
+          keepRatio: false,
+          keepWidthFirst: true,
+        );
+        final textOption = AddTextOption();
+        final location = await state.location.getLocation();
+        textOption.addText(
+          EditorText(
+            offset: const Offset(
+                photoWidth / 10 - fontSize, (photoHeight / 10) * 9 - fontSize),
+            text: "(${location.latitude} , ${location.longitude})",
+            fontSizePx: fontSize,
+            textColor: const Color.fromRGBO(255, 255, 255, 1),
+            fontName: "",
+          ),
+        );
+        final editor = ImageEditorOption();
+        editor.addOption(scaleOption);
+        editor.addOption(textOption);
+        final newFile = await ImageEditor.editFileImageAndGetFile(
+          file: File(value!.path),
+          imageEditorOption: editor,
+        );
+        emit(state.copyWith(outletPath: newFile?.path));
+      });
+    }
   }
 
   Future<void> saveDraft() async {

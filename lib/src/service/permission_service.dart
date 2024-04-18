@@ -11,4 +11,13 @@ class PermissionService {
     }
     return true;
   }
+
+  static Future<bool> requestCameraPermission() async {
+    var status = await Permission.camera.request();
+    Logger().d("status: $status");
+    if (status.isDenied || status.isPermanentlyDenied) {
+      return false;
+    }
+    return true;
+  }
 }
