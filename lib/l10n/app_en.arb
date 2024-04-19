@@ -104,6 +104,7 @@
     "dialogBodySubmitSurvey": "Are you sure to submit this survey? You are not able to edit after submit.",
     "toastSubmitSurveySuccess": "Submit survey successfully",
     "toastSubmitSurveyFail": "Submit survey failed",
+    "hintGoToOutletPlace": "Go to the place below and do this survey:",
 
     "errorGeneral": "Something went wrong",
     "errorEmptyName": "Empty name",

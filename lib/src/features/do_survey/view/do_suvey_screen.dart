@@ -193,7 +193,7 @@ class DoSurveyScreen extends StatelessWidget {
               const SizedBox(height: 6),
               Text(state.survey.description),
               const SizedBox(height: 8),
-              const Text("Go to the place below and do this survey:"),
+              Text(S.of(context).hintGoToOutletPlace),
               const SizedBox(height: 8),
               AppMapCardWidget(
                 locationCoordinate: LatLng(
