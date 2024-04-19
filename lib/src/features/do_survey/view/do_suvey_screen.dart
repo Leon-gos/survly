@@ -70,7 +70,7 @@ class DoSurveyScreen extends StatelessWidget {
                     flex: 1,
                     child: Text(
                       S.of(context).labelPage(
-                            state.currentPage,
+                            state.currentPage + 1,
                             state.questionList.length + 2,
                           ),
                       textAlign: TextAlign.center,
