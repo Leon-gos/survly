@@ -105,6 +105,7 @@
     "toastSubmitSurveySuccess": "Submit survey successfully",
     "toastSubmitSurveyFail": "Submit survey failed",
     "hintGoToOutletPlace": "Go to the place below and do this survey:",
+    "labelEmptyList": "Nothing here",
 
     "errorGeneral": "Something went wrong",
     "errorEmptyName": "Empty name",
