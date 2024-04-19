@@ -7,6 +7,7 @@ class AppImagePicker extends StatelessWidget {
   final String imagePath;
   final Function() onPickImage;
   final String? defaultImageUrl;
+  final bool flexibleSize;
 
   const AppImagePicker({
     super.key,
@@ -15,6 +16,7 @@ class AppImagePicker extends StatelessWidget {
     required this.imagePath,
     required this.onPickImage,
     this.defaultImageUrl,
+    this.flexibleSize = false,
   });
 
   @override
@@ -22,8 +24,8 @@ class AppImagePicker extends StatelessWidget {
     return GestureDetector(
       onTap: onPickImage,
       child: Container(
-        width: width ?? double.infinity,
-        height: height ?? 200,
+        width: flexibleSize ? null : width ?? double.infinity,
+        height: flexibleSize ? null : height ?? 200,
         margin: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.grey[200],
@@ -56,9 +58,12 @@ class AppImagePicker extends StatelessWidget {
       );
     }
     return const Center(
-      child: Icon(
-        Icons.image_search,
-        size: 64,
+      child: Padding(
+        padding: EdgeInsets.all(64),
+        child: Icon(
+          Icons.image_search,
+          size: 64,
+        ),
       ),
     );
   }

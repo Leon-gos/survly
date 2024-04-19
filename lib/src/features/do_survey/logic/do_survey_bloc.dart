@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_editor/image_editor.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/do_survey/logic/do_survey_state.dart';
@@ -16,6 +18,7 @@ import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/coordinator.dart';
+import 'package:survly/src/service/picker_service.dart';
 import 'package:survly/widgets/app_dialog.dart';
 
 class DoSurveyBloc extends Cubit<DoSurveyState> {
@@ -114,7 +117,7 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
   }
 
   void goNextPage(BuildContext context) {
-    if (state.currentPage < state.questionList.length) {
+    if (state.currentPage <= state.questionList.length) {
       emit(state.copyWith(currentPage: state.currentPage + 1));
     } else {
       //TODO: submit survey
@@ -125,19 +128,23 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     if (state.currentPage > 0) {
       emit(state.copyWith(currentPage: state.currentPage - 1));
     } else {
-      showDialog(
-        context: context,
-        builder: (dialogContext) {
-          return AppDialog(
-            title: S.text.dialogTitleExitWithoutSave,
-            body: S.text.dialogBodyExitWithoutSave,
-            onCancelPressed: () {},
-            onConfirmPressed: () {
-              context.pop();
-            },
-          );
-        },
-      );
+      if (state.isSaved == false) {
+        showDialog(
+          context: context,
+          builder: (dialogContext) {
+            return AppDialog(
+              title: S.text.dialogTitleExitWithoutSave,
+              body: S.text.dialogBodyExitWithoutSave,
+              onCancelPressed: () {},
+              onConfirmPressed: () {
+                context.pop();
+              },
+            );
+          },
+        );
+      } else {
+        context.pop();
+      }
     }
   }
 
@@ -149,11 +156,52 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     } else {
       list[questionPosition] = {answer};
     }
-    emit(state.copyWith(answerList: list));
+    emit(state.copyWith(
+      answerList: list,
+      isSaved: false,
+    ));
     Logger().d(state.answerList);
   }
 
+  Future<void> onTakeOutletPhoto() async {
+    var value = await PickerService.takePhotoByCamera();
+    if (value == null) {
+      return;
+    }
+    final decodeImage = await decodeImageFromList(
+      await value.readAsBytes(),
+    );
+    final imageWidth = decodeImage.width;
+    final imageHeight = decodeImage.height;
+    final fontSize = imageWidth ~/ 20;
+    Logger().d("$imageWidth $imageHeight $fontSize");
+    final textOption = AddTextOption();
+    final location = await state.location.getLocation();
+    textOption.addText(
+      EditorText(
+        offset: Offset(fontSize.toDouble(), imageHeight - fontSize * 2),
+        text: "(${location.latitude}, ${location.longitude})",
+        fontSizePx: fontSize,
+        textColor: Colors.white,
+        fontName: "",
+      ),
+    );
+    final editor = ImageEditorOption();
+    editor.addOption(textOption);
+    var newFile = await ImageEditor.editFileImageAndGetFile(
+      file: File(value.path),
+      imageEditorOption: editor,
+    );
+    newFile = await newFile?.rename("${newFile.path}.png");
+
+    emit(state.copyWith(
+      outletPath: newFile?.path,
+      isSaved: false,
+    ));
+  }
+
   Future<void> saveDraft() async {
+    // save answers
     for (int i = 0; i < state.questionList.length; i++) {
       var question = state.questionList[i];
       var answer = state.answerList[i];
@@ -172,6 +220,17 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
         );
       }
     }
+    // save photo
+    if (state.outletPath != "") {
+      try {
+        domainManager.doSurvey
+            .updateDoSurvey(state.doSurvey!, state.outletPath);
+      } catch (e) {
+        Logger().e("Update outlet error", error: e);
+      }
+    }
+
+    emit(state.copyWith(isSaved: true));
     Fluttertoast.showToast(msg: S.text.toastSaveDraftSurveySuccess);
   }
 

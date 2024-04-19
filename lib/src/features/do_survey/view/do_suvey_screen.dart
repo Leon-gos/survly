@@ -11,6 +11,7 @@ import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
+import 'package:survly/widgets/app_image_picker.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 
 class DoSurveyScreen extends StatelessWidget {
@@ -47,7 +48,8 @@ class DoSurveyScreen extends StatelessWidget {
   Widget _buildSurveyForm() {
     return BlocBuilder<DoSurveyBloc, DoSurveyState>(
       buildWhen: (previous, current) =>
-          previous.currentPage != current.currentPage,
+          previous.currentPage != current.currentPage ||
+          previous.outletPath != current.outletPath,
       builder: (context, state) {
         return Column(
           children: [
@@ -196,6 +198,27 @@ class DoSurveyScreen extends StatelessWidget {
   }
 
   Widget _buildOutlet(BuildContext context, DoSurveyState state) {
-    return SizedBox();
+    return Column(
+      children: [
+        const SizedBox(
+          height: 16,
+        ),
+        Text(
+          S.of(context).hintTakePhotoOutlet,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        AppImagePicker(
+          imagePath: state.outletPath,
+          defaultImageUrl: state.doSurvey?.photoOutlet,
+          flexibleSize: true,
+          onPickImage: () {
+            context.read<DoSurveyBloc>().onTakeOutletPhoto();
+          },
+        )
+      ],
+    );
   }
 }
