@@ -14,6 +14,7 @@ import 'package:survly/src/features/dashboard_user/view/explore_survey_view.dart
 import 'package:survly/src/features/dashboard_user/view/doing_survey_list_view.dart';
 import 'package:survly/src/features/do_survey/view/do_suvey_screen.dart';
 import 'package:survly/src/features/do_survey_tracking/view/do_survey_tracking_screen.dart';
+import 'package:survly/src/features/my_profile/view/my_profile_screen.dart';
 import 'package:survly/src/features/preview_survey/view/preview_survey_screen.dart';
 import 'package:survly/src/features/review_survey/view/review_survey_screen.dart';
 import 'package:survly/src/features/select_location/view/select_location_screen.dart';
@@ -109,6 +110,12 @@ class AppRouter {
             user: user,
           );
         },
+      ),
+      GoRoute(
+        name: AppRouteNames.myProfile.name,
+        path: AppRouteNames.myProfile.path,
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        builder: (context, state) => const MyProfileScreen(),
       ),
       GoRoute(
         name: AppRouteNames.doSurvey.name,

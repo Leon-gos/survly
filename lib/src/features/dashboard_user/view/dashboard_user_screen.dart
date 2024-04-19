@@ -63,42 +63,47 @@ class DashboardUserScreen extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                AppAvatarWidget(
-                  avatarUrl: state.avatar,
-                  size: 48,
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      state.fullname,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                    Text(state.email),
-                  ],
-                ),
-                const Spacer(),
-                PopupMenuButton(
-                  itemBuilder: (context) {
-                    return [
-                      PopupMenuItem(
-                        onTap: () {
-                          AuthenticationRepositoryImpl().clearLoginInfo();
-                          UserBaseSingleton.instance().userBase = null;
-                          context.goNamed(AppRouteNames.login.path);
-                        },
-                        child: Text(S.of(context).labelBtnLogout),
+            child: GestureDetector(
+              onTap: () {
+                context.push(AppRouteNames.myProfile.path);
+              },
+              child: Row(
+                children: [
+                  AppAvatarWidget(
+                    avatarUrl: state.avatar,
+                    size: 48,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        state.fullname,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
                       ),
-                    ];
-                  },
-                ),
-              ],
+                      Text(state.email),
+                    ],
+                  ),
+                  const Spacer(),
+                  PopupMenuButton(
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem(
+                          onTap: () {
+                            AuthenticationRepositoryImpl().clearLoginInfo();
+                            UserBaseSingleton.instance().userBase = null;
+                            context.goNamed(AppRouteNames.login.path);
+                          },
+                          child: Text(S.of(context).labelBtnLogout),
+                        ),
+                      ];
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ],
