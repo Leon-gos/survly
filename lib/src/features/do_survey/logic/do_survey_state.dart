@@ -21,6 +21,7 @@ class DoSurveyState extends Equatable {
   final List<Set<String>> answerList;
   final int currentPage;
   final String outletPath;
+  final bool isSaved;
 
   const DoSurveyState({
     required this.survey,
@@ -30,6 +31,7 @@ class DoSurveyState extends Equatable {
     required this.answerList,
     required this.currentPage,
     required this.outletPath,
+    required this.isSaved,
   });
 
   factory DoSurveyState.ds({required Survey survey}) {
@@ -41,6 +43,7 @@ class DoSurveyState extends Equatable {
       answerList: const [],
       currentPage: 0,
       outletPath: "",
+      isSaved: true,
     );
   }
 
@@ -53,6 +56,7 @@ class DoSurveyState extends Equatable {
         answerList,
         currentPage,
         outletPath,
+        isSaved,
       ];
 
   DoSurveyState copyWith({
@@ -63,6 +67,7 @@ class DoSurveyState extends Equatable {
     List<Set<String>>? answerList,
     int? currentPage,
     String? outletPath,
+    bool? isSaved,
   }) {
     return DoSurveyState(
       survey: survey ?? this.survey,
@@ -72,6 +77,7 @@ class DoSurveyState extends Equatable {
       answerList: answerList ?? this.answerList,
       currentPage: currentPage ?? this.currentPage,
       outletPath: outletPath ?? this.outletPath,
+      isSaved: isSaved ?? this.isSaved,
     );
   }
 

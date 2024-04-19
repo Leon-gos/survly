@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:survly/src/config/constants/firebase_collections.dart';
+import 'package:survly/src/network/model/user_base/user_base.dart';
+
 enum DoSurveyStatus {
   doing(value: "doing"),
   approved(value: "approved"),
@@ -14,12 +17,14 @@ class DoSurvey {
   String doSurveyId;
   double? currentLat;
   double? currentLng;
+  String? photoOutlet;
   String status;
 
   DoSurvey({
     required this.doSurveyId,
     this.currentLat,
     this.currentLng,
+    this.photoOutlet,
     required this.status,
   });
 
@@ -28,16 +33,21 @@ class DoSurvey {
       'doSurveyId': doSurveyId,
       'currentLat': currentLat,
       'currentLng': currentLng,
+      'photoOutlet': photoOutlet,
       'status': status,
     };
   }
 
   factory DoSurvey.fromMap(Map<String, dynamic> map) {
     return DoSurvey(
-      doSurveyId: map['doSurveyId']?.toString() ?? "",
-      currentLat: double.tryParse(map['currentLat']?.toString() ?? "0"),
-      currentLng: double.tryParse(map['currentLng']?.toString() ?? "0"),
-      status: map['status']?.toString() ?? "",
+      doSurveyId: map['doSurveyId'] as String,
+      currentLat:
+          map['currentLat'] != null ? map['currentLat'] as double : null,
+      currentLng:
+          map['currentLng'] != null ? map['currentLng'] as double : null,
+      photoOutlet:
+          map['photoOutlet'] != null ? map['photoOutlet'] as String : null,
+      status: map['status'] as String,
     );
   }
 
@@ -50,13 +60,19 @@ class DoSurvey {
     String? doSurveyId,
     double? currentLat,
     double? currentLng,
+    String? photoOutlet,
     String? status,
   }) {
     return DoSurvey(
       doSurveyId: doSurveyId ?? this.doSurveyId,
       currentLat: currentLat ?? this.currentLat,
       currentLng: currentLng ?? this.currentLng,
+      photoOutlet: photoOutlet ?? this.photoOutlet,
       status: status ?? this.status,
     );
+  }
+
+  String genPhotoOutletFileKey() {
+    return "${UserBase.roleUser}/${DoSurveyCollection.collectionName}/$doSurveyId";
   }
 }

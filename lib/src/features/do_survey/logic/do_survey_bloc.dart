@@ -25,9 +25,6 @@ import 'package:survly/widgets/app_dialog.dart';
 
 class DoSurveyBloc extends Cubit<DoSurveyState> {
   Timer? timer;
-  static const fontSize = 128;
-  static const photoWidth = 1920;
-  static const photoHeight = 1080;
 
   DoSurveyBloc(Survey survey) : super(DoSurveyState.ds(survey: survey)) {
     fetchDoSurveyInfo(survey);
@@ -133,19 +130,23 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     if (state.currentPage > 0) {
       emit(state.copyWith(currentPage: state.currentPage - 1));
     } else {
-      showDialog(
-        context: context,
-        builder: (dialogContext) {
-          return AppDialog(
-            title: S.text.dialogTitleExitWithoutSave,
-            body: S.text.dialogBodyExitWithoutSave,
-            onCancelPressed: () {},
-            onConfirmPressed: () {
-              context.pop();
-            },
-          );
-        },
-      );
+      if (state.isSaved == false) {
+        showDialog(
+          context: context,
+          builder: (dialogContext) {
+            return AppDialog(
+              title: S.text.dialogTitleExitWithoutSave,
+              body: S.text.dialogBodyExitWithoutSave,
+              onCancelPressed: () {},
+              onConfirmPressed: () {
+                context.pop();
+              },
+            );
+          },
+        );
+      } else {
+        context.pop();
+      }
     }
   }
 
@@ -157,7 +158,10 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     } else {
       list[questionPosition] = {answer};
     }
-    emit(state.copyWith(answerList: list));
+    emit(state.copyWith(
+      answerList: list,
+      isSaved: false,
+    ));
     Logger().d(state.answerList);
   }
 
@@ -166,37 +170,45 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
       await ImagePicker()
           .pickImage(source: image_picker.ImageSource.camera)
           .then((value) async {
-        const scaleOption = ScaleOption(
-          photoWidth,
-          photoHeight,
-          keepRatio: false,
-          keepWidthFirst: true,
+        if (value == null) {
+          return;
+        }
+        final decodeImage = await decodeImageFromList(
+          await value.readAsBytes(),
         );
+        final imageWidth = decodeImage.width;
+        final imageHeight = decodeImage.height;
+        final fontSize = imageWidth ~/ 20;
+        Logger().d("$imageWidth $imageHeight $fontSize");
         final textOption = AddTextOption();
         final location = await state.location.getLocation();
         textOption.addText(
           EditorText(
-            offset: const Offset(
-                photoWidth / 10 - fontSize, (photoHeight / 10) * 9 - fontSize),
-            text: "(${location.latitude} , ${location.longitude})",
+            offset: Offset(fontSize.toDouble(), imageHeight - fontSize * 2),
+            text: "(${location.latitude}, ${location.longitude})",
             fontSizePx: fontSize,
-            textColor: const Color.fromRGBO(255, 255, 255, 1),
+            textColor: Colors.white,
             fontName: "",
           ),
         );
         final editor = ImageEditorOption();
-        editor.addOption(scaleOption);
         editor.addOption(textOption);
-        final newFile = await ImageEditor.editFileImageAndGetFile(
-          file: File(value!.path),
+        var newFile = await ImageEditor.editFileImageAndGetFile(
+          file: File(value.path),
           imageEditorOption: editor,
         );
-        emit(state.copyWith(outletPath: newFile?.path));
+        newFile = await newFile?.rename("${newFile.path}.png");
+
+        emit(state.copyWith(
+          outletPath: newFile?.path,
+          isSaved: false,
+        ));
       });
     }
   }
 
   Future<void> saveDraft() async {
+    // save answers
     for (int i = 0; i < state.questionList.length; i++) {
       var question = state.questionList[i];
       var answer = state.answerList[i];
@@ -215,6 +227,17 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
         );
       }
     }
+    // save photo
+    if (state.outletPath != "") {
+      try {
+        domainManager.doSurvey
+            .updateDoSurvey(state.doSurvey!, state.outletPath);
+      } catch (e) {
+        Logger().e("Update outlet error", error: e);
+      }
+    }
+
+    emit(state.copyWith(isSaved: true));
     Fluttertoast.showToast(msg: S.text.toastSaveDraftSurveySuccess);
   }
 

@@ -96,6 +96,7 @@
     "labelPage": "Page {currentPage}/{totalPage}",
     "labelBtnSaveDraft": "Save draft",
     "labelQuestion": "Question {questionIndex}: {questionContent}",
+    "hintTakePhotoOutlet": "Finally, take a photo for the survey's outlet",
 
     "errorGeneral": "Something went wrong",
     "errorEmptyName": "Empty name",
