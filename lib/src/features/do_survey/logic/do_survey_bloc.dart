@@ -6,8 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_editor/image_editor.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:image_picker/image_picker.dart' as image_picker;
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/do_survey/logic/do_survey_state.dart';
@@ -20,7 +18,7 @@ import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/coordinator.dart';
-import 'package:survly/src/service/permission_service.dart';
+import 'package:survly/src/service/picker_service.dart';
 import 'package:survly/widgets/app_dialog.dart';
 
 class DoSurveyBloc extends Cubit<DoSurveyState> {
@@ -166,45 +164,40 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
   }
 
   Future<void> onTakeOutletPhoto() async {
-    if (await PermissionService.requestCameraPermission()) {
-      await ImagePicker()
-          .pickImage(source: image_picker.ImageSource.camera)
-          .then((value) async {
-        if (value == null) {
-          return;
-        }
-        final decodeImage = await decodeImageFromList(
-          await value.readAsBytes(),
-        );
-        final imageWidth = decodeImage.width;
-        final imageHeight = decodeImage.height;
-        final fontSize = imageWidth ~/ 20;
-        Logger().d("$imageWidth $imageHeight $fontSize");
-        final textOption = AddTextOption();
-        final location = await state.location.getLocation();
-        textOption.addText(
-          EditorText(
-            offset: Offset(fontSize.toDouble(), imageHeight - fontSize * 2),
-            text: "(${location.latitude}, ${location.longitude})",
-            fontSizePx: fontSize,
-            textColor: Colors.white,
-            fontName: "",
-          ),
-        );
-        final editor = ImageEditorOption();
-        editor.addOption(textOption);
-        var newFile = await ImageEditor.editFileImageAndGetFile(
-          file: File(value.path),
-          imageEditorOption: editor,
-        );
-        newFile = await newFile?.rename("${newFile.path}.png");
-
-        emit(state.copyWith(
-          outletPath: newFile?.path,
-          isSaved: false,
-        ));
-      });
+    var value = await PickerService.takePhotoByCamera();
+    if (value == null) {
+      return;
     }
+    final decodeImage = await decodeImageFromList(
+      await value.readAsBytes(),
+    );
+    final imageWidth = decodeImage.width;
+    final imageHeight = decodeImage.height;
+    final fontSize = imageWidth ~/ 20;
+    Logger().d("$imageWidth $imageHeight $fontSize");
+    final textOption = AddTextOption();
+    final location = await state.location.getLocation();
+    textOption.addText(
+      EditorText(
+        offset: Offset(fontSize.toDouble(), imageHeight - fontSize * 2),
+        text: "(${location.latitude}, ${location.longitude})",
+        fontSizePx: fontSize,
+        textColor: Colors.white,
+        fontName: "",
+      ),
+    );
+    final editor = ImageEditorOption();
+    editor.addOption(textOption);
+    var newFile = await ImageEditor.editFileImageAndGetFile(
+      file: File(value.path),
+      imageEditorOption: editor,
+    );
+    newFile = await newFile?.rename("${newFile.path}.png");
+
+    emit(state.copyWith(
+      outletPath: newFile?.path,
+      isSaved: false,
+    ));
   }
 
   Future<void> saveDraft() async {

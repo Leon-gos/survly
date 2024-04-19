@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/update_survey/logic/update_survey_state.dart';
@@ -10,6 +9,7 @@ import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/coordinator.dart';
+import 'package:survly/src/service/picker_service.dart';
 import 'package:survly/src/utils/date_helper.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -22,7 +22,7 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
   DomainManager get domainManager => DomainManager();
 
   Future<void> onPickImage() async {
-    var imagePath = await ImagePicker().pickImage(source: ImageSource.gallery);
+    var imagePath = await PickerService.pickImageFromGallery();
     emit(state.copyWith(
       imageLocalPath: imagePath?.path,
       isChanged: true,
