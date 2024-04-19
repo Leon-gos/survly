@@ -34,8 +34,8 @@ class _QuestionSingleOptionWidgetState
       children: [
         Text(
           S.of(context).labelQuestion(
-                widget.question.questionIndex,
                 widget.question.question,
+                widget.question.questionIndex,
               ),
           style: const TextStyle(
             fontSize: 16,
