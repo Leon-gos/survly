@@ -30,6 +30,7 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
     });
   }
 
+  @override
   Future<void> updateDoSurvey(DoSurvey doSurvey, String photoLocalPath) async {
     try {
       doSurvey.photoOutlet = await FileData.instance().uploadFileImage(
@@ -66,6 +67,10 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
 
     var value = await ref
         .where(DoSurveyCollection.fieldUserId, isEqualTo: userId)
+        .where(
+          DoSurveyCollection.fieldStatus,
+          isEqualTo: DoSurveyStatus.doing.value,
+        )
         .get();
     for (var doc in value.docs) {
       var surveyId = doc.data()[DoSurveyCollection.fieldSurveyId];
@@ -92,5 +97,16 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
       });
     }
     return null;
+  }
+
+  @override
+  Future<void> submitDoSurvey(DoSurvey doSurvey) async {
+    try {
+      await ref.doc(doSurvey.doSurveyId).update({
+        DoSurveyCollection.fieldStatus: DoSurveyStatus.submitted.value,
+      });
+    } catch (e) {
+      rethrow;
+    }
   }
 }

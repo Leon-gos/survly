@@ -19,6 +19,7 @@ import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/service/picker_service.dart';
+import 'package:survly/src/utils/coordinate_helper.dart';
 import 'package:survly/widgets/app_dialog.dart';
 
 class DoSurveyBloc extends Cubit<DoSurveyState> {
@@ -116,11 +117,40 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     ));
   }
 
-  void goNextPage(BuildContext context) {
+  Future<void> goNextPage(BuildContext context) async {
     if (state.currentPage <= state.questionList.length) {
       emit(state.copyWith(currentPage: state.currentPage + 1));
     } else {
-      //TODO: submit survey
+      await state.location.getLocation().then((value) {
+        final distanceToOutlet = CoordinateHelper.getDistanceFromLatLonInKm(
+          lat1: value.latitude,
+          lng1: value.longitude,
+          lat2: state.survey.outlet?.latitude,
+          lng2: state.survey.outlet?.longitude,
+        );
+        int pageNotComplete = state.pageNotComplete();
+        if (pageNotComplete >= 0) {
+          Fluttertoast.showToast(msg: "You must answer all questions");
+          emit(state.copyWith(currentPage: pageNotComplete));
+        } else if (distanceToOutlet == null || distanceToOutlet > 10) {
+          Fluttertoast.showToast(
+              msg: "You must stay near outlet location to submit survey");
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AppDialog(
+                title: "Submit survey",
+                body:
+                    "Are you sure to submit this survey? You are not able to edit after submit.",
+                onConfirmPressed: () {
+                  submitSurvey();
+                },
+              );
+            },
+          );
+        }
+      });
     }
   }
 
@@ -152,7 +182,11 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     List<Set<String>> list = List.from(state.answerList);
     if (state.questionList[questionPosition].questionType ==
         QuestionType.multiOption.value) {
-      list[questionPosition].add(answer);
+      if (list[questionPosition].contains(answer)) {
+        list[questionPosition].remove(answer);
+      } else {
+        list[questionPosition].add(answer);
+      }
     } else {
       list[questionPosition] = {answer};
     }
@@ -231,7 +265,6 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     }
 
     emit(state.copyWith(isSaved: true));
-    Fluttertoast.showToast(msg: S.text.toastSaveDraftSurveySuccess);
   }
 
   void onSaveDraftSurveyBtnPressed(BuildContext context) {
@@ -248,11 +281,24 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
             });
           },
           option1Text: S.text.labelBtnSave,
-          onOption1Pressed: () {
-            saveDraft();
+          onOption1Pressed: () async {
+            await saveDraft();
+            Fluttertoast.showToast(msg: S.text.toastSaveDraftSurveySuccess);
           },
         );
       },
     );
+  }
+
+  Future<void> submitSurvey() async {
+    try {
+      await saveDraft();
+      await domainManager.doSurvey.submitDoSurvey(state.doSurvey!);
+      Fluttertoast.showToast(msg: "Submit survey successfully");
+      AppCoordinator.pop();
+    } catch (e) {
+      Fluttertoast.showToast(msg: "Submit survey failed");
+      Logger().e("Submit survey failed", error: e);
+    }
   }
 }

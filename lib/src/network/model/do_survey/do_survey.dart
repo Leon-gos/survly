@@ -5,6 +5,7 @@ import 'package:survly/src/network/model/user_base/user_base.dart';
 
 enum DoSurveyStatus {
   doing(value: "doing"),
+  submitted(value: "submitted"),
   approved(value: "approved"),
   ignored(value: "ignored");
 

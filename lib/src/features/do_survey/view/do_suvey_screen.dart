@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:survly/src/features/do_survey/logic/do_survey_bloc.dart';
 import 'package:survly/src/features/do_survey/logic/do_survey_state.dart';
 import 'package:survly/src/features/do_survey/widget/question_multi_option_widget.dart';
@@ -13,6 +14,7 @@ import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_image_picker.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
+import 'package:survly/widgets/app_map_card_widget.dart';
 
 class DoSurveyScreen extends StatelessWidget {
   const DoSurveyScreen({
@@ -190,6 +192,15 @@ class DoSurveyScreen extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(state.survey.description),
+              const SizedBox(height: 8),
+              const Text("Go to the place below and do this survey:"),
+              const SizedBox(height: 8),
+              AppMapCardWidget(
+                locationCoordinate: LatLng(
+                  state.survey.outlet!.latitude!,
+                  state.survey.outlet!.longitude!,
+                ),
+              )
             ],
           ),
         )

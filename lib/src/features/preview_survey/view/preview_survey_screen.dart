@@ -10,6 +10,7 @@ import 'package:survly/src/theme/colors.dart';
 import 'package:survly/src/utils/number_helper.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_dialog.dart';
+import 'package:survly/widgets/app_map_card_widget.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
 class PreviewSurveyScreen extends StatelessWidget {
@@ -97,38 +98,10 @@ class PreviewSurveyScreen extends StatelessWidget {
                     const SizedBox(height: 8),
                     if (state.survey.outlet != null &&
                         state.survey.outlet!.hasCoordinate())
-                      Container(
-                        height: 200,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 2,
-                            )
-                          ],
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: GoogleMap(
-                            scrollGesturesEnabled: false,
-                            rotateGesturesEnabled: false,
-                            initialCameraPosition: CameraPosition(
-                              target: LatLng(
-                                state.survey.outlet!.latitude!,
-                                state.survey.outlet!.longitude!,
-                              ),
-                              zoom: 15,
-                            ),
-                            markers: {
-                              Marker(
-                                  markerId: const MarkerId("place"),
-                                  position: LatLng(
-                                    state.survey.outlet!.latitude!,
-                                    state.survey.outlet!.longitude!,
-                                  ))
-                            },
-                          ),
+                      AppMapCardWidget(
+                        locationCoordinate: LatLng(
+                          state.survey.outlet!.latitude!,
+                          state.survey.outlet!.longitude!,
                         ),
                       )
                   ],

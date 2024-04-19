@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:survly/widgets/app_empty_list_widget.dart';
 import 'package:survly/widgets/app_survey_card.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 
@@ -57,33 +58,38 @@ class _AppSurveyListWidgetState extends State<AppSurveyListWidget> {
       onRefresh: () async {
         widget.onRefresh?.call();
       },
-      child: Column(
+      child: Stack(
         children: [
-          Expanded(
-            flex: 1,
-            child: ListView.builder(
-              padding: const EdgeInsets.only(bottom: 50),
-              physics: const AlwaysScrollableScrollPhysics(),
-              controller: scrollController,
-              itemCount: widget.surveyList.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    widget.onItemClick?.call(widget.surveyList[index]);
+          if (widget.surveyList.isEmpty) const AppEmptyListWidget(),
+          Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: ListView.builder(
+                  padding: const EdgeInsets.only(bottom: 50),
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  controller: scrollController,
+                  itemCount: widget.surveyList.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        widget.onItemClick?.call(widget.surveyList[index]);
+                      },
+                      child: AppSurveyCard(
+                        survey: widget.surveyList[index],
+                      ),
+                    );
                   },
-                  child: AppSurveyCard(
-                    survey: widget.surveyList[index],
-                  ),
-                );
-              },
-            ),
-          ),
-          isLoadingMore
-              ? const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  child: CircularProgressIndicator(),
-                )
-              : const SizedBox(),
+                ),
+              ),
+              isLoadingMore
+                  ? const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: CircularProgressIndicator(),
+                    )
+                  : const SizedBox(),
+            ],
+          )
         ],
       ),
     );
