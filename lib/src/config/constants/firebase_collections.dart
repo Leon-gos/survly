@@ -58,6 +58,7 @@ class SurveyRequestCollection {
 
 class DoSurveyCollection {
   static const String collectionName = "doSurvey";
+  static const String fieldDoSurveyId = "doSurveyId";
   static const String fieldStatus = "status";
   static const String fieldSurveyId = "surveyId";
   static const String fieldUserId = "userId";
@@ -70,4 +71,17 @@ class DsLocationLog {
   static const String fieldDoSurveyId = "doSurveyId";
   static const String fieldLatitude = "latitude";
   static const String fieldLongitude = "longitude";
+}
+
+class AnswerQuestionCollection {
+  static const String collectionName = "answerQuestion";
+  static const String fieldQuestionId = "questionId";
+  static const String fieldUserId = "userId";
+  static const String fieldAnswer = "answer";
+}
+
+class AnswerOptionCollection {
+  static const String collectionName = "answerOption";
+  static const String fieldOptionId = "questionId";
+  static const String fieldUserId = "userId";
 }

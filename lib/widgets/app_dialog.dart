@@ -12,6 +12,10 @@ class AppDialog extends StatelessWidget {
     this.onCancelPressed,
     this.onConfirmPressed,
     this.child,
+    this.onOption1Pressed,
+    this.onOption2Pressed,
+    this.option1Text,
+    this.option2Text,
   });
 
   final String title;
@@ -20,6 +24,10 @@ class AppDialog extends StatelessWidget {
   final Function()? onCancelPressed;
   final Function()? onConfirmPressed;
   final Widget? child;
+  final Function()? onOption1Pressed;
+  final Function()? onOption2Pressed;
+  final String? option1Text;
+  final String? option2Text;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +72,8 @@ class AppDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 _buildCancelButton(context),
+                _buildOption1Button(context),
+                _buildOption2Button(context),
                 _buildOkButton(context),
                 _buildConfirmButton(context),
               ],
@@ -110,6 +120,32 @@ class AppDialog extends StatelessWidget {
         context.pop();
       },
       child: Text(S.of(context).labelBtnConfirm),
+    );
+  }
+
+  Widget _buildOption1Button(BuildContext context) {
+    if (onOption1Pressed == null) {
+      return const SizedBox();
+    }
+    return TextButton(
+      onPressed: () {
+        onOption1Pressed?.call();
+        context.pop();
+      },
+      child: Text(option1Text ?? "Option 1"),
+    );
+  }
+
+  Widget _buildOption2Button(BuildContext context) {
+    if (onOption2Pressed == null) {
+      return const SizedBox();
+    }
+    return TextButton(
+      onPressed: () {
+        onOption2Pressed?.call();
+        context.pop();
+      },
+      child: Text(option2Text ?? "Option 2"),
     );
   }
 }
