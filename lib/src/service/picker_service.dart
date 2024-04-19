@@ -1,5 +1,6 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/service/permission_service.dart';
 
 class PickerService {
@@ -7,7 +8,7 @@ class PickerService {
     if (await PermissionService.requestCameraPermission()) {
       return await ImagePicker().pickImage(source: ImageSource.camera);
     } else {
-      Fluttertoast.showToast(msg: "You need to grant permission to take photo");
+      Fluttertoast.showToast(msg: S.text.toastGrantCameraPermission);
       return null;
     }
   }

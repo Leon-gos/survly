@@ -97,6 +97,7 @@
     "labelBtnSaveDraft": "Save draft",
     "labelQuestion": "Question {questionIndex}: {questionContent}",
     "hintTakePhotoOutlet": "Finally, take a photo for the survey's outlet",
+    "toastGrantCameraPermission": "You need to grant camera permission to take photo",
 
     "errorGeneral": "Something went wrong",
     "errorEmptyName": "Empty name",
