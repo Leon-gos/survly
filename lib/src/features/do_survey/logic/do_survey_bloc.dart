@@ -19,10 +19,12 @@ import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/service/picker_service.dart';
+import 'package:survly/src/utils/coordinate_helper.dart';
 import 'package:survly/widgets/app_dialog.dart';
 
 class DoSurveyBloc extends Cubit<DoSurveyState> {
   Timer? timer;
+  static const minKmToSubmit = 10;
 
   DoSurveyBloc(Survey survey) : super(DoSurveyState.ds(survey: survey)) {
     fetchDoSurveyInfo(survey);
@@ -116,12 +118,49 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     ));
   }
 
-  void goNextPage(BuildContext context) {
+  Future<void> goNextPage(BuildContext context) async {
+    // go to next page
     if (state.currentPage <= state.questionList.length) {
       emit(state.copyWith(currentPage: state.currentPage + 1));
-    } else {
-      //TODO: submit survey
+      return;
     }
+
+    // check is all questions are answered
+    int pageNotComplete = state.pageNotComplete();
+    if (pageNotComplete >= 0) {
+      Fluttertoast.showToast(msg: S.text.toastMustAnswerAllQuestion);
+      emit(state.copyWith(currentPage: pageNotComplete));
+      return;
+    }
+
+    // check if current location near outlet place
+    await state.location.getLocation().then(
+      (currentLocation) {
+        final distanceToOutlet = CoordinateHelper.getDistanceFromLatLngInKm(
+          lat1: currentLocation.latitude,
+          lng1: currentLocation.longitude,
+          lat2: state.survey.outlet?.latitude,
+          lng2: state.survey.outlet?.longitude,
+        );
+
+        if (distanceToOutlet == null || distanceToOutlet > minKmToSubmit) {
+          Fluttertoast.showToast(msg: S.text.toastMustStayNearOutletPlace);
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AppDialog(
+                title: S.text.dialogTitleSubmitSurvey,
+                body: S.text.dialogBodySubmitSurvey,
+                onConfirmPressed: () {
+                  submitSurvey();
+                },
+              );
+            },
+          );
+        }
+      },
+    );
   }
 
   void goPreviousPage(BuildContext context) {
@@ -152,7 +191,11 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     List<Set<String>> list = List.from(state.answerList);
     if (state.questionList[questionPosition].questionType ==
         QuestionType.multiOption.value) {
-      list[questionPosition].add(answer);
+      if (list[questionPosition].contains(answer)) {
+        list[questionPosition].remove(answer);
+      } else {
+        list[questionPosition].add(answer);
+      }
     } else {
       list[questionPosition] = {answer};
     }
@@ -231,7 +274,6 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     }
 
     emit(state.copyWith(isSaved: true));
-    Fluttertoast.showToast(msg: S.text.toastSaveDraftSurveySuccess);
   }
 
   void onSaveDraftSurveyBtnPressed(BuildContext context) {
@@ -248,11 +290,24 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
             });
           },
           option1Text: S.text.labelBtnSave,
-          onOption1Pressed: () {
-            saveDraft();
+          onOption1Pressed: () async {
+            await saveDraft();
+            Fluttertoast.showToast(msg: S.text.toastSaveDraftSurveySuccess);
           },
         );
       },
     );
+  }
+
+  Future<void> submitSurvey() async {
+    try {
+      await saveDraft();
+      await domainManager.doSurvey.submitDoSurvey(state.doSurvey!);
+      Fluttertoast.showToast(msg: S.text.toastSubmitSurveySuccess);
+      AppCoordinator.pop();
+    } catch (e) {
+      Fluttertoast.showToast(msg: S.text.toastSubmitSurveyFail);
+      Logger().e("Submit survey failed", error: e);
+    }
   }
 }

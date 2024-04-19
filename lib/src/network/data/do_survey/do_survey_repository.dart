@@ -16,4 +16,6 @@ abstract class DoSurveyRepository {
     required String surveyId,
     required String userId,
   });
+  Future<void> updateDoSurvey(DoSurvey doSurvey, String photoLocalPath);
+  Future<void> submitDoSurvey(DoSurvey doSurvey);
 }

@@ -89,4 +89,16 @@ class DoSurveyState extends Equatable {
     }
     return PageType.outlet;
   }
+
+  int pageNotComplete() {
+    for (int i = 0; i < answerList.length; i++) {
+      if (answerList[i].isEmpty || answerList[i].first == "") {
+        return i + 1;
+      }
+    }
+    if (doSurvey?.photoOutlet == null && outletPath.isEmpty) {
+      return questionList.length + 1;
+    }
+    return -1;
+  }
 }
