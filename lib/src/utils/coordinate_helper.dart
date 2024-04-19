@@ -11,7 +11,7 @@ class CoordinateHelper {
         pow(pointA.longitude - pointB.longitude, 2));
   }
 
-  static double? getDistanceFromLatLonInKm({
+  static double? getDistanceFromLatLngInKm({
     double? lat1,
     double? lng1,
     double? lat2,

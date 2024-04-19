@@ -24,6 +24,7 @@ import 'package:survly/widgets/app_dialog.dart';
 
 class DoSurveyBloc extends Cubit<DoSurveyState> {
   Timer? timer;
+  static const minKmToSubmit = 10;
 
   DoSurveyBloc(Survey survey) : super(DoSurveyState.ds(survey: survey)) {
     fetchDoSurveyInfo(survey);
@@ -118,31 +119,39 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
   }
 
   Future<void> goNextPage(BuildContext context) async {
+    // go to next page
     if (state.currentPage <= state.questionList.length) {
       emit(state.copyWith(currentPage: state.currentPage + 1));
-    } else {
-      await state.location.getLocation().then((value) {
-        final distanceToOutlet = CoordinateHelper.getDistanceFromLatLonInKm(
-          lat1: value.latitude,
-          lng1: value.longitude,
+      return;
+    }
+
+    // check is all questions are answered
+    int pageNotComplete = state.pageNotComplete();
+    if (pageNotComplete >= 0) {
+      Fluttertoast.showToast(msg: S.text.toastMustAnswerAllQuestion);
+      emit(state.copyWith(currentPage: pageNotComplete));
+      return;
+    }
+
+    // check if current location near outlet place
+    await state.location.getLocation().then(
+      (currentLocation) {
+        final distanceToOutlet = CoordinateHelper.getDistanceFromLatLngInKm(
+          lat1: currentLocation.latitude,
+          lng1: currentLocation.longitude,
           lat2: state.survey.outlet?.latitude,
           lng2: state.survey.outlet?.longitude,
         );
-        int pageNotComplete = state.pageNotComplete();
-        if (pageNotComplete >= 0) {
-          Fluttertoast.showToast(msg: "You must answer all questions");
-          emit(state.copyWith(currentPage: pageNotComplete));
-        } else if (distanceToOutlet == null || distanceToOutlet > 10) {
-          Fluttertoast.showToast(
-              msg: "You must stay near outlet location to submit survey");
+
+        if (distanceToOutlet == null || distanceToOutlet > minKmToSubmit) {
+          Fluttertoast.showToast(msg: S.text.toastMustStayNearOutletPlace);
         } else {
           showDialog(
             context: context,
             builder: (context) {
               return AppDialog(
-                title: "Submit survey",
-                body:
-                    "Are you sure to submit this survey? You are not able to edit after submit.",
+                title: S.text.dialogTitleSubmitSurvey,
+                body: S.text.dialogBodySubmitSurvey,
                 onConfirmPressed: () {
                   submitSurvey();
                 },
@@ -150,8 +159,8 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
             },
           );
         }
-      });
-    }
+      },
+    );
   }
 
   void goPreviousPage(BuildContext context) {
@@ -294,10 +303,10 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     try {
       await saveDraft();
       await domainManager.doSurvey.submitDoSurvey(state.doSurvey!);
-      Fluttertoast.showToast(msg: "Submit survey successfully");
+      Fluttertoast.showToast(msg: S.text.toastSubmitSurveySuccess);
       AppCoordinator.pop();
     } catch (e) {
-      Fluttertoast.showToast(msg: "Submit survey failed");
+      Fluttertoast.showToast(msg: S.text.toastSubmitSurveyFail);
       Logger().e("Submit survey failed", error: e);
     }
   }
