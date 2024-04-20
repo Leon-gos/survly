@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
             onPrimary: AppColors.onPrimary,
             secondary: AppColors.secondary,
           ),
+          scaffoldBackgroundColor: AppColors.backgroundBrightness,
           fontFamily: FontFamily.quicksand,
           splashColor: Colors.black45),
       debugShowCheckedModeBanner: false,

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/dashboard_admin/logic/account_bloc.dart';
+import 'package:survly/src/features/dashboard_admin/logic/account_state.dart';
 import 'package:survly/src/features/dashboard_admin/logic/bottom_nav_bloc.dart';
 import 'package:survly/src/features/dashboard_admin/logic/navigation_bar_item.dart';
 import 'package:survly/src/features/dashboard_admin/widget/bottom_navigation_bar.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/local/secure_storage/authentication/authentication_repository_impl.dart';
 import 'package:survly/src/localization/localization_utils.dart';
-import 'package:survly/src/network/model/user_base/user_base.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
@@ -29,8 +29,7 @@ class DashboardAdminScreen extends StatelessWidget {
           create: (context) => BottomNavBloc(currentItem),
         ),
         BlocProvider(
-          create: (context) =>
-              AccountBloc(UserBaseSingleton.instance().userBase!),
+          create: (context) => AccountBloc(),
         ),
       ],
       child: _buildDashboardScreen(context),
@@ -41,9 +40,9 @@ class DashboardAdminScreen extends StatelessWidget {
     return BlocBuilder<BottomNavBloc, AdminBottomNavBarItems>(
       builder: (context, state) {
         return Scaffold(
-          appBar: const AppAppBarWidget(
+          appBar: AppAppBarWidget(
             noActionBar: true,
-            backgroundColor: AppColors.white,
+            backgroundColor: AppColors.backgroundBrightness,
           ),
           body: Column(
             children: [
@@ -58,7 +57,7 @@ class DashboardAdminScreen extends StatelessWidget {
   }
 
   Widget _buildAdminInfo(BuildContext context) {
-    return BlocBuilder<AccountBloc, UserBase>(builder: (context, state) {
+    return BlocBuilder<AccountBloc, AccountState>(builder: (context, state) {
       return Column(
         children: [
           Padding(
@@ -66,7 +65,7 @@ class DashboardAdminScreen extends StatelessWidget {
             child: Row(
               children: [
                 AppAvatarWidget(
-                  avatarUrl: state.avatar,
+                  avatarUrl: state.userBase.avatar,
                   size: 48,
                 ),
                 const SizedBox(
@@ -76,11 +75,11 @@ class DashboardAdminScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      state.fullname,
+                      state.userBase.fullname,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 18),
                     ),
-                    Text(state.email),
+                    Text(state.userBase.email),
                   ],
                 ),
                 const Spacer(),

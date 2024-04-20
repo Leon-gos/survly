@@ -16,7 +16,8 @@ enum AppRouteNames {
   explore(path: '/explore'),
   mySurvey(path: '/doingSurvey'),
   previewSurvey(path: '/previewSurvey'),
-  myProfile(path: '/myProfile');
+  myProfile(path: '/myProfile'),
+  updateProfile(path: '/updateProfile');
 
   const AppRouteNames({
     required this.path,

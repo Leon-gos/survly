@@ -19,4 +19,7 @@ class AppColors {
 
   // Use for negative feedback, typically error messages
   static const negative = Colors.red;
+
+  // background color
+  static Color? backgroundBrightness = Colors.grey[50];
 }

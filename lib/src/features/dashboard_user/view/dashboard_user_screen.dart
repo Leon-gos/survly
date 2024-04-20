@@ -41,9 +41,9 @@ class DashboardUserScreen extends StatelessWidget {
     return BlocBuilder<BottomNavBloc, UserBottomNavBarItems>(
       builder: (context, state) {
         return Scaffold(
-          appBar: const AppAppBarWidget(
+          appBar: AppAppBarWidget(
             noActionBar: true,
-            backgroundColor: AppColors.white,
+            backgroundColor: AppColors.backgroundBrightness,
           ),
           body: Column(
             children: [

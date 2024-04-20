@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 
 class User extends UserBase {
-  final int balance;
-  final String intro;
+  int balance;
+  String intro;
   int? countDoing;
   int? countDone;
 
@@ -53,7 +53,7 @@ class User extends UserBase {
       avatar: map['avatar']?.toString() ?? "",
       gender: map['gender']?.toString() ?? UserBase.genderMale,
       birthDate: map['birthDate']?.toString() ?? "",
-      phone: map['phone']?.toString() ?? "",
+      phone: map['phone']?.toString() ?? "nooo",
       balance: int.parse(map['balance']?.toString() ?? "0"),
       intro: map['intro']?.toString() ?? "",
     );
@@ -64,4 +64,33 @@ class User extends UserBase {
 
   factory User.fromJson(String source) =>
       User.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  User copyWith({
+    String? id,
+    String? fullname,
+    String? email,
+    String? avatar,
+    String? gender,
+    String? birthDate,
+    String? phone,
+    String? role,
+    int? balance,
+    String? intro,
+    int? countDoing,
+    int? countDone,
+  }) {
+    return User(
+      id: id ?? this.id,
+      fullname: fullname ?? this.fullname,
+      email: email ?? this.email,
+      avatar: avatar ?? this.avatar,
+      gender: gender ?? this.gender,
+      birthDate: birthDate ?? this.birthDate,
+      phone: phone ?? this.phone,
+      role: role ?? this.role,
+      balance: balance ?? this.balance,
+      intro: intro ?? this.intro,
+    );
+  }
 }

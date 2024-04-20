@@ -26,12 +26,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       appBar: AppAppBarWidget(
         noActionBar: true,
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.backgroundBrightness,
       ),
-      body: Center(
+      body: const Center(
         child: AppLoadingCircle(),
       ),
     );

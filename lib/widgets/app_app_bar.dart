@@ -9,6 +9,7 @@ class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final bool noActionBar;
   final bool centerTitle;
   final Color? backgroundColor;
+  final Color? leadingColor;
 
   const AppAppBarWidget({
     super.key,
@@ -18,6 +19,7 @@ class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     this.noActionBar = false,
     this.centerTitle = false,
     this.backgroundColor,
+    this.leadingColor,
   });
 
   @override
@@ -37,7 +39,7 @@ class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           IconButton(
             icon: Icon(
               Icons.arrow_back_ios_new,
-              color: Theme.of(context).colorScheme.onPrimary,
+              color: leadingColor ?? Theme.of(context).colorScheme.onPrimary,
             ),
             onPressed: () {
               context.pop();
