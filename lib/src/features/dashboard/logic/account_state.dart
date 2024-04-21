@@ -7,10 +7,12 @@ import 'package:survly/src/network/model/user_base/user_base.dart';
 class AccountState extends Equatable {
   final UserBase userBase;
   final UserBase userBaseClone;
+  final newAvtPath;
 
   const AccountState({
     required this.userBase,
     required this.userBaseClone,
+    required this.newAvtPath,
   });
 
   factory AccountState.ds(UserBase userBase) {
@@ -20,19 +22,26 @@ class AccountState extends Equatable {
     return AccountState(
       userBase: userBase,
       userBaseClone: clone,
+      newAvtPath: "",
     );
   }
 
   @override
-  List<Object?> get props => [userBase, userBaseClone];
+  List<Object?> get props => [
+        userBase,
+        userBaseClone,
+        newAvtPath,
+      ];
 
   AccountState copyWith({
     UserBase? userBase,
     UserBase? userBaseClone,
+    String? newAvtPath,
   }) {
     return AccountState(
       userBase: userBase ?? this.userBase,
       userBaseClone: userBaseClone ?? this.userBaseClone,
+      newAvtPath: newAvtPath ?? this.newAvtPath,
     );
   }
 }

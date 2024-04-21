@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:survly/src/features/dashboard_admin/logic/account_bloc.dart';
-import 'package:survly/src/features/dashboard_admin/logic/account_state.dart';
+import 'package:survly/src/features/dashboard/logic/account_bloc.dart';
+import 'package:survly/src/features/dashboard/logic/account_state.dart';
 import 'package:survly/src/features/dashboard_admin/logic/bottom_nav_bloc.dart';
 import 'package:survly/src/features/dashboard_admin/logic/navigation_bar_item.dart';
 import 'package:survly/src/features/dashboard_admin/widget/bottom_navigation_bar.dart';
@@ -23,15 +23,8 @@ class DashboardAdminScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => BottomNavBloc(currentItem),
-        ),
-        BlocProvider(
-          create: (context) => AccountBloc(),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => BottomNavBloc(currentItem),
       child: _buildDashboardScreen(context),
     );
   }

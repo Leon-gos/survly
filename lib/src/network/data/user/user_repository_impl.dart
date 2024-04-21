@@ -127,4 +127,16 @@ class UserRepositoryImpl implements UserRepository {
         .get();
     return value.docs.isNotEmpty;
   }
+
+  @override
+  Future<void> updateUserProfile(UserBase userBase) async {
+    try {
+      if (userBase.role == UserBase.roleUser) {
+        final user = userBase as User;
+        await ref.doc(user.id).update(user.toMap());
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

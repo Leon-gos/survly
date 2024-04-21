@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
-import 'package:survly/src/features/dashboard_admin/logic/account_bloc.dart';
-import 'package:survly/src/features/dashboard_admin/logic/account_state.dart';
+import 'package:survly/src/features/dashboard/logic/account_bloc.dart';
+import 'package:survly/src/features/dashboard/logic/account_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/user/user.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
-import 'package:survly/widgets/app_avatar_widget.dart';
+import 'package:survly/widgets/app_avatar_picker_widget.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
@@ -29,70 +29,48 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AccountBloc(),
-      child: BlocBuilder<AccountBloc, AccountState>(
-        buildWhen: (previous, current) =>
-            previous.userBaseClone != current.userBaseClone,
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppAppBarWidget(
-              leadingColor: AppColors.black,
-              backgroundColor: AppColors.backgroundBrightness,
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    context.read<AccountBloc>().updateProfile();
-                  },
-                  icon: const Icon(Icons.save),
-                ),
-                const SizedBox(width: 12),
-              ],
-            ),
-            body: Column(
-              children: [
-                _buildAvatar(state.userBaseClone as User),
-                _buildUserInfo(context, state.userBaseClone as User),
-              ],
-            ),
-          );
-        },
-      ),
+    return BlocBuilder<AccountBloc, AccountState>(
+      buildWhen: (previous, current) =>
+          previous.userBaseClone != current.userBaseClone,
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppAppBarWidget(
+            leadingColor: AppColors.black,
+            backgroundColor: AppColors.backgroundBrightness,
+            actions: [
+              IconButton(
+                onPressed: () {
+                  context.read<AccountBloc>().updateProfile();
+                },
+                icon: const Icon(Icons.save),
+              ),
+              const SizedBox(width: 12),
+            ],
+          ),
+          body: Column(
+            children: [
+              _buildAvatar(state.userBaseClone as User),
+              _buildUserInfo(context, state.userBaseClone as User),
+            ],
+          ),
+        );
+      },
     );
   }
 
   Widget _buildAvatar(User user) {
-    return Container(
-      width: 128,
-      height: 128,
-      margin: const EdgeInsets.only(bottom: 32),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          AppAvatarWidget(
-            avatarUrl: user.avatar,
-            size: 128,
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(32),
-                border: Border.all(
-                  color: AppColors.primary,
-                  width: 1,
-                ),
-              ),
-              child: const Icon(
-                Icons.edit,
-                size: 16,
-              ),
-            ),
-          )
-        ],
-      ),
+    return BlocBuilder<AccountBloc, AccountState>(
+      buildWhen: (previous, current) =>
+          previous.newAvtPath != current.newAvtPath,
+      builder: (context, state) {
+        return AppAvatarPickerWidget(
+          avatarUrl: user.avatar,
+          avatarLocalPath: state.newAvtPath,
+          onPickImage: () {
+            context.read<AccountBloc>().pickNewAvt();
+          },
+        );
+      },
     );
   }
 

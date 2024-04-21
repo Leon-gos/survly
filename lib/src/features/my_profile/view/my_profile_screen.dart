@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:survly/src/features/dashboard_admin/logic/account_bloc.dart';
-import 'package:survly/src/features/dashboard_admin/logic/account_state.dart';
+import 'package:logger/logger.dart';
+import 'package:survly/src/features/dashboard/logic/account_bloc.dart';
+import 'package:survly/src/features/dashboard/logic/account_state.dart';
 import 'package:survly/src/features/my_profile/logic/my_profile_bloc.dart';
 import 'package:survly/src/features/my_profile/logic/my_profile_state.dart';
 import 'package:survly/src/localization/localization_utils.dart';
@@ -19,11 +20,8 @@ class MyProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => MyProfileBloc()),
-        BlocProvider(create: (context) => AccountBloc())
-      ],
+    return BlocProvider(
+      create: (context) => MyProfileBloc(),
       child: BlocBuilder<MyProfileBloc, MyProfileState>(
         builder: (context, state) {
           return Scaffold(
@@ -76,9 +74,11 @@ class MyProfileScreen extends StatelessWidget {
   }
 
   Widget _buildProfile() {
-    return BlocBuilder<AccountBloc, AccountState>(
+    return BlocConsumer<AccountBloc, AccountState>(
+      // buildWhen: (previous, current) => previous.userBase != current.userBase,
       builder: (context, state) {
         final user = state.userBase as User;
+        Logger().d(user.fullname);
         return Column(
           children: [
             const SizedBox(
@@ -148,6 +148,9 @@ class MyProfileScreen extends StatelessWidget {
             ),
           ],
         );
+      },
+      listener: (BuildContext context, AccountState state) {
+        Logger().d("state changed");
       },
     );
   }

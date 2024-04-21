@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:survly/src/config/constants/firebase_collections.dart';
+
 class UserBase {
   static const String roleAdmin = "admin";
   static const String roleUser = "user";
@@ -77,5 +79,9 @@ class UserBase {
       phone: phone ?? this.phone,
       role: role ?? this.role,
     );
+  }
+
+  String genAvatarFileKey() {
+    return "${UserCollection.fieldAvatar}/$id";
   }
 }

@@ -13,4 +13,6 @@ abstract class UserRepository {
   Future<void> createUser(User userInfo);
 
   Future<bool> checkEmailExisted(String email);
+
+  Future<void> updateUserProfile(UserBase userBase);
 }

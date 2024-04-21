@@ -1,14 +1,22 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:survly/src/features/dashboard_admin/logic/account_state.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:logger/logger.dart';
+import 'package:survly/src/domain_manager.dart';
+import 'package:survly/src/features/dashboard/logic/account_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
+import 'package:survly/src/network/data/file/file_data.dart';
 import 'package:survly/src/network/model/admin/admin.dart';
 import 'package:survly/src/network/model/user/user.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
+import 'package:survly/src/router/coordinator.dart';
+import 'package:survly/src/service/picker_service.dart';
 import 'package:survly/src/utils/date_helper.dart';
 
 class AccountBloc extends Cubit<AccountState> {
   AccountBloc()
       : super(AccountState.ds(UserBaseSingleton.instance().userBase!));
+
+  DomainManager get domainManager => DomainManager();
 
   void onAdminChange(UserBase userBase) {
     emit(state.copyWith(userBase: userBase));
@@ -69,7 +77,36 @@ class AccountBloc extends Cubit<AccountState> {
     }
   }
 
-  void updateProfile() {
-    emit(state.copyWith(userBase: state.userBaseClone));
+  Future<void> updateProfile() async {
+    try {
+      if (state.newAvtPath != "") {
+        String fileKey = state.userBase.genAvatarFileKey();
+        String? newAvtUrl = await FileData.instance().uploadFileImage(
+          filePath: state.newAvtPath,
+          fileKey: fileKey,
+        );
+        emit(
+          state.copyWith(
+            userBaseClone: state.userBaseClone.copyWith(avatar: newAvtUrl),
+          ),
+        );
+      }
+      await domainManager.user.updateUserProfile(state.userBaseClone);
+      emit(state.copyWith(userBase: state.userBaseClone));
+      UserBaseSingleton.instance().userBase = state.userBaseClone;
+      Logger().d(state.userBase.fullname);
+      Fluttertoast.showToast(msg: "Update user profile successfully");
+      AppCoordinator.pop();
+    } catch (e) {
+      Logger().e("Update user profile error", error: e);
+      Fluttertoast.showToast(msg: "Update user profile failed");
+    }
+  }
+
+  Future<void> pickNewAvt() async {
+    final file = await PickerService.pickImageFromGallery();
+    if (file != null) {
+      emit(state.copyWith(newAvtPath: file.path));
+    }
   }
 }
