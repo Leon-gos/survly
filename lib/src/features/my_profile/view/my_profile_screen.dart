@@ -53,7 +53,8 @@ class MyProfileScreen extends StatelessWidget {
                                     context
                                         .push(AppRouteNames.updateProfile.path);
                                   },
-                                  child: const Text("Edit profile"),
+                                  child:
+                                      Text(S.of(context).labelBtnEditProfile),
                                 )
                               ];
                             },
@@ -74,8 +75,8 @@ class MyProfileScreen extends StatelessWidget {
   }
 
   Widget _buildProfile() {
-    return BlocConsumer<AccountBloc, AccountState>(
-      // buildWhen: (previous, current) => previous.userBase != current.userBase,
+    return BlocBuilder<AccountBloc, AccountState>(
+      buildWhen: (previous, current) => previous.userBase != current.userBase,
       builder: (context, state) {
         final user = state.userBase as User;
         Logger().d(user.fullname);
@@ -148,9 +149,6 @@ class MyProfileScreen extends StatelessWidget {
             ),
           ],
         );
-      },
-      listener: (BuildContext context, AccountState state) {
-        Logger().d("state changed");
       },
     );
   }

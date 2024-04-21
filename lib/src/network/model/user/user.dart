@@ -53,7 +53,7 @@ class User extends UserBase {
       avatar: map['avatar']?.toString() ?? "",
       gender: map['gender']?.toString() ?? UserBase.genderMale,
       birthDate: map['birthDate']?.toString() ?? "",
-      phone: map['phone']?.toString() ?? "nooo",
+      phone: map['phone']?.toString() ?? "",
       balance: int.parse(map['balance']?.toString() ?? "0"),
       intro: map['intro']?.toString() ?? "",
     );

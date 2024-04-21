@@ -94,18 +94,18 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           ),
           Container(
             margin: const EdgeInsets.only(top: 20, bottom: 4),
-            child: const Text("Phone number"),
+            child: Text(S.of(context).labelPhoneNumber),
           ),
           AppTextField(
             textController: textControllerPhone,
-            hintText: "Phone number",
+            hintText: S.of(context).labelPhoneNumber,
             onTextChange: (newText) {
               context.read<AccountBloc>().onPhoneChanged(newText);
             },
           ),
           Container(
             margin: const EdgeInsets.only(top: 20, bottom: 4),
-            child: const Text("Birth date"),
+            child: Text(S.of(context).labelBirthdate),
           ),
           GestureDetector(
             onTap: () async {

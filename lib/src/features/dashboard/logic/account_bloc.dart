@@ -4,6 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/dashboard/logic/account_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/data/file/file_data.dart';
 import 'package:survly/src/network/model/admin/admin.dart';
 import 'package:survly/src/network/model/user/user.dart';
@@ -95,11 +96,11 @@ class AccountBloc extends Cubit<AccountState> {
       emit(state.copyWith(userBase: state.userBaseClone));
       UserBaseSingleton.instance().userBase = state.userBaseClone;
       Logger().d(state.userBase.fullname);
-      Fluttertoast.showToast(msg: "Update user profile successfully");
+      Fluttertoast.showToast(msg: S.text.toastUpdateUserProfileSuccess);
       AppCoordinator.pop();
     } catch (e) {
       Logger().e("Update user profile error", error: e);
-      Fluttertoast.showToast(msg: "Update user profile failed");
+      Fluttertoast.showToast(msg: S.text.toastUpdateUserProfileFail);
     }
   }
 
