@@ -44,4 +44,12 @@ class AccountState extends Equatable {
       newAvtPath: newAvtPath ?? this.newAvtPath,
     );
   }
+
+  bool get isUser {
+    return userBaseClone is User;
+  }
+
+  bool get isAdmin {
+    return userBaseClone is Admin;
+  }
 }

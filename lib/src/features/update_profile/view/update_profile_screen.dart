@@ -6,6 +6,7 @@ import 'package:survly/src/features/dashboard/logic/account_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/user/user.dart';
+import 'package:survly/src/service/picker_service.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_avatar_picker_widget.dart';
@@ -109,23 +110,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           ),
           GestureDetector(
             onTap: () async {
-              await showDatePicker(
-                context: context,
-                firstDate: DateTime(DateTime.now().year - 65),
-                lastDate: DateTime.now().subtract(
-                  const Duration(days: 365 * 18),
-                ),
-                builder: (context, child) {
-                  return DatePickerDialog(
-                    firstDate: DateTime(DateTime.now().year - 65),
-                    lastDate: DateTime.now().subtract(
-                      const Duration(days: 365 * 18),
-                    ),
-                    initialEntryMode: DatePickerEntryMode.calendarOnly,
-                    initialCalendarMode: DatePickerMode.year,
-                  );
-                },
-              ).then((date) {
+              PickerService.pickDate(context).then((date) {
                 Logger().d(date);
                 context.read<AccountBloc>().onBirthDateChanged(date);
               });
