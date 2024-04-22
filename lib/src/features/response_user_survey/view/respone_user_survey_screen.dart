@@ -55,8 +55,7 @@ class ResponseUserSurveyScreen extends StatelessWidget {
   Widget _buildSurveyForm() {
     return BlocBuilder<ResponseUserSurveyBloc, ResponseUserSurveyState>(
       buildWhen: (previous, current) =>
-          previous.currentPage != current.currentPage ||
-          previous.outletPath != current.outletPath,
+          previous.currentPage != current.currentPage,
       builder: (context, state) {
         return Column(
           children: [
@@ -203,7 +202,7 @@ class ResponseUserSurveyScreen extends StatelessWidget {
           ),
         ),
         AppImagePicker(
-          imagePath: state.outletPath,
+          imagePath: "",
           defaultImageUrl: state.doSurvey?.photoOutlet,
           flexibleSize: true,
           onPickImage: () {},
@@ -223,15 +222,14 @@ class ResponseUserSurveyScreen extends StatelessWidget {
           Expanded(
             flex: 1,
             child: ResponseButtonWidget(
-              labelText: "Ignore",
+              labelText: S.of(context).lableBtnIgnore,
               onPressed: () {
                 showDialog(
                   context: context,
                   builder: (buildDialog) {
                     return AppDialog(
-                      title: "Ignore survey",
-                      body:
-                          "Are you sure to ignore this survey? You cannot change after confirm.",
+                      title: S.of(context).dialogTitleIgnoreSurvey,
+                      body: S.of(context).dialogBodyIgnoreSurvey,
                       onCancelPressed: () {},
                       onConfirmPressed: () {
                         context.read<ResponseUserSurveyBloc>().ignoreSurvey();
@@ -250,15 +248,14 @@ class ResponseUserSurveyScreen extends StatelessWidget {
             Expanded(
               flex: 1,
               child: ResponseButtonWidget(
-                labelText: "Approve",
+                labelText: S.of(context).labelBtnApprove,
                 onPressed: () {
                   showDialog(
                     context: context,
                     builder: (buildDialog) {
                       return AppDialog(
-                        title: "Approve survey",
-                        body:
-                            "Are you sure to approve this survey? You cannot change after confirm.",
+                        title: S.of(context).dialogTitleApproveSurvey,
+                        body: S.of(context).dialogBodyApproveSurvey,
                         onCancelPressed: () {},
                         onConfirmPressed: () {
                           context

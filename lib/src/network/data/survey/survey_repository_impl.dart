@@ -266,7 +266,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
   }
 
   @override
-  Future<void> inscreaseSurveyRespondentNum(String surveyId) async {
+  Future<void> increaseSurveyRespondentNum(String surveyId) async {
     try {
       var value = await ref.doc(surveyId).get();
       await ref.doc(surveyId).update({

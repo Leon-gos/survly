@@ -13,7 +13,6 @@ import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/coordinator.dart';
-import 'package:survly/widgets/app_dialog.dart';
 
 class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
   ResponseUserSurveyBloc(Survey survey, DoSurvey doSurvey)
@@ -59,7 +58,6 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
   }
 
   Future<void> goNextPage(BuildContext context) async {
-    // go to next page
     if (state.currentPage <= state.questionList.length) {
       emit(state.copyWith(currentPage: state.currentPage + 1));
       return;
@@ -70,23 +68,7 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
     if (state.currentPage > 0) {
       emit(state.copyWith(currentPage: state.currentPage - 1));
     } else {
-      if (state.isSaved == false) {
-        showDialog(
-          context: context,
-          builder: (dialogContext) {
-            return AppDialog(
-              title: S.text.dialogTitleExitWithoutSave,
-              body: S.text.dialogBodyExitWithoutSave,
-              onCancelPressed: () {},
-              onConfirmPressed: () {
-                context.pop();
-              },
-            );
-          },
-        );
-      } else {
-        context.pop();
-      }
+      context.pop();
     }
   }
 
@@ -96,10 +78,10 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
         state.doSurvey!.doSurveyId,
         DoSurveyStatus.ignored,
       );
-      Fluttertoast.showToast(msg: "Ignore survey successfully");
+      Fluttertoast.showToast(msg: S.text.toastIgnoreSurveySuccessful);
       AppCoordinator.pop(true);
     } catch (e) {
-      Fluttertoast.showToast(msg: "Ignore survey failed");
+      Fluttertoast.showToast(msg: S.text.toastIgnoreSurveyFail);
       Logger().e("Ignore survey error", error: e);
     }
   }
@@ -115,12 +97,12 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
           .updateUserBalance(state.doSurvey!.userId, state.survey.cost);
 
       // update respondent num
-      domainManager.survey.inscreaseSurveyRespondentNum(state.survey.surveyId);
+      domainManager.survey.increaseSurveyRespondentNum(state.survey.surveyId);
 
-      Fluttertoast.showToast(msg: "Approve survey successfully");
+      Fluttertoast.showToast(msg: S.text.toastApproveSurveySuccessfully);
       AppCoordinator.pop(true);
     } catch (e) {
-      Fluttertoast.showToast(msg: "Approve survey failed");
+      Fluttertoast.showToast(msg: S.text.toastApproveSurveyFail);
       Logger().e("Approve survey error", error: e);
     }
   }

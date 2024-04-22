@@ -25,7 +25,7 @@ class SurveyResponseScreen extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             appBar: AppAppBarWidget(
-              title: "Response list",
+              title: S.of(context).titleRespondentList,
             ),
             body: state.isLoading
                 ? const Center(
