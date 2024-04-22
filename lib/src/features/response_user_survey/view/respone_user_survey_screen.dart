@@ -222,7 +222,7 @@ class ResponseUserSurveyScreen extends StatelessWidget {
           Expanded(
             flex: 1,
             child: ResponseButtonWidget(
-              labelText: S.of(context).lableBtnIgnore,
+              labelText: S.of(context).labelBtnIgnore,
               onPressed: () {
                 showDialog(
                   context: context,

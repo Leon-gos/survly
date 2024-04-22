@@ -16,6 +16,7 @@ class UserBase {
   final String birthDate;
   final String phone;
   final String role;
+  final String? fcmToken;
 
   UserBase({
     required this.id,
@@ -26,6 +27,7 @@ class UserBase {
     required this.birthDate,
     required this.phone,
     required this.role,
+    this.fcmToken,
   });
 
   Map<String, dynamic> toMap() {
@@ -38,6 +40,7 @@ class UserBase {
       'birthDate': birthDate,
       'phone': phone,
       'role': role,
+      'fcmToken': fcmToken,
     };
   }
 
@@ -51,6 +54,7 @@ class UserBase {
       birthDate: map['birthDate']?.toString() ?? "",
       phone: map['phone']?.toString() ?? "",
       role: map['role']?.toString() ?? roleUser,
+      fcmToken: map['fcmToken']?.toString(),
     );
   }
 
@@ -68,6 +72,7 @@ class UserBase {
     String? birthDate,
     String? phone,
     String? role,
+    String? fcmToken,
   }) {
     return UserBase(
       id: id ?? this.id,
@@ -78,6 +83,7 @@ class UserBase {
       birthDate: birthDate ?? this.birthDate,
       phone: phone ?? this.phone,
       role: role ?? this.role,
+      fcmToken: fcmToken ?? this.fcmToken,
     );
   }
 

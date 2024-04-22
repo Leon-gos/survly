@@ -8,6 +8,7 @@ import 'package:survly/src/network/data/user/user_repository_impl.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/router/router_name.dart';
+import 'package:survly/src/service/notification_service.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
@@ -43,6 +44,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     var userBase = UserBaseSingleton.instance().userBase;
     if (userBase != null) {
       if (userBase.role == UserBase.roleAdmin) {
+        NotificationService.registerToken();
         AppCoordinator.showSurveyManagementScreen();
         return;
       } else {
@@ -55,8 +57,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       try {
         await UserRepositoryImpl()
             .fetchUserByEmail(loginInfo.email)
-            .then((value) {
+            .then((value) async {
           UserBaseSingleton.instance().userBase = value;
+          NotificationService.registerToken();
           context.read<AccountBloc>().onUserbaseChange(value);
           if (value?.role == UserBase.roleAdmin) {
             AppCoordinator.goNamed(AppRouteNames.survey.path);

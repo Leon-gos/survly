@@ -13,6 +13,7 @@ import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/coordinator.dart';
+import 'package:survly/src/service/notification_service.dart';
 
 class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
   ResponseUserSurveyBloc(Survey survey, DoSurvey doSurvey)
@@ -78,6 +79,14 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
         state.doSurvey!.doSurveyId,
         DoSurveyStatus.ignored,
       );
+
+      // send noti
+      NotificationService.sendNotiToOneDevice(
+        notiTitle: "Survey ignored",
+        notiBody: "Your survey has been ignored, check now 😢",
+        fcmToken: state.doSurvey!.user!.fcmToken!,
+      );
+
       Fluttertoast.showToast(msg: S.text.toastIgnoreSurveySuccessful);
       AppCoordinator.pop(true);
     } catch (e) {
@@ -98,6 +107,13 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
 
       // update respondent num
       domainManager.survey.increaseSurveyRespondentNum(state.survey.surveyId);
+
+      // send noti
+      NotificationService.sendNotiToOneDevice(
+        notiTitle: "Survey approved",
+        notiBody: "Your survey has been approved!!! Check now 😍",
+        fcmToken: state.doSurvey!.user!.fcmToken!,
+      );
 
       Fluttertoast.showToast(msg: S.text.toastApproveSurveySuccessfully);
       AppCoordinator.pop(true);
