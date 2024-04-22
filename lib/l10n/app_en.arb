@@ -115,7 +115,7 @@
     "toastIgnoreSurveyFail": "Ignore survey failed",
     "toastApproveSurveySuccessfully": "Approve survey successfully",
     "toastApproveSurveyFail": "Approve survey failed",
-    "lableBtnIgnore": "Ignore",
+    "labelBtnIgnore": "Ignore",
     "labelBtnApprove": "Approve",
     "dialogTitleIgnoreSurvey": "Ignore survey",
     "dialogBodyIgnoreSurvey": "Are you sure to ignore this survey? You cannot change after confirm.",
