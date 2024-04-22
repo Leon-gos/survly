@@ -7,7 +7,7 @@ import 'package:survly/src/network/model/user_base/user_base.dart';
 class AccountState extends Equatable {
   final UserBase userBase;
   final UserBase userBaseClone;
-  final newAvtPath;
+  final String newAvtPath;
 
   const AccountState({
     required this.userBase,

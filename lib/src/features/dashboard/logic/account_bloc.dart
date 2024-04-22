@@ -19,7 +19,7 @@ class AccountBloc extends Cubit<AccountState> {
 
   DomainManager get domainManager => DomainManager();
 
-  void onAdminChange(UserBase userBase) {
+  void onUserbaseChange(UserBase? userBase) {
     emit(state.copyWith(userBase: userBase));
   }
 

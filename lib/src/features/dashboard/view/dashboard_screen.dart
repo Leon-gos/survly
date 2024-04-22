@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:survly/src/features/dashboard/logic/account_bloc.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/local/secure_storage/authentication/authentication_repository_impl.dart';
 import 'package:survly/src/network/data/user/user_repository_impl.dart';
@@ -55,6 +57,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             .fetchUserByEmail(loginInfo.email)
             .then((value) {
           UserBaseSingleton.instance().userBase = value;
+          context.read<AccountBloc>().onUserbaseChange(value);
           if (value?.role == UserBase.roleAdmin) {
             AppCoordinator.goNamed(AppRouteNames.survey.path);
           } else {
