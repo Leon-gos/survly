@@ -117,7 +117,7 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                           child: const Text("View respondents"),
                           onTap: () {
                             context.push(
-                              AppRouteNames.surveyRequest.path,
+                              AppRouteNames.surveyResponse.path,
                               extra: state.survey,
                             );
                           },

@@ -10,6 +10,7 @@ enum AppRouteNames {
   updateSurvey(path: '/updateSurvey'),
   reviewSurvey(path: '/reviewSurvey'),
   surveyRequest(path: '/surveyRequest'),
+  surveyResponse(path: '/surveyResponse'),
   userProfile(path: '/userProfile'),
   doSurvey(path: '/doSurvey'),
   doSurveyTracking(path: '/doSurveyTracking'),
