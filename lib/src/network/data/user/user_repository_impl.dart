@@ -139,4 +139,17 @@ class UserRepositoryImpl implements UserRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<void> updateUserBalance(String userId, int cost) async {
+    try {
+      var value = await ref.doc(userId).get();
+      await ref.doc(userId).update({
+        UserCollection.fieldBalance:
+            value.data()?[UserCollection.fieldBalance] + cost,
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

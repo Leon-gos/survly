@@ -34,11 +34,25 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
   @override
   Future<void> updateDoSurvey(DoSurvey doSurvey, String photoLocalPath) async {
     try {
-      doSurvey.photoOutlet = await FileData.instance().uploadFileImage(
-        filePath: photoLocalPath,
-        fileKey: doSurvey.genPhotoOutletFileKey(),
-      );
+      if (photoLocalPath != "") {
+        doSurvey.photoOutlet = await FileData.instance().uploadFileImage(
+          filePath: photoLocalPath,
+          fileKey: doSurvey.genPhotoOutletFileKey(),
+        );
+      }
       await ref.doc(doSurvey.doSurveyId).update(doSurvey.toMap());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateDoSurveyStatus(
+      String doSurveyId, DoSurveyStatus status) async {
+    try {
+      await ref.doc(doSurveyId).update({
+        DoSurveyCollection.fieldStatus: status.value,
+      });
     } catch (e) {
       rethrow;
     }

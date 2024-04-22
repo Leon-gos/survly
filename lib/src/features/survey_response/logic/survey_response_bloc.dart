@@ -11,11 +11,11 @@ class SurveyResponseBloc extends Cubit<SurveyResponseState> {
   DomainManager get domainManager => DomainManager();
 
   Future<void> fetchResponseList(String? surveyId) async {
+    emit(state.copyWith(isLoading: true));
     if (surveyId == null) {
       return;
     }
     var list = await domainManager.doSurvey.fetchDoSurveyList(surveyId);
-    emit(state.copyWith(surveyResponseList: list));
-    emit(state.copyWith(isLoading: false));
+    emit(state.copyWith(surveyResponseList: list, isLoading: false));
   }
 }

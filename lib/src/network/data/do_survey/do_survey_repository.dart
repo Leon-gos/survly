@@ -19,4 +19,5 @@ abstract class DoSurveyRepository {
   Future<void> updateDoSurvey(DoSurvey doSurvey, String photoLocalPath);
   Future<void> submitDoSurvey(DoSurvey doSurvey);
   Future<List<DoSurvey>> fetchDoSurveyList(String surveyId);
+  Future<void> updateDoSurveyStatus(String doSurveyId, DoSurveyStatus status);
 }

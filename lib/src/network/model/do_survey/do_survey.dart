@@ -21,7 +21,7 @@ class DoSurvey {
   double? currentLng;
   String? photoOutlet;
   String status;
-  String dateSubmit;
+  String dateUpdate;
   String surveyId;
   String userId;
   User? user;
@@ -32,7 +32,7 @@ class DoSurvey {
     this.currentLng,
     this.photoOutlet,
     required this.status,
-    required this.dateSubmit,
+    required this.dateUpdate,
     required this.surveyId,
     required this.userId,
     this.user,
@@ -45,7 +45,7 @@ class DoSurvey {
       'currentLng': currentLng,
       'photoOutlet': photoOutlet,
       'status': status,
-      'dateSubmit': dateSubmit,
+      'dateUpdate': dateUpdate,
       'surveyId': surveyId,
       'userId': userId,
     };
@@ -61,7 +61,7 @@ class DoSurvey {
       photoOutlet:
           map['photoOutlet'] != null ? map['photoOutlet'] as String : null,
       status: map['status'] as String,
-      dateSubmit: map['dateSubmit']?.toString() ?? "",
+      dateUpdate: map['dateUpdate']?.toString() ?? "",
       surveyId: map['surveyId']?.toString() ?? "",
       userId: map['userId']?.toString() ?? "",
     );
@@ -78,7 +78,7 @@ class DoSurvey {
     double? currentLng,
     String? photoOutlet,
     String? status,
-    String? dateSubmit,
+    String? dateUpdate,
     String? surveyId,
     String? userId,
     User? user,
@@ -89,7 +89,7 @@ class DoSurvey {
       currentLng: currentLng ?? this.currentLng,
       photoOutlet: photoOutlet ?? this.photoOutlet,
       status: status ?? this.status,
-      dateSubmit: dateSubmit ?? this.dateSubmit,
+      dateUpdate: dateUpdate ?? this.dateUpdate,
       surveyId: surveyId ?? this.surveyId,
       userId: userId ?? this.userId,
       user: user ?? this.user,

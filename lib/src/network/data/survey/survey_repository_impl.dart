@@ -264,4 +264,17 @@ class SurveyRepositoryImpl implements SurveyRepository {
     }
     return list;
   }
+
+  @override
+  Future<void> inscreaseSurveyRespondentNum(String surveyId) async {
+    try {
+      var value = await ref.doc(surveyId).get();
+      await ref.doc(surveyId).update({
+        SurveyCollection.fieldRespondentNum:
+            value.data()?[SurveyCollection.fieldRespondentNum] + 1,
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
