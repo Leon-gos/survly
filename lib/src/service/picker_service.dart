@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:survly/src/localization/localization_utils.dart';
@@ -15,5 +17,22 @@ class PickerService {
 
   static Future<XFile?> pickImageFromGallery() async {
     return await ImagePicker().pickImage(source: ImageSource.gallery);
+  }
+
+  static Future<DateTime?> pickDate(BuildContext context) async {
+    final now = DateTime.now();
+    return await showDatePicker(
+      context: context,
+      firstDate: DateTime(now.year - 65, 12, 31),
+      lastDate: DateTime(now.year - 18, 12, 31),
+      builder: (context, child) {
+        return DatePickerDialog(
+          firstDate: DateTime(now.year - 65, 12, 31),
+          lastDate: DateTime(now.year - 18, 12, 31),
+          initialEntryMode: DatePickerEntryMode.calendarOnly,
+          initialCalendarMode: DatePickerMode.year,
+        );
+      },
+    );
   }
 }
