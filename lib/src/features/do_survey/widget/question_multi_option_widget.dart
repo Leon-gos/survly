@@ -8,11 +8,13 @@ class QuestionMultiOptionWidget extends StatefulWidget {
     required this.question,
     required this.answers,
     required this.onAnswerChanged,
+    this.readOnly = false,
   });
 
   final QuestionWithOption question;
   final void Function(String option) onAnswerChanged;
   final Set<String> answers;
+  final bool readOnly;
 
   @override
   State<StatefulWidget> createState() => _QuestionMultiOptionWidgetState();
@@ -43,14 +45,16 @@ class _QuestionMultiOptionWidgetState extends State<QuestionMultiOptionWidget> {
             value: isChecked(option.questionOptionId),
             title: Text(option.option),
             onChanged: (value) {
-              widget.onAnswerChanged(option.questionOptionId);
-              setState(() {
-                if (value == true) {
-                  widget.answers.add(option.questionOptionId);
-                } else {
-                  widget.answers.remove(option.questionOptionId);
-                }
-              });
+              if (widget.readOnly == false) {
+                widget.onAnswerChanged(option.questionOptionId);
+                setState(() {
+                  if (value == true) {
+                    widget.answers.add(option.questionOptionId);
+                  } else {
+                    widget.answers.remove(option.questionOptionId);
+                  }
+                });
+              }
             },
           )
       ],

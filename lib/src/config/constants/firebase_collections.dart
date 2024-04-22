@@ -26,6 +26,8 @@ class SurveyCollection {
   static const String fieldAddress = "address";
   static const String fieldLatitude = "latitude";
   static const String fieldLongitude = "longitude";
+  static const String fieldRespondentNum = "respondentNum";
+  static const String fieldRespondentMax = "respondentMax";
 }
 
 class QuestionCollection {

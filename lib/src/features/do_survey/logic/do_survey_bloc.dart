@@ -263,17 +263,19 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
         );
       }
     }
-    // save photo
-    if (state.outletPath != "") {
-      try {
-        domainManager.doSurvey
-            .updateDoSurvey(state.doSurvey!, state.outletPath);
-      } catch (e) {
-        Logger().e("Update outlet error", error: e);
-      }
-    }
 
-    emit(state.copyWith(isSaved: true));
+    // update do survey
+    try {
+      var doSurvey = state.doSurvey;
+      doSurvey?.dateUpdate = DateTime.now().toString();
+      await domainManager.doSurvey.updateDoSurvey(
+        state.doSurvey!,
+        state.outletPath,
+      );
+      emit(state.copyWith(doSurvey: doSurvey, isSaved: true));
+    } catch (e) {
+      Logger().e("Update outlet error", error: e);
+    }
   }
 
   void onSaveDraftSurveyBtnPressed(BuildContext context) {
@@ -302,7 +304,8 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
   Future<void> submitSurvey() async {
     try {
       await saveDraft();
-      await domainManager.doSurvey.submitDoSurvey(state.doSurvey!);
+      var doSurvey = state.doSurvey;
+      await domainManager.doSurvey.submitDoSurvey(doSurvey!);
       Fluttertoast.showToast(msg: S.text.toastSubmitSurveySuccess);
       AppCoordinator.pop();
     } catch (e) {

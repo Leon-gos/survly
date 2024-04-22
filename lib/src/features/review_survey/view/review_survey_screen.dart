@@ -103,7 +103,7 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                         child: Text(S.of(context).labelBtnViewAsUser),
                         onTap: () {},
                       ),
-                      if (state.survey.status == SurveyStatus.public.value)
+                      if (state.survey.status == SurveyStatus.public.value) ...[
                         PopupMenuItem(
                           child: Text(S.of(context).labelBtnViewRequestList),
                           onTap: () {
@@ -113,6 +113,16 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                             );
                           },
                         ),
+                        PopupMenuItem(
+                          child: Text(S.of(context).labelBtnViewRespondentList),
+                          onTap: () {
+                            context.push(
+                              AppRouteNames.surveyResponse.path,
+                              extra: state.survey,
+                            );
+                          },
+                        ),
+                      ],
                       if (state.survey.ableToEdit(
                           UserBaseSingleton.instance().userBase?.id)) ...[
                         PopupMenuItem(

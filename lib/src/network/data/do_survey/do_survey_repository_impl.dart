@@ -3,6 +3,7 @@ import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/data/do_survey/do_survey_repository.dart';
 import 'package:survly/src/network/data/file/file_data.dart';
+import 'package:survly/src/network/data/user/user_repository_impl.dart';
 import 'package:survly/src/network/model/do_survey/do_survey.dart';
 
 class DoSurveyRepositoryImpl implements DoSurveyRepository {
@@ -33,11 +34,25 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
   @override
   Future<void> updateDoSurvey(DoSurvey doSurvey, String photoLocalPath) async {
     try {
-      doSurvey.photoOutlet = await FileData.instance().uploadFileImage(
-        filePath: photoLocalPath,
-        fileKey: doSurvey.genPhotoOutletFileKey(),
-      );
+      if (photoLocalPath != "") {
+        doSurvey.photoOutlet = await FileData.instance().uploadFileImage(
+          filePath: photoLocalPath,
+          fileKey: doSurvey.genPhotoOutletFileKey(),
+        );
+      }
       await ref.doc(doSurvey.doSurveyId).update(doSurvey.toMap());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateDoSurveyStatus(
+      String doSurveyId, DoSurveyStatus status) async {
+    try {
+      await ref.doc(doSurveyId).update({
+        DoSurveyCollection.fieldStatus: status.value,
+      });
     } catch (e) {
       rethrow;
     }
@@ -108,5 +123,23 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  Future<List<DoSurvey>> fetchDoSurveyList(String surveyId) async {
+    List<DoSurvey> list = [];
+    final userRepo = UserRepositoryImpl();
+
+    var value = await ref
+        .where(DoSurveyCollection.fieldSurveyId, isEqualTo: surveyId)
+        .get();
+
+    for (var doc in value.docs) {
+      var doSurvey = DoSurvey.fromMap(doc.data());
+      doSurvey.user = await userRepo.fetchUserById(doSurvey.userId);
+      list.add(doSurvey);
+    }
+
+    return list;
   }
 }

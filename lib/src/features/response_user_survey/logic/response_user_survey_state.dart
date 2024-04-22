@@ -1,0 +1,78 @@
+import 'package:equatable/equatable.dart';
+
+import 'package:survly/src/network/model/do_survey/do_survey.dart';
+import 'package:survly/src/network/model/question/question.dart';
+import 'package:survly/src/network/model/survey/survey.dart';
+
+enum PageType {
+  intro,
+  question,
+  outlet;
+}
+
+class ResponseUserSurveyState extends Equatable {
+  final Survey survey;
+  final DoSurvey? doSurvey;
+  final List<Question> questionList;
+  final List<Set<String>> answerList;
+  final int currentPage;
+
+  const ResponseUserSurveyState({
+    required this.survey,
+    required this.doSurvey,
+    required this.questionList,
+    required this.answerList,
+    required this.currentPage,
+  });
+
+  factory ResponseUserSurveyState.ds({
+    required Survey survey,
+    required DoSurvey doSurvey,
+  }) {
+    return ResponseUserSurveyState(
+      survey: survey,
+      doSurvey: doSurvey,
+      questionList: const [],
+      answerList: const [],
+      currentPage: 0,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        survey,
+        doSurvey,
+        questionList,
+        answerList,
+        currentPage,
+      ];
+
+  bool get isResponsed {
+    return doSurvey?.status != DoSurveyStatus.submitted.value;
+  }
+
+  ResponseUserSurveyState copyWith({
+    Survey? survey,
+    DoSurvey? doSurvey,
+    List<Question>? questionList,
+    List<Set<String>>? answerList,
+    int? currentPage,
+  }) {
+    return ResponseUserSurveyState(
+      survey: survey ?? this.survey,
+      doSurvey: doSurvey ?? this.doSurvey,
+      questionList: questionList ?? this.questionList,
+      answerList: answerList ?? this.answerList,
+      currentPage: currentPage ?? this.currentPage,
+    );
+  }
+
+  PageType get getPageType {
+    if (currentPage == 0) {
+      return PageType.intro;
+    } else if (currentPage <= questionList.length) {
+      return PageType.question;
+    }
+    return PageType.outlet;
+  }
+}

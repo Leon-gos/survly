@@ -8,11 +8,13 @@ class QuestionSingleOptionWidget extends StatefulWidget {
     required this.question,
     required this.answer,
     required this.onAnswerChanged,
+    this.readOnly = false,
   });
 
   final QuestionWithOption question;
   final void Function(String option) onAnswerChanged;
   final String answer;
+  final bool readOnly;
 
   @override
   State<StatefulWidget> createState() => _QuestionSingleOptionWidgetState();
@@ -48,10 +50,12 @@ class _QuestionSingleOptionWidgetState
             groupValue: tempAns,
             title: Text(option.option),
             onChanged: (value) {
-              widget.onAnswerChanged(value!);
-              setState(() {
-                tempAns = value;
-              });
+              if (widget.readOnly == false) {
+                widget.onAnswerChanged(value!);
+                setState(() {
+                  tempAns = value;
+                });
+              }
             },
           )
       ],

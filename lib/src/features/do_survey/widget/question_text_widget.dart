@@ -8,11 +8,13 @@ class QuestionTextWidget extends StatefulWidget {
     required this.question,
     required this.onAnswerChanged,
     required this.answer,
+    this.readOnly = false,
   });
 
   final Question question;
   final String answer;
   final void Function(String answer) onAnswerChanged;
+  final bool readOnly;
 
   @override
   State<StatefulWidget> createState() => _QuestionTextWidgetState();
@@ -52,6 +54,7 @@ class _QuestionTextWidgetState extends State<QuestionTextWidget> {
         TextField(
           controller: textController,
           onChanged: widget.onAnswerChanged,
+          readOnly: widget.readOnly,
         )
       ],
     );

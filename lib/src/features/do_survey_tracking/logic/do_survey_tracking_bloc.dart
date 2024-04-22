@@ -4,7 +4,6 @@ import 'package:logger/logger.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/features/do_survey_tracking/logic/do_survey_tracking_state.dart';
 import 'package:survly/src/network/data/do_survey/do_survey_repository_impl.dart';
-import 'package:survly/src/network/model/do_survey/do_survey.dart';
 
 class DoSurveyTrackingBloc extends Cubit<DoSurveyTrackingState> {
   DoSurveyTrackingBloc(String doSurveyId) : super(DoSurveyTrackingState.ds()) {
@@ -19,9 +18,7 @@ class DoSurveyTrackingBloc extends Cubit<DoSurveyTrackingState> {
       var latLng = LatLng(event.data()?[DoSurveyCollection.fieldCurrentLat],
           event.data()?[DoSurveyCollection.fieldCurrentLng]);
 
-      var newDoSurvey = DoSurvey(
-        doSurveyId: state.doSurvey?.doSurveyId ?? "",
-        status: state.doSurvey?.status ?? "",
+      var newDoSurvey = state.doSurvey?.copyWith(
         currentLat: latLng.latitude,
         currentLng: latLng.longitude,
       );

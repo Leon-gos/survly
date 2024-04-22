@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:survly/src/config/constants/firebase_collections.dart';
+import 'package:survly/src/network/model/user/user.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 
 enum DoSurveyStatus {
@@ -20,6 +21,10 @@ class DoSurvey {
   double? currentLng;
   String? photoOutlet;
   String status;
+  String dateUpdate;
+  String surveyId;
+  String userId;
+  User? user;
 
   DoSurvey({
     required this.doSurveyId,
@@ -27,6 +32,10 @@ class DoSurvey {
     this.currentLng,
     this.photoOutlet,
     required this.status,
+    required this.dateUpdate,
+    required this.surveyId,
+    required this.userId,
+    this.user,
   });
 
   Map<String, dynamic> toMap() {
@@ -36,6 +45,9 @@ class DoSurvey {
       'currentLng': currentLng,
       'photoOutlet': photoOutlet,
       'status': status,
+      'dateUpdate': dateUpdate,
+      'surveyId': surveyId,
+      'userId': userId,
     };
   }
 
@@ -49,6 +61,9 @@ class DoSurvey {
       photoOutlet:
           map['photoOutlet'] != null ? map['photoOutlet'] as String : null,
       status: map['status'] as String,
+      dateUpdate: map['dateUpdate']?.toString() ?? "",
+      surveyId: map['surveyId']?.toString() ?? "",
+      userId: map['userId']?.toString() ?? "",
     );
   }
 
@@ -63,6 +78,10 @@ class DoSurvey {
     double? currentLng,
     String? photoOutlet,
     String? status,
+    String? dateUpdate,
+    String? surveyId,
+    String? userId,
+    User? user,
   }) {
     return DoSurvey(
       doSurveyId: doSurveyId ?? this.doSurveyId,
@@ -70,6 +89,10 @@ class DoSurvey {
       currentLng: currentLng ?? this.currentLng,
       photoOutlet: photoOutlet ?? this.photoOutlet,
       status: status ?? this.status,
+      dateUpdate: dateUpdate ?? this.dateUpdate,
+      surveyId: surveyId ?? this.surveyId,
+      userId: userId ?? this.userId,
+      user: user ?? this.user,
     );
   }
 
