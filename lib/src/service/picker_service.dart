@@ -25,14 +25,8 @@ class PickerService {
       context: context,
       firstDate: DateTime(now.year - 65, 12, 31),
       lastDate: DateTime(now.year - 18, 12, 31),
-      builder: (context, child) {
-        return DatePickerDialog(
-          firstDate: DateTime(now.year - 65, 12, 31),
-          lastDate: DateTime(now.year - 18, 12, 31),
-          initialEntryMode: DatePickerEntryMode.calendarOnly,
-          initialCalendarMode: DatePickerMode.year,
-        );
-      },
+      initialDatePickerMode: DatePickerMode.year,
+      initialEntryMode: DatePickerEntryMode.calendarOnly,
     );
   }
 }
