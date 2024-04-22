@@ -114,7 +114,7 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                           },
                         ),
                         PopupMenuItem(
-                          child: const Text("View respondent"),
+                          child: const Text("View respondents"),
                           onTap: () {
                             context.push(
                               AppRouteNames.surveyRequest.path,
