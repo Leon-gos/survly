@@ -19,7 +19,7 @@ class AccountBloc extends Cubit<AccountState> {
 
   DomainManager get domainManager => DomainManager();
 
-  void onAdminChange(UserBase userBase) {
+  void onUserbaseChange(UserBase? userBase) {
     emit(state.copyWith(userBase: userBase));
   }
 
@@ -45,14 +45,14 @@ class AccountBloc extends Cubit<AccountState> {
       return;
     }
     var dateString = DateHelper.getDateOnly(date);
-    if (state.userBaseClone is User) {
+    if (state.isUser) {
       emit(
         state.copyWith(
           userBaseClone:
               (state.userBaseClone as User).copyWith(birthDate: dateString),
         ),
       );
-    } else {
+    } else if (state.isAdmin) {
       emit(
         state.copyWith(
           userBaseClone:
