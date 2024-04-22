@@ -106,6 +106,12 @@
     "toastSubmitSurveyFail": "Submit survey failed",
     "hintGoToOutletPlace": "Go to the place below and do this survey:",
     "labelEmptyList": "Nothing here",
+    "toastUpdateUserProfileSuccess": "Update user profile successfully",
+    "toastUpdateUserProfileFail": "Update user profile failed",
+    "labelBtnEditProfile": "Edit profile",
+    "labelPhoneNumber": "Phone number",
+    "labelBirthdate": "Birth date",
+    
 
     "errorGeneral": "Something went wrong",
     "errorEmptyName": "Empty name",

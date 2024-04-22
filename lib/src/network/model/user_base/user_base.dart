@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:survly/src/config/constants/firebase_collections.dart';
+
 class UserBase {
   static const String roleAdmin = "admin";
   static const String roleUser = "user";
@@ -56,4 +58,30 @@ class UserBase {
 
   factory UserBase.fromJson(String source) =>
       UserBase.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  UserBase copyWith({
+    String? id,
+    String? fullname,
+    String? email,
+    String? avatar,
+    String? gender,
+    String? birthDate,
+    String? phone,
+    String? role,
+  }) {
+    return UserBase(
+      id: id ?? this.id,
+      fullname: fullname ?? this.fullname,
+      email: email ?? this.email,
+      avatar: avatar ?? this.avatar,
+      gender: gender ?? this.gender,
+      birthDate: birthDate ?? this.birthDate,
+      phone: phone ?? this.phone,
+      role: role ?? this.role,
+    );
+  }
+
+  String genAvatarFileKey() {
+    return "${UserCollection.fieldAvatar}/$id";
+  }
 }
