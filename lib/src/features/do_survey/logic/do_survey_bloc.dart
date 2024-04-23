@@ -317,8 +317,8 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
         requestBody: NotiRequestBody(
             to: state.adminFcmToken,
             notification: my_noti.Notification(
-              title: "New respondent",
-              body: "Someone has just response your survey. Check now!",
+              title: S.text.notiTitleUserRespondent,
+              body: S.text.notiBodyUserRespondent,
             ),
             data: {
               NotiDataField.type: NotiType.userResponseSurvey.value,

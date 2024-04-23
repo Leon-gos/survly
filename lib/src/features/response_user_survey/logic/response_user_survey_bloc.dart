@@ -97,21 +97,12 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
         DoSurveyStatus.ignored,
       );
 
-      // send noti
-      // MessageData data = MessageData(data: , type: );
-
-      // NotificationService.sendNotiToOneDevice(
-      //   notiTitle: "Survey ignored",
-      //   notiBody: "Your survey has been ignored, check now 😢",
-      //   fcmToken: state.doSurvey!.user!.fcmToken!,
-      //   data: NotiRequestBody(type: NotiType.adminResponseSurvey.value),
-      // );
       NotificationService.sendNotiToOneDevice(
         requestBody: NotiRequestBody(
           to: state.doSurvey!.user!.fcmToken!,
           notification: my_noti.Notification(
-            title: "Survey ignored",
-            body: "Your survey has been ignored, check now 😢",
+            title: S.text.notiTitleSurveyIgnore,
+            body: S.text.notiBodySurveyIgnore,
           ),
           data: {
             NotiDataField.type: NotiType.adminResponseSurvey.value,
@@ -142,15 +133,11 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
 
       // send noti
       NotificationService.sendNotiToOneDevice(
-        // notiTitle: "Survey approved",
-        // notiBody: "Your survey has been approved!!! Check now 😍",
-        // fcmToken: state.doSurvey!.user!.fcmToken!,
-        // data: NotiRequestBody(type: NotiType.adminResponseSurvey.value),
         requestBody: NotiRequestBody(
           to: state.doSurvey!.user!.fcmToken!,
           notification: my_noti.Notification(
-            title: "Survey approved",
-            body: "Your survey has been approved!!! Check now 😍",
+            title: S.text.notiTitleSurveyApprove,
+            body: S.text.notiBodySurveyApprove,
           ),
           data: {
             NotiDataField.type: NotiType.adminResponseSurvey.value,

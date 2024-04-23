@@ -124,6 +124,13 @@
     "labelBtnViewRespondentList": "View respondents",
     "titleRespondentList": "Respondent list",
 
+    "notiTitleUserRespondent": "New respondent",
+    "notiBodyUserRespondent": "Someone has just response your survey. Check now!",
+    "notiTitleSurveyIgnore": "Survey ignored",
+    "notiBodySurveyIgnore": "Your survey has been ignored, check now 😢",
+    "notiTitleSurveyApprove": "Survey approved",
+    "notiBodySurveyApprove": "Your survey has been approved!!! Check now 😍",
+
     "errorGeneral": "Something went wrong",
     "errorEmptyName": "Empty name",
     "errorPasswordLength": "Password must be at least 6 characters long",
