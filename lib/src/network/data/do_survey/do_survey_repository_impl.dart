@@ -142,4 +142,14 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
 
     return list;
   }
+
+  Future<DoSurvey?> fetchDoSurveyById(String doSurveyId) async {
+    var value = await ref.doc(doSurveyId).get();
+    if (value.data() != null) {
+      var doSurvey = DoSurvey.fromMap(value.data()!);
+      doSurvey.doSurveyId = value.id;
+      return doSurvey;
+    }
+    return null;
+  }
 }

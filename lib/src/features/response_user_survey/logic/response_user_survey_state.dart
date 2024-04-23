@@ -11,7 +11,7 @@ enum PageType {
 }
 
 class ResponseUserSurveyState extends Equatable {
-  final Survey survey;
+  final Survey? survey;
   final DoSurvey? doSurvey;
   final List<Question> questionList;
   final List<Set<String>> answerList;
@@ -25,15 +25,12 @@ class ResponseUserSurveyState extends Equatable {
     required this.currentPage,
   });
 
-  factory ResponseUserSurveyState.ds({
-    required Survey survey,
-    required DoSurvey doSurvey,
-  }) {
-    return ResponseUserSurveyState(
-      survey: survey,
-      doSurvey: doSurvey,
-      questionList: const [],
-      answerList: const [],
+  factory ResponseUserSurveyState.ds() {
+    return const ResponseUserSurveyState(
+      survey: null,
+      doSurvey: null,
+      questionList: [],
+      answerList: [],
       currentPage: 0,
     );
   }

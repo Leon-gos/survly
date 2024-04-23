@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_editor/image_editor.dart';
 import 'package:logger/logger.dart';
+import 'package:survly/src/config/constants/notification.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/do_survey/logic/do_survey_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
@@ -14,6 +15,7 @@ import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/data/do_survey/do_survey_repository_impl.dart';
 import 'package:survly/src/network/data/location_log/location_log_repository_impl.dart';
 import 'package:survly/src/network/model/location_log/location_log.dart';
+import 'package:survly/src/network/model/notification/message_data.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
@@ -310,10 +312,15 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
       await domainManager.doSurvey.submitDoSurvey(doSurvey!);
 
       // send noti to admin device
+      var data = MessageData(
+        data: List<String>.of([state.survey.surveyId, doSurvey.doSurveyId]),
+        type: NotiType.userResponseSurvey.value,
+      );
       NotificationService.sendNotiToOneDevice(
         notiTitle: "New respondent",
         notiBody: "Someone has just response your survey. Check now!",
         fcmToken: state.adminFcmToken,
+        data: data,
       );
 
       Fluttertoast.showToast(msg: S.text.toastSubmitSurveySuccess);

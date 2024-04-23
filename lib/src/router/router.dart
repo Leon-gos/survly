@@ -23,7 +23,6 @@ import 'package:survly/src/features/survey_request/view/survey_requests_screen.d
 import 'package:survly/src/features/survey_response/view/survey_response_screen.dart';
 import 'package:survly/src/features/update_profile/view/update_profile_screen.dart';
 import 'package:survly/src/features/user_profile/view/user_profile_screen.dart';
-import 'package:survly/src/network/model/do_survey/do_survey.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/features/update_survey/view/update_survey_screen.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
@@ -169,12 +168,12 @@ class AppRouter {
         path: AppRouteNames.responseUserSurvey.path,
         parentNavigatorKey: AppCoordinator.navigatorKey,
         builder: (context, state) {
-          var extra = state.extra as List<Object>;
-          var survey = extra[0] as Survey;
-          var doSurvey = extra[1] as DoSurvey;
+          var extra = state.extra as List<String>;
+          var surveyId = extra[0];
+          var doSurveyId = extra[1];
           return ResponseUserSurveyScreen(
-            survey: survey,
-            doSurvey: doSurvey,
+            surveyId: surveyId,
+            doSurveyId: doSurveyId,
           );
         },
       ),

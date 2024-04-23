@@ -24,7 +24,7 @@ class Admin extends UserBase {
       gender: map['gender']?.toString() ?? UserBase.genderMale,
       birthDate: map['birthDate']?.toString() ?? "",
       phone: map['phone']?.toString() ?? "",
-      fcmToken: map['fcm']?.toString(),
+      fcmToken: map['fcmToken']?.toString(),
     );
   }
 

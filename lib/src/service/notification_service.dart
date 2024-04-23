@@ -2,16 +2,20 @@ import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:logger/logger.dart';
+import 'package:survly/src/config/constants/notification.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/network/data/user/user_repository_impl.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:survly/src/network/model/notification/message_data.dart';
 
 class NotificationService {
   static Future<void> sendNotiToOneDevice({
     required String notiTitle,
     required String notiBody,
     required String? fcmToken,
+    // required NotiType notiType,
+    MessageData? data,
   }) async {
     if (fcmToken == null) {
       return;
@@ -26,8 +30,8 @@ class NotificationService {
         "title": notiTitle,
         "body": notiBody,
       },
-      "priority": "high",
       "to": fcmToken,
+      "data": data?.toMap(),
     };
     var value = await http.post(
       Uri.https(
