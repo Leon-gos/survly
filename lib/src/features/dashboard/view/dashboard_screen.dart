@@ -1,12 +1,6 @@
-import 'dart:convert';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
-import 'package:survly/src/config/constants/notification.dart';
 import 'package:survly/src/features/dashboard/logic/account_bloc.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/local/secure_storage/authentication/authentication_repository_impl.dart';
@@ -31,35 +25,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     loadUser();
     super.initState();
-    setupInteractedMessage();
-  }
-
-  Future<void> setupInteractedMessage() async {
-    RemoteMessage? initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
-    if (initialMessage != null) {
-      _handleMessage(initialMessage);
-    }
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
-  }
-
-  void _handleMessage(RemoteMessage message) {
-    Fluttertoast.showToast(msg: "Handle push noti");
-    String? type = message.data[NotiDataField.type];
-    String? data = message.data[NotiDataField.data];
-
-    if (type == NotiType.adminResponseSurvey.value) {
-      AppCoordinator.context.push(AppRouteNames.myProfile.path);
-    } else if (type == NotiType.userResponseSurvey.value) {
-      if (data != null) {
-        var extra = jsonDecode(data);
-        extra = List<String>.from(extra);
-        AppCoordinator.context.push(
-          AppRouteNames.responseUserSurvey.path,
-          extra: extra,
-        );
-      }
-    }
+    NotificationService.setupInteractedMessage();
+    NotificationService.setupLocalNoti();
   }
 
   @override
