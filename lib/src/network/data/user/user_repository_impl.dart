@@ -158,4 +158,9 @@ class UserRepositoryImpl implements UserRepository {
       UserCollection.fieldFcmToken: token,
     });
   }
+
+  Future<String?> fetchUserFcmToken(String userId) async {
+    var value = await ref.doc(userId).get();
+    return value.data()?[UserCollection.fieldFcmToken];
+  }
 }

@@ -11,8 +11,11 @@ class NotificationService {
   static Future<void> sendNotiToOneDevice({
     required String notiTitle,
     required String notiBody,
-    required String fcmToken,
+    required String? fcmToken,
   }) async {
+    if (fcmToken == null) {
+      return;
+    }
     Logger().d("start");
     Map<String, String> header = {
       "Authorization": "key=${dotenv.env["FCM_SERVER_KEY"]}",

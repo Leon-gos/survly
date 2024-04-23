@@ -18,6 +18,7 @@ import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/coordinator.dart';
+import 'package:survly/src/service/notification_service.dart';
 import 'package:survly/src/service/picker_service.dart';
 import 'package:survly/src/utils/coordinate_helper.dart';
 import 'package:survly/widgets/app_dialog.dart';
@@ -29,6 +30,7 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
   DoSurveyBloc(Survey survey) : super(DoSurveyState.ds(survey: survey)) {
     fetchDoSurveyInfo(survey);
     fetchQuestionList(survey);
+    fetchAdminFcmToken(survey);
     setupTimer();
   }
 
@@ -306,11 +308,25 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
       await saveDraft();
       var doSurvey = state.doSurvey;
       await domainManager.doSurvey.submitDoSurvey(doSurvey!);
+
+      // send noti to admin device
+      NotificationService.sendNotiToOneDevice(
+        notiTitle: "New respondent",
+        notiBody: "Someone has just response your survey. Check now!",
+        fcmToken: state.adminFcmToken,
+      );
+
       Fluttertoast.showToast(msg: S.text.toastSubmitSurveySuccess);
       AppCoordinator.pop();
     } catch (e) {
       Fluttertoast.showToast(msg: S.text.toastSubmitSurveyFail);
       Logger().e("Submit survey failed", error: e);
     }
+  }
+
+  Future<void> fetchAdminFcmToken(Survey survey) async {
+    String? fcmToken =
+        await domainManager.user.fetchUserFcmToken(survey.adminId);
+    emit(state.copyWith(adminFcmToken: fcmToken));
   }
 }
