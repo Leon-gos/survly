@@ -64,4 +64,23 @@ class LoginBloc extends Cubit<LoginState> {
   void onPasswordChange(String password) {
     emit(state.copyWith(password: PasswordFormzInput.pure(password)));
   }
+
+  void onEmailResetPasswordChange(String newText) {
+    emit(state.copyWith(emailResetPassword: EmailFormzInput.pure(newText)));
+  }
+
+  void resetPassword() {
+    emit(
+      state.copyWith(
+        emailResetPassword:
+            EmailFormzInput.dirty(state.emailResetPassword.value),
+      ),
+    );
+    if (!state.emailResetPasswordValid()) {
+      return;
+    }
+    domain.authentication.sendEmailResetPassword(
+      state.emailResetPassword.value,
+    );
+  }
 }

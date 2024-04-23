@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survly/gen/assets.gen.dart';
@@ -9,6 +10,7 @@ import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_button.dart';
+import 'package:survly/widgets/app_dialog.dart';
 import 'package:survly/widgets/app_icon_button.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
@@ -103,28 +105,69 @@ class LoginView extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
-                onTextChange: (newText) {
-                  context.read<LoginBloc>().onEmailChange(newText);
+            onTextChange: (newText) {
+              context.read<LoginBloc>().onEmailChange(newText);
+            },
+            hintText: S.of(context).emailHint,
+            textInputAction: TextInputAction.next,
+            textInputType: TextInputType.emailAddress,
+            errorText: state.email.errorOf(),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          AppTextField(
+            onTextChange: (newText) {
+              context.read<LoginBloc>().onPasswordChange(newText);
+            },
+            hintText: S.of(context).passwordHint,
+            obscureText: true,
+            errorText: state.password.errorOf(),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Material(
+              child: InkWell(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (dialogContext) {
+                      return AppDialog(
+                        title: "Reset password",
+                        body:
+                            "If you confirm, we will send reset password link to your email",
+                        child: AppTextField(
+                          hintText: "Your email",
+                          onTextChange: (newText) {},
+                        ),
+                        onCancelPressed: () {},
+                        onConfirmPressed: () {
+                          context.read<LoginBloc>().resetPassword();
+                        },
+                      );
+                    },
+                  );
                 },
-                hintText: S.of(context).emailHint,
-                textInputAction: TextInputAction.next,
-                textInputType: TextInputType.emailAddress,
-                errorText: state.email.errorOf(),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  child: Text(
+                    "Forgot password?",
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
-              const SizedBox(
-                height: 16,
-              ),
-              AppTextField(
-                onTextChange: (newText) {
-                  context.read<LoginBloc>().onPasswordChange(newText);
-                },
-                hintText: S.of(context).passwordHint,
-                obscureText: true,
-                errorText: state.password.errorOf(),
-              ),
-            ],
-          );
-        });
+            ),
+          ),
+        ],
+      );
+    });
   }
 
   Widget _buildBottomButtons() {
