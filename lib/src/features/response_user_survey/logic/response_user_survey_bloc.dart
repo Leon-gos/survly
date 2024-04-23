@@ -10,7 +10,9 @@ import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/response_user_survey/logic/response_user_survey_state.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/do_survey/do_survey.dart';
-import 'package:survly/src/network/model/notification/message_data.dart';
+import 'package:survly/src/network/model/notification/noti_request_body.dart';
+import 'package:survly/src/network/model/notification/noti_request_body.dart'
+    as my_noti;
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
@@ -98,11 +100,23 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
       // send noti
       // MessageData data = MessageData(data: , type: );
 
+      // NotificationService.sendNotiToOneDevice(
+      //   notiTitle: "Survey ignored",
+      //   notiBody: "Your survey has been ignored, check now 😢",
+      //   fcmToken: state.doSurvey!.user!.fcmToken!,
+      //   data: NotiRequestBody(type: NotiType.adminResponseSurvey.value),
+      // );
       NotificationService.sendNotiToOneDevice(
-        notiTitle: "Survey ignored",
-        notiBody: "Your survey has been ignored, check now 😢",
-        fcmToken: state.doSurvey!.user!.fcmToken!,
-        data: MessageData(type: NotiType.adminResponseSurvey.value),
+        requestBody: NotiRequestBody(
+          to: state.doSurvey!.user!.fcmToken!,
+          notification: my_noti.Notification(
+            title: "Survey ignored",
+            body: "Your survey has been ignored, check now 😢",
+          ),
+          data: {
+            NotiDataField.type: NotiType.adminResponseSurvey.value,
+          },
+        ),
       );
 
       Fluttertoast.showToast(msg: S.text.toastIgnoreSurveySuccessful);
@@ -128,10 +142,20 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
 
       // send noti
       NotificationService.sendNotiToOneDevice(
-        notiTitle: "Survey approved",
-        notiBody: "Your survey has been approved!!! Check now 😍",
-        fcmToken: state.doSurvey!.user!.fcmToken!,
-        data: MessageData(type: NotiType.adminResponseSurvey.value),
+        // notiTitle: "Survey approved",
+        // notiBody: "Your survey has been approved!!! Check now 😍",
+        // fcmToken: state.doSurvey!.user!.fcmToken!,
+        // data: NotiRequestBody(type: NotiType.adminResponseSurvey.value),
+        requestBody: NotiRequestBody(
+          to: state.doSurvey!.user!.fcmToken!,
+          notification: my_noti.Notification(
+            title: "Survey approved",
+            body: "Your survey has been approved!!! Check now 😍",
+          ),
+          data: {
+            NotiDataField.type: NotiType.adminResponseSurvey.value,
+          },
+        ),
       );
 
       Fluttertoast.showToast(msg: S.text.toastApproveSurveySuccessfully);

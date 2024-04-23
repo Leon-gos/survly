@@ -11,7 +11,6 @@ import 'package:survly/src/features/dashboard/logic/account_bloc.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/local/secure_storage/authentication/authentication_repository_impl.dart';
 import 'package:survly/src/network/data/user/user_repository_impl.dart';
-import 'package:survly/src/network/model/notification/message_data.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/router/router_name.dart';
@@ -46,18 +45,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _handleMessage(RemoteMessage message) {
     Fluttertoast.showToast(msg: "Handle push noti");
+    String? type = message.data[NotiDataField.type];
+    String? data = message.data[NotiDataField.data];
 
-    MessageData messageData = MessageData.fromMap(message.data);
-
-    if (messageData.type == NotiType.adminResponseSurvey.value) {
+    if (type == NotiType.adminResponseSurvey.value) {
       AppCoordinator.context.push(AppRouteNames.myProfile.path);
-    } else if (messageData.type == NotiType.userResponseSurvey.value) {
-      var extra = jsonDecode(messageData.data);
-      extra = List<String>.from(extra);
-      AppCoordinator.context.push(
-        AppRouteNames.responseUserSurvey.path,
-        extra: extra,
-      );
+    } else if (type == NotiType.userResponseSurvey.value) {
+      if (data != null) {
+        var extra = jsonDecode(data);
+        extra = List<String>.from(extra);
+        AppCoordinator.context.push(
+          AppRouteNames.responseUserSurvey.path,
+          extra: extra,
+        );
+      }
     }
   }
 
