@@ -123,6 +123,12 @@
     "dialogBodyApproveSurvey": "Are you sure to approve this survey? You cannot change after confirm.",
     "labelBtnViewRespondentList": "View respondents",
     "titleRespondentList": "Respondent list",
+    "labelShowOnlyMySurvey": "Show only my survey",
+    "labelSurveyStatus": "Survey status",
+    "labelStatusAll": "All",
+    "labelStatusPublic": "Public",
+    "labelStatusDraft": "Draft",
+    "labelBtnClose": "Close",
 
     "notiTitleUserRespondent": "New respondent",
     "notiBodyUserRespondent": "Someone has just response your survey. Check now!",

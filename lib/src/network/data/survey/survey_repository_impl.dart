@@ -69,13 +69,6 @@ class SurveyRepositoryImpl implements SurveyRepository {
   }) async {
     List<Survey> list = [];
     var lastDoc = await ref.doc(lastSurvey.surveyId).get();
-    // var value = await ref
-    //     .where(SurveyCollection.fieldStatus,
-    //         isNotEqualTo: SurveyStatus.archived.value)
-    //     .orderBy(SurveyCollection.fieldStatus)
-    //     .startAfterDocument(lastDoc)
-    //     .limit(pageSize)
-    //     .get();
 
     QuerySnapshot<Map<String, dynamic>> value;
     if (searchKeyword != null && searchKeyword != "") {
