@@ -70,15 +70,15 @@ class LoginBloc extends Cubit<LoginState> {
   }
 
   void resetPassword() {
-    emit(
-      state.copyWith(
-        emailResetPassword:
-            EmailFormzInput.dirty(state.emailResetPassword.value),
-      ),
-    );
-    if (!state.emailResetPasswordValid()) {
-      return;
-    }
+    // emit(
+    //   state.copyWith(
+    //     emailResetPassword:
+    //         EmailFormzInput.dirty(state.emailResetPassword.value),
+    //   ),
+    // );
+    // if (!state.emailResetPasswordValid()) {
+    //   return;
+    // }
     domain.authentication.sendEmailResetPassword(
       state.emailResetPassword.value,
     );
