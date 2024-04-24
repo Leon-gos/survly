@@ -8,10 +8,8 @@ import 'package:survly/src/features/response_user_survey/logic/response_user_sur
 import 'package:survly/src/features/response_user_survey/logic/response_user_survey_state.dart';
 import 'package:survly/src/features/response_user_survey/widget/response_button_widget.dart';
 import 'package:survly/src/localization/localization_utils.dart';
-import 'package:survly/src/network/model/do_survey/do_survey.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
-import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_dialog.dart';
@@ -22,17 +20,17 @@ import 'package:survly/widgets/app_map_card_widget.dart';
 class ResponseUserSurveyScreen extends StatelessWidget {
   const ResponseUserSurveyScreen({
     super.key,
-    required this.survey,
-    required this.doSurvey,
+    required this.surveyId,
+    required this.doSurveyId,
   });
 
-  final Survey survey;
-  final DoSurvey doSurvey;
+  final String surveyId;
+  final String doSurveyId;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ResponseUserSurveyBloc(survey, doSurvey),
+      create: (context) => ResponseUserSurveyBloc(surveyId, doSurveyId),
       child: BlocBuilder<ResponseUserSurveyBloc, ResponseUserSurveyState>(
         buildWhen: (previous, current) =>
             previous.doSurvey != current.doSurvey ||
@@ -155,7 +153,7 @@ class ResponseUserSurveyScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Image.network(
-          state.survey.thumbnail,
+          state.survey?.thumbnail ?? "",
           fit: BoxFit.cover,
         ),
         Padding(
@@ -164,21 +162,21 @@ class ResponseUserSurveyScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                state.survey.title,
+                state.survey?.title ?? "",
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 6),
-              Text(state.survey.description),
+              Text(state.survey?.description ?? ""),
               const SizedBox(height: 8),
               Text(S.of(context).hintGoToOutletPlace),
               const SizedBox(height: 8),
               AppMapCardWidget(
                 locationCoordinate: LatLng(
-                  state.survey.outlet!.latitude!,
-                  state.survey.outlet!.longitude!,
+                  state.survey!.outlet!.latitude!,
+                  state.survey!.outlet!.longitude!,
                 ),
               )
             ],
@@ -222,7 +220,7 @@ class ResponseUserSurveyScreen extends StatelessWidget {
           Expanded(
             flex: 1,
             child: ResponseButtonWidget(
-              labelText: S.of(context).lableBtnIgnore,
+              labelText: S.of(context).labelBtnIgnore,
               onPressed: () {
                 showDialog(
                   context: context,

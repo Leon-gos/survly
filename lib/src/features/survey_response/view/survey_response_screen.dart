@@ -51,7 +51,7 @@ class SurveyResponseScreen extends StatelessWidget {
           ),
           child: GestureDetector(
             onTap: () async {
-              List<Object> extra = [state.survey, response];
+              List<String> extra = [state.survey.surveyId, response.doSurveyId];
               await context
                   .push(AppRouteNames.responseUserSurvey.path, extra: extra)
                   .then((value) {

@@ -12,6 +12,7 @@ class Admin extends UserBase {
     required super.birthDate,
     required super.phone,
     super.role = UserBase.roleAdmin,
+    super.fcmToken,
   });
 
   factory Admin.fromMap(Map<String, dynamic> map) {
@@ -23,6 +24,7 @@ class Admin extends UserBase {
       gender: map['gender']?.toString() ?? UserBase.genderMale,
       birthDate: map['birthDate']?.toString() ?? "",
       phone: map['phone']?.toString() ?? "",
+      fcmToken: map['fcmToken']?.toString(),
     );
   }
 

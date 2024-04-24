@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_editor/image_editor.dart';
 import 'package:logger/logger.dart';
+import 'package:survly/src/config/constants/notification.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/do_survey/logic/do_survey_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
@@ -14,10 +15,14 @@ import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/data/do_survey/do_survey_repository_impl.dart';
 import 'package:survly/src/network/data/location_log/location_log_repository_impl.dart';
 import 'package:survly/src/network/model/location_log/location_log.dart';
+import 'package:survly/src/network/model/notification/noti_request_body.dart';
+import 'package:survly/src/network/model/notification/noti_request_body.dart'
+    as my_noti;
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/coordinator.dart';
+import 'package:survly/src/service/notification_service.dart';
 import 'package:survly/src/service/picker_service.dart';
 import 'package:survly/src/utils/coordinate_helper.dart';
 import 'package:survly/widgets/app_dialog.dart';
@@ -29,6 +34,7 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
   DoSurveyBloc(Survey survey) : super(DoSurveyState.ds(survey: survey)) {
     fetchDoSurveyInfo(survey);
     fetchQuestionList(survey);
+    fetchAdminFcmToken(survey);
     setupTimer();
   }
 
@@ -306,11 +312,32 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
       await saveDraft();
       var doSurvey = state.doSurvey;
       await domainManager.doSurvey.submitDoSurvey(doSurvey!);
+
+      NotificationService.sendNotiToOneDevice(
+        requestBody: NotiRequestBody(
+            to: state.adminFcmToken,
+            notification: my_noti.Notification(
+              title: S.text.notiTitleUserRespondent,
+              body: S.text.notiBodyUserRespondent,
+            ),
+            data: {
+              NotiDataField.type: NotiType.userResponseSurvey.value,
+              NotiDataField.data:
+                  List<String>.of([state.survey.surveyId, doSurvey.doSurveyId]),
+            }),
+      );
+
       Fluttertoast.showToast(msg: S.text.toastSubmitSurveySuccess);
       AppCoordinator.pop();
     } catch (e) {
       Fluttertoast.showToast(msg: S.text.toastSubmitSurveyFail);
       Logger().e("Submit survey failed", error: e);
     }
+  }
+
+  Future<void> fetchAdminFcmToken(Survey survey) async {
+    String? fcmToken =
+        await domainManager.user.fetchUserFcmToken(survey.adminId);
+    emit(state.copyWith(adminFcmToken: fcmToken));
   }
 }

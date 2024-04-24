@@ -22,6 +22,7 @@ class DoSurveyState extends Equatable {
   final int currentPage;
   final String outletPath;
   final bool isSaved;
+  final String? adminFcmToken;
 
   const DoSurveyState({
     required this.survey,
@@ -32,6 +33,7 @@ class DoSurveyState extends Equatable {
     required this.currentPage,
     required this.outletPath,
     required this.isSaved,
+    this.adminFcmToken,
   });
 
   factory DoSurveyState.ds({required Survey survey}) {
@@ -44,6 +46,7 @@ class DoSurveyState extends Equatable {
       currentPage: 0,
       outletPath: "",
       isSaved: true,
+      adminFcmToken: null,
     );
   }
 
@@ -57,6 +60,7 @@ class DoSurveyState extends Equatable {
         currentPage,
         outletPath,
         isSaved,
+        adminFcmToken,
       ];
 
   DoSurveyState copyWith({
@@ -68,6 +72,7 @@ class DoSurveyState extends Equatable {
     int? currentPage,
     String? outletPath,
     bool? isSaved,
+    String? adminFcmToken,
   }) {
     return DoSurveyState(
       survey: survey ?? this.survey,
@@ -78,6 +83,7 @@ class DoSurveyState extends Equatable {
       currentPage: currentPage ?? this.currentPage,
       outletPath: outletPath ?? this.outletPath,
       isSaved: isSaved ?? this.isSaved,
+      adminFcmToken: adminFcmToken ?? this.adminFcmToken,
     );
   }
 

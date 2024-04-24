@@ -9,6 +9,7 @@ class UserCollection {
   static const String fieldPhone = "phone";
   static const String fieldRole = "role";
   static const String fieldBalance = "balance";
+  static const String fieldFcmToken = "fcmToken";
 }
 
 class SurveyCollection {

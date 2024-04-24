@@ -152,4 +152,15 @@ class UserRepositoryImpl implements UserRepository {
       rethrow;
     }
   }
+
+  Future<void> updateUserNotiToken(String userId, String token) async {
+    await ref.doc(userId).update({
+      UserCollection.fieldFcmToken: token,
+    });
+  }
+
+  Future<String?> fetchUserFcmToken(String userId) async {
+    var value = await ref.doc(userId).get();
+    return value.data()?[UserCollection.fieldFcmToken];
+  }
 }

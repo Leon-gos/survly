@@ -17,6 +17,7 @@ class User extends UserBase {
     required super.birthDate,
     required super.phone,
     super.role = UserBase.roleUser,
+    super.fcmToken,
     required this.balance,
     required this.intro,
     this.countDoing,
@@ -54,6 +55,7 @@ class User extends UserBase {
       gender: map['gender']?.toString() ?? UserBase.genderMale,
       birthDate: map['birthDate']?.toString() ?? "",
       phone: map['phone']?.toString() ?? "",
+      fcmToken: map['fcmToken']?.toString(),
       balance: int.parse(map['balance']?.toString() ?? "0"),
       intro: map['intro']?.toString() ?? "",
     );
@@ -75,6 +77,7 @@ class User extends UserBase {
     String? birthDate,
     String? phone,
     String? role,
+    String? fcmToken,
     int? balance,
     String? intro,
     int? countDoing,
@@ -89,6 +92,7 @@ class User extends UserBase {
       birthDate: birthDate ?? this.birthDate,
       phone: phone ?? this.phone,
       role: role ?? this.role,
+      fcmToken: fcmToken ?? this.fcmToken,
       balance: balance ?? this.balance,
       intro: intro ?? this.intro,
     );
