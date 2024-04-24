@@ -22,14 +22,16 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
   }
 
   void onDateRangeChange(PickerDateRange dateRange) {
-    emit(
-      state.copyWith(
-        survey: state.survey.copyWith(
-          dateStart: DateHelper.getDateOnly(dateRange.startDate!),
-          dateEnd: DateHelper.getDateOnly(dateRange.endDate!),
+    if (dateRange.startDate != null && dateRange.endDate != null) {
+      emit(
+        state.copyWith(
+          survey: state.survey.copyWith(
+            dateStart: dateRange.startDate.toString(),
+            dateEnd: dateRange.endDate.toString(),
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   void onTitleChange(String newText) {
