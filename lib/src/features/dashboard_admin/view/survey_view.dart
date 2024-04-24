@@ -36,8 +36,8 @@ class SurveyView extends StatelessWidget {
   Widget _buildSurveyListView() {
     return BlocBuilder<SurveyListBloc, SurveyListState>(
       buildWhen: (previous, current) =>
-          previous.isShowMySurvey != current.isShowMySurvey ||
-          previous.surveyFilterList != current.surveyFilterList,
+          previous.surveyFilterList != current.surveyFilterList ||
+          previous.isShowingFilterSheet != current.isShowingFilterSheet,
       builder: (context, state) {
         return Column(
           children: [
@@ -55,9 +55,117 @@ class SurveyView extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {
+                      if (state.isShowingFilterSheet) {
+                        return;
+                      }
                       context
                           .read<SurveyListBloc>()
-                          .filterSurveyList(!state.isShowMySurvey);
+                          .onShowingFilterSheetChange(true);
+                      showBottomSheet(
+                        context: context,
+                        shape: const RoundedRectangleBorder(),
+                        builder: (sheetContext) {
+                          return BlocBuilder<SurveyListBloc, SurveyListState>(
+                            buildWhen: (previous, current) =>
+                                previous.isShowMySurvey !=
+                                    current.isShowMySurvey ||
+                                previous.sortBy != current.sortBy,
+                            builder: (context, state) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black26,
+                                      offset: Offset(0, -1),
+                                      blurRadius: 8,
+                                    ),
+                                  ],
+                                  color: Colors.grey[200],
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 8,
+                                      ),
+                                      color: Colors.white,
+                                      child: Row(
+                                        children: [
+                                          const Text(
+                                            "Show only my survey",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const Spacer(),
+                                          Switch(
+                                            value: state.isShowMySurvey,
+                                            onChanged: (value) {
+                                              context
+                                                  .read<SurveyListBloc>()
+                                                  .showOnlyMySurvey(value);
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Container(
+                                      color: Colors.white,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 16,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            "Sort options",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          RadioListTile(
+                                            title: const Text("Sort by name"),
+                                            value: SortBy.name,
+                                            groupValue: state.sortBy,
+                                            onChanged: (value) {
+                                              context
+                                                  .read<SurveyListBloc>()
+                                                  .sortSurvey(value!);
+                                            },
+                                          ),
+                                          RadioListTile(
+                                            title: const Text(
+                                                "Sort by date create"),
+                                            value: SortBy.dateCreate,
+                                            groupValue: state.sortBy,
+                                            onChanged: (value) {
+                                              context
+                                                  .read<SurveyListBloc>()
+                                                  .sortSurvey(value!);
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const Divider(height: 0)
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ).closed.then((value) {
+                        context
+                            .read<SurveyListBloc>()
+                            .onShowingFilterSheetChange(false);
+                      });
                     },
                     icon: Icon(
                       state.isShowMySurvey

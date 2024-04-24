@@ -44,8 +44,12 @@ class SurveyListBloc extends Cubit<SurveyListState> {
     }
   }
 
-  void filterSurveyList(bool isShowMySurvey) {
+  void showOnlyMySurvey(bool isShowMySurvey) {
     emit(state.copyWith(isShowMySurvey: isShowMySurvey));
+  }
+
+  void sortSurvey(SortBy sortBy) {
+    emit(state.copyWith(sortBy: sortBy));
   }
 
   void onSurveyListItemChange(Survey oldSurvey, Survey newSurvey) {
@@ -66,5 +70,9 @@ class SurveyListBloc extends Cubit<SurveyListState> {
     } catch (e) {
       Logger().e(S.text.errorGeneral, error: e);
     }
+  }
+
+  void onShowingFilterSheetChange(bool value) {
+    emit(state.copyWith(isShowingFilterSheet: value));
   }
 }
