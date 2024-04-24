@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppTextField extends StatelessWidget {
   final String? hintText;
-  final Widget? trailing;
+  final Widget? suffixIcon;
   final Function(String newText)? onTextChange;
   final TextInputAction? textInputAction;
   final TextInputType? textInputType;
@@ -16,7 +16,7 @@ class AppTextField extends StatelessWidget {
   const AppTextField({
     super.key,
     this.hintText,
-    this.trailing,
+    this.suffixIcon,
     this.onTextChange,
     this.textInputAction,
     this.textInputType,
@@ -42,6 +42,7 @@ class AppTextField extends StatelessWidget {
         prefixIcon: prefixIcon,
         prefixIconColor: Colors.grey,
         label: label != null ? Text(label!) : null,
+        suffixIcon: suffixIcon,
       ),
       readOnly: readOnly,
       keyboardType: textInputType,

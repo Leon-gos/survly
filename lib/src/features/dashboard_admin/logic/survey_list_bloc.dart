@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
@@ -10,7 +12,15 @@ class SurveyListBloc extends Cubit<SurveyListState> {
     fetchFirstPageSurvey();
   }
 
+  Timer? _debounce;
+
   DomainManager domainManager = DomainManager();
+
+  @override
+  Future<void> close() {
+    _debounce?.cancel();
+    return super.close();
+  }
 
   void concatSurveyList(List<Survey> list) {
     List<Survey> newList = List.from(state.surveyList);
@@ -21,7 +31,8 @@ class SurveyListBloc extends Cubit<SurveyListState> {
   Future<void> fetchFirstPageSurvey() async {
     emit(state.copyWith(surveyList: []));
     try {
-      var surveyList = await domainManager.survey.fetchFirstPageSurvey();
+      var surveyList = await domainManager.survey
+          .fetchFirstPageSurvey(searchKeyword: state.searchKeyWord);
       concatSurveyList(surveyList);
     } catch (e) {
       Logger().e("Failed to fetch first page of surveys", error: e);
@@ -32,24 +43,31 @@ class SurveyListBloc extends Cubit<SurveyListState> {
   }
 
   Future<void> fetchMoreSurvey() async {
-    if (state.surveyList.length - 1 >= 0) {
-      try {
-        List<Survey> surveyList = await domainManager.survey.fetchMoreSurvey(
-            lastSurvey: state.surveyList[state.surveyList.length - 1]);
-        Logger().d(surveyList.length);
-        concatSurveyList(surveyList);
-      } catch (e) {
-        Logger().e("Failed to fetch more surveys", error: e);
-      }
+    if (_debounce?.isActive ?? false) {
+      return;
     }
+    _debounce = Timer(const Duration(milliseconds: 100), () async {
+      if (state.surveyList.length - 1 >= 0) {
+        try {
+          List<Survey> surveyList = await domainManager.survey.fetchMoreSurvey(
+            lastSurvey: state.surveyList[state.surveyList.length - 1],
+            searchKeyword: state.searchKeyWord,
+          );
+          Logger().d(surveyList.length);
+          concatSurveyList(surveyList);
+        } catch (e) {
+          Logger().e("Failed to fetch more surveys", error: e);
+        }
+      }
+    });
   }
 
   void showOnlyMySurvey(bool isShowMySurvey) {
     emit(state.copyWith(isShowMySurvey: isShowMySurvey));
   }
 
-  void sortSurvey(SortBy sortBy) {
-    emit(state.copyWith(sortBy: sortBy));
+  void filterBySurveyStatus(FilterByStatus? status) {
+    emit(state.copyWith(filterByStatus: status));
   }
 
   void onSurveyListItemChange(Survey oldSurvey, Survey newSurvey) {
@@ -74,5 +92,13 @@ class SurveyListBloc extends Cubit<SurveyListState> {
 
   void onShowingFilterSheetChange(bool value) {
     emit(state.copyWith(isShowingFilterSheet: value));
+  }
+
+  void onSearchKeywordChange(String text) {
+    emit(state.copyWith(searchKeyWord: text));
+  }
+
+  void searchSurvey() {
+    fetchFirstPageSurvey();
   }
 }

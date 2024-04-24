@@ -50,7 +50,17 @@ class SurveyView extends StatelessWidget {
                     flex: 1,
                     child: AppTextField(
                       hintText: S.of(context).labelSearch,
-                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          context.read<SurveyListBloc>().searchSurvey();
+                        },
+                        icon: const Icon(Icons.search),
+                      ),
+                      onTextChange: (newText) {
+                        context
+                            .read<SurveyListBloc>()
+                            .onSearchKeywordChange(newText);
+                      },
                     ),
                   ),
                   IconButton(
@@ -69,7 +79,8 @@ class SurveyView extends StatelessWidget {
                             buildWhen: (previous, current) =>
                                 previous.isShowMySurvey !=
                                     current.isShowMySurvey ||
-                                previous.sortBy != current.sortBy,
+                                previous.filterByStatus !=
+                                    current.filterByStatus,
                             builder: (context, state) {
                               return Container(
                                 decoration: BoxDecoration(
@@ -124,34 +135,63 @@ class SurveyView extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           const Text(
-                                            "Sort options",
+                                            "Survey status",
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                           RadioListTile(
-                                            title: const Text("Sort by name"),
-                                            value: SortBy.name,
-                                            groupValue: state.sortBy,
+                                            title: const Text("All"),
+                                            value: FilterByStatus.all,
+                                            groupValue: state.filterByStatus,
                                             onChanged: (value) {
                                               context
                                                   .read<SurveyListBloc>()
-                                                  .sortSurvey(value!);
+                                                  .filterBySurveyStatus(value);
                                             },
                                           ),
                                           RadioListTile(
-                                            title: const Text(
-                                                "Sort by date create"),
-                                            value: SortBy.dateCreate,
-                                            groupValue: state.sortBy,
+                                            title: const Text("Public"),
+                                            value: FilterByStatus.public,
+                                            groupValue: state.filterByStatus,
                                             onChanged: (value) {
                                               context
                                                   .read<SurveyListBloc>()
-                                                  .sortSurvey(value!);
+                                                  .filterBySurveyStatus(value);
+                                            },
+                                          ),
+                                          RadioListTile(
+                                            title: const Text("Draft"),
+                                            value: FilterByStatus.draft,
+                                            groupValue: state.filterByStatus,
+                                            onChanged: (value) {
+                                              context
+                                                  .read<SurveyListBloc>()
+                                                  .filterBySurveyStatus(value);
                                             },
                                           )
                                         ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Material(
+                                      child: InkWell(
+                                        onTap: () {
+                                          context.pop();
+                                        },
+                                        child: Container(
+                                          width: double.infinity,
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 16),
+                                          child: const Center(
+                                              child: Text(
+                                            "Close",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          )),
+                                        ),
                                       ),
                                     ),
                                     const Divider(height: 0)

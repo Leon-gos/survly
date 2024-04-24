@@ -32,6 +32,7 @@ class Survey {
   String status;
   Outlet? outlet;
   String adminId;
+  List<String> searchList;
 
   String? _getSurveyError() {
     if (thumbnail == "") {
@@ -156,6 +157,7 @@ class Survey {
     required this.status,
     this.outlet,
     required this.adminId,
+    this.searchList = const [],
   });
 
   factory Survey.draft({
@@ -214,6 +216,7 @@ class Survey {
       'respondentNum': respondentNum,
       'status': status,
       'adminId': adminId,
+      'searchList': searchList,
     };
   }
 
@@ -276,5 +279,18 @@ class Survey {
 
   String genThumbnailImageFileKey() {
     return "${UserBase.roleAdmin}/${SurveyCollection.collectionName}/$surveyId";
+  }
+
+  void genSearchList() {
+    var setWord = Set.from(title.toLowerCase().trim().split(" "));
+    Set<String> setKeyword = {};
+    for (String word in setWord) {
+      for (int i = 0; i < word.length; i++) {
+        for (int j = i + 1; j < word.length + 1; j++) {
+          setKeyword.add(word.substring(i, j));
+        }
+      }
+    }
+    searchList = List.from(setKeyword);
   }
 }
