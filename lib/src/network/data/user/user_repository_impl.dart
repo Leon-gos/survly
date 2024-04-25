@@ -71,7 +71,10 @@ class UserRepositoryImpl implements UserRepository {
         .limit(limitUserPage)
         .get();
     for (var doc in value.docs) {
-      var user = User.fromMap(doc.data());
+      var user = User.fromMap({
+        ...doc.data(),
+        UserCollection.fieldUserId: doc.id,
+      });
       user.countDoing = await doSurveyRepo.countDoSurvey(
           userId: doc.id, status: DoSurveyStatus.doing);
       user.countDone = await doSurveyRepo.countDoSurvey(
@@ -93,7 +96,10 @@ class UserRepositoryImpl implements UserRepository {
         .limit(limitUserPage)
         .get();
     for (var doc in value.docs) {
-      var user = User.fromMap(doc.data());
+      var user = User.fromMap({
+        ...doc.data(),
+        UserCollection.fieldUserId: doc.id,
+      });
       user.countDoing = await doSurveyRepo.countDoSurvey(
           userId: doc.id, status: DoSurveyStatus.doing);
       user.countDone = await doSurveyRepo.countDoSurvey(
