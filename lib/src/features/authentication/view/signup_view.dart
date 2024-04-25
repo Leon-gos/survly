@@ -30,9 +30,11 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
-                    child: SizedBox(
-                      height: (MediaQuery.sizeOf(context).height / 10) * 7,
-                      child: _buildSignUpForm(),
+                    child: SingleChildScrollView(
+                      child: SizedBox(
+                        height: (MediaQuery.sizeOf(context).height / 10) * 7,
+                        child: _buildSignUpForm(),
+                      ),
                     ),
                   ),
                 ],
@@ -84,6 +86,8 @@ class SignUpScreen extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildListTextField(),
             const Spacer(),
@@ -97,6 +101,7 @@ class SignUpScreen extends StatelessWidget {
   Widget _buildListTextField() {
     return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
       return Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(
             height: 16,
@@ -135,8 +140,7 @@ class SignUpScreen extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
-            onTextChange: (newText) {
-            },
+            onTextChange: (newText) {},
             hintText: S.of(context).confirmPasswordHint,
           ),
         ],
@@ -145,51 +149,51 @@ class SignUpScreen extends StatelessWidget {
   }
 
   Widget _buildBottomButtons() {
-    return BlocBuilder<SignUpBloc, SignUpState>(
-      builder: (context, state) {
-        return Column(
-          children: [
-            SizedBox(
-              width: double.infinity,
-              child: AppButton(
-                onPressed: () {
-                  context.read<SignUpBloc>().signUpByEmailPassword();
-                },
-                label: S.of(context).signUpBtnLabel,
+    return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: double.infinity,
+            child: AppButton(
+              onPressed: () {
+                context.read<SignUpBloc>().signUpByEmailPassword();
+              },
+              label: S.of(context).signUpBtnLabel,
+            ),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                S.of(context).alreadyHaveAccount,
+                style: const TextStyle(color: AppColors.black),
               ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  S.of(context).alreadyHaveAccount,
-                  style: const TextStyle(color: AppColors.black),
-                ),
-                Material(
-                  child: InkWell(
-                    onTap: () {
-                      context.pop();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                      child: Text(
-                        S.of(context).loginBtnLabel,
-                        style: const TextStyle(
-                          color: AppColors.secondary,
-                          fontWeight: FontWeight.bold,
-                        ),
+              Material(
+                child: InkWell(
+                  onTap: () {
+                    context.pop();
+                  },
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                    child: Text(
+                      S.of(context).loginBtnLabel,
+                      style: const TextStyle(
+                        color: AppColors.secondary,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
-          ],
-        );
-      }
-    );
+              ),
+            ],
+          ),
+        ],
+      );
+    });
   }
 }
