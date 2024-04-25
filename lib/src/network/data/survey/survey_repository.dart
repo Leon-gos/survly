@@ -22,4 +22,5 @@ abstract class SurveyRepository {
   Future<List<Survey>> fetchFirstPageExploreSurvey();
   Future<List<Survey>> fetchMoreExploreSurvey({required Survey lastSurvey});
   Future<void> increaseSurveyRespondentNum(String surveyId);
+  Future<List<Survey>> fetchAdminSurveyList(String? adminId);
 }

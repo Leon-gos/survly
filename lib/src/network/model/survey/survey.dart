@@ -235,6 +235,11 @@ class Survey {
       respondentNum: int.parse(map['respondentNum']?.toString() ?? "0"),
       status: map['status']?.toString() ?? "",
       adminId: map['adminId']?.toString() ?? "",
+      outlet: Outlet(
+        address: map[SurveyCollection.fieldAddress],
+        latitude: map[SurveyCollection.fieldLatitude],
+        longitude: map[SurveyCollection.fieldLongitude],
+      ),
     );
   }
 

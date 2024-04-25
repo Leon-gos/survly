@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:survly/src/features/admin_profile/view/admin_profile_screen.dart';
 import 'package:survly/src/features/authentication/view/login_screen.dart';
 import 'package:survly/src/features/authentication/view/signup_view.dart';
 import 'package:survly/src/features/create_survey/view/create_survey_screen.dart';
@@ -181,6 +182,12 @@ class AppRouter {
             doSurveyId: doSurveyId,
           );
         },
+      ),
+      GoRoute(
+        name: AppRouteNames.adminProfile.name,
+        path: AppRouteNames.adminProfile.path,
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        builder: (context, state) => const AdminProfileScreen(),
       ),
       ShellRoute(
         builder: (context, state, child) => DashboardAdminScreen(
