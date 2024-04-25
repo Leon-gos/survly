@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
@@ -9,6 +11,8 @@ class ExploreSurveyBloc extends Cubit<ExploreSurveyState> {
   ExploreSurveyBloc() : super(ExploreSurveyState.ds()) {
     fetchFirstPageSurvey();
   }
+
+  Timer? _debounce;
 
   DomainManager domainManager = DomainManager();
 
@@ -32,18 +36,23 @@ class ExploreSurveyBloc extends Cubit<ExploreSurveyState> {
   }
 
   Future<void> fetchMoreSurvey() async {
-    if (state.surveyList.length - 1 >= 0) {
-      try {
-        List<Survey> surveyList =
-            await domainManager.survey.fetchMoreExploreSurvey(
-          lastSurvey: state.surveyList[state.surveyList.length - 1],
-        );
-        Logger().d(surveyList.length);
-        concatSurveyList(surveyList);
-      } catch (e) {
-        Logger().e("Failed to fetch more surveys", error: e);
-      }
+    if (_debounce?.isActive ?? false) {
+      return;
     }
+    _debounce = Timer(const Duration(milliseconds: 100), () async {
+      if (state.surveyList.length - 1 >= 0) {
+        try {
+          List<Survey> surveyList =
+              await domainManager.survey.fetchMoreExploreSurvey(
+            lastSurvey: state.surveyList[state.surveyList.length - 1],
+          );
+          Logger().d(surveyList.length);
+          concatSurveyList(surveyList);
+        } catch (e) {
+          Logger().e("Failed to fetch more surveys", error: e);
+        }
+      }
+    });
   }
 
   void filterSurveyList(bool isShowMySurvey) {
