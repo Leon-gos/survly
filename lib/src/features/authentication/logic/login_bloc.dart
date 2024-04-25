@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/authentication/logic/login_state.dart';
@@ -14,10 +15,12 @@ class LoginBloc extends Cubit<LoginState> {
   DomainManager get domain => DomainManager();
 
   void loginWithEmailPassword() async {
+    emit(state.copyWith(isLoading: true));
     emit(state.copyWith(email: EmailFormzInput.dirty(state.email.value)));
     emit(state.copyWith(
         password: PasswordFormzInput.dirty(state.password.value)));
     if (!state.isValid()) {
+      emit(state.copyWith(isLoading: false));
       return;
     }
     try {
@@ -36,7 +39,9 @@ class LoginBloc extends Cubit<LoginState> {
         AppCoordinator.goNamed(AppRouteNames.dashboard.path);
       });
     } catch (e) {
-      Logger().d(e);
+      Logger().e(e);
+      Fluttertoast.showToast(msg: "Email or password incorrect");
+      emit(state.copyWith(isLoading: false));
     }
   }
 

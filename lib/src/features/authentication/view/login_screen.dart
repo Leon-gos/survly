@@ -10,6 +10,7 @@ import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_button.dart';
 import 'package:survly/widgets/app_icon_button.dart';
+import 'package:survly/widgets/app_loading_circle.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
 class LoginView extends StatelessWidget {
@@ -19,28 +20,41 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoginBloc(),
-      child: Scaffold(
-        backgroundColor: AppColors.primary,
-        appBar: const AppAppBarWidget(
-          leading: SizedBox(),
-        ),
-        body: SafeArea(
-          child: Stack(
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: _buildTitle(context),
+      child: BlocBuilder<LoginBloc, LoginState>(
+        builder: (context, state) {
+          if (state.isLoading) {
+            return Scaffold(
+              appBar: AppAppBarWidget(
+                noActionBar: true,
+                backgroundColor: AppColors.backgroundBrightness,
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                  height: (MediaQuery.sizeOf(context).height / 10) * 7,
-                  child: _buildLoginForm(),
-                ),
+              body: const AppLoadingCircle(),
+            );
+          }
+          return Scaffold(
+            backgroundColor: AppColors.primary,
+            appBar: const AppAppBarWidget(
+              leading: SizedBox(),
+            ),
+            body: SafeArea(
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: _buildTitle(context),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      height: (MediaQuery.sizeOf(context).height / 10) * 7,
+                      child: _buildLoginForm(),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -103,28 +117,28 @@ class LoginView extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
-                onTextChange: (newText) {
-                  context.read<LoginBloc>().onEmailChange(newText);
-                },
-                hintText: S.of(context).emailHint,
-                textInputAction: TextInputAction.next,
-                textInputType: TextInputType.emailAddress,
-                errorText: state.email.errorOf(),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              AppTextField(
-                onTextChange: (newText) {
-                  context.read<LoginBloc>().onPasswordChange(newText);
-                },
-                hintText: S.of(context).passwordHint,
-                obscureText: true,
-                errorText: state.password.errorOf(),
-              ),
-            ],
-          );
-        });
+            onTextChange: (newText) {
+              context.read<LoginBloc>().onEmailChange(newText);
+            },
+            hintText: S.of(context).emailHint,
+            textInputAction: TextInputAction.next,
+            textInputType: TextInputType.emailAddress,
+            errorText: state.email.errorOf(),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          AppTextField(
+            onTextChange: (newText) {
+              context.read<LoginBloc>().onPasswordChange(newText);
+            },
+            hintText: S.of(context).passwordHint,
+            obscureText: true,
+            errorText: state.password.errorOf(),
+          ),
+        ],
+      );
+    });
   }
 
   Widget _buildBottomButtons() {
