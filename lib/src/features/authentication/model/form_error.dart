@@ -6,5 +6,6 @@ enum FormError {
   passwordMissLowerChar,
   passwordMissDigit,
   passwordMissSpecialChar,
-  passwordLength;
+  passwordLength,
+  confrimPasswordMissMatch;
 }

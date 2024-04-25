@@ -7,6 +7,7 @@ import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_button.dart';
+import 'package:survly/widgets/app_loading_circle.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -15,35 +16,52 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SignUpBloc(),
-      child: Scaffold(
-        backgroundColor: AppColors.primary,
-        appBar: const AppAppBarWidget(),
-        body: Builder(
-          builder: (context) {
-            return SafeArea(
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: _buildTitle(context),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: SingleChildScrollView(
-                      child: SizedBox(
-                        height: (MediaQuery.sizeOf(context).height / 10) * 7,
-                        child: _buildSignUpForm(),
+        create: (context) => SignUpBloc(),
+        child: BlocBuilder<SignUpBloc, SignUpState>(
+          buildWhen: (previous, current) =>
+              previous.isLoading != current.isLoading,
+          builder: (context, state) {
+            if (state.isLoading) {
+              return Scaffold(
+                appBar: AppAppBarWidget(
+                  noActionBar: true,
+                  backgroundColor: AppColors.backgroundBrightness,
+                ),
+                body: const AppLoadingCircle(),
+              );
+            } else {
+              return Scaffold(
+                backgroundColor: AppColors.primary,
+                appBar: const AppAppBarWidget(),
+                body: Builder(
+                  builder: (context) {
+                    return SafeArea(
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: _buildTitle(context),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: SingleChildScrollView(
+                              child: SizedBox(
+                                height:
+                                    (MediaQuery.sizeOf(context).height / 10) *
+                                        7,
+                                child: _buildSignUpForm(),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                ],
-              ),
-            );
+                    );
+                  },
+                ),
+              );
+            }
           },
-        ),
-      ),
-    );
+        ));
   }
 
   Widget _buildTitle(BuildContext context) {
@@ -113,6 +131,7 @@ class SignUpScreen extends StatelessWidget {
             },
             textInputAction: TextInputAction.next,
             errorText: state.name.errorOf(),
+            label: S.of(context).nameHint,
           ),
           const SizedBox(
             height: 16,
@@ -124,6 +143,7 @@ class SignUpScreen extends StatelessWidget {
             },
             textInputAction: TextInputAction.next,
             errorText: state.email.errorOf(),
+            label: S.of(context).emailHint,
           ),
           const SizedBox(
             height: 16,
@@ -135,13 +155,18 @@ class SignUpScreen extends StatelessWidget {
             hintText: S.of(context).passwordHint,
             textInputAction: TextInputAction.next,
             errorText: state.password.errorOf(),
+            label: S.of(context).passwordHint,
           ),
           const SizedBox(
             height: 16,
           ),
           AppTextField(
-            onTextChange: (newText) {},
+            onTextChange: (newText) {
+              context.read<SignUpBloc>().onPasswordConfirmChange(newText);
+            },
             hintText: S.of(context).confirmPasswordHint,
+            errorText: state.passwordConfirm.errorOf(),
+            label: S.of(context).confirmPasswordHint,
           ),
         ],
       );
