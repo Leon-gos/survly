@@ -37,7 +37,7 @@ class SignUpBloc extends Cubit<SignUpState> {
         state.password.value,
         state.name.value,
       );
-      Fluttertoast.showToast(msg: "Sign up successfully");
+      Fluttertoast.showToast(msg: S.text.toastSignupSuccess);
       AppCoordinator.pop();
     } catch (e) {
       Fluttertoast.showToast(msg: S.text.errorGeneral);

@@ -68,7 +68,7 @@ class PasswordConfirmFormzInput extends FormzInput<String, FormError> {
       case FormError.passwordMissSpecialChar:
         return S.text.errorPasswordMissSpecialChar;
       case FormError.confrimPasswordMissMatch:
-        return "Confirm password doesn't match";
+        return S.text.errorConfirmPassNotMatch;
       default:
         return null;
     }

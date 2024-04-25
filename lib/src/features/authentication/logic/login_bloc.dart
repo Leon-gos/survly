@@ -6,6 +6,7 @@ import 'package:survly/src/features/authentication/logic/login_state.dart';
 import 'package:survly/src/features/authentication/model/email_fomz_input.dart';
 import 'package:survly/src/features/authentication/model/password_fomz_input.dart';
 import 'package:survly/src/local/model/login_info.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/router/router_name.dart';
 
@@ -40,7 +41,7 @@ class LoginBloc extends Cubit<LoginState> {
       });
     } catch (e) {
       Logger().e(e);
-      Fluttertoast.showToast(msg: "Email or password incorrect");
+      Fluttertoast.showToast(msg: S.text.errorEmailPasswordIncorrect);
       emit(state.copyWith(isLoading: false));
     }
   }
