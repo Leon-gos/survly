@@ -150,7 +150,12 @@ class AppRouter {
         name: AppRouteNames.doSurveyTracking.name,
         path: AppRouteNames.doSurveyTracking.path,
         parentNavigatorKey: AppCoordinator.navigatorKey,
-        builder: (context, state) => const DoSurveyTrackingScreen(),
+        builder: (context, state) {
+          String? doSurveyId = state.extra as String?;
+          return DoSurveyTrackingScreen(
+            doSurveyId: doSurveyId,
+          );
+        },
       ),
       GoRoute(
         name: AppRouteNames.previewSurvey.name,

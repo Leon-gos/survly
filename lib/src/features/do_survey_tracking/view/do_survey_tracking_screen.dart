@@ -6,7 +6,9 @@ import 'package:survly/src/features/do_survey_tracking/logic/do_survey_tracking_
 import 'package:survly/widgets/app_loading_circle.dart';
 
 class DoSurveyTrackingScreen extends StatefulWidget {
-  const DoSurveyTrackingScreen({super.key});
+  const DoSurveyTrackingScreen({super.key, this.doSurveyId});
+
+  final String? doSurveyId;
 
   @override
   State<StatefulWidget> createState() => DoSurveyTrackingScreenState();
@@ -21,8 +23,7 @@ class DoSurveyTrackingScreenState extends State<DoSurveyTrackingScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          DoSurveyTrackingBloc("Ermd203XOKlrg1A1QdWu"), //test only
+      create: (context) => DoSurveyTrackingBloc(widget.doSurveyId), //test only
       child: BlocBuilder<DoSurveyTrackingBloc, DoSurveyTrackingState>(
         buildWhen: (previous, current) => previous.doSurvey != current.doSurvey,
         builder: (context, state) {

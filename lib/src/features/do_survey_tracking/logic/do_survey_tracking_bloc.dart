@@ -1,12 +1,20 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/features/do_survey_tracking/logic/do_survey_tracking_state.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/data/do_survey/do_survey_repository_impl.dart';
+import 'package:survly/src/router/coordinator.dart';
 
 class DoSurveyTrackingBloc extends Cubit<DoSurveyTrackingState> {
-  DoSurveyTrackingBloc(String doSurveyId) : super(DoSurveyTrackingState.ds()) {
+  DoSurveyTrackingBloc(String? doSurveyId) : super(DoSurveyTrackingState.ds()) {
+    if (doSurveyId == null) {
+      Fluttertoast.showToast(msg: S.text.errorGeneral);
+      AppCoordinator.pop();
+      return;
+    }
     fetchDoSurvey(doSurveyId);
   }
   GoogleMapController? mapController;

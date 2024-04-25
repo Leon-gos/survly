@@ -209,27 +209,29 @@ class DoSurveyScreen extends StatelessWidget {
   }
 
   Widget _buildOutlet(BuildContext context, DoSurveyState state) {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 16,
-        ),
-        Text(
-          S.of(context).hintTakePhotoOutlet,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 16,
           ),
-        ),
-        AppImagePicker(
-          imagePath: state.outletPath,
-          defaultImageUrl: state.doSurvey?.photoOutlet,
-          flexibleSize: true,
-          onPickImage: () {
-            context.read<DoSurveyBloc>().onTakeOutletPhoto();
-          },
-        )
-      ],
+          Text(
+            S.of(context).hintTakePhotoOutlet,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          AppImagePicker(
+            imagePath: state.outletPath,
+            defaultImageUrl: state.doSurvey?.photoOutlet,
+            flexibleSize: true,
+            onPickImage: () {
+              context.read<DoSurveyBloc>().onTakeOutletPhoto();
+            },
+          )
+        ],
+      ),
     );
   }
 }

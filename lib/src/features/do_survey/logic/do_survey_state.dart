@@ -12,8 +12,6 @@ enum PageType {
 }
 
 class DoSurveyState extends Equatable {
-  static const Duration updateDuration = Duration(seconds: 60);
-
   final Survey survey;
   final DoSurvey? doSurvey;
   final Location location;
