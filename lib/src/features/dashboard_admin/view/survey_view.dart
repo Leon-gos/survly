@@ -36,8 +36,8 @@ class SurveyView extends StatelessWidget {
   Widget _buildSurveyListView() {
     return BlocBuilder<SurveyListBloc, SurveyListState>(
       buildWhen: (previous, current) =>
-          previous.isShowMySurvey != current.isShowMySurvey ||
-          previous.surveyFilterList != current.surveyFilterList,
+          previous.surveyFilterList != current.surveyFilterList ||
+          previous.isShowingFilterSheet != current.isShowingFilterSheet,
       builder: (context, state) {
         return Column(
           children: [
@@ -50,19 +50,41 @@ class SurveyView extends StatelessWidget {
                     flex: 1,
                     child: AppTextField(
                       hintText: S.of(context).labelSearch,
-                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          context.read<SurveyListBloc>().searchSurvey();
+                        },
+                        icon: const Icon(Icons.search),
+                      ),
+                      onTextChange: (newText) {
+                        context
+                            .read<SurveyListBloc>()
+                            .onSearchKeywordChange(newText);
+                      },
                     ),
                   ),
                   IconButton(
                     onPressed: () {
+                      if (state.isShowingFilterSheet) {
+                        return;
+                      }
                       context
                           .read<SurveyListBloc>()
-                          .filterSurveyList(!state.isShowMySurvey);
+                          .onShowingFilterSheetChange(true);
+                      showBottomSheet(
+                        context: context,
+                        shape: const RoundedRectangleBorder(),
+                        builder: (sheetContext) {
+                          return _buildBottomSheetFilter();
+                        },
+                      ).closed.then((value) {
+                        context
+                            .read<SurveyListBloc>()
+                            .onShowingFilterSheetChange(false);
+                      });
                     },
-                    icon: Icon(
-                      state.isShowMySurvey
-                          ? Icons.filter_alt
-                          : Icons.filter_alt_outlined,
+                    icon: const Icon(
+                      Icons.filter_alt_outlined,
                       color: Colors.grey,
                     ),
                   )
@@ -98,6 +120,128 @@ class SurveyView extends StatelessWidget {
               ),
             )
           ],
+        );
+      },
+    );
+  }
+
+  Widget _buildBottomSheetFilter() {
+    return BlocBuilder<SurveyListBloc, SurveyListState>(
+      buildWhen: (previous, current) =>
+          previous.isShowMySurvey != current.isShowMySurvey ||
+          previous.filterByStatus != current.filterByStatus,
+      builder: (context, state) {
+        return Container(
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                offset: Offset(0, -1),
+                blurRadius: 8,
+              ),
+            ],
+            color: Colors.grey[200],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                color: Colors.white,
+                child: Row(
+                  children: [
+                    Text(
+                      S.of(context).labelShowOnlyMySurvey,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Spacer(),
+                    Switch(
+                      value: state.isShowMySurvey,
+                      onChanged: (value) {
+                        context.read<SurveyListBloc>().showOnlyMySurvey(value);
+                      },
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                color: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      S.of(context).labelSurveyStatus,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    RadioListTile(
+                      title: Text(S.of(context).labelStatusAll),
+                      value: FilterByStatus.all,
+                      groupValue: state.filterByStatus,
+                      onChanged: (value) {
+                        context
+                            .read<SurveyListBloc>()
+                            .filterBySurveyStatus(value);
+                      },
+                    ),
+                    RadioListTile(
+                      title: Text(S.of(context).labelStatusPublic),
+                      value: FilterByStatus.public,
+                      groupValue: state.filterByStatus,
+                      onChanged: (value) {
+                        context
+                            .read<SurveyListBloc>()
+                            .filterBySurveyStatus(value);
+                      },
+                    ),
+                    RadioListTile(
+                      title: Text(S.of(context).labelStatusDraft),
+                      value: FilterByStatus.draft,
+                      groupValue: state.filterByStatus,
+                      onChanged: (value) {
+                        context
+                            .read<SurveyListBloc>()
+                            .filterBySurveyStatus(value);
+                      },
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Material(
+                child: InkWell(
+                  onTap: () {
+                    context.pop();
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Center(
+                        child: Text(
+                      S.of(context).labelBtnClose,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
+                  ),
+                ),
+              ),
+              const Divider(height: 0)
+            ],
+          ),
         );
       },
     );

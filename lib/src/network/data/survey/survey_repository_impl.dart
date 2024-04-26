@@ -15,19 +15,38 @@ class SurveyRepositoryImpl implements SurveyRepository {
   final ref =
       FirebaseFirestore.instance.collection(SurveyCollection.collectionName);
 
-  static const int pageSize = 8;
+  static const int pageSize = 3;
 
   @override
-  Future<List<Survey>> fetchFirstPageSurvey() async {
+  Future<List<Survey>> fetchFirstPageSurvey({String? searchKeyword}) async {
     List<Survey> list = [];
 
-    var value = await ref
-        .where(SurveyCollection.fieldStatus,
-            isNotEqualTo: SurveyStatus.archived.value)
-        .orderBy(SurveyCollection.fieldStatus, descending: true)
-        .orderBy(SurveyCollection.fieldDateCreate, descending: true)
-        .limit(pageSize)
-        .get();
+    QuerySnapshot<Map<String, dynamic>> value;
+    if (searchKeyword != null && searchKeyword != "") {
+      value = await ref
+          .where(
+            SurveyCollection.fieldStatus,
+            isNotEqualTo: SurveyStatus.archived.value,
+          )
+          .orderBy(SurveyCollection.fieldStatus)
+          .where(
+            SurveyCollection.fieldSearchList,
+            arrayContainsAny:
+                List.from(searchKeyword.toLowerCase().trim().split(" ")),
+          )
+          .limit(pageSize)
+          .get();
+    } else {
+      value = await ref
+          .where(
+            SurveyCollection.fieldStatus,
+            isNotEqualTo: SurveyStatus.archived.value,
+          )
+          .orderBy(SurveyCollection.fieldStatus)
+          .limit(pageSize)
+          .get();
+    }
+
     for (var doc in value.docs) {
       var data = doc.data();
       data[SurveyCollection.fieldSurveyId] = doc.id;
@@ -44,18 +63,40 @@ class SurveyRepositoryImpl implements SurveyRepository {
   }
 
   @override
-  Future<List<Survey>> fetchMoreSurvey({required Survey lastSurvey}) async {
+  Future<List<Survey>> fetchMoreSurvey({
+    required Survey lastSurvey,
+    String? searchKeyword,
+  }) async {
     List<Survey> list = [];
-
     var lastDoc = await ref.doc(lastSurvey.surveyId).get();
-    var value = await ref
-        .where(SurveyCollection.fieldStatus,
-            isNotEqualTo: SurveyStatus.archived.value)
-        .orderBy(SurveyCollection.fieldStatus, descending: true)
-        .orderBy(SurveyCollection.fieldDateCreate, descending: true)
-        .startAfterDocument(lastDoc)
-        .limit(pageSize)
-        .get();
+
+    QuerySnapshot<Map<String, dynamic>> value;
+    if (searchKeyword != null && searchKeyword != "") {
+      value = await ref
+          .where(
+            SurveyCollection.fieldStatus,
+            isNotEqualTo: SurveyStatus.archived.value,
+          )
+          .orderBy(SurveyCollection.fieldStatus)
+          .where(
+            SurveyCollection.fieldSearchList,
+            arrayContainsAny:
+                List.from(searchKeyword.toLowerCase().trim().split(" ")),
+          )
+          .startAfterDocument(lastDoc)
+          .limit(pageSize)
+          .get();
+    } else {
+      value = await ref
+          .where(
+            SurveyCollection.fieldStatus,
+            isNotEqualTo: SurveyStatus.archived.value,
+          )
+          .orderBy(SurveyCollection.fieldStatus)
+          .limit(pageSize)
+          .startAfterDocument(lastDoc)
+          .get();
+    }
     for (var doc in value.docs) {
       var data = doc.data();
 
@@ -87,6 +128,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
       survey.adminId = UserBaseSingleton.instance().userBase!.id;
       final value = await ref.add({});
       survey.surveyId = value.id;
+      survey.genSearchList();
       ref.doc("/${value.id}").set({
         ...survey.toMap(),
         ...(survey.outlet?.toMap() ?? {}),
@@ -127,6 +169,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
   }) async {
     try {
       // 1: insert survey
+      survey.genSearchList();
       ref.doc("/${survey.surveyId}").set({
         ...survey.toMap(),
         ...(survey.outlet?.toMap() ?? {}),
