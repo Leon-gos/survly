@@ -9,6 +9,7 @@ import 'package:survly/src/features/my_profile/logic/my_profile_state.dart';
 import 'package:survly/src/features/my_profile/widget/joined_survey_list_widget.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/localization/localization_utils.dart';
+import 'package:survly/src/network/model/do_survey/do_survey.dart';
 import 'package:survly/src/network/model/user/user.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
@@ -182,8 +183,15 @@ class MyProfileScreen extends StatelessWidget {
           surveyList: state.joinedSurveyList,
           doSurveyList: state.doSurveyList,
           onRefresh: () => context.read<MyProfileBloc>().fetchJoinedSurvey(),
-          onItemClick: (survey) {
-            context.push(AppRouteNames.doSurvey.path, extra: survey);
+          onItemClick: (survey, doSurvey) {
+            if (doSurvey.status == DoSurveyStatus.doing.value) {
+              context.push(AppRouteNames.doSurvey.path, extra: survey);
+            } else {
+              context.push(AppRouteNames.doSurveyReview.path, extra: [
+                survey.surveyId,
+                doSurvey.doSurveyId,
+              ]);
+            }
           },
         );
       },

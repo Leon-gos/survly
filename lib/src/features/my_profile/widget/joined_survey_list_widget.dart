@@ -9,7 +9,7 @@ class JoinedSurveyListWidget extends StatefulWidget {
   final List<DoSurvey> doSurveyList;
   final Future<void> Function()? onLoadMore;
   final Function()? onRefresh;
-  final Function(Survey survey)? onItemClick;
+  final Function(Survey survey, DoSurvey doSurvey)? onItemClick;
 
   const JoinedSurveyListWidget({
     super.key,
@@ -78,7 +78,10 @@ class _DoingSurveyListWidgetState extends State<JoinedSurveyListWidget> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        widget.onItemClick?.call(widget.surveyList[index]);
+                        widget.onItemClick?.call(
+                          widget.surveyList[index],
+                          widget.doSurveyList[index],
+                        );
                       },
                       child: JoinedSurveyCard(
                         survey: widget.surveyList[index],
