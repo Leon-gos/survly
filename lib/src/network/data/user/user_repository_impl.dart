@@ -24,7 +24,13 @@ class UserRepositoryImpl implements UserRepository {
       if (docData[UserCollection.fieldRole] == UserBase.roleAdmin) {
         return Admin.fromMap(docData);
       } else {
-        return User.fromMap(docData);
+        var user = User.fromMap(docData);
+        var doSurveyRepo = DoSurveyRepositoryImpl();
+        user.countDoing = await doSurveyRepo.countDoSurvey(
+            userId: user.id, status: DoSurveyStatus.doing);
+        user.countDone = await doSurveyRepo.countDoSurvey(
+            userId: user.id, status: DoSurveyStatus.approved);
+        return user;
       }
     } catch (e) {
       Logger().e("Get user info error", error: e);

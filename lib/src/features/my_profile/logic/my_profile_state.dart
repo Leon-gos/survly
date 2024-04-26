@@ -1,24 +1,35 @@
 import 'package:equatable/equatable.dart';
+
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/network/model/user/user.dart';
 
 class MyProfileState extends Equatable {
-  final User user;
-  final List<Survey> doingSurveyList;
-  final List<Survey> doneSurveyList;
+  final List<Survey> mySurveyList;
+  final bool isShowProfile;
 
   const MyProfileState({
-    required this.user,
-    required this.doingSurveyList,
-    required this.doneSurveyList,
+    required this.mySurveyList,
+    required this.isShowProfile,
   });
 
-  factory MyProfileState.ds(User user) => MyProfileState(
-        user: user,
-        doingSurveyList: const [],
-        doneSurveyList: const [],
+  factory MyProfileState.ds(User user) => const MyProfileState(
+        mySurveyList: [],
+        isShowProfile: true,
       );
 
   @override
-  List<Object?> get props => [user, doingSurveyList, doneSurveyList];
+  List<Object?> get props => [
+        mySurveyList,
+        isShowProfile,
+      ];
+
+  MyProfileState copyWith({
+    List<Survey>? mySurveyList,
+    bool? isShowProfile,
+  }) {
+    return MyProfileState(
+      mySurveyList: mySurveyList ?? this.mySurveyList,
+      isShowProfile: isShowProfile ?? this.isShowProfile,
+    );
+  }
 }

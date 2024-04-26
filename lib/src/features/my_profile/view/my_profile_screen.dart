@@ -4,8 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/features/dashboard/logic/account_bloc.dart';
 import 'package:survly/src/features/dashboard/logic/account_state.dart';
+import 'package:survly/src/features/dashboard_user/widget/doing_survey_list_widget.dart';
 import 'package:survly/src/features/my_profile/logic/my_profile_bloc.dart';
 import 'package:survly/src/features/my_profile/logic/my_profile_state.dart';
+import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/user/user.dart';
 import 'package:survly/src/router/router_name.dart';
@@ -23,48 +25,55 @@ class MyProfileScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => MyProfileBloc(),
       child: BlocBuilder<MyProfileBloc, MyProfileState>(
+        buildWhen: (previous, current) =>
+            previous.isShowProfile != current.isShowProfile ||
+            previous.mySurveyList != current.mySurveyList,
         builder: (context, state) {
           return Scaffold(
             appBar: AppAppBarWidget(
-              noActionBar: true,
               backgroundColor: AppColors.backgroundBrightness,
+              leadingColor: AppColors.black,
+              centerTitle: true,
+              title: state.isShowProfile
+                  ? null
+                  : UserBaseSingleton.instance().userBase?.fullname,
+              titleColor: Colors.black,
+              actions: [
+                PopupMenuButton(
+                  itemBuilder: (context) {
+                    return [
+                      PopupMenuItem(
+                        onTap: () {
+                          context.push(AppRouteNames.updateUserProfile.path);
+                        },
+                        child: Text(S.of(context).labelBtnEditProfile),
+                      )
+                    ];
+                  },
+                )
+              ],
             ),
-            body: Container(
+            body: SizedBox(
               width: double.infinity,
-              padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  Stack(
+                  state.isShowProfile ? _buildProfile() : const SizedBox(),
+                  Row(
                     children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              context.pop();
-                            },
-                            icon: const Icon(Icons.arrow_back_ios_new),
-                          ),
-                          const Spacer(),
-                          PopupMenuButton(
-                            itemBuilder: (context) {
-                              return [
-                                PopupMenuItem(
-                                  onTap: () {
-                                    context.push(
-                                        AppRouteNames.updateUserProfile.path);
-                                  },
-                                  child:
-                                      Text(S.of(context).labelBtnEditProfile),
-                                )
-                              ];
-                            },
-                          ),
-                        ],
-                      ),
-                      _buildProfile(),
+                      Text("Joined 10 survey"),
+                      const Spacer(),
+                      IconButton(
+                        onPressed: () {
+                          context.read<MyProfileBloc>().isShowProfileChange();
+                        },
+                        icon: Icon(state.isShowProfile
+                            ? Icons.arrow_drop_down
+                            : Icons.arrow_drop_up),
+                      )
                     ],
                   ),
-                  _buildSurveyLists(),
+                  const Divider(height: 0),
+                  Expanded(child: _buildSurveyLists()),
                 ],
               ),
             ),
@@ -80,80 +89,88 @@ class MyProfileScreen extends StatelessWidget {
       builder: (context, state) {
         final user = state.userBase as User;
         Logger().d(user.fullname);
-        return Column(
-          children: [
-            const SizedBox(
-              height: 16,
-            ),
-            AppAvatarWidget(
-              avatarUrl: user.avatar,
-              size: 128,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text(
-              user.fullname,
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            children: [
+              AppAvatarWidget(
+                avatarUrl: user.avatar,
+                size: 128,
               ),
-            ),
-            Text(user.email),
-            const SizedBox(
-              height: 32,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.timer_outlined),
-                      Text(S.of(context).labelDoing),
-                      Text("${user.countDoing}"),
-                    ],
-                  ),
+              const SizedBox(
+                height: 16,
+              ),
+              Text(
+                user.fullname,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.check_circle_outline_outlined),
-                      Text(S.of(context).labelDone),
-                      Text("${user.countDone}"),
-                    ],
+              ),
+              Text(user.email),
+              const SizedBox(
+                height: 32,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.timer_outlined),
+                        Text(S.of(context).labelDoing),
+                        Text("${user.countDoing}"),
+                      ],
+                    ),
                   ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.attach_money_outlined),
-                      Text(S.of(context).lableBalance),
-                      Text(user.balance.toString()),
-                    ],
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.check_circle_outline_outlined),
+                        Text(S.of(context).labelDone),
+                        Text("${user.countDone}"),
+                      ],
+                    ),
                   ),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            Text("\" ${user.intro} \""),
-            const Divider(
-              height: 64,
-            ),
-          ],
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.attach_money_outlined),
+                        Text(S.of(context).lableBalance),
+                        Text(user.balance.toString()),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 32),
+              Text("\" ${user.intro} \""),
+              const SizedBox(height: 32),
+            ],
+          ),
         );
       },
     );
   }
 
   Widget _buildSurveyLists() {
-    return const SizedBox();
+    return BlocBuilder<MyProfileBloc, MyProfileState>(
+      buildWhen: (previous, current) =>
+          previous.mySurveyList != current.mySurveyList,
+      builder: (context, state) {
+        return DoingSurveyListWidget(
+          surveyList: state.mySurveyList,
+          onRefresh: () => context.read<MyProfileBloc>().fetchAllDoingSurvey(),
+          onItemClick: (survey) {
+            context.push(AppRouteNames.doSurvey.path, extra: survey);
+          },
+        );
+      },
+    );
   }
 }
