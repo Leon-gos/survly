@@ -39,7 +39,7 @@ class DashboardUserScreen extends StatelessWidget {
           ),
           body: Column(
             children: [
-              _buildAdminInfo(context),
+              _buildUserInfo(context),
               Expanded(child: body),
             ],
           ),
@@ -49,7 +49,7 @@ class DashboardUserScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAdminInfo(BuildContext context) {
+  Widget _buildUserInfo(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountState>(builder: (context, state) {
       return Column(
         children: [

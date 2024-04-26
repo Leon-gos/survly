@@ -55,60 +55,53 @@ class DashboardAdminScreen extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                AppAvatarWidget(
-                  avatarUrl: state.userBase.avatar,
-                  size: 48,
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      state.userBase.fullname,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                    Text(state.userBase.email),
-                  ],
-                ),
-                const Spacer(),
-                PopupMenuButton(
-                  itemBuilder: (context) {
-                    return [
-                      PopupMenuItem(
-                        onTap: () {
-                          context.push(AppRouteNames.createSurvey.path);
-                        },
-                        child: Text(S.of(context).titleCreateSurvey),
+            child: GestureDetector(
+              onTap: () {
+                context.push(AppRouteNames.adminProfile.path);
+              },
+              child: Row(
+                children: [
+                  AppAvatarWidget(
+                    avatarUrl: state.userBase.avatar,
+                    size: 48,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        state.userBase.fullname,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
                       ),
-                      PopupMenuItem(
-                        onTap: () {
-                          context.push(AppRouteNames.doSurvey.path);
-                        },
-                        child: const Text("Demo update location"),
-                      ),
-                      PopupMenuItem(
-                        onTap: () {
-                          context.push(AppRouteNames.doSurveyTracking.path);
-                        },
-                        child: const Text("Demo location track"),
-                      ),
-                      PopupMenuItem(
-                        onTap: () {
-                          AuthenticationRepositoryImpl().clearLoginInfo();
-                          UserBaseSingleton.instance().userBase = null;
-                          context.goNamed(AppRouteNames.login.path);
-                        },
-                        child: Text(S.of(context).labelBtnLogout),
-                      ),
-                    ];
-                  },
-                ),
-              ],
+                      Text(state.userBase.email),
+                    ],
+                  ),
+                  const Spacer(),
+                  PopupMenuButton(
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem(
+                          onTap: () {
+                            context.push(AppRouteNames.createSurvey.path);
+                          },
+                          child: Text(S.of(context).titleCreateSurvey),
+                        ),
+                        PopupMenuItem(
+                          onTap: () {
+                            AuthenticationRepositoryImpl().clearLoginInfo();
+                            UserBaseSingleton.instance().userBase = null;
+                            context.goNamed(AppRouteNames.login.path);
+                          },
+                          child: Text(S.of(context).labelBtnLogout),
+                        ),
+                      ];
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ],

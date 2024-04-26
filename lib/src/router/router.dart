@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:survly/src/features/admin_profile/view/admin_profile_screen.dart';
 import 'package:survly/src/features/authentication/view/login_screen.dart';
 import 'package:survly/src/features/authentication/view/signup_view.dart';
 import 'package:survly/src/features/create_survey/view/create_survey_screen.dart';
@@ -21,7 +22,8 @@ import 'package:survly/src/features/review_survey/view/review_survey_screen.dart
 import 'package:survly/src/features/select_location/view/select_location_screen.dart';
 import 'package:survly/src/features/survey_request/view/survey_requests_screen.dart';
 import 'package:survly/src/features/survey_response/view/survey_response_screen.dart';
-import 'package:survly/src/features/update_profile/view/update_profile_screen.dart';
+import 'package:survly/src/features/update_admin_profile/view/update_admin_profile_screen.dart';
+import 'package:survly/src/features/update_user_profile/view/update_user_profile_screen.dart';
 import 'package:survly/src/features/user_profile/view/user_profile_screen.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/features/update_survey/view/update_survey_screen.dart';
@@ -132,10 +134,16 @@ class AppRouter {
         builder: (context, state) => const MyProfileScreen(),
       ),
       GoRoute(
-        name: AppRouteNames.updateProfile.name,
-        path: AppRouteNames.updateProfile.path,
+        name: AppRouteNames.updateUserProfile.name,
+        path: AppRouteNames.updateUserProfile.path,
         parentNavigatorKey: AppCoordinator.navigatorKey,
-        builder: (context, state) => const UpdateProfileScreen(),
+        builder: (context, state) => const UpdateUserProfileScreen(),
+      ),
+      GoRoute(
+        name: AppRouteNames.updateAdminProfile.name,
+        path: AppRouteNames.updateAdminProfile.path,
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        builder: (context, state) => const UpdateAdminProfileScreen(),
       ),
       GoRoute(
         name: AppRouteNames.doSurvey.name,
@@ -181,6 +189,12 @@ class AppRouter {
             doSurveyId: doSurveyId,
           );
         },
+      ),
+      GoRoute(
+        name: AppRouteNames.adminProfile.name,
+        path: AppRouteNames.adminProfile.path,
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        builder: (context, state) => const AdminProfileScreen(),
       ),
       ShellRoute(
         builder: (context, state, child) => DashboardAdminScreen(

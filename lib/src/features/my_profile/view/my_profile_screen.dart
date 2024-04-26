@@ -50,8 +50,8 @@ class MyProfileScreen extends StatelessWidget {
                               return [
                                 PopupMenuItem(
                                   onTap: () {
-                                    context
-                                        .push(AppRouteNames.updateProfile.path);
+                                    context.push(
+                                        AppRouteNames.updateUserProfile.path);
                                   },
                                   child:
                                       Text(S.of(context).labelBtnEditProfile),

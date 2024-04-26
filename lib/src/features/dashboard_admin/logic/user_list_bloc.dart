@@ -21,8 +21,8 @@ class UserListBloc extends Cubit<UserListState> {
     List<User> nextPageList = await domainManager.user.fetchNextPageUser(
       lastUserId: lastUser.id,
     );
-    var newList = List.from(state.userList);
+    List<User> newList = List.from(state.userList);
     newList.addAll(nextPageList);
-    emit(state.copyWith(userList: nextPageList));
+    emit(state.copyWith(userList: newList));
   }
 }

@@ -33,4 +33,29 @@ class Admin extends UserBase {
 
   factory Admin.fromJson(String source) =>
       Admin.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  Admin copyWith({
+    String? id,
+    String? fullname,
+    String? email,
+    String? avatar,
+    String? gender,
+    String? birthDate,
+    String? phone,
+    String? role,
+    String? fcmToken,
+  }) {
+    return Admin(
+      id: id ?? this.id,
+      fullname: fullname ?? this.fullname,
+      email: email ?? this.email,
+      avatar: avatar ?? this.avatar,
+      gender: gender ?? this.gender,
+      birthDate: birthDate ?? this.birthDate,
+      phone: phone ?? this.phone,
+      role: role ?? this.role,
+      fcmToken: fcmToken ?? this.fcmToken,
+    );
+  }
 }

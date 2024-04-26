@@ -5,21 +5,21 @@ import 'package:survly/src/features/dashboard/logic/account_bloc.dart';
 import 'package:survly/src/features/dashboard/logic/account_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/localization/localization_utils.dart';
-import 'package:survly/src/network/model/user/user.dart';
+import 'package:survly/src/network/model/admin/admin.dart';
 import 'package:survly/src/service/picker_service.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_avatar_picker_widget.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
-class UpdateProfileScreen extends StatefulWidget {
-  const UpdateProfileScreen({super.key});
+class UpdateAdminProfileScreen extends StatefulWidget {
+  const UpdateAdminProfileScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _UpdateProfileScreenState();
+  State<StatefulWidget> createState() => _UpdateAdminProfileScreenState();
 }
 
-class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
+class _UpdateAdminProfileScreenState extends State<UpdateAdminProfileScreen> {
   final textControllerName = TextEditingController(
     text: UserBaseSingleton.instance().userBase?.fullname,
   );
@@ -27,6 +27,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final textControllerPhone = TextEditingController(
     text: UserBaseSingleton.instance().userBase?.phone,
   );
+
+  @override
+  void dispose() {
+    textControllerName.dispose();
+    textControllerPhone.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +57,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           ),
           body: Column(
             children: [
-              _buildAvatar(state.userBaseClone as User),
-              _buildUserInfo(context, state.userBaseClone as User),
+              _buildAvatar(state.userBaseClone as Admin),
+              _buildAdminInfo(context, state.userBaseClone as Admin),
             ],
           ),
         );
@@ -59,7 +66,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     );
   }
 
-  Widget _buildAvatar(User user) {
+  Widget _buildAvatar(Admin user) {
     return BlocBuilder<AccountBloc, AccountState>(
       buildWhen: (previous, current) =>
           previous.newAvtPath != current.newAvtPath,
@@ -75,7 +82,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     );
   }
 
-  Widget _buildUserInfo(BuildContext context, User user) {
+  Widget _buildAdminInfo(BuildContext context, Admin user) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
