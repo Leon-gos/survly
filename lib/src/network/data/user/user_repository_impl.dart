@@ -140,6 +140,9 @@ class UserRepositoryImpl implements UserRepository {
       if (userBase.role == UserBase.roleUser) {
         final user = userBase as User;
         await ref.doc(user.id).update(user.toMap());
+      } else if (userBase.role == UserBase.roleAdmin) {
+        final admin = userBase as Admin;
+        await ref.doc(admin.id).update(admin.toMap());
       }
     } catch (e) {
       rethrow;
