@@ -28,8 +28,10 @@ import 'package:survly/src/utils/coordinate_helper.dart';
 import 'package:survly/widgets/app_dialog.dart';
 
 class DoSurveyBloc extends Cubit<DoSurveyState> {
-  Timer? timer;
+  static const Duration updateDuration = Duration(seconds: 5);
   static const minKmToSubmit = 10;
+
+  Timer? timer;
 
   DoSurveyBloc(Survey survey) : super(DoSurveyState.ds(survey: survey)) {
     fetchDoSurveyInfo(survey);
@@ -54,7 +56,7 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
 
   void setupTimer() {
     timer = Timer.periodic(
-      DoSurveyState.updateDuration,
+      updateDuration,
       (timer) async {
         var event = await state.location.getLocation();
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:survly/src/features/do_survey/widget/question_multi_option_widget.dart';
 import 'package:survly/src/features/do_survey/widget/question_single_option_widget.dart';
@@ -8,8 +9,10 @@ import 'package:survly/src/features/response_user_survey/logic/response_user_sur
 import 'package:survly/src/features/response_user_survey/logic/response_user_survey_state.dart';
 import 'package:survly/src/features/response_user_survey/widget/response_button_widget.dart';
 import 'package:survly/src/localization/localization_utils.dart';
+import 'package:survly/src/network/model/do_survey/do_survey.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
+import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_dialog.dart';
@@ -110,7 +113,7 @@ class ResponseUserSurveyScreen extends StatelessWidget {
                       : _buildOutlet(context, state),
             ),
             state.isResponsed
-                ? _buildStatus(state)
+                ? _buildStatus(context, state)
                 : _buildResponseButton(context, state)
           ],
         );
@@ -187,25 +190,27 @@ class ResponseUserSurveyScreen extends StatelessWidget {
   }
 
   Widget _buildOutlet(BuildContext context, ResponseUserSurveyState state) {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 16,
-        ),
-        Text(
-          S.of(context).hintTakePhotoOutlet,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 16,
           ),
-        ),
-        AppImagePicker(
-          imagePath: "",
-          defaultImageUrl: state.doSurvey?.photoOutlet,
-          flexibleSize: true,
-          onPickImage: () {},
-        )
-      ],
+          Text(
+            S.of(context).hintTakePhotoOutlet,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          AppImagePicker(
+            imagePath: "",
+            defaultImageUrl: state.doSurvey?.photoOutlet,
+            flexibleSize: true,
+            onPickImage: () {},
+          )
+        ],
+      ),
     );
   }
 
@@ -273,7 +278,29 @@ class ResponseUserSurveyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatus(ResponseUserSurveyState state) {
+  Widget _buildStatus(BuildContext context, ResponseUserSurveyState state) {
+    if (state.doSurvey!.status == DoSurveyStatus.doing.value) {
+      return SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () {
+            context.push(
+              AppRouteNames.doSurveyTracking.path,
+              extra: state.doSurvey?.doSurveyId,
+            );
+          },
+          style: const ButtonStyle(
+            shape: MaterialStatePropertyAll(
+              RoundedRectangleBorder(),
+            ),
+          ),
+          child: const Text(
+            "Track location",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
+    }
     return Container(
       padding: const EdgeInsets.all(16),
       color: Colors.grey[200],
