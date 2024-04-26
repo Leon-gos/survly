@@ -6,19 +6,20 @@ import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/dashboard_admin/logic/survey_list_state.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
+import 'package:survly/src/utils/debouncer.dart';
 
 class SurveyListBloc extends Cubit<SurveyListState> {
   SurveyListBloc() : super(SurveyListState.ds()) {
     fetchFirstPageSurvey();
   }
 
-  Timer? _debounce;
+  final Debouncer _debounce = Debouncer(milliseconds: 100);
 
   DomainManager domainManager = DomainManager();
 
   @override
   Future<void> close() {
-    _debounce?.cancel();
+    _debounce.dispose();
     return super.close();
   }
 
@@ -43,10 +44,7 @@ class SurveyListBloc extends Cubit<SurveyListState> {
   }
 
   Future<void> fetchMoreSurvey() async {
-    if (_debounce?.isActive ?? false) {
-      return;
-    }
-    _debounce = Timer(const Duration(milliseconds: 100), () async {
+    _debounce.run(() async {
       if (state.surveyList.length - 1 >= 0) {
         try {
           List<Survey> surveyList = await domainManager.survey.fetchMoreSurvey(
