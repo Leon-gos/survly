@@ -7,6 +7,7 @@ import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/network/model/survey_request/survey_request.dart';
 import 'package:survly/src/theme/colors.dart';
+import 'package:survly/src/utils/date_helper.dart';
 import 'package:survly/src/utils/number_helper.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_dialog.dart';
@@ -85,7 +86,7 @@ class PreviewSurveyScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "${S.of(context).hintDateFrom} ${state.survey.dateStart} ${S.of(context).hintDateTo} ${state.survey.dateEnd}",
+                      "${S.of(context).hintDateFrom} ${DateHelper.getDateOnlyFromDateString(state.survey.dateStart)} ${S.of(context).hintDateTo} ${DateHelper.getDateOnlyFromDateString(state.survey.dateEnd)}",
                     ),
                     const SizedBox(height: 8),
                     Text(

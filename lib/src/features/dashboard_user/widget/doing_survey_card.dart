@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/theme/colors.dart';
+import 'package:survly/src/utils/date_helper.dart';
 
 class DoingSurveyCard extends StatelessWidget {
   const DoingSurveyCard({
@@ -81,7 +82,7 @@ class DoingSurveyCard extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                        "${S.of(context).hintDateFrom} ${survey.dateStart} ${S.of(context).hintDateTo} ${survey.dateEnd}"),
+                        "${S.of(context).hintDateFrom} ${DateHelper.getDateOnlyFromDateString(survey.dateStart)} ${S.of(context).hintDateTo} ${DateHelper.getDateOnlyFromDateString(survey.dateEnd)}"),
                     const SizedBox(
                       height: 4,
                     ),

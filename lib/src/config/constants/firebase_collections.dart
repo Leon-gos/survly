@@ -18,6 +18,8 @@ class SurveyCollection {
   static const String fieldTitle = "title";
   static const String fieldDescription = "description";
   static const String fieldCost = "cost";
+  static const String fieldDateStart = "dateStart";
+  static const String fieldDateEnd = "dateEnd";
   static const String fieldDateCreate = "dateCreate";
   static const String fieldDateUpdate = "dateUpdate";
   static const String fieldStatus = "status";

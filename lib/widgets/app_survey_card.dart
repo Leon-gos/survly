@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/theme/colors.dart';
+import 'package:survly/src/utils/date_helper.dart';
 
 class AppSurveyCard extends StatelessWidget {
   const AppSurveyCard({
@@ -85,7 +86,8 @@ class AppSurveyCard extends StatelessWidget {
                     const SizedBox(
                       height: 4,
                     ),
-                    Text("${S.of(context).closedOn} ${survey.dateEnd}"),
+                    Text(
+                        "${S.of(context).closedOn} ${DateHelper.getDateOnlyFromDateString(survey.dateEnd)}"),
                   ],
                 ),
               ),

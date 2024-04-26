@@ -241,9 +241,13 @@ class SurveyRepositoryImpl implements SurveyRepository {
     List<Survey> list = [];
 
     var value = await ref
+        .orderBy(SurveyCollection.fieldDateStart)
+        .where(
+          SurveyCollection.fieldDateStart,
+          isGreaterThan: DateTime.now().toString(),
+        )
         .where(SurveyCollection.fieldStatus,
             isEqualTo: SurveyStatus.public.value)
-        .orderBy(SurveyCollection.fieldDateCreate, descending: true)
         .limit(pageSize)
         .get();
     for (var doc in value.docs) {
@@ -269,9 +273,13 @@ class SurveyRepositoryImpl implements SurveyRepository {
 
     var lastDoc = await ref.doc(lastSurvey.surveyId).get();
     var value = await ref
+        .orderBy(SurveyCollection.fieldDateStart)
+        .where(
+          SurveyCollection.fieldDateStart,
+          isGreaterThan: DateTime.now().toString(),
+        )
         .where(SurveyCollection.fieldStatus,
             isEqualTo: SurveyStatus.public.value)
-        .orderBy(SurveyCollection.fieldDateCreate, descending: true)
         .startAfterDocument(lastDoc)
         .limit(pageSize)
         .get();

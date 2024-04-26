@@ -34,7 +34,7 @@ class PreviewSurveyBloc extends Cubit<PreviewSurveyState> {
         status: SurveyRequestStatus.pending.value,
         message: state.requestMessage,
       );
-      await domainManager.surveyRequest.requestSurvey(newRequest);
+      await domainManager.surveyRequest.requestSurvey(state.survey, newRequest);
       emit(
         state.copyWith(
           latestRequest: newRequest,

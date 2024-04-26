@@ -9,6 +9,15 @@ class DateHelper {
     return myFormat.format(dateTime);
   }
 
+  static String getDateOnlyFromDateString(String dateTime) {
+    DateFormat myFormat = DateFormat(dateOnlyFormat);
+    try {
+      return myFormat.format(DateTime.parse(dateTime));
+    } catch (e) {
+      return "";
+    }
+  }
+
   static DateTime? parseDateOnly(String dateOnlyString) {
     try {
       DateFormat myFormat = DateFormat(dateOnlyFormat);

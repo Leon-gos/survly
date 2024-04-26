@@ -10,7 +10,6 @@ import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/service/picker_service.dart';
-import 'package:survly/src/utils/date_helper.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
@@ -30,15 +29,17 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
   }
 
   void onDateRangeChange(PickerDateRange dateRange) {
-    emit(
-      state.copyWith(
-        survey: state.survey.copyWith(
-          dateStart: DateHelper.getDateOnly(dateRange.startDate!),
-          dateEnd: DateHelper.getDateOnly(dateRange.endDate!),
+    if (dateRange.startDate != null && dateRange.endDate != null) {
+      emit(
+        state.copyWith(
+          survey: state.survey.copyWith(
+            dateStart: dateRange.startDate.toString(),
+            dateEnd: dateRange.endDate.toString(),
+          ),
+          isChanged: true,
         ),
-        isChanged: true,
-      ),
-    );
+      );
+    }
   }
 
   void onTitleChange(String newText) {

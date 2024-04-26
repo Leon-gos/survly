@@ -13,6 +13,7 @@ import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
+import 'package:survly/src/utils/date_helper.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_dialog.dart';
 import 'package:survly/widgets/app_image_picker.dart';
@@ -298,7 +299,7 @@ class _UpdateSurveyScreenState extends State<UpdateSurveyScreen> {
                   ),
                 ),
                 child: Text(
-                  "${S.of(context).hintDateFrom} ${state.survey.dateStart} ${S.of(context).hintDateTo} ${state.survey.dateEnd}",
+                  "${S.of(context).hintDateFrom} ${DateHelper.getDateOnlyFromDateString(state.survey.dateStart)} ${S.of(context).hintDateTo} ${DateHelper.getDateOnlyFromDateString(state.survey.dateEnd)}",
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                 ),
