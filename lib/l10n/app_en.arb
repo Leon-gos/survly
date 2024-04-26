@@ -130,7 +130,7 @@
     "labelStatusDraft": "Draft",
     "labelBtnClose": "Close",
     "toastSignupSuccess": "Sign up successfully",
-
+    "labelNumOfSurveyCreated": "Created {num} survey",
 
     "notiTitleUserRespondent": "New respondent",
     "notiBodyUserRespondent": "Someone has just response your survey. Check now!",

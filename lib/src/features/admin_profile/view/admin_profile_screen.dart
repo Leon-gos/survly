@@ -66,7 +66,8 @@ class AdminProfileScreen extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          "Created ${state.adminSurveyList.length} survey",
+                          S.of(context).labelNumOfSurveyCreated(
+                              state.adminSurveyList.length),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
