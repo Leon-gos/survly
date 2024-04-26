@@ -143,6 +143,7 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
     return list;
   }
 
+  @override
   Future<DoSurvey?> fetchDoSurveyById(String doSurveyId) async {
     var value = await ref.doc(doSurveyId).get();
     if (value.data() != null) {
@@ -151,5 +152,20 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
       return doSurvey;
     }
     return null;
+  }
+
+  @override
+  Future<List<DoSurvey>> fetchUserJoinedSurvey(String userId) async {
+    List<DoSurvey> list = [];
+
+    var value = await ref
+        .where(DoSurveyCollection.fieldUserId, isEqualTo: userId)
+        .get();
+    for (var doc in value.docs) {
+      var doSurvey = DoSurvey.fromMap(doc.data());
+      doSurvey.doSurveyId = doc.id;
+      list.add(doSurvey);
+    }
+    return list;
   }
 }
