@@ -30,7 +30,7 @@ class AdminProfileScreen extends StatelessWidget {
           return Scaffold(
             appBar: AppAppBarWidget(
               backgroundColor: AppColors.backgroundBrightness,
-              leadingColor: const Color.fromRGBO(0, 0, 0, 1),
+              leadingColor: Colors.black,
               centerTitle: true,
               title: state.isShowProfile
                   ? null
@@ -59,8 +59,6 @@ class AdminProfileScreen extends StatelessWidget {
                   state.isShowProfile ? _buildProfile() : const SizedBox(),
                   Container(
                     margin: const EdgeInsets.only(
-                      // top: 32,
-                      // bottom: 4,
                       left: 16,
                     ),
                     child: Row(
