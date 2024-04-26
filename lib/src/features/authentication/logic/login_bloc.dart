@@ -60,6 +60,8 @@ class LoginBloc extends Cubit<LoginState> {
           .then((value) {
         AppCoordinator.goNamed(AppRouteNames.dashboard.path);
       });
+    } else {
+      Fluttertoast.showToast(msg: "Login failed");
     }
   }
 
