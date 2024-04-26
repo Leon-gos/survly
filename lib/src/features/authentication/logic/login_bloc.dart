@@ -47,7 +47,9 @@ class LoginBloc extends Cubit<LoginState> {
   }
 
   Future<void> loginWithGoogle() async {
+    emit(state.copyWith(isLoading: true));
     var user = await domain.authentication.loginWithGoogle();
+    emit(state.copyWith(isLoading: false));
     if (user?.user?.email != null && user?.user?.email != "") {
       // sign in successful
       domain.authenticationLocal
@@ -61,7 +63,7 @@ class LoginBloc extends Cubit<LoginState> {
         AppCoordinator.goNamed(AppRouteNames.dashboard.path);
       });
     } else {
-      Fluttertoast.showToast(msg: "Login failed");
+      Fluttertoast.showToast(msg: S.text.errorGeneral);
     }
   }
 
