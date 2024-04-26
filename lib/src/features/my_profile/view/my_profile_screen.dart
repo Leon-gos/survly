@@ -4,9 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/features/dashboard/logic/account_bloc.dart';
 import 'package:survly/src/features/dashboard/logic/account_state.dart';
-import 'package:survly/src/features/dashboard_user/widget/doing_survey_list_widget.dart';
 import 'package:survly/src/features/my_profile/logic/my_profile_bloc.dart';
 import 'package:survly/src/features/my_profile/logic/my_profile_state.dart';
+import 'package:survly/src/features/my_profile/widget/joined_survey_list_widget.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/user/user.dart';
@@ -27,7 +27,7 @@ class MyProfileScreen extends StatelessWidget {
       child: BlocBuilder<MyProfileBloc, MyProfileState>(
         buildWhen: (previous, current) =>
             previous.isShowProfile != current.isShowProfile ||
-            previous.mySurveyList != current.mySurveyList,
+            previous.joinedSurveyList != current.joinedSurveyList,
         builder: (context, state) {
           return Scaffold(
             appBar: AppAppBarWidget(
@@ -58,21 +58,36 @@ class MyProfileScreen extends StatelessWidget {
               child: Column(
                 children: [
                   state.isShowProfile ? _buildProfile() : const SizedBox(),
-                  Row(
-                    children: [
-                      Text("Joined 10 survey"),
-                      const Spacer(),
-                      IconButton(
-                        onPressed: () {
-                          context.read<MyProfileBloc>().isShowProfileChange();
-                        },
-                        icon: Icon(state.isShowProfile
-                            ? Icons.arrow_drop_down
-                            : Icons.arrow_drop_up),
-                      )
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              S.of(context).labelNumOfSurveyJoined(
+                                  state.joinedSurveyList.length),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Spacer(),
+                            IconButton(
+                              onPressed: () {
+                                context
+                                    .read<MyProfileBloc>()
+                                    .isShowProfileChange();
+                              },
+                              icon: Icon(state.isShowProfile
+                                  ? Icons.arrow_drop_down
+                                  : Icons.arrow_drop_up),
+                            )
+                          ],
+                        ),
+                        const Divider(height: 0)
+                      ],
+                    ),
                   ),
-                  const Divider(height: 0),
                   Expanded(child: _buildSurveyLists()),
                 ],
               ),
@@ -161,11 +176,12 @@ class MyProfileScreen extends StatelessWidget {
   Widget _buildSurveyLists() {
     return BlocBuilder<MyProfileBloc, MyProfileState>(
       buildWhen: (previous, current) =>
-          previous.mySurveyList != current.mySurveyList,
+          previous.joinedSurveyList != current.joinedSurveyList,
       builder: (context, state) {
-        return DoingSurveyListWidget(
-          surveyList: state.mySurveyList,
-          onRefresh: () => context.read<MyProfileBloc>().fetchAllDoingSurvey(),
+        return JoinedSurveyListWidget(
+          surveyList: state.joinedSurveyList,
+          doSurveyList: state.doSurveyList,
+          onRefresh: () => context.read<MyProfileBloc>().fetchJoinedSurvey(),
           onItemClick: (survey) {
             context.push(AppRouteNames.doSurvey.path, extra: survey);
           },
