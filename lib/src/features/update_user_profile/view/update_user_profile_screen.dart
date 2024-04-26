@@ -12,14 +12,14 @@ import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_avatar_picker_widget.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
-class UpdateProfileScreen extends StatefulWidget {
-  const UpdateProfileScreen({super.key});
+class UpdateUserProfileScreen extends StatefulWidget {
+  const UpdateUserProfileScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _UpdateProfileScreenState();
+  State<StatefulWidget> createState() => _UpdateUserProfileScreenState();
 }
 
-class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
+class _UpdateUserProfileScreenState extends State<UpdateUserProfileScreen> {
   final textControllerName = TextEditingController(
     text: UserBaseSingleton.instance().userBase?.fullname,
   );

@@ -5,7 +5,7 @@ import 'package:survly/src/features/admin_profile/logic/admin_profile_bloc.dart'
 import 'package:survly/src/features/admin_profile/logic/admin_profile_state.dart';
 import 'package:survly/src/features/dashboard/logic/account_bloc.dart';
 import 'package:survly/src/features/dashboard/logic/account_state.dart';
-import 'package:survly/src/localization/localization_utils.dart';
+import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/network/model/admin/admin.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
@@ -21,50 +21,67 @@ class AdminProfileScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => AdminProfileBloc(),
       child: BlocBuilder<AdminProfileBloc, AdminProfileState>(
+        buildWhen: (previous, current) =>
+            previous.isShowProfile != current.isShowProfile ||
+            previous.adminSurveyList != current.adminSurveyList,
         builder: (context, state) {
-          // return Scaffold(
-          //   body: _buildSliver(),
-          // );
           return Scaffold(
             appBar: AppAppBarWidget(
-              noActionBar: true,
               backgroundColor: AppColors.backgroundBrightness,
+              leadingColor: const Color.fromRGBO(0, 0, 0, 1),
+              centerTitle: true,
+              title: state.isShowProfile
+                  ? null
+                  : UserBaseSingleton.instance().userBase?.fullname,
+              titleColor: Colors.black,
+              actions: [
+                PopupMenuButton(
+                  itemBuilder: (context) {
+                    return [
+                      PopupMenuItem(
+                          onTap: () {
+                            context.push(AppRouteNames.updateAdminProfile.path);
+                          },
+                          child: const Text("Edit profile"))
+                    ];
+                  },
+                ),
+                const SizedBox(width: 4)
+              ],
             ),
             body: SizedBox(
               width: double.infinity,
               child: Column(
                 children: [
-                  Stack(
-                    children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              context.pop();
-                            },
-                            icon: const Icon(Icons.arrow_back_ios_new),
+                  state.isShowProfile ? _buildProfile() : const SizedBox(),
+                  Container(
+                    margin: const EdgeInsets.only(
+                      // top: 32,
+                      // bottom: 4,
+                      left: 16,
+                    ),
+                    child: Row(
+                      children: [
+                        const Text(
+                          "Created 10 survey",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
                           ),
-                          const Spacer(),
-                          PopupMenuButton(
-                            itemBuilder: (context) {
-                              return [
-                                PopupMenuItem(
-                                  onTap: () {
-                                    context
-                                        .push(AppRouteNames.updateProfile.path);
-                                  },
-                                  child:
-                                      Text(S.of(context).labelBtnEditProfile),
-                                )
-                              ];
-                            },
-                          ),
-                        ],
-                      ),
-                      _buildProfile(),
-                    ],
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            context
+                                .read<AdminProfileBloc>()
+                                .isShowProfileChange();
+                          },
+                          icon: Icon(state.isShowProfile
+                              ? Icons.arrow_drop_down
+                              : Icons.arrow_drop_up),
+                        )
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 32),
                   const Divider(height: 0),
                   Expanded(flex: 1, child: _buildSurveyLists()),
                 ],
@@ -73,44 +90,6 @@ class AdminProfileScreen extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-
-  Widget _buildSliver() {
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: [
-        SliverAppBar(
-          pinned: true,
-          expandedHeight: 190.0,
-          stretch: true,
-          flexibleSpace: LayoutBuilder(
-            builder: (context, constraints) {
-              return FlexibleSpaceBar(
-                title: SizedBox(),
-                background: _buildProfile(),
-                stretchModes: const [StretchMode.zoomBackground],
-              );
-            },
-          ),
-        ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) => ListTile(
-              tileColor: (index % 2 == 0) ? Colors.black : Colors.green[50],
-              title: Center(
-                child: Text('$index',
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 50,
-                        color: Colors.greenAccent[400]) //TextStyle
-                    ), //Text
-              ), //Center
-            ), //ListTile
-            childCount: 51,
-          ), //SliverChildBuildDelegate
-        )
-      ],
     );
   }
 
@@ -123,9 +102,6 @@ class AdminProfileScreen extends StatelessWidget {
           width: double.infinity,
           child: Column(
             children: [
-              const SizedBox(
-                height: 16,
-              ),
               AppAvatarWidget(
                 avatarUrl: user.avatar,
                 size: 128,
@@ -141,46 +117,7 @@ class AdminProfileScreen extends StatelessWidget {
                 ),
               ),
               Text(user.email),
-              // const SizedBox(
-              //   height: 32,
-              // ),
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       flex: 1,
-              //       child: Column(
-              //         mainAxisSize: MainAxisSize.min,
-              //         children: [
-              //           const Icon(Icons.timer_outlined),
-              //           Text(S.of(context).labelDoing),
-              //           Text("${user.countDoing}"),
-              //         ],
-              //       ),
-              //     ),
-              //     Expanded(
-              //       flex: 1,
-              //       child: Column(
-              //         mainAxisSize: MainAxisSize.min,
-              //         children: [
-              //           const Icon(Icons.check_circle_outline_outlined),
-              //           Text(S.of(context).labelDone),
-              //           Text("${user.countDone}"),
-              //         ],
-              //       ),
-              //     ),
-              //     Expanded(
-              //       flex: 1,
-              //       child: Column(
-              //         mainAxisSize: MainAxisSize.min,
-              //         children: [
-              //           const Icon(Icons.attach_money_outlined),
-              //           Text(S.of(context).lableBalance),
-              //           Text(user.balance.toString()),
-              //         ],
-              //       ),
-              //     )
-              //   ],
-              // ),
+              const SizedBox(height: 32),
             ],
           ),
         );
@@ -194,6 +131,7 @@ class AdminProfileScreen extends StatelessWidget {
           previous.adminSurveyList != current.adminSurveyList,
       builder: (context, state) {
         return ListView.builder(
+          padding: const EdgeInsets.only(top: 8, bottom: 64),
           itemCount: state.adminSurveyList.length,
           itemBuilder: (context, index) {
             var survey = state.adminSurveyList[index];

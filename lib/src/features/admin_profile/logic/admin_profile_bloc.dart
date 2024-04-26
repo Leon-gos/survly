@@ -19,4 +19,8 @@ class AdminProfileBloc extends Cubit<AdminProfileState> {
     newList.addAll(list);
     emit(state.copyWith(adminSurveyList: newList));
   }
+
+  void isShowProfileChange() {
+    emit(state.copyWith(isShowProfile: !state.isShowProfile));
+  }
 }

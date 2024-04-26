@@ -10,6 +10,7 @@ class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final bool centerTitle;
   final Color? backgroundColor;
   final Color? leadingColor;
+  final Color? titleColor;
 
   const AppAppBarWidget({
     super.key,
@@ -20,6 +21,7 @@ class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     this.centerTitle = false,
     this.backgroundColor,
     this.leadingColor,
+    this.titleColor,
   });
 
   @override
@@ -29,8 +31,8 @@ class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       title: title != null
           ? Text(
               title!,
-              style: const TextStyle(
-                color: AppColors.onPrimary,
+              style: TextStyle(
+                color: titleColor ?? AppColors.onPrimary,
                 fontWeight: FontWeight.bold,
               ),
             )
@@ -48,6 +50,7 @@ class AppAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       leadingWidth: leading is SizedBox ? 0 : null,
       centerTitle: centerTitle,
       actions: actions,
+      scrolledUnderElevation: 0,
     );
   }
 
