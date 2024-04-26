@@ -29,6 +29,13 @@ class _UpdateAdminProfileScreenState extends State<UpdateAdminProfileScreen> {
   );
 
   @override
+  void dispose() {
+    textControllerName.dispose();
+    textControllerPhone.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountState>(
       buildWhen: (previous, current) =>
