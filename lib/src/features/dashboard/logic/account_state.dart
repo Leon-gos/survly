@@ -8,11 +8,13 @@ class AccountState extends Equatable {
   final UserBase userBase;
   final UserBase userBaseClone;
   final String newAvtPath;
+  final bool isLoading;
 
   const AccountState({
     required this.userBase,
     required this.userBaseClone,
     required this.newAvtPath,
+    required this.isLoading,
   });
 
   factory AccountState.ds(UserBase userBase) {
@@ -23,6 +25,7 @@ class AccountState extends Equatable {
       userBase: userBase,
       userBaseClone: clone,
       newAvtPath: "",
+      isLoading: false,
     );
   }
 
@@ -31,17 +34,20 @@ class AccountState extends Equatable {
         userBase,
         userBaseClone,
         newAvtPath,
+        isLoading,
       ];
 
   AccountState copyWith({
     UserBase? userBase,
     UserBase? userBaseClone,
     String? newAvtPath,
+    bool? isLoading,
   }) {
     return AccountState(
       userBase: userBase ?? this.userBase,
       userBaseClone: userBaseClone ?? this.userBaseClone,
       newAvtPath: newAvtPath ?? this.newAvtPath,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 

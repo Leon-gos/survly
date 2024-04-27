@@ -10,6 +10,7 @@ import 'package:survly/src/service/picker_service.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_avatar_picker_widget.dart';
+import 'package:survly/widgets/app_loading_circle.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
 class UpdateUserProfileScreen extends StatefulWidget {
@@ -32,8 +33,18 @@ class _UpdateUserProfileScreenState extends State<UpdateUserProfileScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountState>(
       buildWhen: (previous, current) =>
-          previous.userBaseClone != current.userBaseClone,
+          previous.userBaseClone != current.userBaseClone ||
+          previous.isLoading != current.isLoading,
       builder: (context, state) {
+        if (state.isLoading) {
+          return Scaffold(
+            appBar: AppAppBarWidget(
+              noActionBar: true,
+              backgroundColor: AppColors.backgroundBrightness,
+            ),
+            body: const AppLoadingCircle(),
+          );
+        }
         return Scaffold(
           appBar: AppAppBarWidget(
             leadingColor: AppColors.black,

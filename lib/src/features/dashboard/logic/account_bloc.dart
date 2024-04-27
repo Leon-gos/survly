@@ -79,6 +79,7 @@ class AccountBloc extends Cubit<AccountState> {
   }
 
   Future<void> updateProfile() async {
+    emit(state.copyWith(isLoading: true));
     try {
       if (state.newAvtPath != "") {
         String fileKey = state.userBase.genAvatarFileKey();
@@ -94,13 +95,17 @@ class AccountBloc extends Cubit<AccountState> {
       }
       await domainManager.user.updateUserProfile(state.userBaseClone);
       emit(state.copyWith(userBase: state.userBaseClone));
+
       UserBaseSingleton.instance().userBase = state.userBaseClone;
+
+      emit(state.copyWith(isLoading: false));
       Logger().d(state.userBase.fullname);
       Fluttertoast.showToast(msg: S.text.toastUpdateUserProfileSuccess);
       AppCoordinator.pop();
     } catch (e) {
       Logger().e("Update user profile error", error: e);
       Fluttertoast.showToast(msg: S.text.toastUpdateUserProfileFail);
+      emit(state.copyWith(isLoading: false));
     }
   }
 
