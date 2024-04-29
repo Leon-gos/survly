@@ -39,10 +39,21 @@ platform :android do
   desc "Distribute to Firebase"
   lane :firebase do
     sh "flutter build apk --release"
-    # This project is not linked to a Google Play account.
     release = firebase_app_distribution(
       app: "1:133621180495:android:5f368ce5686c394308e23a",
       # testers: "thanhtan27032001@gmail.com",
+      groups: "testers",
+      release_notes: "Auto deploy using fastlane",
+      android_artifact_path: "../build/app/outputs/apk/release/app-release.apk",
+      firebase_cli_token: "1//0gIoYrxxwWZyxCgYIARAAGBASNwF-L9IrHmjz6aiGeyj75NHs1udR6uklbBvjJ3Pmnc91U2AZqxnlZpALFR5aVToPLAgBdvc7zzk"
+    )
+  end
+
+  desc "Distribute to Firebase in fake main branch"
+  lane :firebase_fake do
+    sh "flutter build apk --release"
+    release = firebase_app_distribution(
+      app: "1:133621180495:android:5f368ce5686c394308e23a",
       groups: "testers",
       release_notes: "Auto deploy using fastlane",
       android_artifact_path: "../build/app/outputs/apk/release/app-release.apk",
