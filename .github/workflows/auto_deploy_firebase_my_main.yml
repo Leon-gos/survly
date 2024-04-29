@@ -27,6 +27,15 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.x'
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Install Fastlane
+        run: gem install fastlane
           
       - run: flutter --version
       
