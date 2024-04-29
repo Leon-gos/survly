@@ -168,4 +168,11 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
     }
     return list;
   }
+
+  @override
+  Future<void> createDoSurvey(DoSurvey doSurvey) async {
+    var value = await ref.add({});
+    doSurvey.doSurveyId = value.id;
+    ref.doc(value.id).set(doSurvey.toMap());
+  }
 }

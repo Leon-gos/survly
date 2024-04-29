@@ -38,6 +38,18 @@ class DoSurvey {
     this.user,
   });
 
+  factory DoSurvey.init({
+    required String surveyId,
+    required String userId,
+  }) {
+    return DoSurvey(
+        doSurveyId: "",
+        status: DoSurveyStatus.doing.value,
+        dateUpdate: DateTime.now().toString(),
+        surveyId: surveyId,
+        userId: userId);
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'doSurveyId': doSurveyId,

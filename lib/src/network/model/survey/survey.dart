@@ -6,7 +6,6 @@ import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/outlet/outlet.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
-import 'package:survly/src/utils/date_helper.dart';
 
 enum SurveyStatus {
   draft(value: "draft"),
@@ -85,7 +84,7 @@ class Survey {
     try {
       // check if today is before survey start date at least 2 days
       if (!DateTime.now().isBefore(
-        DateHelper.parseDateOnly(dateStart)!.add(
+        DateTime.parse(dateStart).add(
           const Duration(days: -1),
         ),
       )) {
@@ -140,6 +139,18 @@ class Survey {
     }
 
     return null;
+  }
+
+  bool get ableToDoToday {
+    try {
+      var now = DateTime.now();
+      var today = DateTime(now.year, now.month, now.day);
+      var dateStart = DateTime.parse(this.dateStart);
+      var dateEnd = DateTime.parse(this.dateEnd);
+      return today.compareTo(dateStart) >= 0 && today.compareTo(dateEnd) <= 0;
+    } catch (e) {
+      return false;
+    }
   }
 
   Survey({
