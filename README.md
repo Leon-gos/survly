@@ -12,7 +12,7 @@
 <!-- Badges -->
 <p>
   <a href="https://github.com/Leon-gos/survly/graphs/contributors">
-    <img src="https://img.shields.io/github/contributors/Leon-gos/survly/jobspot" alt="contributors" />
+    <img src="https://img.shields.io/github/contributors/Leon-gos/survly" alt="contributors" />
   </a>
   <a href="">
     <img src="https://img.shields.io/github/last-commit/Leon-gos/survly" alt="last update" />
@@ -71,9 +71,9 @@
 <!-- Screenshots -->
 ### :camera: Screenshots <a name="camera-screenshots"></a>
 
-| On Boarding  | Sign in | Sign up |
-| --- | --- | --- |
-| <img src="screenshots/on_boarding_screen.png" width=250> | <img src="screenshots/sign_in_screen.png" width=250> | <img src="screenshots/sign_up_screen.png" width=250> |
+|  Sign in | Sign up |
+| --- | --- |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/54bd8c07-8c4a-4fb2-9fd3-cf0cbd14ef4e" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/402632da-c6e8-4a06-b839-2a6366eda529" width=250> |
 
 | Connection  | Add Post | Edit Post |
 | --- | --- | --- |
