@@ -75,33 +75,33 @@
 | --- | --- |
 | <img src="https://github.com/Leon-gos/survly/assets/163224096/54bd8c07-8c4a-4fb2-9fd3-cf0cbd14ef4e" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/402632da-c6e8-4a06-b839-2a6366eda529" width=250> |
 
-| Connection  | Add Post | Edit Post |
+| Dashboard admin  | Filter sheet | User list |
 | --- | --- | --- |
-| <img src="screenshots/connection_screen.png" width=250> | <img src="screenshots/add_post_screen.png" width=250> | <img src="screenshots/edit_post_screen.png" width=250> |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/aebc1992-490a-4fb8-ab80-7b8696675b22" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/601dcb7c-ffeb-42a3-8627-11de48abfc60" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/5ec92519-dc0d-4c4d-b818-414c680a16a2" width=250> |
 
-| Home  | Add Job | View Job |
-| --- | --- | --- |
-| <img src="screenshots/home_screen.png" width=250> | <img src="screenshots/add_job_screen.png" width=250> | <img src="screenshots/view_job_screen.png" width=250> |
+| Create survey  |
+| --- |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/74b7073b-0eb2-4029-ac22-08663ed873c5" width=250> |
 
-| Apply Job  | Apply Job | Apply Job |
+| Select outlet place  | Search place | Place selected |
 | --- | --- | --- |
-| <img src="screenshots/apply_job_screen_1.png" width=250> | <img src="screenshots/apply_job_screen_2.png" width=250> | <img src="screenshots/apply_job_screen_3.png" width=250> |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/a6c239ef-45ec-4507-9240-3c9b0ae508ac" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/0da83bae-4684-4ca6-99a1-168dfc3d085a" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/46c8d53b-ffdc-4641-b976-ebf06dc1bdcd" width=250> |
 
-| View Post  | Save Job | Applicant Profile |
+| Add text question  | Add optional question | Filled survey form |
 | --- | --- | --- |
-| <img src="screenshots/view_post_screen.png" width=250> | <img src="screenshots/save_job_screen.png" width=250> | <img src="screenshots/applicant_profile_screen.png" width=250> |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/9904215b-9eab-49fb-bb1d-e5785d8e851a" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/ca4aa73f-4978-424d-a4a1-0e0d6260968f" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/3b3ad5a2-95ac-437b-90fb-061548d6b930" width=250> |
 
-| Setting  | Change Password | View Applicant Profile |
-| --- | --- | --- |
-| <img src="screenshots/setting_screen.png" width=250> | <img src="screenshots/change_password_screen.png" width=250> | <img src="screenshots/view_applicant_profile_screen.png" width=250> |
+| Review survey  | Edit survey |
+| --- | --- |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/becaa00c-26e5-4734-ab8d-aaf5a995136f" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/cb3db9cf-4157-4a12-9caf-4b02e732d95a" width=250> |
 
-| Search Job  | Filter Screen | Home for Business |
-| --- | --- | --- |
-| <img src="screenshots/search_job_screen.png" width=250> | <img src="screenshots/filter_screen.png" width=250> | <img src="screenshots/home_business_screen.png" width=250> |
+| Survey request list  | Response request |
+| --- | --- |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/8009ea6b-0ee4-4317-9f7f-88f0f86e51e2" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/a5122c64-067d-44b3-b835-eb32d3f30cba" width=250> |
 
-| View Resumse Apply | Home for Admin | Test IQ |
+| User survey discover  | Survey preview | Request survey |
 | --- | --- | --- |
-| <img src="screenshots/view_resume_apply_screen.png" width=250> | <img src="screenshots/home_admin_screen.png" width=250> | <img src="screenshots/test_iq_screen.png" width=250> |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/8930e382-aa69-45c3-a0b3-90a2166f3e85" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/7e74d086-9630-4efc-810a-9717450cfc7c" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/3360e132-7839-44ed-afcc-a42068cdcc35" width=250> |
 
 <!-- TechStack -->
 ### :space_invader: Tech Stack <a name="space_invader-tech-stack"></a>
