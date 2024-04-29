@@ -1,4 +1,4 @@
-name: Auto deploy Firebase
+name: Auto deploy Firebase in my main branch
 
 on:
   push:
@@ -32,6 +32,14 @@ jobs:
       
       - name: pub get
         run: flutter pub get
+
+      - name: Set up environment variables
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          FCM_SERVER_KEY: ${{ secrets.FCM_SERVER_KEY }}
+        run: |
+          echo $API_KEY >> .env
+          echo $FCM_SERVER_KEY >> .env
       
       - name: Distribute app to firebase
         env:
