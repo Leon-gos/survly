@@ -1,11 +1,11 @@
 <div align="center">
 
-  <img src="screenshots/logo.svg" alt="logo" width="150" height="auto" />
-  
-  <h1>Jobspot</h1>
+  <img src="https://github.com/Leon-gos/survly/assets/163224096/734b9bd0-3fc7-4a58-b01e-459056e7ca86" alt="logo" width="150" height="auto" />
+
+  <h1>Survly</h1>
   
   <p>
-    This is an application for posting, applying, and finding jobs between employers and candidates similar to the Linkedin App.
+    This is a mobile application for create survey.
   </p>
   
   
@@ -125,16 +125,9 @@
 </details>
 
 <details>
-  <summary>Server</summary>
+  <summary>Google Map API</summary>
   <ul>
-    <li><a href="https://readthedocs.org/projects/flask/">Flask</a></li>
-  </ul>
-</details>
-
-<details>
-  <summary>Chat GPT API</summary>
-  <ul>
-    <li><a href="https://chat.openai.com/">Chat GPT API</a></li>
+    <li><a href="https://google.com/maps/">Google Map API</a></li>
   </ul>
 </details>
 
@@ -159,28 +152,19 @@
 ### :dart: Features
 
 - Sign In, Sign Up
-- Manage business account registration
 - Account management
-- Manage recruitment posts
-- Manage applications
-- Article management
-- Manage your favorite job categories
-- Manage followers
-- Job seeking
-- Manage notifications
-- Multi language
-- Summary PDF
-- Test IQ
+- Manage survey
+- Manage survey request
+- Do survey
 
 <!-- Color Reference -->
 ### :art: Color Reference
 
 | Color             | Hex                                                                |
 | ----------------- | ------------------------------------------------------------------ |
-| Primary Color | ![#130160](https://via.placeholder.com/10/130160?text=+) #130160 |
-| Secondary Color | ![#D6CDFE](https://via.placeholder.com/10/D6CDFE?text=+) #D6CDFE |
-| Accent Color | ![#FF9228](https://via.placeholder.com/10/FF9228?text=+) #FF9228 |
-| Text Color | ![#150B3D](https://via.placeholder.com/10/150B3D?text=+) #150B3D |
+| Primary Color | ![#007760](https://via.placeholder.com/10/007760?text=+) #007760 |
+| Secondary Color | ![#C08B5C](https://via.placeholder.com/10/C08B5C?text=+) #C08B5C |
+| Background Brightness Color | ![#FAFAFA](https://via.placeholder.com/10/FAFAFA?text=+) #FAFAFA |
 
 
 <!-- Env Variables -->
@@ -192,7 +176,7 @@ Coming soon
 
 `API_KEY`
 
-`ANOTHER_API_KEY` -->
+`FCM_SERVER_KEY` -->
 
 <!-- Getting Started -->
 ## 	:toolbox: Getting Started
@@ -216,15 +200,6 @@ Install all package in project
 ```bash
   flutter pub get
 ```
-   
-<!-- Running Tests -->
-### :test_tube: Running Tests
-
-To run tests, run the following command
-
-```bash
-  flutter test test/widget_test.dart
-```
 
 <!-- Run Locally -->
 ### :running: Run Locally
@@ -232,13 +207,13 @@ To run tests, run the following command
 Clone the project
 
 ```bash
-  git clone https://github.com/dustin-goldenowl/jobspot.git
+  git clone https://github.com/Leon-gos/survly.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd jobspot
+  cd survly
 ```
 
 Install dependencies
@@ -266,114 +241,89 @@ Start the project
 To deploy this project to Firebase Distribution
 
 ```bash
-  fastlane deploy_firebase_distribution version_name: version_name version_code: version_code
-```
-
-To deploy this project to CH Play
-
-```bash
-  fastlane deploy_ch_play version_name: version_name version_code: version_code
+  fastlane firebase
 ```
 
 <!-- Directory structure -->
 ## :eyes: Directory Structure
 
 ```bash
-jobspot
+survly
 ├───android
 ├───assets
 │   ├───fonts
 │   └───images
+│   └───svgs
 ├───ios
 ├───lib
-│   ├───l10n
+│   ├───gen
+│   └───l10n
 │   └───src
-│       ├───core
-│       │   ├───bloc
-│       │   ├───common
-│       │   │   └───widgets
-│       │   │       └───image_widget
-│       │   │           ├───cubit
-│       │   │           └───widget
-│       │   ├───config
-│       │   │   ├───localization
-│       │   │   │   └───cubit
-│       │   │   └───router
-│       │   ├───constants
-│       │   ├───enum
-│       │   ├───extension
-│       │   ├───function
-│       │   ├───resources
-│       │   ├───service
-│       │   │   └───api
-│       │   └───utils
-│       ├───data
-│       │   ├───entities
-│       │   └───models
-│       └───presentations
-│           ├───add_appreciation
-│           │   ├───cubit
-│           │   ├───data
-│           │   │   ├───models
-│           │   │   └───repositories
-│           │   ├───domain
-│           │   │   ├───entities
-│           │   │   ├───repositories
-│           │   │   ├───router
-│           │   │   └───use_cases
-│           │   ├───screen
-│           │   └───widgets
-│           ├───add_education
-│           ├───add_job
-│           ├───add_language
-│           ├───add_post
-│           ├───add_resume
-│           ├───add_skill
-│           ├───add_work_experience
-│           ├───applicant_profile
-│           ├───apply_job
-│           ├───check_email
-│           ├───company_profile
-│           ├───connection
-│           ├───edit_applicant_profile
-│           ├───edit_company_profile
-│           ├───filter
-│           ├───follow
-│           ├───forgot_password
-│           ├───home_admin
-│           ├───home_applicant
-│           ├───home_company
-│           ├───job_description
-│           ├───job_position
-│           ├───location
-│           ├───main
+│       ├───config
+│           ├───constants
+│               ├───firebase_collections
+│               └───notification
+│               └───timeout
+│       └───features
+│           ├───admin_profile
+│           └───authentication
+│           └───create_survey
+│           └───dashboard
+│           └───dashboard_admin
+│           └───dashboard_user
+│           └───do_survey
+│           └───do_survey_review
+│           └───do_survey_tracking
+│           └───my_profile
+│           └───preview_survey
+│           └───response_user_survey
+│           └───review_survey
+│           └───select_location
+│           └───survey_request
+│           └───survey_response
+│           └───update_admin_profile
+│           └───update_survey
+│           └───update_user_profile
+│           └───user_profile
+│       └───local
+│           ├───model
+│           └───secure_storage
+│               ├───userbase_singleton
+│               └───authentication_repository
+│       └───localization
+│       └───network
+│           ├───data
+│               ├───repositories
+│           └───model
+│       └───router
+│           ├───coordinator
+│           └───router_name
+│           └───router
+│       └───service
 │           ├───notification
-│           ├───on_boarding
-│           ├───register_google
-│           ├───save_job
-│           ├───search_job
-│           ├───search_language
-│           ├───setting
-│           ├───sign_in
-│           ├───sign_up
-│           ├───test_iq
-│           ├───update_password
-│           ├───verify_business
-│           ├───verify_email
-│           ├───verify_success
-│           ├───view_applicant_profile
-│           ├───view_company_profile
-│           ├───view_job
-│           ├───view_job_applicant
-│           ├───view_pdf
-│           ├───view_post
-│           └───view_test_iq
+│           └───permission
+│           └───picker
+│       └───theme
+│       └───utils
+│           ├───coordinate
+│           └───date
+│           └───debound
+│           └───file
+│           └───map
+│           └───number
+│       └───app.dart
+│       └───domain_manager.dart
+│       └───locator.dart
+│   └───widgets
+│   └───firebase_options.dart
+│   └───main.dart
 ├───linux
 ├───macos
 ├───screenshots
 ├───test
 ├───web
 └───windows
+└───.env
 ```
 
 <!-- Architecture Diagram -->
@@ -386,49 +336,35 @@ jobspot
 <!-- Contributing -->
 ## :wave: Contributing
 
-<a href="https://github.com/dustin-goldenowl/jobspot/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=dustin-goldenowl/jobspot" />
+<a href="https://github.com/Leon-gos/survly/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Leon-gos/survly" />
 </a>
 
-
 Contributions are always welcome!
-
-<!-- FAQ -->
-## :grey_question: FAQ
-
-Coming soon
-
-<!-- - Question 1
-
-  + Answer 1
-
-- Question 2
-
-  + Answer 2 -->
-
-
-<!-- License -->
-## :warning: License
-
-Distributed under the no License. See ```LICENSE``` for more information.
-
 
 <!-- Contact -->
 ## :handshake: Contact
 
-Walter Tran - [@ngoctien.TNT](https://www.facebook.com/ngoctien.TNT/) - walter.tran.goldenowl@gmail.com
+Leon Nguyen - leon.nguyen.gos@gmail.com
 
-Project Link: [https://github.com/dustin-goldenowl/jobspot](https://github.com/dustin-goldenowl/jobspot)
+Project Link: [https://github.com/Leon-gos/survly](https://github.com/Leon-gos/survly)
 
 
 <!-- Acknowledgments -->
 ## :gem: Acknowledgements
-In Jobspot project, I used some useful resources and libraries to aid the development process.
+In Survly project, I used some useful resources and libraries to aid the development process.
 
- - [Desgin Figma](https://www.figma.com/file/2sMOWSroKFDsthE6Nn10ov/Job-Finder-Ui-App-Kit-(Community)?type=design&node-id=0%3A1&mode=design&t=yOVRg0VfUB2TVE5I-1)
  - [Firebase and related packages](https://firebase.google.com/)
  - [Flutter Bloc](https://pub.dev/packages/flutter_bloc)
- - [Auto Route](https://pub.dev/packages/auto_route)
+ - [GoRouter](https://pub.dev/packages/go_router)
  - [GetIt](https://pub.dev/packages/get_it)
+ - [Google Map for Flutter](https://pub.dev/packages/google_maps_flutter)
+ - [Location](https://pub.dev/packages/location)
  - [Flutter SVG](https://pub.dev/packages/flutter_svg)
- - [Shared Preferences](https://pub.dev/packages/shared_preferences)
+ - [Formz](https://pub.dev/packages/formz)
+ - [Flutter secure storage](https://pub.dev/packages/flutter_secure_storage)
+ - [Logger](https://pub.dev/packages/logger)
+ - [ImagePicker](https://pub.dev/packages/image_picker)
+ - [Http](https://pub.dev/packages/http)
+ - [Flutter Dotenv](https://pub.dev/packages/flutter_dotenv)
+ - [Permission handler](https://pub.dev/packages/permission_handler)
