@@ -11,34 +11,31 @@
   
 <!-- Badges -->
 <p>
-  <a href="https://github.com/dustin-goldenowl/jobspot/graphs/contributors">
-    <img src="https://img.shields.io/github/contributors/dustin-goldenowl/jobspot" alt="contributors" />
+  <a href="https://github.com/Leon-gos/survly/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/Leon-gos/survly/jobspot" alt="contributors" />
   </a>
   <a href="">
-    <img src="https://img.shields.io/github/last-commit/dustin-goldenowl/jobspot" alt="last update" />
+    <img src="https://img.shields.io/github/last-commit/Leon-gos/survly" alt="last update" />
   </a>
-  <a href="https://github.com/dustin-goldenowl/jobspot/network/members">
-    <img src="https://img.shields.io/github/forks/dustin-goldenowl/jobspot" alt="forks" />
+  <a href="https://github.com/Leon-gos/survly/network/members">
+    <img src="https://img.shields.io/github/forks/Leon-gos/survly" alt="forks" />
   </a>
-  <a href="https://github.com/dustin-goldenowl/jobspot/stargazers">
-    <img src="https://img.shields.io/github/stars/dustin-goldenowl/jobspot" alt="stars" />
+  <a href="https://github.com/Leon-gos/survly/stargazers">
+    <img src="https://img.shields.io/github/stars/Leon-gos/survly" alt="stars" />
   </a>
-  <a href="https://github.com/dustin-goldenowl/jobspot/issues/">
-    <img src="https://img.shields.io/github/issues/dustin-goldenowl/jobspot" alt="open issues" />
-  </a>
-  <a href="https://github.com/dustin-goldenowl/jobspot/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/dustin-goldenowl/jobspot.svg" alt="license" />
+  <a href="https://github.com/Leon-gos/survly/issues/">
+    <img src="https://img.shields.io/github/issues/Leon-gos/survly" alt="open issues" />
   </a>
 </p>
    
 <h4>
-    <a href="https://github.com/dustin-goldenowl/jobspot/">View Demo</a>
+    <a href="https://github.com/Leon-gos/survly/">View Demo</a>
   <span> · </span>
-    <a href="https://github.com/dustin-goldenowl/jobspot">Documentation</a>
+    <a href="https://github.com/Leon-gos/survly">Documentation</a>
   <span> · </span>
-    <a href="https://github.com/dustin-goldenowl/jobspot/issues/">Report Bug</a>
+    <a href="https://github.com/Leon-gos/survly/issues/">Report Bug</a>
   <span> · </span>
-    <a href="https://github.com/dustin-goldenowl/jobspot/issues/">Request Feature</a>
+    <a href="https://github.com/Leon-gos/survly/issues/">Request Feature</a>
   </h4>
 </div>
 
