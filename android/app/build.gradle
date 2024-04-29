@@ -61,20 +61,20 @@ android {
 
     signingConfigs {
         // in local
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-            storePassword keystoreProperties['storePassword']
-        }
+        // release {
+        //     keyAlias keystoreProperties['keyAlias']
+        //     keyPassword keystoreProperties['keyPassword']
+        //     storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+        //     storePassword keystoreProperties['storePassword']
+        // }
 
         // in github action
-        // release {
-        //     keyAlias System.getenv("SIGNING_KEY_ALIAS")
-        //     keyPassword System.getenv("SIGNING_KEY_PASSWORD")
-        //     storeFile file("keystore.jks")
-        //     storePassword System.getenv("SIGNING_STORE_PASSWORD")
-        // }
+        release {
+            keyAlias System.getenv("SIGNING_KEY_ALIAS")
+            keyPassword System.getenv("SIGNING_KEY_PASSWORD")
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword System.getenv("SIGNING_STORE_PASSWORD")
+        }
    }
 
     buildTypes {
