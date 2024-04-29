@@ -2,9 +2,9 @@ name: Auto deploy Firebase
 
 on:
   push:
-    branches: [ "my_main" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "my_main" ]
+    branches: [ "main" ]
 
 jobs:
   build:
