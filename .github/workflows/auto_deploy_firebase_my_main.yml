@@ -40,6 +40,11 @@ jobs:
         run: |
           echo $API_KEY >> .env
           echo $FCM_SERVER_KEY >> .env
+
+      - name: Decode keystore file
+        working-directory: android/app
+        run: |
+          echo "${{ secrets.KEY_STORE }}" | base64 --decode > keystore.jks
       
       - name: Distribute app to firebase
         env:
