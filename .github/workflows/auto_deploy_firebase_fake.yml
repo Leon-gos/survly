@@ -31,7 +31,6 @@ jobs:
       - run: flutter --version
       
       - name: pub get
-        working-directory: flutter_app/gallery_app_new
         run: flutter pub get
       
       - name: Distribute app to firebase
