@@ -93,15 +93,28 @@
 
 | Review survey  | Edit survey |
 | --- | --- |
-| <img src="https://github.com/Leon-gos/survly/assets/163224096/becaa00c-26e5-4734-ab8d-aaf5a995136f" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/cb3db9cf-4157-4a12-9caf-4b02e732d95a" width=250> |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/cb3db9cf-4157-4a12-9caf-4b02e732d95a" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/becaa00c-26e5-4734-ab8d-aaf5a995136f" width=250> |
 
 | Survey request list  | Response request |
 | --- | --- |
-| <img src="https://github.com/Leon-gos/survly/assets/163224096/8009ea6b-0ee4-4317-9f7f-88f0f86e51e2" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/a5122c64-067d-44b3-b835-eb32d3f30cba" width=250> |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/a5122c64-067d-44b3-b835-eb32d3f30cba" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/8009ea6b-0ee4-4317-9f7f-88f0f86e51e2" width=250> |
 
 | User survey discover  | Survey preview | Request survey |
 | --- | --- | --- |
-| <img src="https://github.com/Leon-gos/survly/assets/163224096/8930e382-aa69-45c3-a0b3-90a2166f3e85" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/7e74d086-9630-4efc-810a-9717450cfc7c" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/3360e132-7839-44ed-afcc-a42068cdcc35" width=250> |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/7e74d086-9630-4efc-810a-9717450cfc7c" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/8930e382-aa69-45c3-a0b3-90a2166f3e85" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/3360e132-7839-44ed-afcc-a42068cdcc35" width=250> |
+
+| User doing survey list  | Do survey - Intro | Do survey - Outlet |
+| --- | --- | --- |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/3f16bd9c-4fb7-4bbd-bc24-e4ebd52c7f80" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/cb40af84-d48b-4a8f-b425-cdc58ef4d0fe" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/38e5b14f-2745-4418-a480-113a5bf29476" width=250> |
+
+| Do survey - Text question  | Do survey - Single option question | Do survey - Multiple option question |
+| --- | --- | --- |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/2152b911-c248-4bb8-802b-899290a39428" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/ff8d8ff8-f20e-434d-a428-1b053525b002" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/12f5a9b0-c551-4b15-9cf3-44ecaa952998" width=250> |
+
+| Profile  | Update profile |
+| --- | --- |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/cc6bcf23-3cc1-4acc-b7cb-bf03109f7333" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/a3db35ed-68ce-4b15-bd1c-f682125f6b14" width=250> |
+
 
 <!-- TechStack -->
 ### :space_invader: Tech Stack <a name="space_invader-tech-stack"></a>
@@ -256,61 +269,61 @@ survly
 │   ├───gen
 │   └───l10n
 │   └───src
-│       ├───config
-│           ├───constants
-│               ├───firebase_collections
-│               └───notification
-│               └───timeout
-│       └───features
-│           ├───admin_profile
-│           └───authentication
-│           └───create_survey
-│           └───dashboard
-│           └───dashboard_admin
-│           └───dashboard_user
-│           └───do_survey
-│           └───do_survey_review
-│           └───do_survey_tracking
-│           └───my_profile
-│           └───preview_survey
-│           └───response_user_survey
-│           └───review_survey
-│           └───select_location
-│           └───survey_request
-│           └───survey_response
-│           └───update_admin_profile
-│           └───update_survey
-│           └───update_user_profile
-│           └───user_profile
-│       └───local
-│           ├───model
-│           └───secure_storage
-│               ├───userbase_singleton
-│               └───authentication_repository
-│       └───localization
-│       └───network
-│           ├───data
-│               ├───repositories
-│           └───model
-│       └───router
-│           ├───coordinator
-│           └───router_name
-│           └───router
-│       └───service
-│           ├───notification
-│           └───permission
-│           └───picker
-│       └───theme
-│       └───utils
-│           ├───coordinate
-│           └───date
-│           └───debound
-│           └───file
-│           └───map
-│           └───number
-│       └───app.dart
-│       └───domain_manager.dart
-│       └───locator.dart
+│   │   ├───config
+│   │   │  ├───constants
+│   │   │       ├───firebase_collections
+│   │   │       └───notification
+│   │   │       └───timeout
+│   │   └───features
+│   │   │   ├───admin_profile
+│   │   │   └───authentication
+│   │   │   └───create_survey
+│   │   │   └───dashboard
+│   │   │   └───dashboard_admin
+│   │   │   └───dashboard_user
+│   │   │   └───do_survey
+│   │   │   └───do_survey_review
+│   │   │   └───do_survey_tracking
+│   │   │   └───my_profile
+│   │   │   └───preview_survey
+│   │   │   └───response_user_survey
+│   │   │   └───review_survey
+│   │   │   └───select_location
+│   │   │   └───survey_request
+│   │   │   └───survey_response
+│   │   │   └───update_admin_profile
+│   │   │   └───update_survey
+│   │   │   └───update_user_profile
+│   │   │   └───user_profile
+│   │   └───local
+│   │   │   ├───model
+│   │   │   └───secure_storage
+│   │   │   │   ├───userbase_singleton
+│   │   │   │   └───authentication_repository
+│   │   └───localization
+│   │   └───network
+│   │   │   ├───data
+│   │   │   │   ├───repositories
+│   │   │   └───model
+│   │   └───router
+│   │   │   ├───coordinator
+│   │   │   └───router_name
+│   │   │   └───router
+│   │   └───service
+│   │   │   ├───notification
+│   │   │   └───permission
+│   │   │   └───picker
+│   │   └───theme
+│   │   └───utils
+│   │   │   ├───coordinate
+│   │   │   └───date
+│   │   │   └───debound
+│   │   │   └───file
+│   │   │   └───map
+│   │   │   └───number
+│   │   └───app.dart
+│   │   └───domain_manager.dart
+│   │   └───locator.dart
 │   └───widgets
 │   └───firebase_options.dart
 │   └───main.dart
