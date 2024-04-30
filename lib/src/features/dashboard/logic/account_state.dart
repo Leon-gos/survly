@@ -5,8 +5,8 @@ import 'package:survly/src/network/model/user/user.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 
 class AccountState extends Equatable {
-  final UserBase userBase;
-  final UserBase userBaseClone;
+  final UserBase? userBase;
+  final UserBase? userBaseClone;
   final String newAvtPath;
   final bool isLoading;
 
@@ -17,16 +17,19 @@ class AccountState extends Equatable {
     required this.isLoading,
   });
 
-  factory AccountState.ds(UserBase userBase) {
-    final clone = userBase.role == UserBase.roleUser
-        ? (userBase as User).copyWith()
-        : (userBase as Admin).copyWith();
-    return AccountState(
-      userBase: userBase,
-      userBaseClone: clone,
+  factory AccountState.ds() {
+    return const AccountState(
+      userBase: null,
+      userBaseClone: null,
       newAvtPath: "",
       isLoading: false,
     );
+  }
+
+  UserBase cloneUserbase() {
+    return userBase?.role == UserBase.roleUser
+        ? (userBase as User).copyWith()
+        : (userBase as Admin).copyWith();
   }
 
   @override

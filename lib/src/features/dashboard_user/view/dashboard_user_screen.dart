@@ -6,8 +6,6 @@ import 'package:survly/src/features/dashboard/logic/account_state.dart';
 import 'package:survly/src/features/dashboard_user/logic/bottom_nav_bloc.dart';
 import 'package:survly/src/features/dashboard_user/logic/navigation_bar_item.dart';
 import 'package:survly/src/features/dashboard_user/widget/bottom_navigation_bar.dart';
-import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
-import 'package:survly/src/local/secure_storage/authentication/authentication_repository_impl.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
@@ -62,7 +60,7 @@ class DashboardUserScreen extends StatelessWidget {
               child: Row(
                 children: [
                   AppAvatarWidget(
-                    avatarUrl: state.userBase.avatar,
+                    avatarUrl: state.userBase?.avatar ?? "",
                     size: 48,
                   ),
                   const SizedBox(
@@ -72,11 +70,11 @@ class DashboardUserScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        state.userBase.fullname,
+                        state.userBase?.fullname ?? "",
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
-                      Text(state.userBase.email),
+                      Text(state.userBase?.email ?? ""),
                     ],
                   ),
                   const Spacer(),
@@ -85,9 +83,7 @@ class DashboardUserScreen extends StatelessWidget {
                       return [
                         PopupMenuItem(
                           onTap: () {
-                            AuthenticationRepositoryImpl().clearLoginInfo();
-                            UserBaseSingleton.instance().userBase = null;
-                            context.goNamed(AppRouteNames.login.path);
+                            context.read<AccountBloc>().logout();
                           },
                           child: Text(S.of(context).labelBtnLogout),
                         ),
