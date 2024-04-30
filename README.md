@@ -339,9 +339,7 @@ survly
 <!-- Architecture Diagram -->
 ## :chart: Architecture Diagram
 
-<a href="https://edrawcloudpublicus.s3.amazonaws.com/viewer/self/4383336/share/2023-11-10/1699584802/main.svg">
-  <img src="https://edrawcloudpublicus.s3.amazonaws.com/viewer/self/4383336/share/2023-11-10/1699584802/main.svg">
-</a>
+<img src="https://github.com/Leon-gos/survly/assets/163224096/4fce7c0a-5d32-4ad8-84c5-0ed49a42a3c9">
 
 <!-- Contributing -->
 ## :wave: Contributing
