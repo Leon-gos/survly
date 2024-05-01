@@ -82,12 +82,8 @@ class Survey {
       return false;
     }
     try {
-      // check if today is before survey start date at least 2 days
-      if (!DateTime.now().isBefore(
-        DateTime.parse(dateStart).add(
-          const Duration(days: -1),
-        ),
-      )) {
+      // check if today is before survey start date at least 1 days
+      if (!DateTime.now().isBefore(DateTime.parse(dateStart))) {
         return false;
       }
     } catch (e) {

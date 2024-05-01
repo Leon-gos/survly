@@ -132,6 +132,7 @@
     "toastSignupSuccess": "Sign up successfully",
     "labelNumOfSurveyCreated": "Created {num} survey",
     "labelNumOfSurveyJoined": "Joined {num} survey",
+    "toastCreateSurveySuccess": "Create survey successfully. Please refresh to check.",
 
     "notiTitleUserRespondent": "New respondent",
     "notiBodyUserRespondent": "Someone has just response your survey. Check now!",

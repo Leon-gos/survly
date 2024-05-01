@@ -83,6 +83,7 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
         questionList: state.questionList,
       );
       emit(state.copyWith(isLoading: false));
+      Fluttertoast.showToast(msg: S.text.toastCreateSurveySuccess);
       AppCoordinator.pop();
     } catch (e) {
       Logger().e(e);

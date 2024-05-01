@@ -120,9 +120,7 @@ class _QuestionEditorWidgetState extends State<QuestionEditorWidget> {
                         Expanded(
                           flex: 1,
                           child: TextField(
-                            decoration: InputDecoration(
-                                hintText:
-                                    "${S.of(context).hintSurveyOption} ${e.option}"),
+                            decoration: InputDecoration(hintText: e.option),
                             onChanged: (value) {
                               setState(() {
                                 e.option = value;
