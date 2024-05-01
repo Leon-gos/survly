@@ -27,11 +27,32 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.x'
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Install Fastlane
+        run: gem install fastlane
           
       - run: flutter --version
       
       - name: pub get
         run: flutter pub get
+
+      - name: Set up environment variables
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          FCM_SERVER_KEY: ${{ secrets.FCM_SERVER_KEY }}
+        run: |
+          echo $API_KEY >> .env
+          echo $FCM_SERVER_KEY >> .env
+      - name: Decode keystore file
+        working-directory: android/app
+        run: |
+          echo "${{ secrets.KEY_STORE }}" | base64 --decode > keystore.jks
       
       - name: Distribute app to firebase
         env:
@@ -40,4 +61,4 @@ jobs:
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
         working-directory: android
-        run: fastlane firebase_fake
+        run: fastlane firebase
