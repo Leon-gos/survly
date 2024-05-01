@@ -165,8 +165,6 @@ class MyProfileScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 32),
-              Text("\" ${user.intro} \""),
-              const SizedBox(height: 32),
             ],
           ),
         );
