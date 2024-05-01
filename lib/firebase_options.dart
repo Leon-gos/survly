@@ -67,6 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '133621180495',
     projectId: 'survly',
     storageBucket: 'survly.appspot.com',
+    androidClientId: '133621180495-13gg377d034qq4mfcm3u6hkcqsr3cqud.apps.googleusercontent.com',
+    iosClientId: '133621180495-ed6qthhjue79b2v8bjb8k6ui079o5mnj.apps.googleusercontent.com',
     iosBundleId: 'com.example.survly',
   );
 
@@ -76,6 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '133621180495',
     projectId: 'survly',
     storageBucket: 'survly.appspot.com',
+    androidClientId: '133621180495-13gg377d034qq4mfcm3u6hkcqsr3cqud.apps.googleusercontent.com',
+    iosClientId: '133621180495-acdpmpglaq77of5b4vrfaricqsv17erc.apps.googleusercontent.com',
     iosBundleId: 'com.example.survly.RunnerTests',
   );
 }

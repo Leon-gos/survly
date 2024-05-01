@@ -12,7 +12,36 @@
           "package_name": "com.leon.survly"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "133621180495-13gg377d034qq4mfcm3u6hkcqsr3cqud.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.leon.survly",
+            "certificate_hash": "791ca1a9b2a3fe521981e2b1945d152bea941455"
+          }
+        },
+        {
+          "client_id": "133621180495-g66rps9j613oka6rghp0valbbpl52lbj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.leon.survly",
+            "certificate_hash": "30b7306f6a99d5c3ea10e74ccda5d11b1d6b364e"
+          }
+        },
+        {
+          "client_id": "133621180495-pp7v4cldbo6ja3g2u49caq2oli13nkoc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.leon.survly",
+            "certificate_hash": "bd9e3be64b7eec851c2ace434f2978398693ee88"
+          }
+        },
+        {
+          "client_id": "133621180495-ejvm21j3airvm2v6evj4rusnk0rj8l6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyArVpABWWml4AWcUSx4b58oS1F2b_Bpn94"
@@ -20,7 +49,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "133621180495-ejvm21j3airvm2v6evj4rusnk0rj8l6a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "133621180495-acdpmpglaq77of5b4vrfaricqsv17erc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.survly.RunnerTests"
+              }
+            }
+          ]
         }
       }
     }
