@@ -77,7 +77,7 @@
 
 | Dashboard admin  | Filter sheet | User list |
 | --- | --- | --- |
-| <img src="https://github.com/Leon-gos/survly/assets/163224096/aebc1992-490a-4fb8-ab80-7b8696675b22" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/601dcb7c-ffeb-42a3-8627-11de48abfc60" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/5ec92519-dc0d-4c4d-b818-414c680a16a2" width=250> |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/5ec92519-dc0d-4c4d-b818-414c680a16a2" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/601dcb7c-ffeb-42a3-8627-11de48abfc60" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/aebc1992-490a-4fb8-ab80-7b8696675b22" width=250> |
 
 | Create survey  |
 | --- |
@@ -85,11 +85,11 @@
 
 | Select outlet place  | Search place | Place selected |
 | --- | --- | --- |
-| <img src="https://github.com/Leon-gos/survly/assets/163224096/a6c239ef-45ec-4507-9240-3c9b0ae508ac" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/0da83bae-4684-4ca6-99a1-168dfc3d085a" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/46c8d53b-ffdc-4641-b976-ebf06dc1bdcd" width=250> |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/46c8d53b-ffdc-4641-b976-ebf06dc1bdcd" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/0da83bae-4684-4ca6-99a1-168dfc3d085a" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/a6c239ef-45ec-4507-9240-3c9b0ae508ac" width=250> |
 
 | Add text question  | Add optional question | Filled survey form |
 | --- | --- | --- |
-| <img src="https://github.com/Leon-gos/survly/assets/163224096/9904215b-9eab-49fb-bb1d-e5785d8e851a" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/ca4aa73f-4978-424d-a4a1-0e0d6260968f" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/3b3ad5a2-95ac-437b-90fb-061548d6b930" width=250> |
+| <img src="https://github.com/Leon-gos/survly/assets/163224096/9904215b-9eab-49fb-bb1d-e5785d8e851a" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/3b3ad5a2-95ac-437b-90fb-061548d6b930" width=250> | <img src="https://github.com/Leon-gos/survly/assets/163224096/ca4aa73f-4978-424d-a4a1-0e0d6260968f" width=250> |
 
 | Review survey  | Edit survey |
 | --- | --- |
