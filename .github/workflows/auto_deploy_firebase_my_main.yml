@@ -42,15 +42,20 @@ jobs:
       - name: pub get
         run: flutter pub get
 
+      - name: Set up fastlane environment variables
+        working-directory: android/fastlane
+        env:
+          FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
+        run: |
+          echo $FIREBASE_CLI_TOKEN >> .env
+
       - name: Set up environment variables
         env:
           API_KEY: ${{ secrets.API_KEY }}
           FCM_SERVER_KEY: ${{ secrets.FCM_SERVER_KEY }}
-          FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
         run: |
           echo $API_KEY >> .env
           echo $FCM_SERVER_KEY >> .env
-          echo $FIREBASE_CLI_TOKEN >> /android/fastlane/.env
 
       - name: Decode keystore file
         working-directory: android/app
