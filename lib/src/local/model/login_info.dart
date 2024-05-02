@@ -8,6 +8,6 @@ class LoginInfo {
   });
 
   bool get isNotEmpty {
-    return email.isNotEmpty && password.isNotEmpty;
+    return email.isNotEmpty;
   }
 }

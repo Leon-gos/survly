@@ -88,9 +88,7 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                   )),
               actions: [
                 IconButton(
-                  onPressed: () {
-                    //TODO: share
-                  },
+                  onPressed: () {},
                   icon: const Icon(
                     Icons.share,
                     color: AppColors.white,

@@ -283,7 +283,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
     var surveyIdList = await doSurveyRepo.fetchUserDoingSurveyId(userId);
     for (var surveyId in surveyIdList) {
       var survey = await fetchSurveyById(surveyId);
-      if (survey != null) {
+      if (survey != null && survey.ableToDoToday) {
         list.add(survey);
       }
     }

@@ -47,7 +47,7 @@ class JoinedSurveyCard extends StatelessWidget {
         topLeft: Radius.circular(borderRadius),
         topRight: Radius.circular(borderRadius),
       ),
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         height: 200,
         child: Stack(

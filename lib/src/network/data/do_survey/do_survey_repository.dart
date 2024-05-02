@@ -22,4 +22,5 @@ abstract class DoSurveyRepository {
   Future<void> updateDoSurveyStatus(String doSurveyId, DoSurveyStatus status);
   Future<DoSurvey?> fetchDoSurveyById(String doSurveyId);
   Future<List<DoSurvey>> fetchUserJoinedSurvey(String userId);
+  Future<void> createDoSurvey(DoSurvey doSurvey);
 }

@@ -10,17 +10,19 @@ import 'package:survly/src/network/model/admin/admin.dart';
 import 'package:survly/src/network/model/user/user.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 import 'package:survly/src/router/coordinator.dart';
+import 'package:survly/src/router/router_name.dart';
+import 'package:survly/src/service/notification_service.dart';
 import 'package:survly/src/service/picker_service.dart';
 import 'package:survly/src/utils/date_helper.dart';
 
 class AccountBloc extends Cubit<AccountState> {
-  AccountBloc()
-      : super(AccountState.ds(UserBaseSingleton.instance().userBase!));
+  AccountBloc() : super(AccountState.ds());
 
   DomainManager get domainManager => DomainManager();
 
   void onUserbaseChange(UserBase? userBase) {
     emit(state.copyWith(userBase: userBase));
+    emit(state.copyWith(userBaseClone: state.cloneUserbase()));
   }
 
   void onNameChanged(String name) {
@@ -79,28 +81,33 @@ class AccountBloc extends Cubit<AccountState> {
   }
 
   Future<void> updateProfile() async {
+    emit(state.copyWith(isLoading: true));
     try {
       if (state.newAvtPath != "") {
-        String fileKey = state.userBase.genAvatarFileKey();
+        String fileKey = state.userBase!.genAvatarFileKey();
         String? newAvtUrl = await FileData.instance().uploadFileImage(
           filePath: state.newAvtPath,
           fileKey: fileKey,
         );
         emit(
           state.copyWith(
-            userBaseClone: state.userBaseClone.copyWith(avatar: newAvtUrl),
+            userBaseClone: state.userBaseClone!.copyWith(avatar: newAvtUrl),
           ),
         );
       }
-      await domainManager.user.updateUserProfile(state.userBaseClone);
+      await domainManager.user.updateUserProfile(state.userBaseClone!);
       emit(state.copyWith(userBase: state.userBaseClone));
+
       UserBaseSingleton.instance().userBase = state.userBaseClone;
-      Logger().d(state.userBase.fullname);
+
+      emit(state.copyWith(isLoading: false));
+      Logger().d(state.userBase!.fullname);
       Fluttertoast.showToast(msg: S.text.toastUpdateUserProfileSuccess);
       AppCoordinator.pop();
     } catch (e) {
       Logger().e("Update user profile error", error: e);
       Fluttertoast.showToast(msg: S.text.toastUpdateUserProfileFail);
+      emit(state.copyWith(isLoading: false));
     }
   }
 
@@ -109,5 +116,50 @@ class AccountBloc extends Cubit<AccountState> {
     if (file != null) {
       emit(state.copyWith(newAvtPath: file.path));
     }
+  }
+
+  Future<void> logout() async {
+    try {
+      await domainManager.authentication.logout();
+      await domainManager.authenticationLocal.clearLoginInfo();
+      UserBaseSingleton.instance().userBase = null;
+      AppCoordinator.goNamed(AppRouteNames.login.path);
+    } catch (e) {
+      Logger().e("logout error", error: e);
+      Fluttertoast.showToast(msg: S.text.errorGeneral);
+    }
+  }
+
+  Future<void> loadUser() async {
+    var loginInfo = await domainManager.authenticationLocal.readLoginInfo();
+    if (loginInfo != null && loginInfo.isNotEmpty) {
+      try {
+        await domainManager.user
+            .fetchUserByEmail(loginInfo.email)
+            .then((value) async {
+          UserBaseSingleton.instance().userBase = value;
+          NotificationService.registerToken();
+          onUserbaseChange(value);
+          if (value?.role == UserBase.roleAdmin) {
+            AppCoordinator.goNamed(AppRouteNames.survey.path);
+          } else {
+            AppCoordinator.goNamed(AppRouteNames.explore.path);
+          }
+          return;
+        });
+      } catch (e) {
+        AppCoordinator.goNamed(AppRouteNames.login.path);
+        Logger().d(e);
+      }
+    } else {
+      AppCoordinator.goNamed(AppRouteNames.login.path);
+    }
+  }
+
+  void initUserbase() {
+    loadUser();
+    NotificationService.setupInteractedMessage();
+    NotificationService.setupLocalNoti();
+    Logger().d("init userbase");
   }
 }

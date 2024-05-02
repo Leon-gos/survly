@@ -1,0 +1,86 @@
+name: Auto deploy Firebase in my main branch
+
+on:
+  push:
+    branches: [ "my_main" ]
+  pull_request:
+    branches: [ "my_main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+        
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-ruby@v1
+
+      - name: set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+  
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.x'
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Install Fastlane
+        run: gem install fastlane
+          
+      - run: flutter --version
+      
+      - name: pub get
+        run: flutter pub get
+
+      - name: Setup keystore
+        working-directory: android
+        env:
+          ANDROID_KEYSTORE_FILE: key.properties
+          SIGNING_KEY_STORE_PATH: ${{ secrets.SIGNING_KEY_PATH }}
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+        run: |
+          echo "storeFile=$SIGNING_KEY_STORE_PATH" >>  ${{env.ANDROID_KEYSTORE_FILE}}
+          echo "keyAlias=$SIGNING_KEY_ALIAS" >>  ${{env.ANDROID_KEYSTORE_FILE}}
+          echo "storePassword=$SIGNING_STORE_PASSWORD" >>  ${{env.ANDROID_KEYSTORE_FILE}}
+          echo "keyPassword=$SIGNING_KEY_PASSWORD" >>  ${{env.ANDROID_KEYSTORE_FILE}}
+
+      - name: Setup fastlane environment variables
+        working-directory: android/fastlane
+        env:
+          FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
+        run: |
+          echo $FIREBASE_CLI_TOKEN >> .env
+
+      - name: Setup project environment variables
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          FCM_SERVER_KEY: ${{ secrets.FCM_SERVER_KEY }}
+        run: |
+          echo $API_KEY >> .env
+          echo $FCM_SERVER_KEY >> .env
+
+      - name: Decode keystore file
+        working-directory: android/app
+        run: |
+          echo "${{ secrets.KEY_STORE }}" | base64 --decode > keystore.jks
+      
+      - name: Distribute app to firebase
+        # env:
+        #   SIGNING_KEY_STORE_PATH: ${{ secrets.SIGNING_KEY_PATH }}
+        #   SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+        #   SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        #   SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+        working-directory: android
+        run: fastlane firebase_fake

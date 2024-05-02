@@ -47,19 +47,30 @@ class LoginBloc extends Cubit<LoginState> {
   }
 
   Future<void> loginWithGoogle() async {
-    var user = await domain.authentication.loginWithGoogle();
-    if (user?.user?.email != null && user?.user?.email != "") {
-      // sign in successful
-      domain.authenticationLocal
-          .storeLoginInfo(
-        LoginInfo(
-          email: user!.user!.email!,
-          password: "",
-        ),
-      )
-          .then((value) {
-        AppCoordinator.goNamed(AppRouteNames.dashboard.path);
-      });
+    emit(state.copyWith(isLoading: true));
+    try {
+      var user = await domain.authentication.loginWithGoogle();
+      if (user?.user?.email != null && user?.user?.email != "") {
+        // sign in successful
+        domain.authenticationLocal
+            .storeLoginInfo(
+          LoginInfo(
+            email: user!.user!.email!,
+            password: "",
+          ),
+        )
+            .then((value) {
+          emit(state.copyWith(isLoading: false));
+          AppCoordinator.goNamed(AppRouteNames.dashboard.path);
+        });
+      } else {
+        Fluttertoast.showToast(msg: S.text.errorGeneral);
+        emit(state.copyWith(isLoading: false));
+      }
+    } catch (e) {
+      Logger().e("Login with google error", error: e);
+      Fluttertoast.showToast(msg: S.text.errorGeneral);
+      emit(state.copyWith(isLoading: false));
     }
   }
 

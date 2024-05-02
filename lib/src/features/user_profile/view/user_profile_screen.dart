@@ -4,6 +4,7 @@ import 'package:survly/src/features/user_profile/logic/user_profile_bloc.dart';
 import 'package:survly/src/features/user_profile/logic/user_profile_state.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/user/user.dart';
+import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_avatar_widget.dart';
 
@@ -22,17 +23,14 @@ class UserProfileScreen extends StatelessWidget {
       child: BlocBuilder<UserProfileBloc, UserProfileState>(
         builder: (context, state) {
           return Scaffold(
-            appBar: const AppAppBarWidget(
-              noActionBar: true,
+            appBar: AppAppBarWidget(
+              backgroundColor: AppColors.backgroundBrightness,
+              leadingColor: Colors.black,
             ),
-            body: Container(
+            body: SizedBox(
               width: double.infinity,
-              padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 16,
-                  ),
                   AppAvatarWidget(
                     avatarUrl: state.user.avatar,
                     size: 128,
@@ -88,10 +86,6 @@ class UserProfileScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  const SizedBox(
-                    height: 32,
-                  ),
-                  Text("\" ${user.intro} \""),
                   const Divider(
                     height: 64,
                   ),

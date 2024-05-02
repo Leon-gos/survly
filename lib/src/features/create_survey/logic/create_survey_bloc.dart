@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/create_survey/logic/create_survey_state.dart';
@@ -74,15 +75,20 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
   }
 
   Future<void> saveSurvey() async {
+    emit(state.copyWith(isLoading: true));
     try {
       await domainManager.survey.createSurvey(
         survey: state.survey,
         fileLocalPath: state.imageLocalPath,
         questionList: state.questionList,
       );
+      emit(state.copyWith(isLoading: false));
+      Fluttertoast.showToast(msg: S.text.toastCreateSurveySuccess);
       AppCoordinator.pop();
     } catch (e) {
       Logger().e(e);
+      Fluttertoast.showToast(msg: S.text.errorGeneral);
+      emit(state.copyWith(isLoading: false));
     }
   }
 

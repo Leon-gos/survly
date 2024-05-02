@@ -15,6 +15,7 @@ import 'package:survly/src/theme/colors.dart';
 import 'package:survly/src/utils/date_helper.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_image_picker.dart';
+import 'package:survly/widgets/app_loading_circle.dart';
 import 'package:survly/widgets/app_text_field.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -27,8 +28,18 @@ class CreateSurveyScreen extends StatelessWidget {
       create: (context) => CreateSurveyBloc(),
       lazy: false,
       child: BlocBuilder<CreateSurveyBloc, CreateSurveyState>(
-        buildWhen: (previous, current) => false,
+        buildWhen: (previous, current) =>
+            previous.isLoading != current.isLoading,
         builder: (context, state) {
+          if (state.isLoading) {
+            return Scaffold(
+              appBar: AppAppBarWidget(
+                noActionBar: true,
+                backgroundColor: AppColors.backgroundBrightness,
+              ),
+              body: const AppLoadingCircle(),
+            );
+          }
           return Scaffold(
             appBar: AppAppBarWidget(
               title: S.of(context).titleCreateSurvey,
