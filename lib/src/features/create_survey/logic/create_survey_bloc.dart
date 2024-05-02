@@ -26,8 +26,8 @@ class CreateSurveyBloc extends Cubit<CreateSurveyState> {
       emit(
         state.copyWith(
           survey: state.survey.copyWith(
-            dateStart: dateRange.startDate.toString(),
-            dateEnd: dateRange.endDate.toString(),
+            dateStart: dateRange.startDate,
+            dateEnd: dateRange.endDate,
           ),
         ),
       );

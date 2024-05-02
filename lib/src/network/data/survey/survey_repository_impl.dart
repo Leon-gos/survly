@@ -162,7 +162,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
       ref.doc("/${survey.surveyId}").set({
         ...survey.toMap(),
         ...(survey.outlet?.toMap() ?? {}),
-        SurveyCollection.fieldDateUpdate: DateTime.now().toString(),
+        SurveyCollection.fieldDateUpdate: DateTime.now(),
       });
 
       if (fileLocalPath != "") {

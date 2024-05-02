@@ -82,7 +82,7 @@ class DoingSurveyCard extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                        "${S.of(context).hintDateFrom} ${DateHelper.getDateOnlyFromDateString(survey.dateStart)} ${S.of(context).hintDateTo} ${DateHelper.getDateOnlyFromDateString(survey.dateEnd)}"),
+                        "${S.of(context).hintDateFrom} ${DateHelper.getDateOnly(survey.dateStart)} ${S.of(context).hintDateTo} ${DateHelper.getDateOnly(survey.dateEnd)}"),
                     const SizedBox(
                       height: 4,
                     ),
