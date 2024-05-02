@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:survly/src/network/model/user/user.dart';
 
 enum SurveyRequestStatus {
@@ -16,7 +17,7 @@ class SurveyRequest {
   String requestId;
   String surveyId;
   String userId;
-  String dateRequest;
+  DateTime dateRequest;
   String status;
   String message;
   User? user;
@@ -47,7 +48,7 @@ class SurveyRequest {
       requestId: map['requestId']?.toString() ?? "",
       surveyId: map['surveyId']?.toString() ?? "",
       userId: map['userId']?.toString() ?? "",
-      dateRequest: map['dateRequest']?.toString() ?? "",
+      dateRequest: (map['dateRequest'] as Timestamp).toDate(),
       status: map['status']?.toString() ?? "",
       message: map['message']?.toString() ?? "",
     );
@@ -62,7 +63,7 @@ class SurveyRequest {
     String? requestId,
     String? surveyId,
     String? userId,
-    String? dateRequest,
+    DateTime? dateRequest,
     String? status,
     String? message,
     User? user,

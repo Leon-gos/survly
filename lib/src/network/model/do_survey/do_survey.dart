@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/network/model/user/user.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
@@ -21,7 +22,7 @@ class DoSurvey {
   double? currentLng;
   String? photoOutlet;
   String status;
-  String dateUpdate;
+  DateTime dateUpdate;
   String surveyId;
   String userId;
   User? user;
@@ -45,7 +46,7 @@ class DoSurvey {
     return DoSurvey(
         doSurveyId: "",
         status: DoSurveyStatus.doing.value,
-        dateUpdate: DateTime.now().toString(),
+        dateUpdate: DateTime.now(),
         surveyId: surveyId,
         userId: userId);
   }
@@ -73,7 +74,7 @@ class DoSurvey {
       photoOutlet:
           map['photoOutlet'] != null ? map['photoOutlet'] as String : null,
       status: map['status'] as String,
-      dateUpdate: map['dateUpdate']?.toString() ?? "",
+      dateUpdate: (map['dateUpdate'] as Timestamp).toDate(),
       surveyId: map['surveyId']?.toString() ?? "",
       userId: map['userId']?.toString() ?? "",
     );
@@ -90,7 +91,7 @@ class DoSurvey {
     double? currentLng,
     String? photoOutlet,
     String? status,
-    String? dateUpdate,
+    DateTime? dateUpdate,
     String? surveyId,
     String? userId,
     User? user,
