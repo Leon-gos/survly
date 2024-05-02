@@ -45,7 +45,23 @@ Deploy a new version to the Google Play
 [bundle exec] fastlane android firebase
 ```
 
-Distribute to Firebase
+Distribute to Firebase in fake main branch
+
+### android firebase_fake
+
+```sh
+[bundle exec] fastlane android firebase_fake
+```
+
+Distribute to Firebase in fake main branch
+
+### android firebase_fake_local
+
+```sh
+[bundle exec] fastlane android firebase_fake_local
+```
+
+Distribute to Firebase in fake main branch in local
 
 ----
 
