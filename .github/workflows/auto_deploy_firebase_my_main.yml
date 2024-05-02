@@ -1,10 +1,10 @@
-name: Auto deploy Firebase in my main branch
+name: Auto deploy Firebase in develop branch
 
 on:
   push:
-    branches: [ "my_main" ]
+    branches: [ "develop" ]
   pull_request:
-    branches: [ "my_main" ]
+    branches: [ "develop" ]
 
 jobs:
   build:
@@ -77,10 +77,5 @@ jobs:
           echo "${{ secrets.KEY_STORE }}" | base64 --decode > keystore.jks
       
       - name: Distribute app to firebase
-        # env:
-        #   SIGNING_KEY_STORE_PATH: ${{ secrets.SIGNING_KEY_PATH }}
-        #   SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-        #   SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-        #   SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
         working-directory: android
         run: fastlane firebase_fake
