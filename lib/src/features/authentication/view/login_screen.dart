@@ -13,8 +13,23 @@ import 'package:survly/widgets/app_icon_button.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
   const LoginView({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,6 +132,7 @@ class LoginView extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
+            textController: emailController,
             onTextChange: (newText) {
               context.read<LoginBloc>().onEmailChange(newText);
             },
@@ -129,6 +145,7 @@ class LoginView extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
+            textController: passwordController,
             onTextChange: (newText) {
               context.read<LoginBloc>().onPasswordChange(newText);
             },

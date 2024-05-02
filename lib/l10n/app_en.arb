@@ -167,5 +167,8 @@
     "errorOptionContentEmpty": "Option content empty",
     "errorDoSurveyNotFound": "Do survey info not found",
     "errorEmailPasswordIncorrect": "Email or password incorrect",
-    "errorConfirmPassNotMatch": "Confirm password doesn't match"
+    "errorConfirmPassNotMatch": "Confirm password doesn't match",
+    "errorEmailExisted": "Email already existed",
+    "errorWeakPassword": "Password week",
+    "errorEmailNotVerified": "Email not verified, check your email"
 }
