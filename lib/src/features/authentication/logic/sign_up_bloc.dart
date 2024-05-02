@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:survly/src/config/constants/firebase_auth_error.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/authentication/logic/sign_up_state.dart';
 import 'package:survly/src/features/authentication/model/email_fomz_input.dart';
@@ -39,6 +41,14 @@ class SignUpBloc extends Cubit<SignUpState> {
       );
       Fluttertoast.showToast(msg: S.text.toastSignupSuccess);
       AppCoordinator.pop();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == FirebaseAuthError.emailAlreadyInUse) {
+        Fluttertoast.showToast(msg: S.text.errorEmailExisted);
+      } else if (e.code == FirebaseAuthError.weakPassword) {
+        Fluttertoast.showToast(msg: S.text.errorWeakPassword);
+      } else {
+        Fluttertoast.showToast(msg: S.text.errorGeneral);
+      }
     } catch (e) {
       Fluttertoast.showToast(msg: S.text.errorGeneral);
     } finally {

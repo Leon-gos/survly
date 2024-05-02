@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
+import 'package:survly/src/config/constants/firebase_auth_error.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/authentication/logic/login_state.dart';
 import 'package:survly/src/features/authentication/model/email_fomz_input.dart';
@@ -39,9 +41,21 @@ class LoginBloc extends Cubit<LoginState> {
           .then((value) {
         AppCoordinator.goNamed(AppRouteNames.dashboard.path);
       });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == FirebaseAuthError.userNotFound ||
+          e.code == FirebaseAuthError.wrongPassword ||
+          e.code == FirebaseAuthError.invalidCredential) {
+        Fluttertoast.showToast(msg: S.text.errorEmailPasswordIncorrect);
+      } else if (e.code == FirebaseAuthError.emailNotVerified) {
+        Fluttertoast.showToast(msg: S.text.errorEmailNotVerified);
+      } else {
+        Fluttertoast.showToast(msg: S.text.errorGeneral);
+      }
+      Logger().e(e.code);
     } catch (e) {
       Logger().e(e);
-      Fluttertoast.showToast(msg: S.text.errorEmailPasswordIncorrect);
+      Fluttertoast.showToast(msg: S.text.errorGeneral);
+    } finally {
       emit(state.copyWith(isLoading: false));
     }
   }
