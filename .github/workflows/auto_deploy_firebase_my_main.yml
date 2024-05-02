@@ -50,7 +50,7 @@ jobs:
         run: |
           echo $API_KEY >> .env
           echo $FCM_SERVER_KEY >> .env
-          echo $FIREBASE_CLI_TOKEN >> .env
+          echo $FIREBASE_CLI_TOKEN >> /android/fastlane/.env
 
       - name: Decode keystore file
         working-directory: android/app
