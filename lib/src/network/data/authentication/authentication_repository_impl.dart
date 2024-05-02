@@ -61,7 +61,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     try {
       await FirebaseAuth.instance.signOut();
       await GoogleSignIn().signOut();
-      // await GoogleSignIn().disconnect();
       Logger().d("sign out");
     } catch (e) {
       rethrow;
