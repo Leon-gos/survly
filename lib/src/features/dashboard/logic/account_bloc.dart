@@ -122,6 +122,7 @@ class AccountBloc extends Cubit<AccountState> {
     try {
       await domainManager.authentication.logout();
       await domainManager.authenticationLocal.clearLoginInfo();
+      await NotificationService.deleteToken();
       UserBaseSingleton.instance().userBase = null;
       AppCoordinator.goNamed(AppRouteNames.login.path);
     } catch (e) {
