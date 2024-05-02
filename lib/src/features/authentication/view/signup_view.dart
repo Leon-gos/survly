@@ -10,8 +10,27 @@ import 'package:survly/widgets/app_button.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 import 'package:survly/widgets/app_text_field.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final passwordConfirmController = TextEditingController();
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    passwordConfirmController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,6 +144,7 @@ class SignUpScreen extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
+            textController: nameController,
             hintText: S.of(context).nameHint,
             onTextChange: (newText) {
               context.read<SignUpBloc>().onNameChange(newText);
@@ -137,6 +157,7 @@ class SignUpScreen extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
+            textController: emailController,
             hintText: S.of(context).emailHint,
             onTextChange: (newText) {
               context.read<SignUpBloc>().onEmailChange(newText);
@@ -149,6 +170,7 @@ class SignUpScreen extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
+            textController: passwordController,
             onTextChange: (newText) {
               context.read<SignUpBloc>().onPasswordChange(newText);
             },
@@ -161,6 +183,7 @@ class SignUpScreen extends StatelessWidget {
             height: 16,
           ),
           AppTextField(
+            textController: passwordConfirmController,
             onTextChange: (newText) {
               context.read<SignUpBloc>().onPasswordConfirmChange(newText);
             },
