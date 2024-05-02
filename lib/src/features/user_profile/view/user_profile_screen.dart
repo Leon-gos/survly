@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:survly/gen/assets.gen.dart';
 import 'package:survly/src/features/user_profile/logic/user_profile_bloc.dart';
 import 'package:survly/src/features/user_profile/logic/user_profile_state.dart';
 import 'package:survly/src/localization/localization_utils.dart';
@@ -78,7 +79,10 @@ class UserProfileScreen extends StatelessWidget {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.attach_money_outlined),
+                            Assets.images.dongIcon.image(
+                              width: 24,
+                              height: 24,
+                            ),
                             Text(S.of(context).lableBalance),
                             Text(user.balance.toString()),
                           ],
