@@ -46,19 +46,19 @@ class AccountBloc extends Cubit<AccountState> {
     if (date == null) {
       return;
     }
-    var dateString = DateHelper.getDateOnly(date);
+    // var dateString = DateHelper.getDateOnly(date);
     if (state.isUser) {
       emit(
         state.copyWith(
           userBaseClone:
-              (state.userBaseClone as User).copyWith(birthDate: dateString),
+              (state.userBaseClone as User).copyWith(birthDate: date),
         ),
       );
     } else if (state.isAdmin) {
       emit(
         state.copyWith(
           userBaseClone:
-              (state.userBaseClone as Admin).copyWith(birthDate: dateString),
+              (state.userBaseClone as Admin).copyWith(birthDate: date),
         ),
       );
     }
