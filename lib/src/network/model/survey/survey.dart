@@ -242,8 +242,6 @@ class Survey {
       adminId: map['adminId']?.toString() ?? "",
       outlet: Outlet(
         address: map[SurveyCollection.fieldAddress],
-        // latitude: map[SurveyCollection.fieldLatitude],
-        // longitude: map[SurveyCollection.fieldLongitude],
         geoPoint: map[SurveyCollection.fieldGeoPoint],
         geoHash: map[SurveyCollection.fieldGeoHash],
       ),

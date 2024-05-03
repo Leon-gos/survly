@@ -22,8 +22,6 @@ class SelectLocationBloc extends Cubit<SelectLocationState> {
   void moveCamera(Results result) {
     try {
       Outlet outlet = Outlet(
-        // latitude: result.geometry!.location!.lat!,
-        // longitude: result.geometry!.location!.lng!,
         geoPoint: GeoPoint(
           result.geometry!.location!.lat!,
           result.geometry!.location!.lng!,
@@ -66,8 +64,6 @@ class SelectLocationBloc extends Cubit<SelectLocationState> {
     emit(
       state.copyWith(
         searchedLocation: Outlet(
-          // latitude: latLng.latitude,
-          // longitude: latLng.longitude,
           geoPoint: GeoPoint(
             latLng.latitude,
             latLng.longitude,
