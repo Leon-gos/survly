@@ -117,6 +117,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
       survey.adminId = UserBaseSingleton.instance().userBase!.id;
       final value = await ref.add({});
       survey.surveyId = value.id;
+      survey.genGeohash();
       survey.genSearchList();
       ref.doc("/${value.id}").set({
         ...survey.toMap(),
@@ -158,6 +159,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
   }) async {
     try {
       // 1: insert survey
+      survey.genGeohash();
       survey.genSearchList();
       ref.doc("/${survey.surveyId}").set({
         ...survey.toMap(),

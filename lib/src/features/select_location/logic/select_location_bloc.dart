@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -21,8 +22,12 @@ class SelectLocationBloc extends Cubit<SelectLocationState> {
   void moveCamera(Results result) {
     try {
       Outlet outlet = Outlet(
-        latitude: result.geometry!.location!.lat!,
-        longitude: result.geometry!.location!.lng!,
+        // latitude: result.geometry!.location!.lat!,
+        // longitude: result.geometry!.location!.lng!,
+        geoPoint: GeoPoint(
+          result.geometry!.location!.lat!,
+          result.geometry!.location!.lng!,
+        ),
         address: result.formattedAddress,
       );
       emit(
@@ -61,8 +66,12 @@ class SelectLocationBloc extends Cubit<SelectLocationState> {
     emit(
       state.copyWith(
         searchedLocation: Outlet(
-          latitude: latLng.latitude,
-          longitude: latLng.longitude,
+          // latitude: latLng.latitude,
+          // longitude: latLng.longitude,
+          geoPoint: GeoPoint(
+            latLng.latitude,
+            latLng.longitude,
+          ),
           address: address,
         ),
       ),
