@@ -23,11 +23,11 @@ abstract class SurveyRepository {
   Future<List<Survey>> fetchFirstPageExploreSurvey();
   Future<List<Survey>> fetchMoreExploreSurvey({required Survey lastSurvey});
   Future<List<Survey>> fetchFirstPageExploreSurveyNearBy({
-    required int km,
+    required double km,
     required GeoPoint geoPoint,
   });
   Future<List<Survey>> fetchMoreExploreSurveyNearBy({
-    required int km,
+    required double km,
     required GeoPoint geoPoint,
     required Survey lastSurvey,
   });

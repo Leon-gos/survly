@@ -286,7 +286,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
 
   @override
   Future<List<Survey>> fetchFirstPageExploreSurveyNearBy({
-    required int km,
+    required double km,
     required geohash.GeoPoint geoPoint,
   }) async {
     List<Survey> list = [];
@@ -296,8 +296,12 @@ class SurveyRepositoryImpl implements SurveyRepository {
     List<Future> futures = [];
     for (List<String> b in bounds) {
       var q = ref
+          .where(
+            SurveyCollection.fieldStatus,
+            isEqualTo: SurveyStatus.public.value,
+          )
           .orderBy(SurveyCollection.fieldGeoHash)
-          .startAt([b[0]]).endAt([b[1]]).limit(3);
+          .startAt([b[0]]).endAt([b[1]]).limit(pageSize);
       futures.add(q.get());
     }
 
@@ -312,32 +316,12 @@ class SurveyRepositoryImpl implements SurveyRepository {
       }
     });
 
-    // var now = DateTime.now();
-    // var today = DateTime(now.year, now.month, now.day, 0, 0);
-
-    // var value = await ref
-    //     .orderBy(SurveyCollection.fieldDateStart)
-    //     .where(
-    //       SurveyCollection.fieldDateStart,
-    //       isGreaterThan: Timestamp.fromDate(today),
-    //     )
-    //     .where(SurveyCollection.fieldStatus,
-    //         isEqualTo: SurveyStatus.public.value)
-    //     .limit(pageSize)
-    //     .get();
-    // for (var doc in value.docs) {
-    //   var data = doc.data();
-    //   data[SurveyCollection.fieldSurveyId] = doc.id;
-    //   var survey = Survey.fromMap(data);
-    //   list.add(survey);
-    // }
-
     return list;
   }
 
   @override
   Future<List<Survey>> fetchMoreExploreSurveyNearBy({
-    required int km,
+    required double km,
     required geohash.GeoPoint geoPoint,
     required Survey lastSurvey,
   }) async {
@@ -348,11 +332,15 @@ class SurveyRepositoryImpl implements SurveyRepository {
     List<Future> futures = [];
     for (List<String> b in bounds) {
       var q = ref
+          .where(
+            SurveyCollection.fieldStatus,
+            isEqualTo: SurveyStatus.public.value,
+          )
           .orderBy(SurveyCollection.fieldGeoHash)
           .startAt([b[0]])
           .endAt([b[1]])
           .startAfterDocument(await ref.doc(lastSurvey.surveyId).get())
-          .limit(3);
+          .limit(pageSize);
       futures.add(q.get());
     }
 
