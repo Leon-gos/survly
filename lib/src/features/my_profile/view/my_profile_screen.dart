@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
+import 'package:survly/gen/assets.gen.dart';
 import 'package:survly/src/features/dashboard/logic/account_bloc.dart';
 import 'package:survly/src/features/dashboard/logic/account_state.dart';
 import 'package:survly/src/features/my_profile/logic/my_profile_bloc.dart';
@@ -156,7 +157,10 @@ class MyProfileScreen extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.attach_money_outlined),
+                        Assets.svgs.icDong.svg(
+                          width: 21,
+                          height: 21,
+                        ),
                         Text(S.of(context).lableBalance),
                         Text(user.balance.toString()),
                       ],
