@@ -57,6 +57,10 @@ class NotificationService {
     }
   }
 
+  static Future<void> deleteToken() async {
+    await FirebaseMessaging.instance.deleteToken();
+  }
+
   static void setupLocalNoti() {
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) async {
