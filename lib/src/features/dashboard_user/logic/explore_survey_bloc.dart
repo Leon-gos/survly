@@ -28,12 +28,18 @@ class ExploreSurveyBloc extends Cubit<ExploreSurveyState> {
   Future<void> fetchFirstPageSurvey() async {
     emit(state.copyWith(surveyList: []));
     try {
-      // var surveyList = await domainManager.survey.fetchFirstPageExploreSurvey();
-      var surveyList =
-          await domainManager.survey.fetchFirstPageExploreSurveyNearBy(
-        km: distanceInKm,
-        geoPoint: UserBaseSingleton.instance().geoPoint!,
-      );
+      List<Survey> surveyList = [];
+      if (state.isShowSurveyNearby) {
+        surveyList =
+            await domainManager.survey.fetchFirstPageExploreSurveyNearBy(
+          km: distanceInKm,
+          geoPoint: UserBaseSingleton.instance().geoPoint!,
+        );
+        Logger().d("fetch nearby");
+      } else {
+        surveyList = await domainManager.survey.fetchFirstPageExploreSurvey();
+        Logger().d("fetch all");
+      }
       concatSurveyList(surveyList);
     } catch (e) {
       Logger().e("Failed to fetch first page of surveys", error: e);
@@ -47,27 +53,27 @@ class ExploreSurveyBloc extends Cubit<ExploreSurveyState> {
     _debounce.run(() async {
       if (state.surveyList.length - 1 >= 0) {
         try {
-          // List<Survey> surveyList =
-          //     await domainManager.survey.fetchMoreExploreSurvey(
-          //   lastSurvey: state.surveyList[state.surveyList.length - 1],
-          // );
-          List<Survey> surveyList =
-              await domainManager.survey.fetchMoreExploreSurveyNearBy(
-            km: distanceInKm,
-            geoPoint: UserBaseSingleton.instance().geoPoint!,
-            lastSurvey: state.surveyList[state.surveyList.length - 1],
-          );
-          Logger().d(surveyList.length);
+          List<Survey> surveyList = [];
+          if (state.isShowSurveyNearby) {
+            surveyList = surveyList =
+                await domainManager.survey.fetchMoreExploreSurveyNearBy(
+              km: distanceInKm,
+              geoPoint: UserBaseSingleton.instance().geoPoint!,
+              lastSurvey: state.surveyList[state.surveyList.length - 1],
+            );
+            Logger().d("fetch nearby ${surveyList.length}");
+          } else {
+            surveyList = await domainManager.survey.fetchMoreExploreSurvey(
+              lastSurvey: state.surveyList[state.surveyList.length - 1],
+            );
+            Logger().d("fetch all ${surveyList.length}");
+          }
           concatSurveyList(surveyList);
         } catch (e) {
           Logger().e("Failed to fetch more surveys", error: e);
         }
       }
     });
-  }
-
-  void filterSurveyList(bool isShowMySurvey) {
-    emit(state.copyWith(isShowMySurvey: isShowMySurvey));
   }
 
   void onSurveyListItemChange(Survey oldSurvey, Survey newSurvey) {
@@ -78,5 +84,22 @@ class ExploreSurveyBloc extends Cubit<ExploreSurveyState> {
     } catch (e) {
       Logger().e(S.text.errorGeneral, error: e);
     }
+  }
+
+  void onSearchKeywordChange(String text) {
+    emit(state.copyWith(searchKeyWord: text));
+  }
+
+  void onShowingFilterSheetChange(bool value) {
+    emit(state.copyWith(isShowingFilterSheet: value));
+  }
+
+  void searchSurvey() {
+    //TODO: search survey
+  }
+
+  void showSurveyNearbyChanged(bool value) {
+    emit(state.copyWith(isShowSurveyNearby: value));
+    fetchFirstPageSurvey();
   }
 }

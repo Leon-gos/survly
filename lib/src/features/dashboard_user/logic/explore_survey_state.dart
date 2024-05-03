@@ -1,50 +1,57 @@
 import 'package:equatable/equatable.dart';
-import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
+
 import 'package:survly/src/network/model/survey/survey.dart';
 
 class ExploreSurveyState extends Equatable {
   final List<Survey> surveyList;
   final bool isLoading;
-  final bool isShowMySurvey;
+  final bool isShowingFilterSheet;
+  final bool isShowSurveyNearby;
+  final String searchKeyWord;
 
   const ExploreSurveyState({
     required this.surveyList,
     required this.isLoading,
-    required this.isShowMySurvey,
+    required this.isShowingFilterSheet,
+    required this.isShowSurveyNearby,
+    required this.searchKeyWord,
   });
 
   factory ExploreSurveyState.ds() => const ExploreSurveyState(
         surveyList: [],
         isLoading: true,
-        isShowMySurvey: false,
+        isShowingFilterSheet: false,
+        isShowSurveyNearby: true,
+        searchKeyWord: '',
       );
 
   List<Survey> get surveyFilterList {
-    if (isShowMySurvey) {
-      List<Survey> mySurveyList = [];
-      for (var survey in surveyList) {
-        if (survey.adminId == UserBaseSingleton.instance().userBase?.id) {
-          mySurveyList.add(survey);
-        }
-      }
-      return mySurveyList;
-    }
     return surveyList;
   }
 
   ExploreSurveyState copyWith({
     List<Survey>? surveyList,
     bool? isLoading,
-    bool? isShowMySurvey,
+    bool? isShowingFilterSheet,
+    bool? isShowSurveyNearby,
+    String? searchKeyWord,
   }) {
     return ExploreSurveyState(
       surveyList: surveyList ?? this.surveyList,
       isLoading: isLoading ?? this.isLoading,
-      isShowMySurvey: isShowMySurvey ?? this.isShowMySurvey,
+      isShowingFilterSheet: isShowingFilterSheet ?? this.isShowingFilterSheet,
+      isShowSurveyNearby: isShowSurveyNearby ?? this.isShowSurveyNearby,
+      searchKeyWord: searchKeyWord ?? this.searchKeyWord,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [surveyList, surveyFilterList, isLoading, isShowMySurvey];
+  List<Object?> get props => [
+        surveyList,
+        surveyFilterList,
+        isLoading,
+        isShowSurveyNearby,
+        searchKeyWord,
+        isShowingFilterSheet
+      ];
 }
