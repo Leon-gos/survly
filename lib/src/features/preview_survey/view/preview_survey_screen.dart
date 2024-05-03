@@ -86,7 +86,7 @@ class PreviewSurveyScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "${S.of(context).hintDateFrom} ${DateHelper.getDateOnlyFromDateString(state.survey.dateStart)} ${S.of(context).hintDateTo} ${DateHelper.getDateOnlyFromDateString(state.survey.dateEnd)}",
+                      "${S.of(context).hintDateFrom} ${DateHelper.getDateOnly(state.survey.dateStart)} ${S.of(context).hintDateTo} ${DateHelper.getDateOnly(state.survey.dateEnd)}",
                     ),
                     const SizedBox(height: 8),
                     Text(

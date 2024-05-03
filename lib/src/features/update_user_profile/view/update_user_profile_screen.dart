@@ -8,6 +8,7 @@ import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/user/user.dart';
 import 'package:survly/src/service/picker_service.dart';
 import 'package:survly/src/theme/colors.dart';
+import 'package:survly/src/utils/date_helper.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_avatar_picker_widget.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
@@ -134,7 +135,7 @@ class _UpdateUserProfileScreenState extends State<UpdateUserProfileScreen> {
                 border: Border.all(width: 1, color: Colors.black54),
               ),
               child: Text(
-                user.birthDate,
+                DateHelper.getDateOnly(user.birthDate),
                 style: const TextStyle(fontSize: 16),
               ),
             ),
