@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/dashboard_user/logic/explore_survey_state.dart';
+import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/utils/debouncer.dart';
@@ -26,7 +27,12 @@ class ExploreSurveyBloc extends Cubit<ExploreSurveyState> {
   Future<void> fetchFirstPageSurvey() async {
     emit(state.copyWith(surveyList: []));
     try {
-      var surveyList = await domainManager.survey.fetchFirstPageExploreSurvey();
+      // var surveyList = await domainManager.survey.fetchFirstPageExploreSurvey();
+      var surveyList =
+          await domainManager.survey.fetchFirstPageExploreSurveyNearBy(
+        km: 3000,
+        geoPoint: UserBaseSingleton.instance().geoPoint!,
+      );
       concatSurveyList(surveyList);
     } catch (e) {
       Logger().e("Failed to fetch first page of surveys", error: e);
@@ -40,8 +46,14 @@ class ExploreSurveyBloc extends Cubit<ExploreSurveyState> {
     _debounce.run(() async {
       if (state.surveyList.length - 1 >= 0) {
         try {
+          // List<Survey> surveyList =
+          //     await domainManager.survey.fetchMoreExploreSurvey(
+          //   lastSurvey: state.surveyList[state.surveyList.length - 1],
+          // );
           List<Survey> surveyList =
-              await domainManager.survey.fetchMoreExploreSurvey(
+              await domainManager.survey.fetchMoreExploreSurveyNearBy(
+            km: 3000,
+            geoPoint: UserBaseSingleton.instance().geoPoint!,
             lastSurvey: state.surveyList[state.surveyList.length - 1],
           );
           Logger().d(surveyList.length);

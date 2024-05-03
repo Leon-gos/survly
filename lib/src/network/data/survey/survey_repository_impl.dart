@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_geo_hash/geohash.dart' as geohash;
+import 'package:flutter_geo_hash/geohash.dart';
 import 'package:logger/logger.dart';
 import 'package:logger/web.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
@@ -278,6 +280,92 @@ class SurveyRepositoryImpl implements SurveyRepository {
       var survey = Survey.fromMap(data);
       list.add(survey);
     }
+
+    return list;
+  }
+
+  @override
+  Future<List<Survey>> fetchFirstPageExploreSurveyNearBy({
+    required int km,
+    required geohash.GeoPoint geoPoint,
+  }) async {
+    List<Survey> list = [];
+
+    List<List<String>> bounds =
+        MyGeoHash().geohashQueryBounds(geoPoint, km * 1000);
+    List<Future> futures = [];
+    for (List<String> b in bounds) {
+      var q = ref
+          .orderBy(SurveyCollection.fieldGeoHash)
+          .startAt([b[0]]).endAt([b[1]]).limit(3);
+      futures.add(q.get());
+    }
+
+    await Future.wait(futures).then((snapshots) {
+      for (var snap in snapshots) {
+        for (var doc in snap.docs) {
+          var data = doc.data();
+          data[SurveyCollection.fieldSurveyId] = doc.id;
+          var survey = Survey.fromMap(data);
+          list.add(survey);
+        }
+      }
+    });
+
+    // var now = DateTime.now();
+    // var today = DateTime(now.year, now.month, now.day, 0, 0);
+
+    // var value = await ref
+    //     .orderBy(SurveyCollection.fieldDateStart)
+    //     .where(
+    //       SurveyCollection.fieldDateStart,
+    //       isGreaterThan: Timestamp.fromDate(today),
+    //     )
+    //     .where(SurveyCollection.fieldStatus,
+    //         isEqualTo: SurveyStatus.public.value)
+    //     .limit(pageSize)
+    //     .get();
+    // for (var doc in value.docs) {
+    //   var data = doc.data();
+    //   data[SurveyCollection.fieldSurveyId] = doc.id;
+    //   var survey = Survey.fromMap(data);
+    //   list.add(survey);
+    // }
+
+    return list;
+  }
+
+  @override
+  Future<List<Survey>> fetchMoreExploreSurveyNearBy({
+    required int km,
+    required geohash.GeoPoint geoPoint,
+    required Survey lastSurvey,
+  }) async {
+    List<Survey> list = [];
+
+    List<List<String>> bounds =
+        MyGeoHash().geohashQueryBounds(geoPoint, km * 1000);
+    List<Future> futures = [];
+    for (List<String> b in bounds) {
+      var q = ref
+          .orderBy(SurveyCollection.fieldGeoHash)
+          .startAt([b[0]])
+          .endAt([b[1]])
+          .startAfterDocument(await ref.doc(lastSurvey.surveyId).get())
+          .limit(3);
+      futures.add(q.get());
+    }
+
+    await Future.wait(futures).then((snapshots) {
+      for (var snap in snapshots) {
+        for (var doc in snap.docs) {
+          var data = doc.data();
+          data[SurveyCollection.fieldSurveyId] = doc.id;
+          var survey = Survey.fromMap(data);
+          list.add(survey);
+        }
+      }
+    });
 
     return list;
   }

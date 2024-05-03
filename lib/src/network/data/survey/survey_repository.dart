@@ -1,3 +1,4 @@
+import 'package:flutter_geo_hash/geohash.dart';
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 
@@ -21,6 +22,15 @@ abstract class SurveyRepository {
   Future<void> changeSurveyStatus(String surveyId, String newStatus);
   Future<List<Survey>> fetchFirstPageExploreSurvey();
   Future<List<Survey>> fetchMoreExploreSurvey({required Survey lastSurvey});
+  Future<List<Survey>> fetchFirstPageExploreSurveyNearBy({
+    required int km,
+    required GeoPoint geoPoint,
+  });
+  Future<List<Survey>> fetchMoreExploreSurveyNearBy({
+    required int km,
+    required GeoPoint geoPoint,
+    required Survey lastSurvey,
+  });
   Future<void> increaseSurveyRespondentNum(String surveyId);
   Future<List<Survey>> fetchAdminSurveyList(String? adminId);
 }
