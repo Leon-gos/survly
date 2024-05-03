@@ -45,7 +45,6 @@ class AccountBloc extends Cubit<AccountState> {
     if (date == null) {
       return;
     }
-    // var dateString = DateHelper.getDateOnly(date);
     if (state.isUser) {
       emit(
         state.copyWith(
