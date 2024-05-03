@@ -33,11 +33,14 @@ class $AssetsImagesGen {
 class $AssetsSvgsGen {
   const $AssetsSvgsGen();
 
+  /// File path: assets/svgs/ic_dong.svg
+  SvgGenImage get icDong => const SvgGenImage('assets/svgs/ic_dong.svg');
+
   /// File path: assets/svgs/ic_google.svg
   SvgGenImage get icGoogle => const SvgGenImage('assets/svgs/ic_google.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [icGoogle];
+  List<SvgGenImage> get values => [icDong, icGoogle];
 }
 
 class Assets {

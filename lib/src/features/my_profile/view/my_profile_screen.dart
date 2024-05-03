@@ -157,9 +157,9 @@ class MyProfileScreen extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Assets.images.dongIcon.image(
-                          width: 24,
-                          height: 24,
+                        Assets.svgs.icDong.svg(
+                          width: 21,
+                          height: 21,
                         ),
                         Text(S.of(context).lableBalance),
                         Text(user.balance.toString()),
