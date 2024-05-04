@@ -225,22 +225,45 @@ class SurveyRepositoryImpl implements SurveyRepository {
   }
 
   @override
-  Future<List<Survey>> fetchFirstPageExploreSurvey() async {
+  Future<List<Survey>> fetchFirstPageExploreSurvey({
+    String? searchKeyword,
+  }) async {
     List<Survey> list = [];
 
     var now = DateTime.now();
     var today = DateTime(now.year, now.month, now.day, 0, 0);
 
-    var value = await ref
-        .orderBy(SurveyCollection.fieldDateStart)
-        .where(
-          SurveyCollection.fieldDateStart,
-          isGreaterThan: Timestamp.fromDate(today),
-        )
-        .where(SurveyCollection.fieldStatus,
-            isEqualTo: SurveyStatus.public.value)
-        .limit(pageSize)
-        .get();
+    QuerySnapshot<Map<String, dynamic>> value;
+    if (searchKeyword != null) {
+      value = await ref
+          .orderBy(SurveyCollection.fieldDateStart)
+          .where(
+            SurveyCollection.fieldDateStart,
+            isGreaterThan: Timestamp.fromDate(today),
+          )
+          .where(SurveyCollection.fieldStatus,
+              isEqualTo: SurveyStatus.public.value)
+          .where(
+            SurveyCollection.fieldSearchList,
+            arrayContainsAny: List.from(
+              searchKeyword.toLowerCase().trim().split(" "),
+            ),
+          )
+          .limit(pageSize)
+          .get();
+    } else {
+      value = await ref
+          .orderBy(SurveyCollection.fieldDateStart)
+          .where(
+            SurveyCollection.fieldDateStart,
+            isGreaterThan: Timestamp.fromDate(today),
+          )
+          .where(SurveyCollection.fieldStatus,
+              isEqualTo: SurveyStatus.public.value)
+          .limit(pageSize)
+          .get();
+    }
+
     for (var doc in value.docs) {
       var data = doc.data();
       data[SurveyCollection.fieldSurveyId] = doc.id;
@@ -254,6 +277,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
   @override
   Future<List<Survey>> fetchMoreExploreSurvey({
     required Survey lastSurvey,
+    String? searchKeyword,
   }) async {
     List<Survey> list = [];
 
@@ -261,17 +285,40 @@ class SurveyRepositoryImpl implements SurveyRepository {
     var today = DateTime(now.year, now.month, now.day, 0, 0);
 
     var lastDoc = await ref.doc(lastSurvey.surveyId).get();
-    var value = await ref
-        .orderBy(SurveyCollection.fieldDateStart)
-        .where(
-          SurveyCollection.fieldDateStart,
-          isGreaterThan: Timestamp.fromDate(today),
-        )
-        .where(SurveyCollection.fieldStatus,
-            isEqualTo: SurveyStatus.public.value)
-        .startAfterDocument(lastDoc)
-        .limit(pageSize)
-        .get();
+
+    QuerySnapshot<Map<String, dynamic>> value;
+    if (searchKeyword != null) {
+      value = await ref
+          .orderBy(SurveyCollection.fieldDateStart)
+          .where(
+            SurveyCollection.fieldDateStart,
+            isGreaterThan: Timestamp.fromDate(today),
+          )
+          .where(SurveyCollection.fieldStatus,
+              isEqualTo: SurveyStatus.public.value)
+          .where(
+            SurveyCollection.fieldSearchList,
+            arrayContainsAny: List.from(
+              searchKeyword.toLowerCase().trim().split(" "),
+            ),
+          )
+          .startAfterDocument(lastDoc)
+          .limit(pageSize)
+          .get();
+    } else {
+      value = await ref
+          .orderBy(SurveyCollection.fieldDateStart)
+          .where(
+            SurveyCollection.fieldDateStart,
+            isGreaterThan: Timestamp.fromDate(today),
+          )
+          .where(SurveyCollection.fieldStatus,
+              isEqualTo: SurveyStatus.public.value)
+          .startAfterDocument(lastDoc)
+          .limit(pageSize)
+          .get();
+    }
+
     for (var doc in value.docs) {
       var data = doc.data();
 
@@ -291,6 +338,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
   Future<List<Survey>> fetchFirstPageExploreSurveyNearBy({
     required double km,
     required geohash.GeoPoint geoPoint,
+    String? searchKeyword,
   }) async {
     List<Survey> list = [];
 
@@ -304,13 +352,31 @@ class SurveyRepositoryImpl implements SurveyRepository {
       if (list.length >= pageSize) {
         break;
       }
-      var value = await ref
-          .where(
-            SurveyCollection.fieldStatus,
-            isEqualTo: SurveyStatus.public.value,
-          )
-          .orderBy(SurveyCollection.fieldGeoHash)
-          .startAt([b[0]]).endAt([b[1]]).get();
+      QuerySnapshot<Map<String, dynamic>> value;
+      if (searchKeyword != null) {
+        value = await ref
+            .where(
+              SurveyCollection.fieldStatus,
+              isEqualTo: SurveyStatus.public.value,
+            )
+            .where(
+              SurveyCollection.fieldSearchList,
+              arrayContainsAny: List.from(
+                searchKeyword.toLowerCase().trim().split(" "),
+              ),
+            )
+            .orderBy(SurveyCollection.fieldGeoHash)
+            .startAt([b[0]]).endAt([b[1]]).get();
+      } else {
+        value = await ref
+            .where(
+              SurveyCollection.fieldStatus,
+              isEqualTo: SurveyStatus.public.value,
+            )
+            .orderBy(SurveyCollection.fieldGeoHash)
+            .startAt([b[0]]).endAt([b[1]]).get();
+      }
+
       for (var doc in value.docs) {
         var data = doc.data();
         data[SurveyCollection.fieldSurveyId] = doc.id;
@@ -332,6 +398,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
     required double km,
     required geohash.GeoPoint geoPoint,
     required Survey lastSurvey,
+    String? searchKeyword,
   }) async {
     List<Survey> list = [];
 
@@ -345,16 +412,37 @@ class SurveyRepositoryImpl implements SurveyRepository {
       if (list.length >= pageSize) {
         break;
       }
-      var value = await ref
-          .where(
-            SurveyCollection.fieldStatus,
-            isEqualTo: SurveyStatus.public.value,
-          )
-          .orderBy(SurveyCollection.fieldGeoHash)
-          .startAt([b[0]])
-          .endAt([b[1]])
-          .startAfterDocument(await ref.doc(lastSurvey.surveyId).get())
-          .get();
+      QuerySnapshot<Map<String, dynamic>> value;
+
+      if (searchKeyword != null) {
+        value = await ref
+            .where(
+              SurveyCollection.fieldStatus,
+              isEqualTo: SurveyStatus.public.value,
+            )
+            .where(
+              SurveyCollection.fieldSearchList,
+              arrayContainsAny: List.from(
+                searchKeyword.toLowerCase().trim().split(" "),
+              ),
+            )
+            .orderBy(SurveyCollection.fieldGeoHash)
+            .startAt([b[0]])
+            .endAt([b[1]])
+            .startAfterDocument(await ref.doc(lastSurvey.surveyId).get())
+            .get();
+      } else {
+        value = await ref
+            .where(
+              SurveyCollection.fieldStatus,
+              isEqualTo: SurveyStatus.public.value,
+            )
+            .orderBy(SurveyCollection.fieldGeoHash)
+            .startAt([b[0]])
+            .endAt([b[1]])
+            .startAfterDocument(await ref.doc(lastSurvey.surveyId).get())
+            .get();
+      }
       for (var doc in value.docs) {
         var data = doc.data();
         data[SurveyCollection.fieldSurveyId] = doc.id;

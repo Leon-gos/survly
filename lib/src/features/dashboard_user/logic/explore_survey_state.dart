@@ -7,14 +7,14 @@ class ExploreSurveyState extends Equatable {
   final bool isLoading;
   final bool isShowingFilterSheet;
   final bool isShowSurveyNearby;
-  final String searchKeyWord;
+  final String searchKeyword;
 
   const ExploreSurveyState({
     required this.surveyList,
     required this.isLoading,
     required this.isShowingFilterSheet,
     required this.isShowSurveyNearby,
-    required this.searchKeyWord,
+    required this.searchKeyword,
   });
 
   factory ExploreSurveyState.ds() => const ExploreSurveyState(
@@ -22,7 +22,7 @@ class ExploreSurveyState extends Equatable {
         isLoading: true,
         isShowingFilterSheet: false,
         isShowSurveyNearby: true,
-        searchKeyWord: '',
+        searchKeyword: '',
       );
 
   List<Survey> get surveyFilterList {
@@ -34,14 +34,14 @@ class ExploreSurveyState extends Equatable {
     bool? isLoading,
     bool? isShowingFilterSheet,
     bool? isShowSurveyNearby,
-    String? searchKeyWord,
+    String? searchKeyword,
   }) {
     return ExploreSurveyState(
       surveyList: surveyList ?? this.surveyList,
       isLoading: isLoading ?? this.isLoading,
       isShowingFilterSheet: isShowingFilterSheet ?? this.isShowingFilterSheet,
       isShowSurveyNearby: isShowSurveyNearby ?? this.isShowSurveyNearby,
-      searchKeyWord: searchKeyWord ?? this.searchKeyWord,
+      searchKeyword: searchKeyword ?? this.searchKeyword,
     );
   }
 
@@ -51,7 +51,7 @@ class ExploreSurveyState extends Equatable {
         surveyFilterList,
         isLoading,
         isShowSurveyNearby,
-        searchKeyWord,
+        searchKeyword,
         isShowingFilterSheet
       ];
 }

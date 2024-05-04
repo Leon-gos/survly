@@ -25,7 +25,7 @@ class ExploreSurveyBloc extends Cubit<ExploreSurveyState> {
     emit(state.copyWith(surveyList: newList, isLoading: false));
   }
 
-  Future<void> fetchFirstPageSurvey() async {
+  Future<void> fetchFirstPageSurvey({String? searchKeyword}) async {
     emit(state.copyWith(surveyList: []));
     try {
       List<Survey> surveyList = [];
@@ -34,10 +34,13 @@ class ExploreSurveyBloc extends Cubit<ExploreSurveyState> {
             await domainManager.survey.fetchFirstPageExploreSurveyNearBy(
           km: distanceInKm,
           geoPoint: UserBaseSingleton.instance().geoPoint!,
+          searchKeyword: searchKeyword,
         );
         Logger().d("fetch nearby ${surveyList.length} ");
       } else {
-        surveyList = await domainManager.survey.fetchFirstPageExploreSurvey();
+        surveyList = await domainManager.survey.fetchFirstPageExploreSurvey(
+          searchKeyword: searchKeyword,
+        );
         Logger().d("fetch all ${surveyList.length}");
       }
       concatSurveyList(surveyList);
@@ -49,7 +52,7 @@ class ExploreSurveyBloc extends Cubit<ExploreSurveyState> {
     }
   }
 
-  Future<void> fetchMoreSurvey() async {
+  Future<void> fetchMoreSurvey({String? searchKeyword}) async {
     _debounce.run(() async {
       if (state.surveyList.length - 1 >= 0) {
         try {
@@ -60,11 +63,13 @@ class ExploreSurveyBloc extends Cubit<ExploreSurveyState> {
               km: distanceInKm,
               geoPoint: UserBaseSingleton.instance().geoPoint!,
               lastSurvey: state.surveyList[state.surveyList.length - 1],
+              searchKeyword: searchKeyword,
             );
             Logger().d("fetch nearby ${surveyList.length}");
           } else {
             surveyList = await domainManager.survey.fetchMoreExploreSurvey(
               lastSurvey: state.surveyList[state.surveyList.length - 1],
+              searchKeyword: searchKeyword,
             );
             Logger().d("fetch all ${surveyList.length}");
           }
@@ -87,7 +92,7 @@ class ExploreSurveyBloc extends Cubit<ExploreSurveyState> {
   }
 
   void onSearchKeywordChange(String text) {
-    emit(state.copyWith(searchKeyWord: text));
+    emit(state.copyWith(searchKeyword: text));
   }
 
   void onShowingFilterSheetChange(bool value) {
@@ -95,7 +100,9 @@ class ExploreSurveyBloc extends Cubit<ExploreSurveyState> {
   }
 
   void searchSurvey() {
-    //TODO: search survey
+    fetchFirstPageSurvey(
+      searchKeyword: state.searchKeyword != "" ? state.searchKeyword : null,
+    );
   }
 
   void showSurveyNearbyChanged(bool value) {

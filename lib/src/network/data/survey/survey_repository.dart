@@ -20,16 +20,23 @@ abstract class SurveyRepository {
   Future<Survey?> fetchSurveyById(String surveyId);
 
   Future<void> changeSurveyStatus(String surveyId, String newStatus);
-  Future<List<Survey>> fetchFirstPageExploreSurvey();
-  Future<List<Survey>> fetchMoreExploreSurvey({required Survey lastSurvey});
+  Future<List<Survey>> fetchFirstPageExploreSurvey({
+    String? searchKeyword,
+  });
+  Future<List<Survey>> fetchMoreExploreSurvey({
+    required Survey lastSurvey,
+    String? searchKeyword,
+  });
   Future<List<Survey>> fetchFirstPageExploreSurveyNearBy({
     required double km,
     required GeoPoint geoPoint,
+    String? searchKeyword,
   });
   Future<List<Survey>> fetchMoreExploreSurveyNearBy({
     required double km,
     required GeoPoint geoPoint,
     required Survey lastSurvey,
+    String? searchKeyword,
   });
   Future<void> increaseSurveyRespondentNum(String surveyId);
   Future<List<Survey>> fetchAdminSurveyList(String? adminId);
