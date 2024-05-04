@@ -15,7 +15,7 @@ class ExploreSurveyBloc extends Cubit<ExploreSurveyState> {
   }
 
   final Debouncer _debounce = Debouncer(milliseconds: 100);
-  double distanceInKm = 500;
+  double distanceInKm = 300;
 
   DomainManager domainManager = DomainManager();
 
@@ -35,10 +35,10 @@ class ExploreSurveyBloc extends Cubit<ExploreSurveyState> {
           km: distanceInKm,
           geoPoint: UserBaseSingleton.instance().geoPoint!,
         );
-        Logger().d("fetch nearby");
+        Logger().d("fetch nearby ${surveyList.length} ");
       } else {
         surveyList = await domainManager.survey.fetchFirstPageExploreSurvey();
-        Logger().d("fetch all");
+        Logger().d("fetch all ${surveyList.length}");
       }
       concatSurveyList(surveyList);
     } catch (e) {

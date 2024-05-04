@@ -257,12 +257,15 @@ class SurveyRepositoryImpl implements SurveyRepository {
   }) async {
     List<Survey> list = [];
 
+    var now = DateTime.now();
+    var today = DateTime(now.year, now.month, now.day, 0, 0);
+
     var lastDoc = await ref.doc(lastSurvey.surveyId).get();
     var value = await ref
         .orderBy(SurveyCollection.fieldDateStart)
         .where(
           SurveyCollection.fieldDateStart,
-          isGreaterThan: DateTime.now().toString(),
+          isGreaterThan: Timestamp.fromDate(today),
         )
         .where(SurveyCollection.fieldStatus,
             isEqualTo: SurveyStatus.public.value)
@@ -291,30 +294,35 @@ class SurveyRepositoryImpl implements SurveyRepository {
   }) async {
     List<Survey> list = [];
 
+    var now = DateTime.now();
+    var today = DateTime(now.year, now.month, now.day);
+
     List<List<String>> bounds =
         MyGeoHash().geohashQueryBounds(geoPoint, km * 1000);
-    List<Future> futures = [];
+
     for (List<String> b in bounds) {
-      var q = ref
+      if (list.length >= pageSize) {
+        break;
+      }
+      var value = await ref
           .where(
             SurveyCollection.fieldStatus,
             isEqualTo: SurveyStatus.public.value,
           )
           .orderBy(SurveyCollection.fieldGeoHash)
-          .startAt([b[0]]).endAt([b[1]]).limit(pageSize);
-      futures.add(q.get());
-    }
-
-    await Future.wait(futures).then((snapshots) {
-      for (var snap in snapshots) {
-        for (var doc in snap.docs) {
-          var data = doc.data();
-          data[SurveyCollection.fieldSurveyId] = doc.id;
-          var survey = Survey.fromMap(data);
+          .startAt([b[0]]).endAt([b[1]]).get();
+      for (var doc in value.docs) {
+        var data = doc.data();
+        data[SurveyCollection.fieldSurveyId] = doc.id;
+        var survey = Survey.fromMap(data);
+        if (today.compareTo(survey.dateStart!) < 0) {
           list.add(survey);
         }
+        if (list.length >= pageSize) {
+          break;
+        }
       }
-    });
+    }
 
     return list;
   }
@@ -327,11 +335,17 @@ class SurveyRepositoryImpl implements SurveyRepository {
   }) async {
     List<Survey> list = [];
 
+    var now = DateTime.now();
+    var today = DateTime(now.year, now.month, now.day, 0, 0);
+
     List<List<String>> bounds =
         MyGeoHash().geohashQueryBounds(geoPoint, km * 1000);
-    List<Future> futures = [];
+
     for (List<String> b in bounds) {
-      var q = ref
+      if (list.length >= pageSize) {
+        break;
+      }
+      var value = await ref
           .where(
             SurveyCollection.fieldStatus,
             isEqualTo: SurveyStatus.public.value,
@@ -340,20 +354,19 @@ class SurveyRepositoryImpl implements SurveyRepository {
           .startAt([b[0]])
           .endAt([b[1]])
           .startAfterDocument(await ref.doc(lastSurvey.surveyId).get())
-          .limit(pageSize);
-      futures.add(q.get());
-    }
-
-    await Future.wait(futures).then((snapshots) {
-      for (var snap in snapshots) {
-        for (var doc in snap.docs) {
-          var data = doc.data();
-          data[SurveyCollection.fieldSurveyId] = doc.id;
-          var survey = Survey.fromMap(data);
+          .get();
+      for (var doc in value.docs) {
+        var data = doc.data();
+        data[SurveyCollection.fieldSurveyId] = doc.id;
+        var survey = Survey.fromMap(data);
+        if (today.compareTo(survey.dateStart!) < 0) {
           list.add(survey);
         }
+        if (list.length >= pageSize) {
+          break;
+        }
       }
-    });
+    }
 
     return list;
   }
