@@ -170,6 +170,15 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
       doSurvey.survey = await surveyRepo.fetchSurveyById(doSurvey.surveyId);
       list.add(doSurvey);
     }
+    list.sort(
+      (a, b) {
+        try {
+          return b.survey!.dateStart!.compareTo(a.survey!.dateStart!);
+        } catch (e) {
+          return 0;
+        }
+      },
+    );
     return list;
   }
 
