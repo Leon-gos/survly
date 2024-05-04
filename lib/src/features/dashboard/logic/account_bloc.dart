@@ -147,6 +147,7 @@ class AccountBloc extends Cubit<AccountState> {
           return;
         });
       } catch (e) {
+        await domainManager.authentication.logout();
         AppCoordinator.goNamed(AppRouteNames.login.path);
         Logger().d(e);
       }
