@@ -3,6 +3,7 @@ import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/data/do_survey/do_survey_repository.dart';
 import 'package:survly/src/network/data/file/file_data.dart';
+import 'package:survly/src/network/data/survey/survey_repository_impl.dart';
 import 'package:survly/src/network/data/user/user_repository_impl.dart';
 import 'package:survly/src/network/model/do_survey/do_survey.dart';
 
@@ -158,12 +159,15 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
   Future<List<DoSurvey>> fetchUserJoinedSurvey(String userId) async {
     List<DoSurvey> list = [];
 
+    SurveyRepositoryImpl surveyRepo = SurveyRepositoryImpl();
+
     var value = await ref
         .where(DoSurveyCollection.fieldUserId, isEqualTo: userId)
         .get();
     for (var doc in value.docs) {
       var doSurvey = DoSurvey.fromMap(doc.data());
       doSurvey.doSurveyId = doc.id;
+      doSurvey.survey = await surveyRepo.fetchSurveyById(doSurvey.surveyId);
       list.add(doSurvey);
     }
     return list;
