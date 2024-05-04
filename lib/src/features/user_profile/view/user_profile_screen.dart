@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survly/gen/assets.gen.dart';
@@ -13,7 +15,7 @@ import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_avatar_widget.dart';
 
-class UserProfileScreen extends StatelessWidget {
+class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({
     super.key,
     required this.user,
@@ -22,9 +24,29 @@ class UserProfileScreen extends StatelessWidget {
   final User user;
 
   @override
+  State<StatefulWidget> createState() => _UserProfileScreenState();
+}
+
+class _UserProfileScreenState extends State<UserProfileScreen>
+    with TickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UserProfileBloc(user),
+      create: (context) => UserProfileBloc(widget.user),
       child: BlocBuilder<UserProfileBloc, UserProfileState>(
         buildWhen: (previous, current) =>
             previous.isShowProfile != current.isShowProfile ||
@@ -89,13 +111,69 @@ class UserProfileScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Expanded(child: _buildSurveyLists()),
+                  // Expanded(child: _buildSurveyLists()),
+                  Expanded(child: _buildTabbar()),
                 ],
               ),
             ),
           );
         },
       ),
+    );
+  }
+
+  Widget _buildTabbar() {
+    return Column(
+      children: [
+        TabBar(
+          controller: tabController,
+          tabs: [
+            Tab(
+              text: "Doing",
+            ),
+            Tab(
+              text: "Approved",
+            ),
+            Tab(
+              text: "Ignored",
+            ),
+          ],
+        ),
+        Expanded(
+          child: TabBarView(
+            controller: tabController,
+            children: [
+              Text("Doing"),
+              Text("Approved"),
+              Text("Ignored"),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildDoingList() {
+    return BlocBuilder<UserProfileBloc, UserProfileState>(
+      buildWhen: (previous, current) =>
+          previous.joinedSurveyList != current.joinedSurveyList,
+      builder: (context, state) {
+        return JoinedSurveyListWidget(
+          surveyList: state.joinedSurveyList,
+          doSurveyList: state.doSurveyList,
+          onRefresh: () => context.read<UserProfileBloc>().fetchJoinedSurvey(),
+          onItemClick: (survey, doSurvey) {
+            if (doSurvey.status == DoSurveyStatus.doing.value) {
+              context.push(AppRouteNames.doSurvey.path, extra: survey);
+            } else {
+              context.push(AppRouteNames.doSurveyReview.path, extra: [
+                survey.surveyId,
+                doSurvey.doSurveyId,
+              ]);
+            }
+          },
+        );
+      },
     );
   }
 

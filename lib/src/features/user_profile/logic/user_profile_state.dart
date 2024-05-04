@@ -23,6 +23,16 @@ class UserProfileState extends Equatable {
       doSurveyList: const [],
       isShowProfile: true);
 
+  // List<Survey> get doingSurveyList {
+  //   List<Survey> list = [];
+
+  //   for (var survey in joinedSurveyList) {
+  //     if ()
+  //   }
+
+  //   return list;
+  // }
+
   @override
   List<Object?> get props => [
         user,
