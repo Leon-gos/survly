@@ -25,12 +25,17 @@ class User extends UserBase {
     this.countDone,
   });
 
-  factory User.newUser({required String email, required String fullname}) =>
+  factory User.newUser({
+    required String id,
+    required String email,
+    required String fullname,
+    String? avatar,
+  }) =>
       User(
-        id: "",
+        id: id,
         fullname: fullname,
         email: email,
-        avatar: "",
+        avatar: avatar ?? "",
         gender: "",
         birthDate: DateTime(2000),
         phone: "",
