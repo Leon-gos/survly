@@ -285,15 +285,19 @@ class ResponseUserSurveyScreen extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton(
           onPressed: () {
-            // Map<String, dynamic> extra = {
-            //   DoSurveyTrackingScreen.extraDoSurveyId: state.doSurvey?.doSurveyId,
-            //   DoSurveyTrackingScreen.extraOutletLocation: state.survey.outlet,
-            // };
-            context.push(
-              AppRouteNames.doSurveyTracking.path,
-              extra: state.doSurvey?.doSurveyId,
-              // extra: extra,
-            );
+            if (state.survey?.outlet?.geoPoint != null) {
+              Map<String, dynamic> extra = {
+                DoSurveyTrackingScreen.extraDoSurveyId:
+                    state.doSurvey?.doSurveyId,
+                DoSurveyTrackingScreen.extraOutletLocation:
+                    state.survey?.outlet?.geoPoint,
+              };
+              context.push(
+                AppRouteNames.doSurveyTracking.path,
+                // extra: state.doSurvey?.doSurveyId,
+                extra: extra,
+              );
+            }
           },
           style: const ButtonStyle(
             shape: MaterialStatePropertyAll(

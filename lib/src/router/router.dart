@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/admin_profile/view/admin_profile_screen.dart';
@@ -174,9 +175,15 @@ class AppRouter {
         path: AppRouteNames.doSurveyTracking.path,
         parentNavigatorKey: AppCoordinator.navigatorKey,
         builder: (context, state) {
-          String? doSurveyId = state.extra as String?;
+          // String? doSurveyId = state.extra as String?;
+          Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
+          String? doSurveyId =
+              extra[DoSurveyTrackingScreen.extraDoSurveyId] as String?;
+          GeoPoint geoPoint =
+              extra[DoSurveyTrackingScreen.extraOutletLocation] as GeoPoint;
           return DoSurveyTrackingScreen(
             doSurveyId: doSurveyId,
+            outletLocation: geoPoint,
           );
         },
       ),

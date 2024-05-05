@@ -50,6 +50,12 @@ class DoSurveyTrackingBloc extends Cubit<DoSurveyTrackingState> {
     mapController = controller;
   }
 
+  void isShowUserLocationChanged() {
+    emit(
+      state.copyWith(isShowUserLocation: !state.isShowUserLocation),
+    );
+  }
+
   @override
   Future<void> close() {
     state.snapshotSub?.cancel();
