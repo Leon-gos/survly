@@ -14,6 +14,10 @@ import 'package:flutter/services.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/current_location_icon.png
+  AssetGenImage get currentLocationIcon =>
+      const AssetGenImage('assets/images/current_location_icon.png');
+
   /// File path: assets/images/dong_icon.png
   AssetGenImage get dongIcon =>
       const AssetGenImage('assets/images/dong_icon.png');
@@ -27,7 +31,8 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/survly_icon.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [dongIcon, launcherIcon, survlyIcon];
+  List<AssetGenImage> get values =>
+      [currentLocationIcon, dongIcon, launcherIcon, survlyIcon];
 }
 
 class $AssetsSvgsGen {
