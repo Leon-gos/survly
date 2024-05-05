@@ -37,6 +37,29 @@ class NotificationService {
     Logger().d("end");
   }
 
+  static Future<void> sendNotiToUserById({
+    required NotiRequestBody requestBody,
+    required String userId,
+  }) async {
+    requestBody.to = await UserRepositoryImpl().fetchUserFcmToken(userId);
+    if (requestBody.to == null) {
+      return;
+    }
+    Map<String, String> header = {
+      "Authorization": "key=${dotenv.env["FCM_SERVER_KEY"]}",
+      "Content-Type": "application/json; charset=UTF-8",
+    };
+    var value = await http.post(
+      Uri.https(
+        'fcm.googleapis.com',
+        '/fcm/send',
+      ),
+      headers: header,
+      body: requestBody.toJson(),
+    );
+    Logger().d(value.body);
+  }
+
   static Future<void> registerToken() async {
     await FirebaseMessaging.instance.requestPermission(
       alert: true,
