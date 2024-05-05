@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:survly/src/features/do_survey/widget/question_multi_option_widget.dart';
 import 'package:survly/src/features/do_survey/widget/question_single_option_widget.dart';
 import 'package:survly/src/features/do_survey/widget/question_text_widget.dart';
+import 'package:survly/src/features/do_survey_tracking/view/do_survey_tracking_screen.dart';
 import 'package:survly/src/features/response_user_survey/logic/response_user_survey_bloc.dart';
 import 'package:survly/src/features/response_user_survey/logic/response_user_survey_state.dart';
 import 'package:survly/src/features/response_user_survey/widget/response_button_widget.dart';
@@ -284,9 +285,14 @@ class ResponseUserSurveyScreen extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton(
           onPressed: () {
+            // Map<String, dynamic> extra = {
+            //   DoSurveyTrackingScreen.extraDoSurveyId: state.doSurvey?.doSurveyId,
+            //   DoSurveyTrackingScreen.extraOutletLocation: state.survey.outlet,
+            // };
             context.push(
               AppRouteNames.doSurveyTracking.path,
               extra: state.doSurvey?.doSurveyId,
+              // extra: extra,
             );
           },
           style: const ButtonStyle(

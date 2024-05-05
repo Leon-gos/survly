@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -6,9 +7,17 @@ import 'package:survly/src/features/do_survey_tracking/logic/do_survey_tracking_
 import 'package:survly/widgets/app_loading_circle.dart';
 
 class DoSurveyTrackingScreen extends StatefulWidget {
-  const DoSurveyTrackingScreen({super.key, this.doSurveyId});
+  static const String extraDoSurveyId = "extraDoSurveyId";
+  static const String extraOutletLocation = "extraOutletLocation";
+
+  const DoSurveyTrackingScreen({
+    super.key,
+    this.doSurveyId,
+    required this.outletLocation,
+  });
 
   final String? doSurveyId;
+  final GeoPoint outletLocation;
 
   @override
   State<StatefulWidget> createState() => DoSurveyTrackingScreenState();
@@ -44,6 +53,12 @@ class DoSurveyTrackingScreenState extends State<DoSurveyTrackingScreen> {
                     .onMapControllerChange(controller);
               },
               markers: {
+                Marker(
+                    markerId: const MarkerId("outletLocation"),
+                    position: LatLng(
+                      widget.outletLocation.latitude,
+                      widget.outletLocation.longitude,
+                    )),
                 Marker(
                   markerId: const MarkerId("currentLocation"),
                   position: latLng,
