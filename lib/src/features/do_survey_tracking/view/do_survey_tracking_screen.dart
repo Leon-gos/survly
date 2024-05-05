@@ -60,7 +60,10 @@ class DoSurveyTrackingScreenState extends State<DoSurveyTrackingScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DoSurveyTrackingBloc(widget.doSurveyId), //test only
+      create: (context) => DoSurveyTrackingBloc(
+        widget.doSurveyId,
+        widget.outletLocation,
+      ), //test only
       child: BlocBuilder<DoSurveyTrackingBloc, DoSurveyTrackingState>(
         buildWhen: (previous, current) => previous.doSurvey != current.doSurvey,
         builder: (context, state) {
@@ -68,7 +71,7 @@ class DoSurveyTrackingScreenState extends State<DoSurveyTrackingScreen> {
             return const AppLoadingCircle();
           }
           var latLng = LatLng(
-              state.doSurvey!.currentLat ?? 0, state.doSurvey!.currentLng ?? 0);
+              state.doSurvey?.currentLat ?? 0, state.doSurvey?.currentLng ?? 0);
           return Scaffold(
               body: Stack(
             children: [
@@ -85,10 +88,7 @@ class DoSurveyTrackingScreenState extends State<DoSurveyTrackingScreen> {
                 markers: {
                   Marker(
                     markerId: const MarkerId("outletLocation"),
-                    position: LatLng(
-                      widget.outletLocation.latitude,
-                      widget.outletLocation.longitude,
-                    ),
+                    position: state.outletLocation,
                     infoWindow: InfoWindow(
                       title: S.of(context).labelOutletLocation,
                     ),
@@ -105,6 +105,24 @@ class DoSurveyTrackingScreenState extends State<DoSurveyTrackingScreen> {
                   ),
                 },
               ),
+              Positioned(
+                left: 32,
+                bottom: 32,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    context
+                        .read<DoSurveyTrackingBloc>()
+                        .isShowUserLocationChanged();
+                  },
+                  shape: const CircleBorder(),
+                  backgroundColor: Colors.white70,
+                  elevation: 16,
+                  child: const Icon(
+                    Icons.location_searching,
+                    color: Colors.black54,
+                  ),
+                ),
+              )
             ],
           ));
         },

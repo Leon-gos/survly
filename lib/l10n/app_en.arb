@@ -133,6 +133,7 @@
     "labelNumOfSurveyCreated": "Created {num} survey",
     "labelNumOfSurveyJoined": "Joined {num} survey",
     "toastCreateSurveySuccess": "Create survey successfully. Please refresh to check.",
+    "toastUserNotYetDoSurvey": "Use has not opened this survey yet",
     "labelOutletLocation": "Outlet location",
     "labelUserCurrentLocation": "User location",
 
