@@ -162,7 +162,7 @@ class SurveyRepositoryImpl implements SurveyRepository {
       ref.doc("/${survey.surveyId}").set({
         ...survey.toMap(),
         ...(survey.outlet?.toMap() ?? {}),
-        SurveyCollection.fieldDateUpdate: DateTime.now().toString(),
+        SurveyCollection.fieldDateUpdate: DateTime.now(),
       });
 
       if (fileLocalPath != "") {
@@ -224,11 +224,14 @@ class SurveyRepositoryImpl implements SurveyRepository {
   Future<List<Survey>> fetchFirstPageExploreSurvey() async {
     List<Survey> list = [];
 
+    var now = DateTime.now();
+    var today = DateTime(now.year, now.month, now.day, 0, 0);
+
     var value = await ref
         .orderBy(SurveyCollection.fieldDateStart)
         .where(
           SurveyCollection.fieldDateStart,
-          isGreaterThan: DateTime.now().toString(),
+          isGreaterThan: Timestamp.fromDate(today),
         )
         .where(SurveyCollection.fieldStatus,
             isEqualTo: SurveyStatus.public.value)

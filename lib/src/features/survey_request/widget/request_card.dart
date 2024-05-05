@@ -61,7 +61,7 @@ class RequestCard extends StatelessWidget {
           Row(
             children: [
               Text(S.of(context).requestOn),
-              Text(request.dateRequest),
+              Text(request.dateRequest.toString()),
             ],
           ),
           if (request.message != "") ...[

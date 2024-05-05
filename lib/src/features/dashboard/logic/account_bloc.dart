@@ -13,7 +13,6 @@ import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/service/notification_service.dart';
 import 'package:survly/src/service/picker_service.dart';
-import 'package:survly/src/utils/date_helper.dart';
 
 class AccountBloc extends Cubit<AccountState> {
   AccountBloc() : super(AccountState.ds());
@@ -46,19 +45,18 @@ class AccountBloc extends Cubit<AccountState> {
     if (date == null) {
       return;
     }
-    var dateString = DateHelper.getDateOnly(date);
     if (state.isUser) {
       emit(
         state.copyWith(
           userBaseClone:
-              (state.userBaseClone as User).copyWith(birthDate: dateString),
+              (state.userBaseClone as User).copyWith(birthDate: date),
         ),
       );
     } else if (state.isAdmin) {
       emit(
         state.copyWith(
           userBaseClone:
-              (state.userBaseClone as Admin).copyWith(birthDate: dateString),
+              (state.userBaseClone as Admin).copyWith(birthDate: date),
         ),
       );
     }
@@ -122,6 +120,7 @@ class AccountBloc extends Cubit<AccountState> {
     try {
       await domainManager.authentication.logout();
       await domainManager.authenticationLocal.clearLoginInfo();
+      await NotificationService.deleteToken();
       UserBaseSingleton.instance().userBase = null;
       AppCoordinator.goNamed(AppRouteNames.login.path);
     } catch (e) {

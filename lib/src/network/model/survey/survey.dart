@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/localization/localization_utils.dart';
@@ -22,10 +23,10 @@ class Survey {
   String title;
   String description;
   int cost;
-  String dateCreate;
-  String dateUpdate;
-  String dateStart;
-  String dateEnd;
+  DateTime dateCreate;
+  DateTime dateUpdate;
+  DateTime? dateStart;
+  DateTime? dateEnd;
   int respondentMax;
   int respondentNum;
   String status;
@@ -46,10 +47,10 @@ class Survey {
     if (cost < 0) {
       return S.text.errorCostInvalid;
     }
-    if (dateStart == "") {
+    if (dateStart == null) {
       return S.text.errorStartDateEmpty;
     }
-    if (dateEnd == "") {
+    if (dateEnd == null) {
       return S.text.errorEndDateEmpty;
     }
     if (respondentMax <= 0) {
@@ -81,13 +82,8 @@ class Survey {
     if (status != SurveyStatus.public.value) {
       return false;
     }
-    try {
-      // check if today is before survey start date at least 1 days
-      if (!DateTime.now().isBefore(DateTime.parse(dateStart))) {
-        return false;
-      }
-    } catch (e) {
-      Logger().e("Cannot parse date", error: e);
+    if (dateStart != null && !DateTime.now().isBefore(dateStart!)) {
+      return false;
     }
     return true;
   }
@@ -141,9 +137,7 @@ class Survey {
     try {
       var now = DateTime.now();
       var today = DateTime(now.year, now.month, now.day);
-      var dateStart = DateTime.parse(this.dateStart);
-      var dateEnd = DateTime.parse(this.dateEnd);
-      return today.compareTo(dateStart) >= 0 && today.compareTo(dateEnd) <= 0;
+      return today.compareTo(dateStart!) >= 0 && today.compareTo(dateEnd!) <= 0;
     } catch (e) {
       return false;
     }
@@ -173,10 +167,10 @@ class Survey {
     title = "",
     description = "",
     cost = 0,
-    dateCreate = "",
-    dateUpdate = "",
-    dateStart = "",
-    dateEnd = "",
+    dateCreate,
+    dateUpdate,
+    dateStart,
+    dateEnd,
     respondentMax = 0,
     respondentNum = 0,
     status = "",
@@ -189,8 +183,8 @@ class Survey {
       title: title,
       description: description,
       cost: cost,
-      dateCreate: dateCreate,
-      dateUpdate: dateUpdate,
+      dateCreate: DateTime.now(),
+      dateUpdate: DateTime.now(),
       dateStart: dateStart,
       dateEnd: dateEnd,
       respondentMax: respondentMax,
@@ -198,10 +192,8 @@ class Survey {
       status: status,
       adminId: adminId,
     );
-    survey.dateCreate =
-        dateCreate != "" ? dateCreate : DateTime.now().toString();
-    survey.dateUpdate =
-        dateUpdate != "" ? dateUpdate : DateTime.now().toString();
+    survey.dateCreate = dateCreate ?? DateTime.now();
+    survey.dateUpdate = dateUpdate ?? DateTime.now();
     survey.status = SurveyStatus.draft.value;
     survey.outlet = Outlet(latitude: null, longitude: null);
     survey.adminId = adminId;
@@ -234,10 +226,14 @@ class Survey {
       title: map['title']?.toString() ?? "",
       description: map['description']?.toString() ?? "",
       cost: int.parse(map['cost']?.toString() ?? "0"),
-      dateCreate: map['dateCreate']?.toString() ?? "",
-      dateUpdate: map['dateUpdate']?.toString() ?? "",
-      dateStart: map['dateStart']?.toString() ?? "",
-      dateEnd: map['dateEnd']?.toString() ?? "",
+      dateCreate: (map['dateCreate'] as Timestamp).toDate(),
+      dateUpdate: (map['dateUpdate'] as Timestamp).toDate(),
+      dateStart: map['dateStart'] != null
+          ? (map['dateStart'] as Timestamp).toDate()
+          : null,
+      dateEnd: map['dateEnd'] != null
+          ? (map['dateEnd'] as Timestamp).toDate()
+          : null,
       respondentMax: int.parse(map['respondentMax']?.toString() ?? "0"),
       respondentNum: int.parse(map['respondentNum']?.toString() ?? "0"),
       status: map['status']?.toString() ?? "",
@@ -261,10 +257,10 @@ class Survey {
     String? title,
     String? description,
     int? cost,
-    String? dateCreate,
-    String? dateUpdate,
-    String? dateStart,
-    String? dateEnd,
+    DateTime? dateCreate,
+    DateTime? dateUpdate,
+    DateTime? dateStart,
+    DateTime? dateEnd,
     int? respondentMax,
     int? respondentNum,
     String? status,

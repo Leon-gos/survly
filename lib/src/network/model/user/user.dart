@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 
 class User extends UserBase {
@@ -31,7 +32,7 @@ class User extends UserBase {
         email: email,
         avatar: "",
         gender: "",
-        birthDate: "",
+        birthDate: DateTime(2000),
         phone: "",
         balance: 0,
         intro: "",
@@ -53,7 +54,7 @@ class User extends UserBase {
       email: map['email']?.toString() ?? "",
       avatar: map['avatar']?.toString() ?? "",
       gender: map['gender']?.toString() ?? UserBase.genderMale,
-      birthDate: map['birthDate']?.toString() ?? "",
+      birthDate: (map['birthDate'] as Timestamp).toDate(),
       phone: map['phone']?.toString() ?? "",
       fcmToken: map['fcmToken']?.toString(),
       balance: int.parse(map['balance']?.toString() ?? "0"),
@@ -74,7 +75,7 @@ class User extends UserBase {
     String? email,
     String? avatar,
     String? gender,
-    String? birthDate,
+    DateTime? birthDate,
     String? phone,
     String? role,
     String? fcmToken,

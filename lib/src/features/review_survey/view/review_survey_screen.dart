@@ -309,7 +309,7 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                 ),
               ),
               child: Text(
-                "${S.of(context).hintDateFrom} ${DateHelper.getDateOnlyFromDateString(state.survey.dateStart)} ${S.of(context).hintDateTo} ${DateHelper.getDateOnlyFromDateString(state.survey.dateEnd)}",
+                "${S.of(context).hintDateFrom} ${DateHelper.getDateOnly(state.survey.dateStart)} ${S.of(context).hintDateTo} ${DateHelper.getDateOnly(state.survey.dateEnd)}",
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 16, color: Colors.grey[700]),
               ),

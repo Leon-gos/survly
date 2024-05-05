@@ -87,7 +87,7 @@ class AppSurveyCard extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                        "${S.of(context).closedOn} ${DateHelper.getDateOnlyFromDateString(survey.dateEnd)}"),
+                        "${S.of(context).closedOn} ${DateHelper.getDateOnly(survey.dateEnd)}"),
                   ],
                 ),
               ),

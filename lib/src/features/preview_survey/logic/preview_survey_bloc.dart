@@ -30,7 +30,7 @@ class PreviewSurveyBloc extends Cubit<PreviewSurveyState> {
         requestId: "",
         surveyId: state.survey.surveyId,
         userId: UserBaseSingleton.instance().userBase!.id,
-        dateRequest: DateTime.now().toString(),
+        dateRequest: DateTime.now(),
         status: SurveyRequestStatus.pending.value,
         message: state.requestMessage,
       );

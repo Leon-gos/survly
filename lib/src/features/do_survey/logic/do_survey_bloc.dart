@@ -275,7 +275,7 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     // update do survey
     try {
       var doSurvey = state.doSurvey;
-      doSurvey?.dateUpdate = DateTime.now().toString();
+      doSurvey?.dateUpdate = DateTime.now();
       await domainManager.doSurvey.updateDoSurvey(
         state.doSurvey!,
         state.outletPath,

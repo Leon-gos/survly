@@ -33,8 +33,8 @@ class UpdateSurveyBloc extends Cubit<UpdateSurveyState> {
       emit(
         state.copyWith(
           survey: state.survey.copyWith(
-            dateStart: dateRange.startDate.toString(),
-            dateEnd: dateRange.endDate.toString(),
+            dateStart: dateRange.startDate,
+            dateEnd: dateRange.endDate,
           ),
           isChanged: true,
         ),

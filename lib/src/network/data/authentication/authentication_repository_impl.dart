@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
+import 'package:survly/src/config/constants/firebase_auth_error.dart';
 import 'package:survly/src/network/data/authentication/authentication_repository.dart';
 import 'package:survly/src/network/data/user/user_repository_impl.dart';
 import 'package:survly/src/network/model/user/user.dart' as my_user;
@@ -9,16 +10,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<void> loginWithEmailPassword(String email, String password) async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      var credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        Logger().d('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        Logger().d('Wrong password provided for that user.');
+      if (credential.user?.emailVerified != true) {
+        throw FirebaseAuthException(code: FirebaseAuthError.emailNotVerified);
       }
+    } catch (e) {
       rethrow;
     }
   }
@@ -74,20 +73,16 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     String fullname,
   ) async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      var credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      await credential.user?.sendEmailVerification();
       await UserRepositoryImpl().createUser(my_user.User.newUser(
         email: email,
         fullname: fullname,
       ));
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        throw (Exception("The password provided is too weak."));
-      } else if (e.code == 'email-already-in-use') {
-        throw (Exception("The account already exists for that email."));
-      }
     } catch (e) {
       rethrow;
     }
