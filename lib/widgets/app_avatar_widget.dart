@@ -17,9 +17,14 @@ class AppAvatarWidget extends StatelessWidget {
     this.size = 64,
   });
 
+  bool get hasImageSrc {
+    return avatarUrl != "" ||
+        (avatarLocalPath != null && avatarLocalPath != "");
+  }
+
   @override
   Widget build(BuildContext context) {
-    ImageProvider image = NetworkImage(avatarUrl);
+    ImageProvider? image = NetworkImage(avatarUrl);
     if (avatarLocalPath != null && avatarLocalPath != "") {
       image = FileImage(File(avatarLocalPath!));
     }
@@ -28,10 +33,12 @@ class AppAvatarWidget extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         color: Colors.grey,
-        image: DecorationImage(
-          image: image,
-          fit: BoxFit.cover,
-        ),
+        image: hasImageSrc
+            ? DecorationImage(
+                image: image,
+                fit: BoxFit.cover,
+              )
+            : null,
         borderRadius: BorderRadius.all(Radius.circular(size)),
         border: border ??
             Border.all(
