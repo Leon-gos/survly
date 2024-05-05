@@ -23,21 +23,27 @@ class DoSurveyTrackingBloc extends Cubit<DoSurveyTrackingState> {
     var doSurvey = await DoSurveyRepositoryImpl().getDoSurvey(doSurveyId);
     var snapshot = DoSurveyRepositoryImpl().getDoSurveySnapshot(doSurvey);
     var snapshotSub = snapshot.listen((event) {
-      var latLng = LatLng(event.data()?[DoSurveyCollection.fieldCurrentLat],
-          event.data()?[DoSurveyCollection.fieldCurrentLng]);
+      try {
+        var latLng = LatLng(event.data()?[DoSurveyCollection.fieldCurrentLat],
+            event.data()?[DoSurveyCollection.fieldCurrentLng]);
 
-      var newDoSurvey = state.doSurvey?.copyWith(
-        currentLat: latLng.latitude,
-        currentLng: latLng.longitude,
-      );
+        var newDoSurvey = state.doSurvey?.copyWith(
+          currentLat: latLng.latitude,
+          currentLng: latLng.longitude,
+        );
 
-      emit(state.copyWith(doSurvey: newDoSurvey));
+        emit(state.copyWith(doSurvey: newDoSurvey));
 
-      mapController?.animateCamera(
-        CameraUpdate.newLatLngZoom(latLng, 15),
-      );
+        mapController?.animateCamera(
+          CameraUpdate.newLatLngZoom(latLng, 15),
+        );
 
-      Logger().d("(${latLng.latitude} , ${latLng.longitude})");
+        Logger().d("(${latLng.latitude} , ${latLng.longitude})");
+      } catch (e) {
+        Logger().e("lat lng not found", error: e);
+        Fluttertoast.showToast(msg: S.text.toastUserNotYetDoSurvey);
+        AppCoordinator.pop();
+      }
     });
 
     emit(state.copyWith(
