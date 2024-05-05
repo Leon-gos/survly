@@ -147,6 +147,9 @@
     "notiBodySurveyIgnore": "Your survey has been ignored, check now 😢",
     "notiTitleSurveyApprove": "Survey approved",
     "notiBodySurveyApprove": "Your survey has been approved!!! Check now 😍",
+    "notiTitleUserSendRequest": "New survey's request",
+    "notiBodyUserSendRequest": "Someone request your survey. Check now!",
+    "notiTitleResponseUserRequest": "Your request has been responsed",
 
     "errorGeneral": "Something went wrong",
     "errorEmptyName": "Empty name",
