@@ -174,7 +174,8 @@ class _MyProfileScreenState extends State<MyProfileScreen>
           doSurveyList: state.getDoSurveyListByStatus(status),
           onRefresh: () => context.read<MyProfileBloc>().fetchJoinedSurvey(),
           onItemClick: (survey, doSurvey) {
-            if (doSurvey.status == DoSurveyStatus.doing.value) {
+            if (doSurvey.status == DoSurveyStatus.doing.value &&
+                doSurvey.survey?.ableToDoToday == true) {
               context.push(AppRouteNames.doSurvey.path, extra: survey);
             } else {
               context.push(AppRouteNames.doSurveyReview.path, extra: [
