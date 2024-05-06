@@ -28,6 +28,7 @@ class SurveyRequestRepositoryImpl implements SurveyRequestRepository {
     List<SurveyRequest> list = [];
     var value = await ref
         .where(SurveyRequestCollection.fieldSurveyId, isEqualTo: surveyId)
+        .orderBy(SurveyRequestCollection.fieldDateRequest, descending: true)
         .get();
     for (var doc in value.docs) {
       var request = SurveyRequest.fromMap(doc.data());

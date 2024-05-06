@@ -1,11 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
+import 'package:survly/src/config/constants/notification.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/preview_survey/logic/preview_survey_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
+import 'package:survly/src/localization/localization_utils.dart';
+import 'package:survly/src/network/model/notification/noti_request_body.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/network/model/survey_request/survey_request.dart';
+import 'package:survly/src/service/notification_service.dart';
 
 class PreviewSurveyBloc extends Cubit<PreviewSurveyState> {
   PreviewSurveyBloc(Survey survey)
@@ -41,6 +45,23 @@ class PreviewSurveyBloc extends Cubit<PreviewSurveyState> {
           requestMessage: "",
         ),
       );
+
+      NotificationService.sendNotiToUserById(
+        requestBody: NotiRequestBody(
+          notification: Notification(
+            title: S.text.notiTitleUserSendRequest,
+            body: S.text.notiBodyUserSendRequest,
+          ),
+          data: {
+            NotiDataField.type: NotiType.userRequestSurvey.value,
+            NotiDataField.data: {
+              NotiDataDataKey.surveyId: state.survey.surveyId
+            },
+          },
+        ),
+        userId: state.survey.adminId,
+      );
+
       Fluttertoast.showToast(msg: "Request successfully");
     } catch (e) {
       Logger().e("Request survey failed", error: e);
