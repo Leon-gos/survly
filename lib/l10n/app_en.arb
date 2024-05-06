@@ -139,6 +139,8 @@
     "labelTabApproved": "Approved",
     "labelTabIgnored": "Ignored",
     "toastUserNotYetDoSurvey": "Use has not opened this survey yet",
+    "labelOutletLocation": "Outlet location",
+    "labelUserCurrentLocation": "User location",
 
     "notiTitleUserRespondent": "New respondent",
     "notiBodyUserRespondent": "Someone has just response your survey. Check now!",

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -9,7 +10,10 @@ import 'package:survly/src/network/data/do_survey/do_survey_repository_impl.dart
 import 'package:survly/src/router/coordinator.dart';
 
 class DoSurveyTrackingBloc extends Cubit<DoSurveyTrackingState> {
-  DoSurveyTrackingBloc(String? doSurveyId) : super(DoSurveyTrackingState.ds()) {
+  DoSurveyTrackingBloc(
+    String? doSurveyId,
+    GeoPoint outletPoint,
+  ) : super(DoSurveyTrackingState.ds(outletPoint)) {
     if (doSurveyId == null) {
       Fluttertoast.showToast(msg: S.text.errorGeneral);
       AppCoordinator.pop();
@@ -34,9 +38,7 @@ class DoSurveyTrackingBloc extends Cubit<DoSurveyTrackingState> {
 
         emit(state.copyWith(doSurvey: newDoSurvey));
 
-        mapController?.animateCamera(
-          CameraUpdate.newLatLngZoom(latLng, 15),
-        );
+        moveCamera();
 
         Logger().d("(${latLng.latitude} , ${latLng.longitude})");
       } catch (e) {
@@ -56,10 +58,38 @@ class DoSurveyTrackingBloc extends Cubit<DoSurveyTrackingState> {
     mapController = controller;
   }
 
+  void isShowUserLocationChanged() {
+    emit(
+      state.copyWith(isShowUserLocation: !state.isShowUserLocation),
+    );
+    moveCamera();
+  }
+
   @override
   Future<void> close() {
     state.snapshotSub?.cancel();
     Logger().d("dispose");
     return super.close();
+  }
+
+  void moveCamera() {
+    if (state.isShowUserLocation &&
+        state.doSurvey?.currentLat != null &&
+        state.doSurvey?.currentLng != null) {
+      mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(
+            LatLng(
+              state.doSurvey!.currentLat!,
+              state.doSurvey!.currentLng!,
+            ),
+            15),
+      );
+      Logger().d("move to user location");
+    } else {
+      mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(state.outletLocation, 15),
+      );
+      Logger().d("move to outlet location");
+    }
   }
 }
