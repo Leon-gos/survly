@@ -133,6 +133,7 @@
     "labelNumOfSurveyCreated": "Created {num} survey",
     "labelNumOfSurveyJoined": "Joined {num} survey",
     "toastCreateSurveySuccess": "Create survey successfully. Please refresh to check.",
+    "labelShowOnlyNearbySurvey": "Only show survey near me",
     "labelTabDoing": "Doing",
     "labelTabSubmitted": "Submitted",
     "labelTabApproved": "Approved",

@@ -281,7 +281,8 @@ class CreateSurveyScreen extends StatelessWidget {
                     context
                         .read<CreateSurveyBloc>()
                         .onOutletLocationChange(outlet);
-                    Logger().d("(${outlet?.latitude}, ${outlet?.longitude})");
+                    Logger().d(
+                        "(${outlet?.geoPoint?.latitude}, ${outlet?.geoPoint?.longitude})");
                   },
                 );
               },
