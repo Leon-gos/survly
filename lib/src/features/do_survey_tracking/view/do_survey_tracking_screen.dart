@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/gen/assets.gen.dart';
@@ -106,26 +107,43 @@ class DoSurveyTrackingScreenState extends State<DoSurveyTrackingScreen> {
                 },
               ),
               Positioned(
+                left: 16,
+                top: MediaQuery.of(context).padding.top,
+                child: _buildIconButton(
+                  Icons.arrow_back_ios_new,
+                  () {
+                    context.pop();
+                  },
+                ),
+              ),
+              Positioned(
                 left: 32,
                 bottom: 32,
-                child: FloatingActionButton(
-                  onPressed: () {
+                child: _buildIconButton(
+                  Icons.location_searching,
+                  () {
                     context
                         .read<DoSurveyTrackingBloc>()
                         .isShowUserLocationChanged();
                   },
-                  shape: const CircleBorder(),
-                  backgroundColor: Colors.white70,
-                  elevation: 16,
-                  child: const Icon(
-                    Icons.location_searching,
-                    color: Colors.black54,
-                  ),
                 ),
               )
             ],
           ));
         },
+      ),
+    );
+  }
+
+  Widget _buildIconButton(IconData iconData, void Function() onPressed) {
+    return FloatingActionButton(
+      onPressed: onPressed,
+      shape: const CircleBorder(),
+      backgroundColor: Colors.white70,
+      elevation: 16,
+      child: Icon(
+        iconData,
+        color: Colors.black54,
       ),
     );
   }
