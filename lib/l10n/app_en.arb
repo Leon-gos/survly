@@ -132,7 +132,7 @@
     "toastSignupSuccess": "Sign up successfully",
     "labelNumOfSurveyCreated": "Created {num} survey",
     "labelNumOfSurveyJoined": "Joined {num} survey",
-    "toastCreateSurveySuccess": "Create survey successfully. Please refresh to check.",
+    "toastCreateSurveySuccess": "Create survey successfully",
     "labelShowOnlyNearbySurvey": "Only show survey near me",
     "labelTabDoing": "Doing",
     "labelTabSubmitted": "Submitted",

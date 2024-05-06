@@ -84,12 +84,6 @@ class DashboardAdminScreen extends StatelessWidget {
                   return [
                     PopupMenuItem(
                       onTap: () {
-                        context.push(AppRouteNames.createSurvey.path);
-                      },
-                      child: Text(S.of(context).titleCreateSurvey),
-                    ),
-                    PopupMenuItem(
-                      onTap: () {
                         context.read<AccountBloc>().logout();
                       },
                       child: Text(S.of(context).labelBtnLogout),

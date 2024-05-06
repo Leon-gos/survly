@@ -66,7 +66,7 @@ class _AppSurveyListWidgetState extends State<AppSurveyListWidget> {
               Expanded(
                 flex: 1,
                 child: ListView.builder(
-                  padding: const EdgeInsets.only(bottom: 50),
+                  padding: const EdgeInsets.only(bottom: 100),
                   physics: const AlwaysScrollableScrollPhysics(),
                   controller: scrollController,
                   itemCount: widget.surveyList.length,
