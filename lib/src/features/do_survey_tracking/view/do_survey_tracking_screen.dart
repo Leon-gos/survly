@@ -63,7 +63,7 @@ class DoSurveyTrackingScreenState extends State<DoSurveyTrackingScreen> {
       create: (context) => DoSurveyTrackingBloc(
         widget.doSurveyId,
         widget.outletLocation,
-      ), //test only
+      ),
       child: BlocBuilder<DoSurveyTrackingBloc, DoSurveyTrackingState>(
         buildWhen: (previous, current) => previous.doSurvey != current.doSurvey,
         builder: (context, state) {

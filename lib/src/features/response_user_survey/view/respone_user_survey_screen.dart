@@ -294,7 +294,6 @@ class ResponseUserSurveyScreen extends StatelessWidget {
               };
               context.push(
                 AppRouteNames.doSurveyTracking.path,
-                // extra: state.doSurvey?.doSurveyId,
                 extra: extra,
               );
             }
