@@ -56,20 +56,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
               centerTitle: true,
               title: state.isShowProfile ? null : state.user.fullname,
               titleColor: Colors.black,
-              actions: [
-                PopupMenuButton(
-                  itemBuilder: (context) {
-                    return [
-                      PopupMenuItem(
-                        onTap: () {
-                          context.push(AppRouteNames.updateUserProfile.path);
-                        },
-                        child: Text(S.of(context).labelBtnEditProfile),
-                      )
-                    ];
-                  },
-                )
-              ],
             ),
             body: SizedBox(
               width: double.infinity,
