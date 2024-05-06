@@ -35,7 +35,6 @@ class ExploreSurveyView extends StatelessWidget {
   Widget _buildSurveyListView() {
     return BlocBuilder<ExploreSurveyBloc, ExploreSurveyState>(
       buildWhen: (previous, current) =>
-          previous.isShowMySurvey != current.isShowMySurvey ||
           previous.surveyFilterList != current.surveyFilterList,
       builder: (context, state) {
         return Column(
@@ -49,15 +48,41 @@ class ExploreSurveyView extends StatelessWidget {
                     flex: 1,
                     child: AppTextField(
                       hintText: S.of(context).labelSearch,
-                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          context.read<ExploreSurveyBloc>().searchSurvey();
+                        },
+                        icon: const Icon(Icons.search),
+                      ),
+                      onTextChange: (newText) {
+                        context
+                            .read<ExploreSurveyBloc>()
+                            .onSearchKeywordChange(newText);
+                      },
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      state.isShowMySurvey
-                          ? Icons.filter_alt
-                          : Icons.filter_alt_outlined,
+                    onPressed: () {
+                      if (state.isShowingFilterSheet) {
+                        return;
+                      }
+                      context
+                          .read<ExploreSurveyBloc>()
+                          .onShowingFilterSheetChange(true);
+                      showBottomSheet(
+                        context: context,
+                        shape: const RoundedRectangleBorder(),
+                        builder: (sheetContext) {
+                          return _buildBottomSheetFilter();
+                        },
+                      ).closed.then((value) {
+                        context
+                            .read<ExploreSurveyBloc>()
+                            .onShowingFilterSheetChange(false);
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.filter_alt_outlined,
                       color: Colors.grey,
                     ),
                   )
@@ -77,6 +102,79 @@ class ExploreSurveyView extends StatelessWidget {
               ),
             )
           ],
+        );
+      },
+    );
+  }
+
+  Widget _buildBottomSheetFilter() {
+    return BlocBuilder<ExploreSurveyBloc, ExploreSurveyState>(
+      buildWhen: (previous, current) =>
+          previous.isShowSurveyNearby != current.isShowSurveyNearby,
+      builder: (context, state) {
+        return Container(
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                offset: Offset(0, -1),
+                blurRadius: 8,
+              ),
+            ],
+            color: Colors.grey[200],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                color: Colors.white,
+                child: Row(
+                  children: [
+                    Text(
+                      S.of(context).labelShowOnlyNearbySurvey,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Spacer(),
+                    Switch(
+                      value: state.isShowSurveyNearby,
+                      onChanged: (value) {
+                        context
+                            .read<ExploreSurveyBloc>()
+                            .showSurveyNearbyChanged(value);
+                      },
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Material(
+                child: InkWell(
+                  onTap: () {
+                    context.pop();
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Center(
+                        child: Text(
+                      S.of(context).labelBtnClose,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
+                  ),
+                ),
+              ),
+              const Divider(height: 0)
+            ],
+          ),
         );
       },
     );
