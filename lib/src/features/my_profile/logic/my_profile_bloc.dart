@@ -3,7 +3,6 @@ import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/my_profile/logic/my_profile_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
-import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/network/model/user/user.dart';
 
 class MyProfileBloc extends Cubit<MyProfileState> {
@@ -20,16 +19,7 @@ class MyProfileBloc extends Cubit<MyProfileState> {
     try {
       var doSurveyList = await domainManager.doSurvey
           .fetchUserJoinedSurvey(UserBaseSingleton.instance().userBase!.id);
-      List<Survey> joinedSurveyList = [];
-      for (var doSurvey in doSurveyList) {
-        var survey =
-            await domainManager.survey.fetchSurveyById(doSurvey.surveyId);
-        if (survey != null) {
-          joinedSurveyList.add(survey);
-        }
-      }
       emit(state.copyWith(
-        joinedSurveyList: joinedSurveyList,
         doSurveyList: doSurveyList,
       ));
     } catch (e) {

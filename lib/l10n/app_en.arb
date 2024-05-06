@@ -134,6 +134,10 @@
     "labelNumOfSurveyJoined": "Joined {num} survey",
     "toastCreateSurveySuccess": "Create survey successfully. Please refresh to check.",
     "labelShowOnlyNearbySurvey": "Only show survey near me",
+    "labelTabDoing": "Doing",
+    "labelTabSubmitted": "Submitted",
+    "labelTabApproved": "Approved",
+    "labelTabIgnored": "Ignored",
 
     "notiTitleUserRespondent": "New respondent",
     "notiBodyUserRespondent": "Someone has just response your survey. Check now!",

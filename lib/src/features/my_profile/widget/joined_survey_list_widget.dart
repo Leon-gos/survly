@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:survly/src/features/my_profile/widget/joined_survey_card.dart';
 import 'package:survly/src/network/model/do_survey/do_survey.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
-import 'package:survly/widgets/app_empty_list_widget.dart';
 
 class JoinedSurveyListWidget extends StatefulWidget {
-  final List<Survey> surveyList;
   final List<DoSurvey> doSurveyList;
   final Future<void> Function()? onLoadMore;
   final Function()? onRefresh;
@@ -13,7 +11,6 @@ class JoinedSurveyListWidget extends StatefulWidget {
 
   const JoinedSurveyListWidget({
     super.key,
-    required this.surveyList,
     required this.doSurveyList,
     this.onLoadMore,
     this.onRefresh,
@@ -63,9 +60,6 @@ class _DoingSurveyListWidgetState extends State<JoinedSurveyListWidget> {
       },
       child: Stack(
         children: [
-          if (widget.surveyList.isEmpty ||
-              widget.surveyList.length != widget.doSurveyList.length)
-            const AppEmptyListWidget(),
           Column(
             children: [
               Expanded(
@@ -74,20 +68,23 @@ class _DoingSurveyListWidgetState extends State<JoinedSurveyListWidget> {
                   padding: const EdgeInsets.only(bottom: 50),
                   physics: const AlwaysScrollableScrollPhysics(),
                   controller: scrollController,
-                  itemCount: widget.surveyList.length,
+                  itemCount: widget.doSurveyList.length,
                   itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        widget.onItemClick?.call(
-                          widget.surveyList[index],
-                          widget.doSurveyList[index],
-                        );
-                      },
-                      child: JoinedSurveyCard(
-                        survey: widget.surveyList[index],
-                        doSurvey: widget.doSurveyList[index],
-                      ),
-                    );
+                    if (widget.doSurveyList[index].survey != null) {
+                      return GestureDetector(
+                        onTap: () {
+                          widget.onItemClick?.call(
+                            widget.doSurveyList[index].survey!,
+                            widget.doSurveyList[index],
+                          );
+                        },
+                        child: JoinedSurveyCard(
+                          survey: widget.doSurveyList[index].survey!,
+                          doSurvey: widget.doSurveyList[index],
+                        ),
+                      );
+                    }
+                    return const SizedBox();
                   },
                 ),
               ),

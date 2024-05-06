@@ -17,10 +17,30 @@ import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_avatar_widget.dart';
 
-class MyProfileScreen extends StatelessWidget {
+class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({
     super.key,
   });
+
+  @override
+  State<StatefulWidget> createState() => _MyProfileScreenState();
+}
+
+class _MyProfileScreenState extends State<MyProfileScreen>
+    with TickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 4, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +48,7 @@ class MyProfileScreen extends StatelessWidget {
       create: (context) => MyProfileBloc(),
       child: BlocBuilder<MyProfileBloc, MyProfileState>(
         buildWhen: (previous, current) =>
-            previous.isShowProfile != current.isShowProfile ||
-            previous.joinedSurveyList != current.joinedSurveyList,
+            previous.isShowProfile != current.isShowProfile,
         builder: (context, state) {
           return Scaffold(
             appBar: AppAppBarWidget(
@@ -60,37 +79,7 @@ class MyProfileScreen extends StatelessWidget {
               child: Column(
                 children: [
                   state.isShowProfile ? _buildProfile() : const SizedBox(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              S.of(context).labelNumOfSurveyJoined(
-                                  state.joinedSurveyList.length),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const Spacer(),
-                            IconButton(
-                              onPressed: () {
-                                context
-                                    .read<MyProfileBloc>()
-                                    .isShowProfileChange();
-                              },
-                              icon: Icon(state.isShowProfile
-                                  ? Icons.arrow_drop_down
-                                  : Icons.arrow_drop_up),
-                            )
-                          ],
-                        ),
-                        const Divider(height: 0)
-                      ],
-                    ),
-                  ),
-                  Expanded(child: _buildSurveyLists()),
+                  Expanded(child: _buildTabbar()),
                 ],
               ),
             ),
@@ -176,17 +165,17 @@ class MyProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSurveyLists() {
+  Widget _buildJoinedSurveyList(DoSurveyStatus status) {
     return BlocBuilder<MyProfileBloc, MyProfileState>(
       buildWhen: (previous, current) =>
-          previous.joinedSurveyList != current.joinedSurveyList,
+          previous.doSurveyList != current.doSurveyList,
       builder: (context, state) {
         return JoinedSurveyListWidget(
-          surveyList: state.joinedSurveyList,
-          doSurveyList: state.doSurveyList,
+          doSurveyList: state.getDoSurveyListByStatus(status),
           onRefresh: () => context.read<MyProfileBloc>().fetchJoinedSurvey(),
           onItemClick: (survey, doSurvey) {
-            if (doSurvey.status == DoSurveyStatus.doing.value) {
+            if (doSurvey.status == DoSurveyStatus.doing.value &&
+                doSurvey.survey?.ableToDoToday == true) {
               context.push(AppRouteNames.doSurvey.path, extra: survey);
             } else {
               context.push(AppRouteNames.doSurveyReview.path, extra: [
@@ -195,6 +184,73 @@ class MyProfileScreen extends StatelessWidget {
               ]);
             }
           },
+        );
+      },
+    );
+  }
+
+  Widget _buildTabbar() {
+    return BlocBuilder<MyProfileBloc, MyProfileState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Row(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 16),
+                  child: Text(
+                    S
+                        .of(context)
+                        .labelNumOfSurveyJoined(state.doSurveyList.length),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                IconButton(
+                  onPressed: () {
+                    context.read<MyProfileBloc>().isShowProfileChange();
+                  },
+                  icon: Icon(state.isShowProfile
+                      ? Icons.arrow_drop_down
+                      : Icons.arrow_drop_up),
+                )
+              ],
+            ),
+            const Divider(height: 0),
+            TabBar(
+              controller: tabController,
+              labelColor: AppColors.secondary,
+              indicatorColor: AppColors.secondary,
+              labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+              tabs: [
+                Tab(
+                  text: S.of(context).labelTabDoing,
+                ),
+                Tab(
+                  text: S.of(context).labelTabSubmitted,
+                ),
+                Tab(
+                  text: S.of(context).labelTabApproved,
+                ),
+                Tab(
+                  text: S.of(context).labelTabIgnored,
+                ),
+              ],
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: tabController,
+                children: [
+                  _buildJoinedSurveyList(DoSurveyStatus.doing),
+                  _buildJoinedSurveyList(DoSurveyStatus.submitted),
+                  _buildJoinedSurveyList(DoSurveyStatus.approved),
+                  _buildJoinedSurveyList(DoSurveyStatus.ignored),
+                ],
+              ),
+            )
+          ],
         );
       },
     );
