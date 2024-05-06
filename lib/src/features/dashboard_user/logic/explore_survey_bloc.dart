@@ -95,10 +95,6 @@ class ExploreSurveyBloc extends Cubit<ExploreSurveyState> {
     emit(state.copyWith(searchKeyword: text));
   }
 
-  void onShowingFilterSheetChange(bool value) {
-    emit(state.copyWith(isShowingFilterSheet: value));
-  }
-
   void searchSurvey() {
     fetchFirstPageSurvey(
       searchKeyword: state.searchKeyword != "" ? state.searchKeyword : null,
