@@ -87,13 +87,6 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                     color: AppColors.white,
                   )),
               actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.share,
-                    color: AppColors.white,
-                  ),
-                ),
                 PopupMenuButton(
                   iconColor: AppColors.onPrimary,
                   itemBuilder: (context) {
