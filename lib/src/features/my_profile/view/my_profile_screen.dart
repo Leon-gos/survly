@@ -126,7 +126,7 @@ class _MyProfileScreenState extends State<MyProfileScreen>
                       children: [
                         const Icon(Icons.timer_outlined),
                         Text(S.of(context).labelDoing),
-                        Text("${user.countDoing}"),
+                        Text("${user.countDoing ?? 0}"),
                       ],
                     ),
                   ),
@@ -137,7 +137,7 @@ class _MyProfileScreenState extends State<MyProfileScreen>
                       children: [
                         const Icon(Icons.check_circle_outline_outlined),
                         Text(S.of(context).labelDone),
-                        Text("${user.countDone}"),
+                        Text("${user.countDone ?? 0}"),
                       ],
                     ),
                   ),
