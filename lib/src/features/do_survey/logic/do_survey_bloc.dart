@@ -234,8 +234,9 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     final location = await state.location.getLocation();
     textOption.addText(
       EditorText(
-        offset: Offset(fontSize.toDouble(), imageHeight - fontSize * 2),
-        text: "(${location.latitude}, ${location.longitude})",
+        offset: Offset(fontSize.toDouble(), imageHeight - fontSize * 3),
+        text:
+            "(${location.latitude}, ${location.longitude})\n${DateTime.now().toString()}",
         fontSizePx: fontSize,
         textColor: Colors.white,
         fontName: "",
