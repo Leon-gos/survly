@@ -35,7 +35,8 @@ class ExploreSurveyView extends StatelessWidget {
   Widget _buildSurveyListView() {
     return BlocBuilder<ExploreSurveyBloc, ExploreSurveyState>(
       buildWhen: (previous, current) =>
-          previous.surveyFilterList != current.surveyFilterList,
+          previous.surveyFilterList != current.surveyFilterList ||
+          previous.isShowingFilterSheet != current.isShowingFilterSheet,
       builder: (context, state) {
         return Column(
           children: [
@@ -157,6 +158,9 @@ class ExploreSurveyView extends StatelessWidget {
               Material(
                 child: InkWell(
                   onTap: () {
+                    context
+                        .read<ExploreSurveyBloc>()
+                        .onShowingFilterSheetChange(false);
                     context.pop();
                   },
                   child: Container(

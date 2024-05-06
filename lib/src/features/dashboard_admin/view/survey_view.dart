@@ -224,6 +224,9 @@ class SurveyView extends StatelessWidget {
               Material(
                 child: InkWell(
                   onTap: () {
+                    context
+                        .read<SurveyListBloc>()
+                        .onShowingFilterSheetChange(false);
                     context.pop();
                   },
                   child: Container(
