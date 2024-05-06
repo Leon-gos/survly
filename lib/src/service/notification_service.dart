@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/config/constants/notification.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
+import 'package:survly/src/network/data/survey/survey_repository_impl.dart';
 import 'package:survly/src/network/data/user/user_repository_impl.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -143,7 +144,7 @@ class NotificationService {
     FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
   }
 
-  static void _handleMessage(RemoteMessage message) {
+  static Future<void> _handleMessage(RemoteMessage message) async {
     String? type = message.data[NotiDataField.type];
     String? data = message.data[NotiDataField.data];
 
@@ -156,6 +157,24 @@ class NotificationService {
         AppCoordinator.context.push(
           AppRouteNames.responseUserSurvey.path,
           extra: extra,
+        );
+      }
+    } else if (type == NotiType.userRequestSurvey.value) {
+      if (data != null) {
+        var surveyId = (jsonDecode(data)
+            as Map<String, dynamic>)[NotiDataDataKey.surveyId];
+        AppCoordinator.context.push(
+          AppRouteNames.surveyRequest.path,
+          extra: await SurveyRepositoryImpl().fetchSurveyById(surveyId),
+        );
+      }
+    } else if (type == NotiType.adminResponseUserRequest.value) {
+      if (data != null) {
+        var surveyId = (jsonDecode(data)
+            as Map<String, dynamic>)[NotiDataDataKey.surveyId];
+        AppCoordinator.context.push(
+          AppRouteNames.previewSurvey.path,
+          extra: await SurveyRepositoryImpl().fetchSurveyById(surveyId),
         );
       }
     }

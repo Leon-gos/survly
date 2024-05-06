@@ -150,7 +150,8 @@
     "notiBodySurveyApprove": "Your survey has been approved!!! Check now 😍",
     "notiTitleUserSendRequest": "New survey's request",
     "notiBodyUserSendRequest": "Someone request your survey. Check now!",
-    "notiTitleResponseUserRequest": "Your request has been responsed",
+    "notiTitleResponseUserRequest": "Your request has been {responseStatus}",
+    "notiBodyResponseUserRequest": "Your request to survey {surveyTitle} has been {responseStatus}. Tap to check.",
 
     "errorGeneral": "Something went wrong",
     "errorEmptyName": "Empty name",

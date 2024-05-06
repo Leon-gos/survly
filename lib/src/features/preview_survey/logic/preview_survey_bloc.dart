@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
+import 'package:survly/src/config/constants/notification.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/preview_survey/logic/preview_survey_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
@@ -51,6 +52,12 @@ class PreviewSurveyBloc extends Cubit<PreviewSurveyState> {
             title: S.text.notiTitleUserSendRequest,
             body: S.text.notiBodyUserSendRequest,
           ),
+          data: {
+            NotiDataField.type: NotiType.userRequestSurvey.value,
+            NotiDataField.data: {
+              NotiDataDataKey.surveyId: state.survey.surveyId
+            },
+          },
         ),
         userId: state.survey.adminId,
       );

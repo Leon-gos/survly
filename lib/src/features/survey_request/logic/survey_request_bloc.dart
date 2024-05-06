@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
+import 'package:survly/src/config/constants/notification.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/survey_request/logic/survey_request_state.dart';
 import 'package:survly/src/localization/localization_utils.dart';
@@ -27,7 +28,9 @@ class SurveyRequestBloc extends Cubit<SurveyRequestState> {
   }
 
   Future<void> reponseRequest(
-      SurveyRequest request, SurveyRequestStatus status) async {
+    SurveyRequest request,
+    SurveyRequestStatus status,
+  ) async {
     emit(state.copyWith(isLoading: true));
     try {
       await domainManager.surveyRequest.responseSurveyRequest(
@@ -52,8 +55,18 @@ class SurveyRequestBloc extends Cubit<SurveyRequestState> {
       NotificationService.sendNotiToUserById(
         requestBody: NotiRequestBody(
           notification: Notification(
-            title: S.text.notiTitleResponseUserRequest,
+            title: S.text.notiTitleResponseUserRequest(status.value),
+            body: S.text.notiBodyResponseUserRequest(
+              status.value,
+              state.survey.title,
+            ),
           ),
+          data: {
+            NotiDataField.type: NotiType.adminResponseUserRequest.value,
+            NotiDataField.data: {
+              NotiDataDataKey.surveyId: state.survey.surveyId,
+            },
+          },
         ),
         userId: request.userId,
       );
