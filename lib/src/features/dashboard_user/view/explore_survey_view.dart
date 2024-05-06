@@ -135,7 +135,7 @@ class ExploreSurveyView extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      S.of(context).labelShowOnlyMySurvey,
+                      S.of(context).labelShowOnlyNearbySurvey,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
