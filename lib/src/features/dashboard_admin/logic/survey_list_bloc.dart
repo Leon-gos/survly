@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/dashboard_admin/logic/survey_list_state.dart';
 import 'package:survly/src/localization/localization_utils.dart';
@@ -32,8 +33,21 @@ class SurveyListBloc extends Cubit<SurveyListState> {
   Future<void> fetchFirstPageSurvey() async {
     emit(state.copyWith(surveyList: []));
     try {
-      var surveyList = await domainManager.survey
-          .fetchFirstPageSurvey(searchKeyword: state.searchKeyWord);
+      List<Survey> surveyList;
+      if (state.sortBy == SortBy.dateCreate) {
+        surveyList = await domainManager.survey.fetchFirstPageSurvey(
+          searchKeyword: state.searchKeyWord,
+          status: state.filterSurveyStatus,
+        );
+      } else {
+        surveyList = await domainManager.survey.fetchFirstPageSurvey(
+          searchKeyword: state.searchKeyWord,
+          status: state.filterSurveyStatus,
+          orderBy: SurveyCollection.fieldTitle,
+          orderByDes: false,
+        );
+      }
+
       concatSurveyList(surveyList);
     } catch (e) {
       Logger().e("Failed to fetch first page of surveys", error: e);
@@ -47,10 +61,22 @@ class SurveyListBloc extends Cubit<SurveyListState> {
     _debounce.run(() async {
       if (state.surveyList.length - 1 >= 0) {
         try {
-          List<Survey> surveyList = await domainManager.survey.fetchMoreSurvey(
-            lastSurvey: state.surveyList[state.surveyList.length - 1],
-            searchKeyword: state.searchKeyWord,
-          );
+          List<Survey> surveyList;
+          if (state.sortBy == SortBy.dateCreate) {
+            surveyList = await domainManager.survey.fetchMoreSurvey(
+              lastSurvey: state.surveyList[state.surveyList.length - 1],
+              searchKeyword: state.searchKeyWord,
+              status: state.filterSurveyStatus,
+            );
+          } else {
+            surveyList = await domainManager.survey.fetchMoreSurvey(
+              lastSurvey: state.surveyList[state.surveyList.length - 1],
+              searchKeyword: state.searchKeyWord,
+              status: state.filterSurveyStatus,
+              orderBy: SurveyCollection.fieldTitle,
+              orderByDes: false,
+            );
+          }
           Logger().d(surveyList.length);
           concatSurveyList(surveyList);
         } catch (e) {
@@ -60,14 +86,14 @@ class SurveyListBloc extends Cubit<SurveyListState> {
     });
   }
 
-  void showOnlyMySurvey({bool? isShowMySurvey}) {
-    emit(state.copyWith(
-      isShowMySurvey: isShowMySurvey ?? !state.isShowMySurvey,
-    ));
-  }
-
   void filterBySurveyStatus(FilterByStatus? status) {
     emit(state.copyWith(filterByStatus: status));
+    fetchFirstPageSurvey();
+  }
+
+  void sortBy(SortBy? sortBy) {
+    emit(state.copyWith(sortBy: sortBy));
+    fetchFirstPageSurvey();
   }
 
   void onSurveyListItemChange(Survey oldSurvey, Survey newSurvey) {

@@ -19,34 +19,45 @@ class SurveyRepositoryImpl implements SurveyRepository {
   static const int pageSize = 3;
 
   @override
-  Future<List<Survey>> fetchFirstPageSurvey({String? searchKeyword}) async {
+  Future<List<Survey>> fetchFirstPageSurvey({
+    String? searchKeyword,
+    SurveyStatus? status,
+    String? orderBy,
+    bool? orderByDes,
+  }) async {
     List<Survey> list = [];
 
-    QuerySnapshot<Map<String, dynamic>> value;
-    if (searchKeyword != null && searchKeyword != "") {
-      value = await ref
-          .where(
-            SurveyCollection.fieldStatus,
-            isNotEqualTo: SurveyStatus.archived.value,
-          )
-          .orderBy(SurveyCollection.fieldStatus)
-          .where(
-            SurveyCollection.fieldSearchList,
-            arrayContainsAny:
-                List.from(searchKeyword.toLowerCase().trim().split(" ")),
-          )
-          .limit(pageSize)
-          .get();
+    Query<Map<String, dynamic>> query;
+    if (status != null) {
+      query = ref.where(
+        SurveyCollection.fieldStatus,
+        isEqualTo: status.value,
+      );
     } else {
-      value = await ref
+      query = ref
           .where(
             SurveyCollection.fieldStatus,
             isNotEqualTo: SurveyStatus.archived.value,
           )
-          .orderBy(SurveyCollection.fieldStatus)
-          .limit(pageSize)
-          .get();
+          .orderBy(
+            SurveyCollection.fieldStatus,
+          );
     }
+    if (searchKeyword != null && searchKeyword != "") {
+      query = query.where(
+        SurveyCollection.fieldSearchList,
+        arrayContainsAny:
+            List.from(searchKeyword.toLowerCase().trim().split(" ")),
+      );
+    }
+    query = query
+        .orderBy(
+          orderBy ?? SurveyCollection.fieldDateCreate,
+          descending: orderByDes ?? true,
+        )
+        .limit(pageSize);
+
+    QuerySnapshot<Map<String, dynamic>> value = await query.get();
 
     for (var doc in value.docs) {
       var data = doc.data();
@@ -62,37 +73,46 @@ class SurveyRepositoryImpl implements SurveyRepository {
   Future<List<Survey>> fetchMoreSurvey({
     required Survey lastSurvey,
     String? searchKeyword,
+    SurveyStatus? status,
+    String? orderBy,
+    bool? orderByDes,
   }) async {
     List<Survey> list = [];
     var lastDoc = await ref.doc(lastSurvey.surveyId).get();
 
-    QuerySnapshot<Map<String, dynamic>> value;
-    if (searchKeyword != null && searchKeyword != "") {
-      value = await ref
-          .where(
-            SurveyCollection.fieldStatus,
-            isNotEqualTo: SurveyStatus.archived.value,
-          )
-          .orderBy(SurveyCollection.fieldStatus)
-          .where(
-            SurveyCollection.fieldSearchList,
-            arrayContainsAny:
-                List.from(searchKeyword.toLowerCase().trim().split(" ")),
-          )
-          .startAfterDocument(lastDoc)
-          .limit(pageSize)
-          .get();
+    Query<Map<String, dynamic>> query;
+    if (status != null) {
+      query = ref.where(
+        SurveyCollection.fieldStatus,
+        isEqualTo: status.value,
+      );
     } else {
-      value = await ref
+      query = ref
           .where(
             SurveyCollection.fieldStatus,
             isNotEqualTo: SurveyStatus.archived.value,
           )
-          .orderBy(SurveyCollection.fieldStatus)
-          .limit(pageSize)
-          .startAfterDocument(lastDoc)
-          .get();
+          .orderBy(
+            SurveyCollection.fieldStatus,
+          );
     }
+    if (searchKeyword != null && searchKeyword != "") {
+      query = query.where(
+        SurveyCollection.fieldSearchList,
+        arrayContainsAny:
+            List.from(searchKeyword.toLowerCase().trim().split(" ")),
+      );
+    }
+    query = query
+        .orderBy(
+          orderBy ?? SurveyCollection.fieldDateCreate,
+          descending: orderByDes ?? true,
+        )
+        .startAfterDocument(lastDoc)
+        .limit(pageSize);
+
+    QuerySnapshot<Map<String, dynamic>> value = await query.get();
+
     for (var doc in value.docs) {
       var data = doc.data();
 

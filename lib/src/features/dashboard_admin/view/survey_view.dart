@@ -36,7 +36,7 @@ class SurveyView extends StatelessWidget {
   Widget _buildSurveyListView() {
     return BlocBuilder<SurveyListBloc, SurveyListState>(
       buildWhen: (previous, current) =>
-          previous.surveyFilterList != current.surveyFilterList,
+          previous.surveyList != current.surveyList,
       builder: (context, state) {
         return Column(
           children: [
@@ -67,6 +67,7 @@ class SurveyView extends StatelessWidget {
                       showModalBottomSheet(
                         context: context,
                         shape: const RoundedRectangleBorder(),
+                        isScrollControlled: true,
                         builder: (sheetContext) {
                           return _buildBottomSheetFilter(context);
                         },
@@ -82,7 +83,7 @@ class SurveyView extends StatelessWidget {
             ),
             Expanded(
               child: AppSurveyListWidget(
-                surveyList: state.surveyFilterList,
+                surveyList: state.surveyList,
                 onRefresh: () =>
                     context.read<SurveyListBloc>().fetchFirstPageSurvey(),
                 onLoadMore: () =>
@@ -119,7 +120,8 @@ class SurveyView extends StatelessWidget {
       value: BlocProvider.of<SurveyListBloc>(context),
       child: BlocBuilder<SurveyListBloc, SurveyListState>(
         buildWhen: (previous, current) =>
-            previous.filterByStatus != current.filterByStatus,
+            previous.filterByStatus != current.filterByStatus ||
+            previous.sortBy != current.sortBy,
         builder: (context, state) {
           return Container(
             decoration: BoxDecoration(
@@ -181,6 +183,44 @@ class SurveyView extends StatelessWidget {
                               .filterBySurveyStatus(value);
                         },
                       )
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Container(
+                  color: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 16,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        S.of(context).labelSortBy,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      RadioListTile(
+                        title: Text(S.of(context).labelSortByDateCreate),
+                        value: SortBy.dateCreate,
+                        groupValue: state.sortBy,
+                        onChanged: (value) {
+                          context.read<SurveyListBloc>().sortBy(value);
+                        },
+                      ),
+                      RadioListTile(
+                        title: Text(S.of(context).labelSortByTitle),
+                        value: SortBy.title,
+                        groupValue: state.sortBy,
+                        onChanged: (value) {
+                          context.read<SurveyListBloc>().sortBy(value);
+                        },
+                      ),
                     ],
                   ),
                 ),
