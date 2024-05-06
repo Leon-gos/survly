@@ -122,8 +122,7 @@ class UserRepositoryImpl implements UserRepository {
       if (await checkEmailExisted(user.email)) {
         return;
       }
-      var value = await ref.add({});
-      ref.doc(value.id).set(user.toMap());
+      await ref.doc(user.id).set(user.toMap());
     } catch (e) {
       Logger().e("Create user error", error: e);
     }

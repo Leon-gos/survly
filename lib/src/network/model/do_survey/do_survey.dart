@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
+import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/network/model/user/user.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 
@@ -26,6 +27,7 @@ class DoSurvey {
   String surveyId;
   String userId;
   User? user;
+  Survey? survey;
 
   DoSurvey({
     required this.doSurveyId,
@@ -37,6 +39,7 @@ class DoSurvey {
     required this.surveyId,
     required this.userId,
     this.user,
+    this.survey,
   });
 
   factory DoSurvey.init({
