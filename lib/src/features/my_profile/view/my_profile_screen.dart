@@ -48,7 +48,8 @@ class _MyProfileScreenState extends State<MyProfileScreen>
       create: (context) => MyProfileBloc(),
       child: BlocBuilder<MyProfileBloc, MyProfileState>(
         buildWhen: (previous, current) =>
-            previous.isShowProfile != current.isShowProfile,
+            previous.isShowProfile != current.isShowProfile ||
+            previous.doSurveyList != current.doSurveyList,
         builder: (context, state) {
           return Scaffold(
             appBar: AppAppBarWidget(
@@ -78,7 +79,7 @@ class _MyProfileScreenState extends State<MyProfileScreen>
               width: double.infinity,
               child: Column(
                 children: [
-                  state.isShowProfile ? _buildProfile() : const SizedBox(),
+                  state.isShowProfile ? _buildProfile(state) : const SizedBox(),
                   Expanded(child: _buildTabbar()),
                 ],
               ),
@@ -89,7 +90,7 @@ class _MyProfileScreenState extends State<MyProfileScreen>
     );
   }
 
-  Widget _buildProfile() {
+  Widget _buildProfile(MyProfileState myProfileState) {
     return BlocBuilder<AccountBloc, AccountState>(
       buildWhen: (previous, current) => previous.userBase != current.userBase,
       builder: (context, state) {
@@ -126,7 +127,7 @@ class _MyProfileScreenState extends State<MyProfileScreen>
                       children: [
                         const Icon(Icons.timer_outlined),
                         Text(S.of(context).labelDoing),
-                        Text("${user.countDoing ?? 0}"),
+                        Text("${myProfileState.countDoing}"),
                       ],
                     ),
                   ),
@@ -137,7 +138,7 @@ class _MyProfileScreenState extends State<MyProfileScreen>
                       children: [
                         const Icon(Icons.check_circle_outline_outlined),
                         Text(S.of(context).labelDone),
-                        Text("${user.countDone ?? 0}"),
+                        Text("${myProfileState.countDone}"),
                       ],
                     ),
                   ),

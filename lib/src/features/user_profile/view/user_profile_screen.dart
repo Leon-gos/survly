@@ -47,7 +47,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       create: (context) => UserProfileBloc(widget.user),
       child: BlocBuilder<UserProfileBloc, UserProfileState>(
         buildWhen: (previous, current) =>
-            previous.isShowProfile != current.isShowProfile,
+            previous.isShowProfile != current.isShowProfile ||
+            previous.doSurveyList != current.doSurveyList,
         builder: (context, state) {
           return Scaffold(
             appBar: AppAppBarWidget(
@@ -62,7 +63,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
               child: Column(
                 children: [
                   state.isShowProfile
-                      ? _buildProfile(context, state.user)
+                      ? _buildProfile(context, state.user, state)
                       : const SizedBox(),
                   Expanded(child: _buildTabbar()),
                 ],
@@ -160,7 +161,11 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     );
   }
 
-  Widget _buildProfile(BuildContext context, User user) {
+  Widget _buildProfile(
+    BuildContext context,
+    User user,
+    UserProfileState userProfileState,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -192,7 +197,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                   children: [
                     const Icon(Icons.timer_outlined),
                     Text(S.of(context).labelDoing),
-                    Text("${user.countDoing}"),
+                    Text("${userProfileState.countDoing}"),
                   ],
                 ),
               ),
@@ -203,7 +208,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                   children: [
                     const Icon(Icons.check_circle_outline_outlined),
                     Text(S.of(context).labelDone),
-                    Text("${user.countDone}"),
+                    Text("${userProfileState.countDone}"),
                   ],
                 ),
               ),
