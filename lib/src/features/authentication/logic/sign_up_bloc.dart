@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:logger/logger.dart';
 import 'package:survly/src/config/constants/firebase_auth_error.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/authentication/logic/sign_up_state.dart';
@@ -51,6 +52,7 @@ class SignUpBloc extends Cubit<SignUpState> {
       }
     } catch (e) {
       Fluttertoast.showToast(msg: S.text.errorGeneral);
+      Logger().e("sign up error", error: e);
     } finally {
       emit(state.copyWith(isLoading: false));
     }

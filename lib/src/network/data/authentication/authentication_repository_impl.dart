@@ -43,10 +43,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
           await FirebaseAuth.instance.signInWithCredential(credential);
 
       // create user in database
-      await UserRepositoryImpl().createUser(my_user.User.newUser(
-        email: userCredential.user!.email!,
-        fullname: userCredential.user!.displayName!,
-      ));
+      if (userCredential.user != null) {
+        await UserRepositoryImpl().createUser(my_user.User.newUser(
+          id: userCredential.user!.uid,
+          email: userCredential.user!.email!,
+          fullname: userCredential.user!.displayName!,
+          avatar: userCredential.user?.photoURL,
+        ));
+      }
 
       return userCredential;
     } catch (e) {
@@ -79,10 +83,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         password: password,
       );
       await credential.user?.sendEmailVerification();
-      await UserRepositoryImpl().createUser(my_user.User.newUser(
-        email: email,
-        fullname: fullname,
-      ));
+      if (credential.user != null) {
+        var newUser = my_user.User.newUser(
+          id: credential.user!.uid,
+          email: email,
+          fullname: fullname,
+        );
+        await UserRepositoryImpl().createUser(newUser);
+      }
     } catch (e) {
       rethrow;
     }

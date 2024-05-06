@@ -31,7 +31,7 @@ class DoSurveyTrackingScreenState extends State<DoSurveyTrackingScreen> {
             return const AppLoadingCircle();
           }
           var latLng = LatLng(
-              state.doSurvey!.currentLat ?? 0, state.doSurvey!.currentLng ?? 0);
+              state.doSurvey?.currentLat ?? 0, state.doSurvey?.currentLng ?? 0);
           return Scaffold(
             body: GoogleMap(
               initialCameraPosition: CameraPosition(
