@@ -60,8 +60,10 @@ class SurveyListBloc extends Cubit<SurveyListState> {
     });
   }
 
-  void showOnlyMySurvey(bool isShowMySurvey) {
-    emit(state.copyWith(isShowMySurvey: isShowMySurvey));
+  void showOnlyMySurvey({bool? isShowMySurvey}) {
+    emit(state.copyWith(
+      isShowMySurvey: isShowMySurvey ?? !state.isShowMySurvey,
+    ));
   }
 
   void filterBySurveyStatus(FilterByStatus? status) {
@@ -86,10 +88,6 @@ class SurveyListBloc extends Cubit<SurveyListState> {
     } catch (e) {
       Logger().e(S.text.errorGeneral, error: e);
     }
-  }
-
-  void onShowingFilterSheetChange(bool value) {
-    emit(state.copyWith(isShowingFilterSheet: value));
   }
 
   void onSearchKeywordChange(String text) {

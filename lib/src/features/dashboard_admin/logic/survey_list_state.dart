@@ -12,7 +12,6 @@ class SurveyListState extends Equatable {
   final List<Survey> surveyList;
   final bool isLoading;
   final bool isShowMySurvey;
-  final bool isShowingFilterSheet;
   final FilterByStatus filterByStatus;
   final String searchKeyWord;
 
@@ -20,7 +19,6 @@ class SurveyListState extends Equatable {
     required this.surveyList,
     required this.isLoading,
     required this.isShowMySurvey,
-    required this.isShowingFilterSheet,
     required this.searchKeyWord,
     required this.filterByStatus,
   });
@@ -29,7 +27,6 @@ class SurveyListState extends Equatable {
         surveyList: [],
         isLoading: true,
         isShowMySurvey: false,
-        isShowingFilterSheet: false,
         searchKeyWord: "",
         filterByStatus: FilterByStatus.all,
       );
@@ -66,7 +63,6 @@ class SurveyListState extends Equatable {
     List<Survey>? surveyList,
     bool? isLoading,
     bool? isShowMySurvey,
-    bool? isShowingFilterSheet,
     String? searchKeyWord,
     FilterByStatus? filterByStatus,
   }) {
@@ -74,7 +70,6 @@ class SurveyListState extends Equatable {
       surveyList: surveyList ?? this.surveyList,
       isLoading: isLoading ?? this.isLoading,
       isShowMySurvey: isShowMySurvey ?? this.isShowMySurvey,
-      isShowingFilterSheet: isShowingFilterSheet ?? this.isShowingFilterSheet,
       searchKeyWord: searchKeyWord ?? this.searchKeyWord,
       filterByStatus: filterByStatus ?? this.filterByStatus,
     );
@@ -86,7 +81,6 @@ class SurveyListState extends Equatable {
         surveyFilterList,
         isLoading,
         isShowMySurvey,
-        isShowingFilterSheet,
         searchKeyWord,
         filterByStatus,
       ];
