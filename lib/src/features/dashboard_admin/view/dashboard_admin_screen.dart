@@ -49,58 +49,57 @@ class DashboardAdminScreen extends StatelessWidget {
 
   Widget _buildAdminInfo(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountState>(builder: (context, state) {
-      return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: GestureDetector(
-              onTap: () {
-                context.push(AppRouteNames.adminProfile.path);
-              },
-              child: Row(
-                children: [
-                  AppAvatarWidget(
-                    avatarUrl: state.userBase?.avatar ?? "",
-                    size: 48,
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        state.userBase?.fullname ?? "",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                      Text(state.userBase?.email ?? ""),
-                    ],
-                  ),
-                  const Spacer(),
-                  PopupMenuButton(
-                    itemBuilder: (context) {
-                      return [
-                        PopupMenuItem(
-                          onTap: () {
-                            context.push(AppRouteNames.createSurvey.path);
-                          },
-                          child: Text(S.of(context).titleCreateSurvey),
-                        ),
-                        PopupMenuItem(
-                          onTap: () {
-                            context.read<AccountBloc>().logout();
-                          },
-                          child: Text(S.of(context).labelBtnLogout),
-                        ),
-                      ];
-                    },
-                  ),
-                ],
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: GestureDetector(
+          onTap: () {
+            context.push(AppRouteNames.adminProfile.path);
+          },
+          child: Row(
+            children: [
+              AppAvatarWidget(
+                avatarUrl: state.userBase?.avatar ?? "",
+                size: 48,
               ),
-            ),
+              const SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      state.userBase?.fullname ?? "",
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(state.userBase?.email ?? ""),
+                  ],
+                ),
+              ),
+              PopupMenuButton(
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(
+                      onTap: () {
+                        context.push(AppRouteNames.createSurvey.path);
+                      },
+                      child: Text(S.of(context).titleCreateSurvey),
+                    ),
+                    PopupMenuItem(
+                      onTap: () {
+                        context.read<AccountBloc>().logout();
+                      },
+                      child: Text(S.of(context).labelBtnLogout),
+                    ),
+                  ];
+                },
+              ),
+            ],
           ),
-        ],
+        ),
       );
     });
   }
