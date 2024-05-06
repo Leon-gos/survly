@@ -13,6 +13,7 @@ import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/service/notification_service.dart';
 import 'package:survly/src/service/picker_service.dart';
+import 'package:survly/src/utils/map_helper.dart';
 
 class AccountBloc extends Cubit<AccountState> {
   AccountBloc() : super(AccountState.ds());
@@ -137,6 +138,8 @@ class AccountBloc extends Cubit<AccountState> {
             .fetchUserByEmail(loginInfo.email)
             .then((value) async {
           UserBaseSingleton.instance().userBase = value;
+          UserBaseSingleton.instance().geoPoint =
+              await MapHelper.getCurrentGeoPoint();
           NotificationService.registerToken();
           onUserbaseChange(value);
           if (value?.role == UserBase.roleAdmin) {
@@ -147,6 +150,7 @@ class AccountBloc extends Cubit<AccountState> {
           return;
         });
       } catch (e) {
+        await domainManager.authentication.logout();
         AppCoordinator.goNamed(AppRouteNames.login.path);
         Logger().d(e);
       }

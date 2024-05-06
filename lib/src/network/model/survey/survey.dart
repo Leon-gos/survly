@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_geo_hash/geohash.dart';
+import 'package:flutter_geo_hash/geohash.dart' as geohash;
 import 'package:logger/logger.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/localization/localization_utils.dart';
@@ -195,7 +197,7 @@ class Survey {
     survey.dateCreate = dateCreate ?? DateTime.now();
     survey.dateUpdate = dateUpdate ?? DateTime.now();
     survey.status = SurveyStatus.draft.value;
-    survey.outlet = Outlet(latitude: null, longitude: null);
+    survey.outlet = Outlet();
     survey.adminId = adminId;
     return survey;
   }
@@ -240,8 +242,8 @@ class Survey {
       adminId: map['adminId']?.toString() ?? "",
       outlet: Outlet(
         address: map[SurveyCollection.fieldAddress],
-        latitude: map[SurveyCollection.fieldLatitude],
-        longitude: map[SurveyCollection.fieldLongitude],
+        geoPoint: map[SurveyCollection.fieldGeoPoint],
+        geoHash: map[SurveyCollection.fieldGeoHash],
       ),
     );
   }
@@ -300,5 +302,18 @@ class Survey {
       }
     }
     searchList = List.from(setKeyword);
+  }
+
+  void genGeohash() {
+    try {
+      if (outlet?.hasCoordinate() == true) {
+        outlet?.geoHash = MyGeoHash().geoHashForLocation(geohash.GeoPoint(
+          outlet!.geoPoint!.latitude,
+          outlet!.geoPoint!.longitude,
+        ));
+      }
+    } catch (e) {
+      Logger().e("gen geohash error", error: e);
+    }
   }
 }

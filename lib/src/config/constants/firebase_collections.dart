@@ -32,6 +32,8 @@ class SurveyCollection {
   static const String fieldRespondentNum = "respondentNum";
   static const String fieldRespondentMax = "respondentMax";
   static const String fieldSearchList = "searchList";
+  static const String fieldGeoHash = "geoHash";
+  static const String fieldGeoPoint = "geoPoint";
 }
 
 class QuestionCollection {
