@@ -145,6 +145,8 @@
     "labelSortByDateCreate": "Newest first",
     "labelSortByTitle": "Title A-Z",
     "toastRefreshProfileFail": "Refresh profile failed",
+    "labelEarn": "Earn {amount}",
+    "labelStartedOn": "Started on",
 
     "notiTitleUserRespondent": "New respondent",
     "notiBodyUserRespondent": "Someone has just response your survey. Check now!",

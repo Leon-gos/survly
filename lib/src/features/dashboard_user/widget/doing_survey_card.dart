@@ -3,6 +3,7 @@ import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/src/utils/date_helper.dart';
+import 'package:survly/src/utils/number_helper.dart';
 
 class DoingSurveyCard extends StatelessWidget {
   const DoingSurveyCard({
@@ -88,6 +89,12 @@ class DoingSurveyCard extends StatelessWidget {
                     ),
                     Text(
                         "${S.of(context).hintOutlet} ${survey.outlet?.address}"),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text(S
+                        .of(context)
+                        .labelEarn(NumberHelper.formatCurrency(survey.cost))),
                   ],
                 ),
               ),
