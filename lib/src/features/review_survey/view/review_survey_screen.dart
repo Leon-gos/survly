@@ -91,10 +91,6 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                   iconColor: AppColors.onPrimary,
                   itemBuilder: (context) {
                     return [
-                      PopupMenuItem(
-                        child: Text(S.of(context).labelBtnViewAsUser),
-                        onTap: () {},
-                      ),
                       if (state.survey.status == SurveyStatus.public.value) ...[
                         PopupMenuItem(
                           child: Text(S.of(context).labelBtnViewRequestList),

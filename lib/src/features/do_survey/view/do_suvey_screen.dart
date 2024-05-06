@@ -31,16 +31,16 @@ class DoSurveyScreen extends StatelessWidget {
       child: BlocBuilder<DoSurveyBloc, DoSurveyState>(
         buildWhen: (previous, current) =>
             previous.doSurvey != current.doSurvey ||
-            previous.questionList != current.questionList,
+            previous.questionList != current.questionList ||
+            previous.isLoading != current.isLoading,
         builder: (context, state) {
           return Scaffold(
             appBar: const AppAppBarWidget(
               noActionBar: true,
             ),
             resizeToAvoidBottomInset: false,
-            body: state.doSurvey == null || state.questionList.isEmpty
-                ? const AppLoadingCircle()
-                : _buildSurveyForm(),
+            body:
+                state.isLoading ? const AppLoadingCircle() : _buildSurveyForm(),
           );
         },
       ),
