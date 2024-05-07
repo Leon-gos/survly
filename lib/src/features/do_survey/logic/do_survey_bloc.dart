@@ -25,10 +25,11 @@ import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/service/notification_service.dart';
 import 'package:survly/src/service/picker_service.dart';
 import 'package:survly/src/utils/coordinate_helper.dart';
+import 'package:survly/src/utils/date_helper.dart';
 import 'package:survly/widgets/app_dialog.dart';
 
 class DoSurveyBloc extends Cubit<DoSurveyState> {
-  static const Duration updateDuration = Duration(seconds: 5);
+  static const Duration updateDuration = Duration(seconds: 15);
   static const minKmToSubmit = 10;
 
   Timer? timer;
@@ -237,7 +238,7 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
       EditorText(
         offset: Offset(fontSize.toDouble(), imageHeight - fontSize * 3),
         text:
-            "(${location.latitude}, ${location.longitude})\n${DateTime.now().toString()}",
+            "(${location.latitude}, ${location.longitude})\n${DateHelper.getFullDateTime(DateTime.now())}",
         fontSizePx: fontSize,
         textColor: Colors.white,
         fontName: "",
