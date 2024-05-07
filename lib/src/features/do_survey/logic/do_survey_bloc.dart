@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_editor/image_editor.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/config/constants/notification.dart';
+import 'package:survly/src/config/constants/timeout.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/do_survey/logic/do_survey_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
@@ -132,17 +133,21 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     ));
   }
 
-  Future<void> goNextPage(BuildContext context) async {
+  Future<void> goNextPage() async {
     // go to next page
     if (state.currentPage <= state.questionList.length) {
       emit(state.copyWith(currentPage: state.currentPage + 1));
       return;
     }
 
+    Fluttertoast.showToast(msg: S.text.toastValidating);
+    emit(state.copyWith(isLoading: true));
+
     // check is all questions are answered
     int pageNotComplete = state.pageNotComplete();
     if (pageNotComplete >= 0) {
       Fluttertoast.showToast(msg: S.text.toastMustAnswerAllQuestion);
+      emit(state.copyWith(isLoading: false));
       emit(state.copyWith(currentPage: pageNotComplete));
       return;
     }
@@ -150,6 +155,7 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     // check if current location near outlet place
     await state.location.getLocation().then(
       (currentLocation) {
+        emit(state.copyWith(isLoading: false));
         final distanceToOutlet = CoordinateHelper.getDistanceFromLatLngInKm(
           lat1: currentLocation.latitude,
           lng1: currentLocation.longitude,
@@ -161,7 +167,7 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
           Fluttertoast.showToast(msg: S.text.toastMustStayNearOutletPlace);
         } else {
           showDialog(
-            context: context,
+            context: AppCoordinator.context,
             builder: (context) {
               return AppDialog(
                 title: S.text.dialogTitleSubmitSurvey,
@@ -173,6 +179,12 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
             },
           );
         }
+      },
+    ).timeout(
+      const Duration(seconds: Timeout.readLocationTimeout),
+      onTimeout: () {
+        Fluttertoast.showToast(msg: S.text.errorLocationNotResponse);
+        emit(state.copyWith(isLoading: false));
       },
     );
   }

@@ -148,6 +148,7 @@
     "labelEarn": "Earn {amount}",
     "labelStartedOn": "Started on",
     "labelYourAns": "Your answer",
+    "toastValidating": "Validating your survey",
 
     "notiTitleUserRespondent": "New respondent",
     "notiBodyUserRespondent": "Someone has just response your survey. Check now!",
@@ -189,5 +190,6 @@
     "errorConfirmPassNotMatch": "Confirm password doesn't match",
     "errorEmailExisted": "Email already existed",
     "errorWeakPassword": "Password week",
-    "errorEmailNotVerified": "Email not verified, check your email"
+    "errorEmailNotVerified": "Email not verified, check your email",
+    "errorLocationNotResponse": "Cannot read location. Please check your GPS and try again."
 }

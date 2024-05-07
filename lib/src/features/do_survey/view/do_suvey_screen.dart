@@ -83,7 +83,7 @@ class DoSurveyScreen extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {
-                      context.read<DoSurveyBloc>().goNextPage(context);
+                      context.read<DoSurveyBloc>().goNextPage();
                     },
                     icon: const Icon(
                       Icons.arrow_forward_ios,
