@@ -72,6 +72,7 @@ class DoSurveyCollection {
   static const String fieldUserId = "userId";
   static const String fieldCurrentLat = "currentLat";
   static const String fieldCurrentLng = "currentLng";
+  static const String fieldDateUpdate = "dateUpdate";
 }
 
 class DsLocationLog {
