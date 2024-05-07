@@ -132,7 +132,7 @@ class SurveyView extends StatelessWidget {
                   );
                 },
                 shape: const CircleBorder(),
-                backgroundColor: AppColors.secondary,
+                backgroundColor: AppColors.primary,
                 child: const Icon(
                   Icons.add,
                   color: AppColors.onPrimary,

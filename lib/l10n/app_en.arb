@@ -147,6 +147,7 @@
     "toastRefreshProfileFail": "Refresh profile failed",
     "labelEarn": "Earn {amount}",
     "labelStartedOn": "Started on",
+    "labelYourAns": "Your answer",
 
     "notiTitleUserRespondent": "New respondent",
     "notiBodyUserRespondent": "Someone has just response your survey. Check now!",
