@@ -12,6 +12,7 @@ class AppTextField extends StatefulWidget {
   final bool readOnly;
   final String? label;
   final TextEditingController? textController;
+  final int? maxLines;
 
   const AppTextField({
     super.key,
@@ -26,6 +27,7 @@ class AppTextField extends StatefulWidget {
     this.readOnly = false,
     this.label,
     this.textController,
+    this.maxLines,
   });
 
   @override
@@ -75,7 +77,8 @@ class _AppTextFieldState extends State<AppTextField> {
       obscureText: isObscureText,
       onChanged: widget.onTextChange,
       textInputAction: widget.textInputAction ?? TextInputAction.done,
-      maxLines: widget.textInputType == TextInputType.multiline ? 5 : 1,
+      maxLines: widget.maxLines ??
+          (widget.textInputType == TextInputType.multiline ? 5 : 1),
     );
   }
 }

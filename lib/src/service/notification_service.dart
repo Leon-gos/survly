@@ -40,8 +40,11 @@ class NotificationService {
 
   static Future<void> sendNotiToUserById({
     required NotiRequestBody requestBody,
-    required String userId,
+    required String? userId,
   }) async {
+    if (userId == null) {
+      return;
+    }
     requestBody.to = await UserRepositoryImpl().fetchUserFcmToken(userId);
     if (requestBody.to == null) {
       return;

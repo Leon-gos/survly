@@ -30,13 +30,6 @@ class PreviewSurveyScreen extends StatelessWidget {
         appBar: AppAppBarWidget(
           title: S.of(context).titlePreviewSurvey,
           centerTitle: true,
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.share),
-              color: Colors.white,
-            )
-          ],
         ),
         body: Column(
           children: [

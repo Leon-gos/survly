@@ -34,13 +34,18 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
   Timer? timer;
 
   DoSurveyBloc(Survey survey) : super(DoSurveyState.ds(survey: survey)) {
-    fetchDoSurveyInfo(survey);
-    fetchQuestionList(survey);
-    fetchAdminFcmToken(survey);
-    setupTimer();
+    init(survey);
   }
 
   DomainManager get domainManager => DomainManager();
+
+  Future<void> init(Survey survey) async {
+    emit(state.copyWith(isLoading: true));
+    await fetchDoSurveyInfo(survey);
+    await fetchQuestionList(survey);
+    setupTimer();
+    emit(state.copyWith(isLoading: false));
+  }
 
   Future<void> fetchDoSurveyInfo(Survey survey) async {
     var doSurvey = await domainManager.doSurvey.fetchDoSurveyBySurveyAndUser(
@@ -230,8 +235,9 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
     final location = await state.location.getLocation();
     textOption.addText(
       EditorText(
-        offset: Offset(fontSize.toDouble(), imageHeight - fontSize * 2),
-        text: "(${location.latitude}, ${location.longitude})",
+        offset: Offset(fontSize.toDouble(), imageHeight - fontSize * 3),
+        text:
+            "(${location.latitude}, ${location.longitude})\n${DateTime.now().toString()}",
         fontSizePx: fontSize,
         textColor: Colors.white,
         fontName: "",
@@ -252,6 +258,7 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
   }
 
   Future<void> saveDraft() async {
+    emit(state.copyWith(isLoading: true));
     // save answers
     for (int i = 0; i < state.questionList.length; i++) {
       var question = state.questionList[i];
@@ -283,6 +290,8 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
       emit(state.copyWith(doSurvey: doSurvey, isSaved: true));
     } catch (e) {
       Logger().e("Update outlet error", error: e);
+    } finally {
+      emit(state.copyWith(isLoading: false));
     }
   }
 
@@ -296,7 +305,8 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
           option2Text: S.text.labelBtnSaveAndExit,
           onOption2Pressed: () async {
             await saveDraft().then((value) {
-              context.pop();
+              Fluttertoast.showToast(msg: S.text.toastSaveDraftSurveySuccess);
+              AppCoordinator.pop();
             });
           },
           option1Text: S.text.labelBtnSave,
@@ -310,14 +320,14 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
   }
 
   Future<void> submitSurvey() async {
+    emit(state.copyWith(isLoading: true));
     try {
       await saveDraft();
       var doSurvey = state.doSurvey;
       await domainManager.doSurvey.submitDoSurvey(doSurvey!);
 
-      NotificationService.sendNotiToOneDevice(
+      NotificationService.sendNotiToUserById(
         requestBody: NotiRequestBody(
-            to: state.adminFcmToken,
             notification: my_noti.Notification(
               title: S.text.notiTitleUserRespondent,
               body: S.text.notiBodyUserRespondent,
@@ -327,19 +337,16 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
               NotiDataField.data:
                   List<String>.of([state.survey.surveyId, doSurvey.doSurveyId]),
             }),
+        userId: state.survey.adminId,
       );
 
       Fluttertoast.showToast(msg: S.text.toastSubmitSurveySuccess);
+      emit(state.copyWith(isLoading: false));
       AppCoordinator.pop();
     } catch (e) {
       Fluttertoast.showToast(msg: S.text.toastSubmitSurveyFail);
       Logger().e("Submit survey failed", error: e);
+      emit(state.copyWith(isLoading: false));
     }
-  }
-
-  Future<void> fetchAdminFcmToken(Survey survey) async {
-    String? fcmToken =
-        await domainManager.user.fetchUserFcmToken(survey.adminId);
-    emit(state.copyWith(adminFcmToken: fcmToken));
   }
 }

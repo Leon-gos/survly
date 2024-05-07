@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/question/question.dart';
+import 'package:survly/widgets/app_text_field.dart';
 
 class QuestionTextWidget extends StatefulWidget {
   const QuestionTextWidget({
@@ -51,11 +52,18 @@ class _QuestionTextWidgetState extends State<QuestionTextWidget> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        TextField(
-          controller: textController,
-          onChanged: widget.onAnswerChanged,
+        const SizedBox(
+          height: 8,
+        ),
+        AppTextField(
+          textController: textController,
+          onTextChange: widget.onAnswerChanged,
           readOnly: widget.readOnly,
-        )
+          textInputType: TextInputType.multiline,
+          textInputAction: TextInputAction.newline,
+          maxLines: 3,
+          hintText: S.of(context).labelYourAns,
+        ),
       ],
     );
   }

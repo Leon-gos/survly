@@ -28,6 +28,22 @@ class MyProfileState extends Equatable {
     return list;
   }
 
+  int get countDoing {
+    return doSurveyList
+        .where((element) =>
+            element.status == DoSurveyStatus.doing.value ||
+            element.status == DoSurveyStatus.submitted.value)
+        .length;
+  }
+
+  int get countDone {
+    return doSurveyList
+        .where((element) =>
+            element.status == DoSurveyStatus.approved.value ||
+            element.status == DoSurveyStatus.ignored.value)
+        .length;
+  }
+
   @override
   List<Object?> get props => [
         doSurveyList,

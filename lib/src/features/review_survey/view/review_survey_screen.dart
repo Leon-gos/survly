@@ -87,21 +87,10 @@ class _ReviewSurveyState extends State<ReviewSurveyScreen> {
                     color: AppColors.white,
                   )),
               actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.share,
-                    color: AppColors.white,
-                  ),
-                ),
                 PopupMenuButton(
                   iconColor: AppColors.onPrimary,
                   itemBuilder: (context) {
                     return [
-                      PopupMenuItem(
-                        child: Text(S.of(context).labelBtnViewAsUser),
-                        onTap: () {},
-                      ),
                       if (state.survey.status == SurveyStatus.public.value) ...[
                         PopupMenuItem(
                           child: Text(S.of(context).labelBtnViewRequestList),

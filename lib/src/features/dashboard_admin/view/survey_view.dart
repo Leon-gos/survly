@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survly/src/features/dashboard_admin/logic/survey_list_bloc.dart';
 import 'package:survly/src/features/dashboard_admin/logic/survey_list_state.dart';
+import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_survey_list_widget.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
@@ -38,77 +39,106 @@ class SurveyView extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.surveyList != current.surveyList,
       builder: (context, state) {
-        return Column(
+        return Stack(
           children: [
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: AppTextField(
-                      hintText: S.of(context).labelSearch,
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          context.read<SurveyListBloc>().searchSurvey();
-                        },
-                        icon: const Icon(Icons.search),
+            Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: AppTextField(
+                          hintText: S.of(context).labelSearch,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              context.read<SurveyListBloc>().searchSurvey();
+                            },
+                            icon: const Icon(Icons.search),
+                          ),
+                          onTextChange: (newText) {
+                            context
+                                .read<SurveyListBloc>()
+                                .onSearchKeywordChange(newText);
+                          },
+                        ),
                       ),
-                      onTextChange: (newText) {
-                        context
-                            .read<SurveyListBloc>()
-                            .onSearchKeywordChange(newText);
-                      },
-                    ),
+                      IconButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            shape: const RoundedRectangleBorder(),
+                            isScrollControlled: true,
+                            builder: (sheetContext) {
+                              return _buildBottomSheetFilter(context);
+                            },
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.filter_alt_outlined,
+                          color: Colors.grey,
+                        ),
+                      )
+                    ],
                   ),
-                  IconButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        shape: const RoundedRectangleBorder(),
-                        isScrollControlled: true,
-                        builder: (sheetContext) {
-                          return _buildBottomSheetFilter(context);
+                ),
+                Expanded(
+                  child: AppSurveyListWidget(
+                    surveyList: state.surveyList,
+                    onRefresh: () =>
+                        context.read<SurveyListBloc>().fetchFirstPageSurvey(),
+                    onLoadMore: () =>
+                        context.read<SurveyListBloc>().fetchMoreSurvey(),
+                    onItemClick: (survey) async {
+                      await context
+                          .push(AppRouteNames.reviewSurvey.path, extra: survey)
+                          .then(
+                        (value) {
+                          if (value != null) {
+                            if (value == true) {
+                              // is archived
+                              context
+                                  .read<SurveyListBloc>()
+                                  .archiveSurvey(survey);
+                            } else {
+                              // is updated
+                              context
+                                  .read<SurveyListBloc>()
+                                  .onSurveyListItemChange(
+                                      survey, value as Survey);
+                            }
+                          }
                         },
                       );
                     },
-                    icon: const Icon(
-                      Icons.filter_alt_outlined,
-                      color: Colors.grey,
-                    ),
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
             ),
-            Expanded(
-              child: AppSurveyListWidget(
-                surveyList: state.surveyList,
-                onRefresh: () =>
-                    context.read<SurveyListBloc>().fetchFirstPageSurvey(),
-                onLoadMore: () =>
-                    context.read<SurveyListBloc>().fetchMoreSurvey(),
-                onItemClick: (survey) async {
-                  await context
-                      .push(AppRouteNames.reviewSurvey.path, extra: survey)
-                      .then(
+            Positioned(
+              right: 32,
+              bottom: 32,
+              child: FloatingActionButton(
+                onPressed: () async {
+                  await context.push(AppRouteNames.createSurvey.path).then(
                     (value) {
-                      if (value != null) {
-                        if (value == true) {
-                          // is archived
-                          context.read<SurveyListBloc>().archiveSurvey(survey);
-                        } else {
-                          // is updated
-                          context
-                              .read<SurveyListBloc>()
-                              .onSurveyListItemChange(survey, value as Survey);
-                        }
+                      if (value == true) {
+                        context.read<SurveyListBloc>().resetSurveyList();
                       }
                     },
                   );
                 },
+                shape: const CircleBorder(),
+                backgroundColor: AppColors.primary,
+                child: const Icon(
+                  Icons.add,
+                  color: AppColors.onPrimary,
+                ),
               ),
-            )
+            ),
           ],
         );
       },

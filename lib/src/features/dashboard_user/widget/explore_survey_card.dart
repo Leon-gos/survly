@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:survly/src/localization/localization_utils.dart';
-import 'package:survly/src/network/model/do_survey/do_survey.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/src/utils/date_helper.dart';
 import 'package:survly/src/utils/number_helper.dart';
 
-class JoinedSurveyCard extends StatelessWidget {
-  const JoinedSurveyCard({
+class ExploreSurveyCard extends StatelessWidget {
+  const ExploreSurveyCard({
     super.key,
     required this.survey,
-    required this.doSurvey,
     this.borderRadius = 8,
   });
 
   final double borderRadius;
   final Survey survey;
-  final DoSurvey doSurvey;
 
   @override
   Widget build(BuildContext context) {
@@ -48,48 +45,25 @@ class JoinedSurveyCard extends StatelessWidget {
         topLeft: Radius.circular(borderRadius),
         topRight: Radius.circular(borderRadius),
       ),
-      child: SizedBox(
-        width: double.infinity,
-        height: 200,
-        child: Stack(
-          children: [
-            survey.thumbnail != ""
-                ? Image.network(
-                    survey.thumbnail,
-                    width: double.infinity,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  )
-                : Container(
-                    width: double.infinity,
-                    height: 200,
-                    color: Colors.grey,
-                  ),
-            Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                margin: const EdgeInsets.all(4),
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  color: Colors.black38,
-                ),
-                child: Text(
-                  doSurvey.status.toUpperCase(),
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ),
+      child: survey.thumbnail != ""
+          ? Image.network(
+              survey.thumbnail,
+              width: double.infinity,
+              height: 200,
+              fit: BoxFit.cover,
+            )
+          : Container(
+              width: double.infinity,
+              height: 200,
+              color: Colors.grey,
             ),
-          ],
-        ),
-      ),
     );
   }
 
   Widget _buildSurveyContent(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -109,21 +83,27 @@ class JoinedSurveyCard extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                        "${S.of(context).hintDateFrom} ${DateHelper.getDateOnly(survey.dateStart)} ${S.of(context).hintDateTo} ${DateHelper.getDateOnly(survey.dateEnd)}"),
+                        "${survey.respondentNum}/${survey.respondentMax} ${S.of(context).respondent}"),
                     const SizedBox(
                       height: 4,
                     ),
                     Text(
-                        "${S.of(context).hintOutlet} ${survey.outlet?.address}"),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Text(S
-                        .of(context)
-                        .labelEarn(NumberHelper.formatCurrency(survey.cost))),
+                        "${S.of(context).labelStartedOn} ${DateHelper.getDateOnly(survey.dateStart)}"),
                   ],
                 ),
               ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                    color: AppColors.secondary,
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(borderRadius))),
+                child: Text(
+                  NumberHelper.formatCurrency(survey.cost),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, color: AppColors.white),
+                ),
+              )
             ],
           )
         ],

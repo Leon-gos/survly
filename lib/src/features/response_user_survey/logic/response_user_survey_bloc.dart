@@ -97,9 +97,8 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
         DoSurveyStatus.ignored,
       );
 
-      NotificationService.sendNotiToOneDevice(
+      NotificationService.sendNotiToUserById(
         requestBody: NotiRequestBody(
-          to: state.doSurvey!.user!.fcmToken!,
           notification: my_noti.Notification(
             title: S.text.notiTitleSurveyIgnore,
             body: S.text.notiBodySurveyIgnore,
@@ -108,6 +107,7 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
             NotiDataField.type: NotiType.adminResponseSurvey.value,
           },
         ),
+        userId: state.doSurvey?.user?.id,
       );
 
       Fluttertoast.showToast(msg: S.text.toastIgnoreSurveySuccessful);
@@ -132,9 +132,8 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
       domainManager.survey.increaseSurveyRespondentNum(state.survey!.surveyId);
 
       // send noti
-      NotificationService.sendNotiToOneDevice(
+      NotificationService.sendNotiToUserById(
         requestBody: NotiRequestBody(
-          to: state.doSurvey!.user!.fcmToken!,
           notification: my_noti.Notification(
             title: S.text.notiTitleSurveyApprove,
             body: S.text.notiBodySurveyApprove,
@@ -143,6 +142,7 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
             NotiDataField.type: NotiType.adminResponseSurvey.value,
           },
         ),
+        userId: state.doSurvey?.user?.id,
       );
 
       Fluttertoast.showToast(msg: S.text.toastApproveSurveySuccessfully);

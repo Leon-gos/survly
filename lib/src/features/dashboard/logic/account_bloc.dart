@@ -95,9 +95,7 @@ class AccountBloc extends Cubit<AccountState> {
         );
       }
       await domainManager.user.updateUserProfile(state.userBaseClone!);
-      emit(state.copyWith(userBase: state.userBaseClone));
-
-      UserBaseSingleton.instance().userBase = state.userBaseClone;
+      refreshProfile();
 
       emit(state.copyWith(isLoading: false));
       Logger().d(state.userBase!.fullname);
@@ -107,6 +105,19 @@ class AccountBloc extends Cubit<AccountState> {
       Logger().e("Update user profile error", error: e);
       Fluttertoast.showToast(msg: S.text.toastUpdateUserProfileFail);
       emit(state.copyWith(isLoading: false));
+    }
+  }
+
+  Future<void> refreshProfile() async {
+    try {
+      var loginInfo = await domainManager.authenticationLocal.readLoginInfo();
+      var userBase =
+          await domainManager.user.fetchUserByEmail(loginInfo!.email);
+      onUserbaseChange(userBase);
+      UserBaseSingleton.instance().userBase = state.userBaseClone;
+    } catch (e) {
+      Logger().e("refresh profile error", error: e);
+      Fluttertoast.showToast(msg: S.text.toastRefreshProfileFail);
     }
   }
 
@@ -123,6 +134,7 @@ class AccountBloc extends Cubit<AccountState> {
       await domainManager.authenticationLocal.clearLoginInfo();
       await NotificationService.deleteToken();
       UserBaseSingleton.instance().userBase = null;
+      emit(AccountState.ds());
       AppCoordinator.goNamed(AppRouteNames.login.path);
     } catch (e) {
       Logger().e("logout error", error: e);

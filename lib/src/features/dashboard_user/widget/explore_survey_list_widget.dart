@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:survly/src/features/dashboard_user/widget/explore_survey_card.dart';
 import 'package:survly/widgets/app_empty_list_widget.dart';
-import 'package:survly/widgets/app_survey_card.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 
-class AppSurveyListWidget extends StatefulWidget {
+class ExploreSurveyListWidget extends StatefulWidget {
   final List<Survey> surveyList;
   final Future<void> Function()? onLoadMore;
   final Function()? onRefresh;
   final Function(Survey survey)? onItemClick;
 
-  const AppSurveyListWidget({
+  const ExploreSurveyListWidget({
     super.key,
     required this.surveyList,
     this.onLoadMore,
@@ -18,10 +18,10 @@ class AppSurveyListWidget extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => _AppSurveyListWidgetState();
+  State<StatefulWidget> createState() => _ExploreSurveyListWidgetState();
 }
 
-class _AppSurveyListWidgetState extends State<AppSurveyListWidget> {
+class _ExploreSurveyListWidgetState extends State<ExploreSurveyListWidget> {
   final scrollController = ScrollController();
   bool isLoadingMore = false;
 
@@ -75,7 +75,7 @@ class _AppSurveyListWidgetState extends State<AppSurveyListWidget> {
                       onTap: () {
                         widget.onItemClick?.call(widget.surveyList[index]);
                       },
-                      child: AppSurveyCard(
+                      child: ExploreSurveyCard(
                         survey: widget.surveyList[index],
                       ),
                     );

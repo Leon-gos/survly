@@ -262,6 +262,7 @@ class _UpdateSurveyScreenState extends State<UpdateSurveyScreen> {
                       width: double.infinity,
                       height: 400,
                       child: SfDateRangePicker(
+                        minDate: DateTime.now(),
                         backgroundColor: AppColors.white,
                         confirmText: S.of(context).labelBtnOk,
                         cancelText: S.of(context).labelBtnCancel,

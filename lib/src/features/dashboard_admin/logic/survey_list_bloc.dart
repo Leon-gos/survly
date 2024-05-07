@@ -123,4 +123,9 @@ class SurveyListBloc extends Cubit<SurveyListState> {
   void searchSurvey() {
     fetchFirstPageSurvey();
   }
+
+  void resetSurveyList() {
+    emit(SurveyListState.ds());
+    fetchFirstPageSurvey();
+  }
 }
