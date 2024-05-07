@@ -75,6 +75,7 @@ dependencies:
   firebase_crashlytics: ^3.5.4
   firebase_analytics: ^10.10.4
   flutter_geo_hash: ^0.0.4
+  bloc_test: ^9.1.7
 
 dev_dependencies:
   flutter_test:
