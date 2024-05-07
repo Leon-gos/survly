@@ -58,10 +58,8 @@
   * [Deployment](#triangular_flag_on_post-deployment)
 - [Directory Structure](#eyes-directory-structure)
 - [Architecture Diagram](#chart-architecture-diagram)
-- [Entity Relationship Diagram](#erd)
+- [Entity Relationship Diagram](#chart-entity-relationship-diagram)
 - [Contributing](#wave-contributing)
-- [FAQ](#grey_question-faq)
-- [License](#warning-license)
 - [Contact](#handshake-contact)
 - [Acknowledgements](#gem-acknowledgements)
 
