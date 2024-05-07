@@ -152,7 +152,7 @@ class _MyProfileScreenState extends State<MyProfileScreen>
                           height: 21,
                         ),
                         Text(S.of(context).lableBalance),
-                        Text(user.balance.toString()),
+                        Text(myProfileState.currentBalance.toString()),
                       ],
                     ),
                   )
@@ -173,7 +173,7 @@ class _MyProfileScreenState extends State<MyProfileScreen>
       builder: (context, state) {
         return JoinedSurveyListWidget(
           doSurveyList: state.getDoSurveyListByStatus(status),
-          onRefresh: () => context.read<MyProfileBloc>().fetchJoinedSurvey(),
+          onRefresh: () => context.read<MyProfileBloc>().loadProfile(),
           onItemClick: (survey, doSurvey) {
             if (doSurvey.status == DoSurveyStatus.doing.value &&
                 doSurvey.survey?.ableToDoToday == true) {

@@ -177,4 +177,10 @@ class UserRepositoryImpl implements UserRepository {
     var value = await ref.doc(userId).get();
     return value.data()?[UserCollection.fieldFcmToken];
   }
+
+  @override
+  Future<int> fetchUserCurrentBalance(String userId) async {
+    var value = await ref.doc(userId).get();
+    return value.data()?[UserCollection.fieldBalance] ?? 0;
+  }
 }
