@@ -58,6 +58,7 @@
   * [Deployment](#triangular_flag_on_post-deployment)
 - [Directory Structure](#eyes-directory-structure)
 - [Architecture Diagram](#chart-architecture-diagram)
+- [Entity Relationship Diagram](#erd)
 - [Contributing](#wave-contributing)
 - [FAQ](#grey_question-faq)
 - [License](#warning-license)
@@ -340,6 +341,11 @@ survly
 ## :chart: Architecture Diagram
 
 <img src="https://github.com/Leon-gos/survly/assets/163224096/4fce7c0a-5d32-4ad8-84c5-0ed49a42a3c9">
+
+<!-- Entity Relationship Diagram -->
+## :chart: Entity Relationship Diagram
+
+<img src="https://github.com/Leon-gos/survly/assets/163224096/2c4a42e4-4928-45d7-973b-f8df5a132eaf">
 
 <!-- Contributing -->
 ## :wave: Contributing
