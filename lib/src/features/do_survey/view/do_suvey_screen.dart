@@ -30,8 +30,6 @@ class DoSurveyScreen extends StatelessWidget {
       create: (context) => DoSurveyBloc(survey),
       child: BlocBuilder<DoSurveyBloc, DoSurveyState>(
         buildWhen: (previous, current) =>
-            previous.doSurvey != current.doSurvey ||
-            previous.questionList != current.questionList ||
             previous.isLoading != current.isLoading,
         builder: (context, state) {
           return Scaffold(

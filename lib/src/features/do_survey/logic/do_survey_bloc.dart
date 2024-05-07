@@ -40,6 +40,7 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
   DomainManager get domainManager => DomainManager();
 
   Future<void> init(Survey survey) async {
+    emit(state.copyWith(isLoading: true));
     await fetchDoSurveyInfo(survey);
     await fetchQuestionList(survey);
     setupTimer();
