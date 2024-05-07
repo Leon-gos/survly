@@ -355,7 +355,7 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
 
       Fluttertoast.showToast(msg: S.text.toastSubmitSurveySuccess);
       emit(state.copyWith(isLoading: false));
-      AppCoordinator.pop();
+      AppCoordinator.pop(true);
     } catch (e) {
       Fluttertoast.showToast(msg: S.text.toastSubmitSurveyFail);
       Logger().e("Submit survey failed", error: e);
