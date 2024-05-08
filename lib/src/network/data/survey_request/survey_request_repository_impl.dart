@@ -59,7 +59,9 @@ class SurveyRequestRepositoryImpl implements SurveyRequestRepository {
     try {
       var numOfRequest = await numRequestOfSurvey(request.surveyId);
       if (numOfRequest < survey.respondentMax) {
-        var value = await ref.add({});
+        var value = await ref.add({
+          SurveyRequestCollection.fieldUserId: request.userId,
+        });
         request.requestId = value.id;
         await ref.doc(value.id).set(request.toMap());
       } else {

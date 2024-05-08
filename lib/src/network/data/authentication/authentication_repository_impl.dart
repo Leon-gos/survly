@@ -89,7 +89,12 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
           email: email,
           fullname: fullname,
         );
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
         await UserRepositoryImpl().createUser(newUser);
+        await logout();
       }
     } catch (e) {
       rethrow;
