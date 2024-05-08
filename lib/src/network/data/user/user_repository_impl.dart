@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
+import 'package:survly/src/network/data/authentication/authentication_repository_impl.dart';
 import 'package:survly/src/network/data/do_survey/do_survey_repository_impl.dart';
 import 'package:survly/src/network/data/user/user_repository.dart';
 import 'package:survly/src/network/model/admin/admin.dart';
@@ -176,5 +177,25 @@ class UserRepositoryImpl implements UserRepository {
   Future<String?> fetchUserFcmToken(String userId) async {
     var value = await ref.doc(userId).get();
     return value.data()?[UserCollection.fieldFcmToken];
+  }
+
+  @override
+  Future<int> fetchUserCurrentBalance(String userId) async {
+    var value = await ref.doc(userId).get();
+    return value.data()?[UserCollection.fieldBalance] ?? 0;
+  }
+
+  @override
+  Future<void> deleteAccount(String userId) async {
+    try {
+      await ref.doc(userId).set({
+        UserCollection.fieldUserId: userId,
+        UserCollection.fieldFullname: UserCollection.valueDeletedUserName,
+      });
+      await AuthenticationRepositoryImpl().deleteCredential();
+    } catch (e) {
+      Logger().e("delete account error", error: e);
+      rethrow;
+    }
   }
 }

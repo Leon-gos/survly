@@ -513,6 +513,8 @@ class SurveyRepositoryImpl implements SurveyRepository {
           .where(SurveyCollection.fieldAdminId, isEqualTo: adminId)
           .where(SurveyCollection.fieldStatus,
               isNotEqualTo: SurveyStatus.archived.value)
+          .orderBy(SurveyCollection.fieldStatus)
+          .orderBy(SurveyCollection.fieldDateCreate, descending: true)
           .get();
       for (var doc in value.docs) {
         var survey = Survey.fromMap({

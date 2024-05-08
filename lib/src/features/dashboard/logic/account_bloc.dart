@@ -177,4 +177,16 @@ class AccountBloc extends Cubit<AccountState> {
     NotificationService.setupLocalNoti();
     Logger().d("init userbase");
   }
+
+  void deleteAccount() {
+    if (UserBaseSingleton.instance().userBase?.id != null) {
+      try {
+        domainManager.user
+            .deleteAccount(UserBaseSingleton.instance().userBase!.id);
+        logout();
+      } catch (e) {
+        Fluttertoast.showToast(msg: "Delete account failed");
+      }
+    }
+  }
 }

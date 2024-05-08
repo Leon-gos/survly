@@ -7,4 +7,5 @@ abstract class AuthenticationRepository {
   Future<void> loginWithEmailPassword(String email, String password);
   Future<void> loginWithGoogle();
   Future<void> logout();
+  Future<void> deleteCredential();
 }

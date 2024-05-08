@@ -10,10 +10,15 @@ class MyProfileBloc extends Cubit<MyProfileState> {
       : super(
           MyProfileState.ds(UserBaseSingleton.instance().userBase as User),
         ) {
-    fetchJoinedSurvey();
+    loadProfile();
   }
 
   DomainManager get domainManager => DomainManager();
+
+  void loadProfile() {
+    fetchJoinedSurvey();
+    fetchCurrentBalance();
+  }
 
   Future<void> fetchJoinedSurvey() async {
     try {
@@ -29,5 +34,12 @@ class MyProfileBloc extends Cubit<MyProfileState> {
 
   void isShowProfileChange() {
     emit(state.copyWith(isShowProfile: !state.isShowProfile));
+  }
+
+  Future<void> fetchCurrentBalance() async {
+    var currentBalance = await domainManager.user.fetchUserCurrentBalance(
+      UserBaseSingleton.instance().userBase!.id,
+    );
+    emit(state.copyWith(currentBalance: currentBalance));
   }
 }

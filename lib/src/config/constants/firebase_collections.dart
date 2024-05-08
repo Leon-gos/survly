@@ -10,6 +10,8 @@ class UserCollection {
   static const String fieldRole = "role";
   static const String fieldBalance = "balance";
   static const String fieldFcmToken = "fcmToken";
+
+  static const String valueDeletedUserName = "Deleted User";
 }
 
 class SurveyCollection {
@@ -72,6 +74,7 @@ class DoSurveyCollection {
   static const String fieldUserId = "userId";
   static const String fieldCurrentLat = "currentLat";
   static const String fieldCurrentLng = "currentLng";
+  static const String fieldDateUpdate = "dateUpdate";
 }
 
 class DsLocationLog {

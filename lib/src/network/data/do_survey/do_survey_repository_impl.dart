@@ -163,6 +163,7 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
 
     var value = await ref
         .where(DoSurveyCollection.fieldUserId, isEqualTo: userId)
+        .orderBy(DoSurveyCollection.fieldDateUpdate, descending: true)
         .get();
     for (var doc in value.docs) {
       var doSurvey = DoSurvey.fromMap(doc.data());
@@ -170,15 +171,6 @@ class DoSurveyRepositoryImpl implements DoSurveyRepository {
       doSurvey.survey = await surveyRepo.fetchSurveyById(doSurvey.surveyId);
       list.add(doSurvey);
     }
-    list.sort(
-      (a, b) {
-        try {
-          return b.survey!.dateStart!.compareTo(a.survey!.dateStart!);
-        } catch (e) {
-          return 0;
-        }
-      },
-    );
     return list;
   }
 

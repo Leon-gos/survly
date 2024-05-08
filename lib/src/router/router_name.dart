@@ -26,11 +26,9 @@ enum AppRouteNames {
 
   const AppRouteNames({
     required this.path,
-    this.paramName,
   });
 
   final String path;
-  final String? paramName;
 
   String get name => path;
 
@@ -40,7 +38,4 @@ enum AppRouteNames {
     }
     return path.replaceFirst('/', '');
   }
-
-  String get buildPathParam => '$path:$paramName';
-  String get buildSubPathParam => '$subPath:$paramName';
 }

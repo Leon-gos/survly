@@ -40,7 +40,13 @@ class DoingSurveyListView extends StatelessWidget {
           onRefresh: () =>
               context.read<DoingSurveyListBloc>().fetchAllDoingSurvey(),
           onItemClick: (survey) {
-            context.push(AppRouteNames.doSurvey.path, extra: survey);
+            context
+                .push(AppRouteNames.doSurvey.path, extra: survey)
+                .then((value) {
+              if (value == true) {
+                context.read<DoingSurveyListBloc>().fetchAllDoingSurvey();
+              }
+            });
           },
         );
       },
