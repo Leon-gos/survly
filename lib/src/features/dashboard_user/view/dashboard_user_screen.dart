@@ -84,6 +84,12 @@ class DashboardUserScreen extends StatelessWidget {
                   return [
                     PopupMenuItem(
                       onTap: () {
+                        context.read<AccountBloc>().deleteAccount();
+                      },
+                      child: Text(S.of(context).labelBtnDeleteAccount),
+                    ),
+                    PopupMenuItem(
+                      onTap: () {
                         context.read<AccountBloc>().logout();
                       },
                       child: Text(S.of(context).labelBtnLogout),

@@ -100,4 +100,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<void> deleteCredential() async {
+    await FirebaseAuth.instance.currentUser?.delete();
+  }
 }

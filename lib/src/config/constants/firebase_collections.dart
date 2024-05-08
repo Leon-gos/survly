@@ -10,6 +10,8 @@ class UserCollection {
   static const String fieldRole = "role";
   static const String fieldBalance = "balance";
   static const String fieldFcmToken = "fcmToken";
+
+  static const String valueDeletedUserName = "Deleted User";
 }
 
 class SurveyCollection {

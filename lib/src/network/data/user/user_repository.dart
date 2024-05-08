@@ -12,4 +12,5 @@ abstract class UserRepository {
   Future<void> updateUserProfile(UserBase userBase);
   Future<void> updateUserBalance(String userId, int cost);
   Future<int> fetchUserCurrentBalance(String userId);
+  Future<void> deleteAccount(String userId);
 }

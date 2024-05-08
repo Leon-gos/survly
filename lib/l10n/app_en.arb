@@ -149,6 +149,7 @@
     "labelStartedOn": "Started on",
     "labelYourAns": "Your answer",
     "toastValidating": "Validating your survey",
+    "labelBtnDeleteAccount": "Delete my account",
 
     "notiTitleUserRespondent": "New respondent",
     "notiBodyUserRespondent": "Someone has just response your survey. Check now!",
