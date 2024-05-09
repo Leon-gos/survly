@@ -105,7 +105,8 @@ class NotificationCollection {
   static const String fieldIsRead = "isRead";
   static const String fieldType = "type";
   static const String fieldDateCreate = "dateCreate";
-  static const String userId = "userId";
+  static const String fieldFromUserId = "fromUserId";
+  static const String fieldToUserId = "toUserId";
 }
 
 class NotiRequestCollection {

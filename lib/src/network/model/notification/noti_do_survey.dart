@@ -14,7 +14,8 @@ class NotiDoSurvey extends Notification {
     required super.isRead,
     required super.type,
     required super.dateCreate,
-    required super.userId,
+    required super.fromUserId,
+    required super.toUserId,
     required this.notiDoSurveyId,
     required this.doSurveyId,
   });
@@ -36,7 +37,8 @@ class NotiDoSurvey extends Notification {
       isRead: map['isRead'] as bool,
       type: map['type']?.toString() ?? "",
       dateCreate: (map['dateCreate'] as Timestamp).toDate(),
-      userId: map['userId']?.toString() ?? "",
+      fromUserId: map['fromUserId']?.toString() ?? "",
+      toUserId: map['toUserid']?.toString() ?? "",
       notiDoSurveyId: map['notiDoSurveyId']?.toString() ?? "",
       doSurveyId: map['doSurveyId']?.toString() ?? "",
     );

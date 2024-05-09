@@ -9,7 +9,8 @@ class Notification {
   bool isRead;
   String type;
   DateTime dateCreate;
-  String userId;
+  String fromUserId;
+  String toUserId;
 
   Notification({
     required this.notiId,
@@ -18,7 +19,8 @@ class Notification {
     required this.isRead,
     required this.type,
     required this.dateCreate,
-    required this.userId,
+    required this.fromUserId,
+    required this.toUserId,
   });
 
   factory Notification.init({
@@ -26,7 +28,8 @@ class Notification {
     required String title,
     String? body,
     required String type,
-    required String userId,
+    required String fromUserId,
+    required String toUserId,
   }) {
     return Notification(
       notiId: notiId ?? "",
@@ -35,7 +38,8 @@ class Notification {
       isRead: false,
       type: type,
       dateCreate: DateTime.now(),
-      userId: userId,
+      fromUserId: fromUserId,
+      toUserId: toUserId,
     );
   }
 
@@ -47,7 +51,21 @@ class Notification {
       'isRead': isRead,
       'type': type,
       'dateCreate': dateCreate,
-      'userId': userId,
+      'fromUserId': fromUserId,
+      'toUserId': toUserId,
+    };
+  }
+
+  Map<String, dynamic> toMapNoti() {
+    return <String, dynamic>{
+      'notiId': notiId,
+      'title': title,
+      'body': body,
+      'isRead': isRead,
+      'type': type,
+      'dateCreate': dateCreate,
+      'fromUserId': fromUserId,
+      'toUserId': toUserId,
     };
   }
 
@@ -59,7 +77,8 @@ class Notification {
       isRead: map['isRead'] as bool,
       type: map['type']?.toString() ?? "",
       dateCreate: (map['dateCreate'] as Timestamp).toDate(),
-      userId: map['userId']?.toString() ?? "",
+      fromUserId: map['fromUserId']?.toString() ?? "",
+      toUserId: map['toUserId']?.toString() ?? "",
     );
   }
 

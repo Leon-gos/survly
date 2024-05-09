@@ -14,10 +14,35 @@ class NotiRequest extends Notification {
     required super.isRead,
     required super.type,
     required super.dateCreate,
-    required super.userId,
+    required super.fromUserId,
+    required super.toUserId,
     required this.notiRequestId,
     required this.requestId,
   });
+
+  factory NotiRequest.init({
+    String? notiId,
+    required String title,
+    String? body,
+    required String type,
+    required String fromUserId,
+    required String toUserId,
+    String? notiRequestId,
+    required String requestId,
+  }) {
+    return NotiRequest(
+      notiId: notiId ?? "",
+      title: title,
+      body: body ?? "",
+      isRead: false,
+      type: type,
+      dateCreate: DateTime.now(),
+      fromUserId: fromUserId,
+      toUserId: toUserId,
+      notiRequestId: notiRequestId ?? "",
+      requestId: requestId,
+    );
+  }
 
   @override
   Map<String, dynamic> toMap() {
@@ -36,7 +61,8 @@ class NotiRequest extends Notification {
       isRead: map['isRead'] as bool,
       type: map['type']?.toString() ?? "",
       dateCreate: (map['dateCreate'] as Timestamp).toDate(),
-      userId: map['userId']?.toString() ?? "",
+      fromUserId: map['fromUserId']?.toString() ?? "",
+      toUserId: map['toUserId']?.toString() ?? "",
       notiRequestId: map['notiRequestId']?.toString() ?? "",
       requestId: map['requestId']?.toString() ?? "",
     );

@@ -55,7 +55,8 @@ class SurveyRequestRepositoryImpl implements SurveyRequestRepository {
   }
 
   @override
-  Future<void> requestSurvey(Survey survey, SurveyRequest request) async {
+  Future<SurveyRequest?> requestSurvey(
+      Survey survey, SurveyRequest request) async {
     try {
       var numOfRequest = await numRequestOfSurvey(request.surveyId);
       if (numOfRequest < survey.respondentMax) {
@@ -64,6 +65,7 @@ class SurveyRequestRepositoryImpl implements SurveyRequestRepository {
         });
         request.requestId = value.id;
         await ref.doc(value.id).set(request.toMap());
+        return request;
       } else {
         throw (Exception("Full of request"));
       }

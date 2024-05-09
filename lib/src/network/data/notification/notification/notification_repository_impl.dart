@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/config/constants/notification.dart';
+import 'package:survly/src/network/data/notification/noti_request/noti_request_repository_impl.dart';
 import 'package:survly/src/network/data/notification/notification/notification_repository.dart';
 import 'package:survly/src/network/model/notification/noti_do_survey.dart';
 import 'package:survly/src/network/model/notification/noti_request.dart';
@@ -15,12 +16,15 @@ class NotificationRepositoryImpl implements NotificationRepository {
   @override
   Future<void> createNoti(Notification notification) async {
     try {
-      var value = await ref.add({});
+      var value = await ref.add({
+        NotificationCollection.fieldFromUserId: notification.fromUserId,
+      });
       notification.notiId = value.id;
-      await ref.doc(value.id).set(notification.toMap());
+      await ref.doc(value.id).set(notification.toMapNoti());
       if (notification.type == NotiType.userRequestSurvey.value ||
           notification.type == NotiType.adminResponseUserRequest.value) {
-        // TODO: create noti request
+        NotiRequestRepositoryImpl()
+            .createNotiRequest(notification as NotiRequest);
       } else if (notification.type == NotiType.userResponseSurvey.value ||
           notification.type == NotiType.adminResponseSurvey.value) {
         // TODO: create noti do survey
@@ -33,10 +37,11 @@ class NotificationRepositoryImpl implements NotificationRepository {
 
   @override
   Future<List<Notification>> fetchAllNotificationOfUser(String userId) async {
+    var notiRequestRepo = NotiRequestRepositoryImpl();
     List<Notification> notiList = [];
 
     var value = await ref
-        .where(NotificationCollection.userId, isEqualTo: userId)
+        .where(NotificationCollection.fieldToUserId, isEqualTo: userId)
         .orderBy(NotificationCollection.fieldDateCreate, descending: true)
         .get();
 
@@ -44,10 +49,15 @@ class NotificationRepositoryImpl implements NotificationRepository {
       try {
         if (doc.data()[NotificationCollection.fieldType] ==
             NotiType.adminResponseUserRequest.value) {
-          var notiRequest = NotiRequest.fromMap(doc.data());
+          var notiRequest =
+              await notiRequestRepo.fetchNotiRequestByNotiId(doc.id);
 
-          // TODO: fetch requestId
-          // notiRequest.requestId = ...
+          notiRequest = NotiRequest.fromMap(
+            {
+              ...doc.data(),
+              ...notiRequest!.toMap(),
+            },
+          );
 
           notiList.add(notiRequest);
         } else if (doc.data()[NotificationCollection.fieldType] ==
@@ -60,7 +70,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
           notiList.add(notiDoSurvey);
         }
       } catch (e) {
-        Logger().e("add noti error", error: e);
+        Logger().e("get noti error", error: e);
       }
     }
 

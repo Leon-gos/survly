@@ -18,6 +18,7 @@ import 'package:survly/src/features/do_survey/view/do_suvey_screen.dart';
 import 'package:survly/src/features/do_survey_review/view/do_survey_review_screen.dart';
 import 'package:survly/src/features/do_survey_tracking/view/do_survey_tracking_screen.dart';
 import 'package:survly/src/features/my_profile/view/my_profile_screen.dart';
+import 'package:survly/src/features/notification_list/view/notification_list_screen.dart';
 import 'package:survly/src/features/preview_survey/view/preview_survey_screen.dart';
 import 'package:survly/src/features/response_user_survey/view/respone_user_survey_screen.dart';
 import 'package:survly/src/features/review_survey/view/review_survey_screen.dart';
@@ -216,6 +217,12 @@ class AppRouter {
         path: AppRouteNames.adminProfile.path,
         parentNavigatorKey: AppCoordinator.navigatorKey,
         builder: (context, state) => const AdminProfileScreen(),
+      ),
+      GoRoute(
+        name: AppRouteNames.notificationList.name,
+        path: AppRouteNames.notificationList.path,
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        builder: (context, state) => const NotificationListScreen(),
       ),
       ShellRoute(
         builder: (context, state, child) => DashboardAdminScreen(

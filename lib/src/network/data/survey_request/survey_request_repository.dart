@@ -10,7 +10,7 @@ abstract class SurveyRequestRepository {
     required String requestId,
     required SurveyRequestStatus status,
   });
-  Future<void> requestSurvey(Survey survey, SurveyRequest request);
+  Future<SurveyRequest?> requestSurvey(Survey survey, SurveyRequest request);
   Future<void> cancelRequestSurvey(SurveyRequest request);
   Future<SurveyRequest?> fetchLatestRequest({
     required String surveyId,

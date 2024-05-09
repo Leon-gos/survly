@@ -22,7 +22,8 @@ enum AppRouteNames {
   updateUserProfile(path: '/updateUserProfile'),
   updateAdminProfile(path: '/updateAdminProfile'),
   responseUserSurvey(path: '/responseUserSurvey'),
-  adminProfile(path: '/adminProfile');
+  adminProfile(path: '/adminProfile'),
+  notificationList(path: '/notificationList');
 
   const AppRouteNames({
     required this.path,
