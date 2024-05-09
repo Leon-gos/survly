@@ -108,14 +108,14 @@ class NotificationCollection {
   static const String userId = "userId";
 }
 
-class NotiRequest {
+class NotiRequestCollection {
   static const String collectionName = "notiRequest";
   static const String fieldNotiRequestId = "notiRequestId";
   static const String fieldRequestId = "requestId";
   static const String fieldNotiId = "notiId";
 }
 
-class NotiDoSurvey {
+class NotiDoSurveyCollection {
   static const String collectionName = "notiDoSurvey";
   static const String fieldNotiDoSurveyId = "notiDoSurveyId";
   static const String fieldDoSurveyId = "doSurveyId";
