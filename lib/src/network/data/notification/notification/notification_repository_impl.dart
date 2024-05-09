@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/config/constants/notification.dart';
+import 'package:survly/src/network/data/notification/noti_do_survey/noti_do_survey_repository_impl.dart';
 import 'package:survly/src/network/data/notification/noti_request/noti_request_repository_impl.dart';
 import 'package:survly/src/network/data/notification/notification/notification_repository.dart';
 import 'package:survly/src/network/model/notification/noti_do_survey.dart';
@@ -27,7 +28,8 @@ class NotificationRepositoryImpl implements NotificationRepository {
             .createNotiRequest(notification as NotiRequest);
       } else if (notification.type == NotiType.userResponseSurvey.value ||
           notification.type == NotiType.adminResponseSurvey.value) {
-        // TODO: create noti do survey
+        NotiDoSurveyRepositoryImpl()
+            .createNotiDoSurvey(notification as NotiDoSurvey);
       }
     } catch (e) {
       Logger().e("create noti error", error: e);
@@ -38,6 +40,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
   @override
   Future<List<Notification>> fetchAllNotificationOfUser(String userId) async {
     var notiRequestRepo = NotiRequestRepositoryImpl();
+    var notiDoSurveyRepo = NotiDoSurveyRepositoryImpl();
     List<Notification> notiList = [];
 
     var value = await ref
@@ -57,13 +60,13 @@ class NotificationRepositoryImpl implements NotificationRepository {
             notiList.add(notiRequest);
           }
         } else if (notiType == NotiType.adminResponseSurvey.value ||
-            notiType == NotiType.adminResponseUserRequest.value) {
-          var notiDoSurvey = NotiDoSurvey.fromMap(doc.data());
+            notiType == NotiType.userResponseSurvey.value) {
+          var notiDoSurvey =
+              await notiDoSurveyRepo.fetchNotiDoSurveyByNotiId(doc.id);
 
-          // TODO: fetch doSurveyId
-          // notiDoSurvey.doSurveyId = ...
-
-          notiList.add(notiDoSurvey);
+          if (notiDoSurvey != null) {
+            notiList.add(notiDoSurvey);
+          }
         }
       } catch (e) {
         Logger().e("get noti error", error: e);

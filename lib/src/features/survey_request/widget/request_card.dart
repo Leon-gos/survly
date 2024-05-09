@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/survey_request/survey_request.dart';
 import 'package:survly/src/theme/colors.dart';
@@ -39,19 +40,21 @@ class RequestCard extends StatelessWidget {
                 size: 48,
               ),
               const SizedBox(width: 8),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    request.user?.fullname ?? "",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  Text(request.user?.email ?? ""),
-                ],
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      request.user?.fullname ?? "",
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                    Text(request.user?.email ?? ""),
+                  ],
+                ),
               ),
-              const Spacer(),
               _buildStatusIcon(),
             ],
           ),

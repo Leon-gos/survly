@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:survly/src/network/model/notification/notification.dart';
 
 class NotiDoSurvey extends Notification {
@@ -20,6 +19,30 @@ class NotiDoSurvey extends Notification {
     required this.doSurveyId,
   });
 
+  factory NotiDoSurvey.init({
+    String? notiId,
+    required String title,
+    String? body,
+    required String type,
+    required String fromUserId,
+    required String toUserId,
+    String? notiRequestId,
+    required String doSurveyId,
+  }) {
+    return NotiDoSurvey(
+      notiId: notiId ?? "",
+      title: title,
+      body: body ?? "",
+      isRead: false,
+      type: type,
+      dateCreate: DateTime.now(),
+      fromUserId: fromUserId,
+      toUserId: toUserId,
+      notiDoSurveyId: notiRequestId ?? "",
+      doSurveyId: doSurveyId,
+    );
+  }
+
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -36,7 +59,7 @@ class NotiDoSurvey extends Notification {
       body: map['body']?.toString() ?? "",
       isRead: map['isRead'] as bool,
       type: map['type']?.toString() ?? "",
-      dateCreate: (map['dateCreate'] as Timestamp).toDate(),
+      dateCreate: map['dateCreate'],
       fromUserId: map['fromUserId']?.toString() ?? "",
       toUserId: map['toUserid']?.toString() ?? "",
       notiDoSurveyId: map['notiDoSurveyId']?.toString() ?? "",
