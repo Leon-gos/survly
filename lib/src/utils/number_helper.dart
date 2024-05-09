@@ -13,4 +13,9 @@ class NumberHelper {
     );
     return formater.format(money);
   }
+
+  static String formatCurrencyWithoutUnit(int money) {
+    var formater = NumberFormat('#,###');
+    return formater.format(money);
+  }
 }
