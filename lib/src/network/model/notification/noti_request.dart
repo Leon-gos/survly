@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:survly/src/network/model/notification/notification.dart';
 
 class NotiRequest extends Notification {
