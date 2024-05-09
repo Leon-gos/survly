@@ -6,10 +6,10 @@ import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/preview_survey/logic/preview_survey_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/localization/localization_utils.dart';
-import 'package:survly/src/network/model/notification/noti_request_body.dart';
+import 'package:survly/src/service/notification/model/noti_request_body.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/network/model/survey_request/survey_request.dart';
-import 'package:survly/src/service/notification_service.dart';
+import 'package:survly/src/service/notification/service/notification_service.dart';
 
 class PreviewSurveyBloc extends Cubit<PreviewSurveyState> {
   PreviewSurveyBloc(Survey survey)

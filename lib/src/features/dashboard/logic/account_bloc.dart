@@ -11,7 +11,7 @@ import 'package:survly/src/network/model/user/user.dart';
 import 'package:survly/src/network/model/user_base/user_base.dart';
 import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/router/router_name.dart';
-import 'package:survly/src/service/notification_service.dart';
+import 'package:survly/src/service/notification/service/notification_service.dart';
 import 'package:survly/src/service/picker_service.dart';
 import 'package:survly/src/utils/map_helper.dart';
 

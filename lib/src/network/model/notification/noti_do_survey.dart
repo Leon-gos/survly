@@ -1,15 +1,25 @@
 import 'dart:convert';
 
-class NotiDoSurvey {
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:survly/src/network/model/notification/notification.dart';
+
+class NotiDoSurvey extends Notification {
   String notiDoSurveyId;
   String doSurveyId;
-  String notiId;
+
   NotiDoSurvey({
+    required super.notiId,
+    required super.title,
+    required super.body,
+    required super.isRead,
+    required super.type,
+    required super.dateCreate,
+    required super.userId,
     required this.notiDoSurveyId,
     required this.doSurveyId,
-    required this.notiId,
   });
 
+  @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'notiDoSurveyId': notiDoSurveyId,
@@ -20,12 +30,19 @@ class NotiDoSurvey {
 
   factory NotiDoSurvey.fromMap(Map<String, dynamic> map) {
     return NotiDoSurvey(
+      notiId: map['notiId']?.toString() ?? "",
+      title: map['title']?.toString() ?? "",
+      body: map['body']?.toString() ?? "",
+      isRead: map['isRead'] as bool,
+      type: map['type']?.toString() ?? "",
+      dateCreate: (map['dateCreate'] as Timestamp).toDate(),
+      userId: map['userId']?.toString() ?? "",
       notiDoSurveyId: map['notiDoSurveyId']?.toString() ?? "",
       doSurveyId: map['doSurveyId']?.toString() ?? "",
-      notiId: map['notiId']?.toString() ?? "",
     );
   }
 
+  @override
   String toJson() => json.encode(toMap());
 
   factory NotiDoSurvey.fromJson(String source) =>
