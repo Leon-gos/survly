@@ -15,13 +15,13 @@ class NotificationListScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => NotificationListBloc(),
       child: BlocBuilder<NotificationListBloc, NotificationListState>(
+        buildWhen: (previous, current) =>
+            previous.isLoading != current.isLoading,
         builder: (context, state) {
           return Scaffold(
-            appBar: AppAppBarWidget(
-              backgroundColor: AppColors.backgroundBrightness,
-              title: "Your notification",
-              titleColor: AppColors.black,
-              leadingColor: AppColors.black,
+            appBar: const AppAppBarWidget(
+              backgroundColor: AppColors.primary,
+              title: "Notification",
             ),
             body: state.isLoading ? const AppLoadingCircle() : _buildNotiList(),
           );
@@ -32,12 +32,23 @@ class NotificationListScreen extends StatelessWidget {
 
   Widget _buildNotiList() {
     return BlocBuilder<NotificationListBloc, NotificationListState>(
+      buildWhen: (previous, current) => previous.notiList != current.notiList,
       builder: (context, state) {
-        return ListView.builder(
-          itemCount: state.notiList.length,
-          itemBuilder: (BuildContext context, int index) {
-            var noti = state.notiList[index];
-            return NotiCard(notification: noti);
+        return RefreshIndicator(
+          child: ListView.builder(
+            itemCount: state.notiList.length,
+            itemBuilder: (BuildContext context, int index) {
+              var noti = state.notiList[index];
+              return NotiCard(
+                notification: noti,
+                onNotiTap: () {
+                  context.read<NotificationListBloc>().readNoti(noti);
+                },
+              );
+            },
+          ),
+          onRefresh: () async {
+            context.read<NotificationListBloc>().fetchNotiList();
           },
         );
       },
