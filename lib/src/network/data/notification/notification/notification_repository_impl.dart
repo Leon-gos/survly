@@ -47,21 +47,17 @@ class NotificationRepositoryImpl implements NotificationRepository {
 
     for (var doc in value.docs) {
       try {
-        if (doc.data()[NotificationCollection.fieldType] ==
-            NotiType.adminResponseUserRequest.value) {
+        var notiType = doc.data()[NotificationCollection.fieldType];
+        if (notiType == NotiType.adminResponseUserRequest.value ||
+            notiType == NotiType.userRequestSurvey.value) {
           var notiRequest =
               await notiRequestRepo.fetchNotiRequestByNotiId(doc.id);
 
-          notiRequest = NotiRequest.fromMap(
-            {
-              ...doc.data(),
-              ...notiRequest!.toMap(),
-            },
-          );
-
-          notiList.add(notiRequest);
-        } else if (doc.data()[NotificationCollection.fieldType] ==
-            NotiType.adminResponseSurvey.value) {
+          if (notiRequest != null) {
+            notiList.add(notiRequest);
+          }
+        } else if (notiType == NotiType.adminResponseSurvey.value ||
+            notiType == NotiType.adminResponseUserRequest.value) {
           var notiDoSurvey = NotiDoSurvey.fromMap(doc.data());
 
           // TODO: fetch doSurveyId
@@ -74,7 +70,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
       }
     }
 
-    return [];
+    return notiList;
   }
 
   @override
@@ -87,5 +83,13 @@ class NotificationRepositoryImpl implements NotificationRepository {
       Logger().e("read noti error", error: e);
       rethrow;
     }
+  }
+
+  Future<Notification?> fetchNotificationById(String notiId) async {
+    var value = await ref.doc(notiId).get();
+    if (value.data() != null) {
+      return Notification.fromMap(value.data()!);
+    }
+    return null;
   }
 }

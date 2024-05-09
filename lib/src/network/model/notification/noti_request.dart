@@ -60,7 +60,7 @@ class NotiRequest extends Notification {
       body: map['body']?.toString() ?? "",
       isRead: map['isRead'] as bool,
       type: map['type']?.toString() ?? "",
-      dateCreate: (map['dateCreate'] as Timestamp).toDate(),
+      dateCreate: map['dateCreate'],
       fromUserId: map['fromUserId']?.toString() ?? "",
       toUserId: map['toUserId']?.toString() ?? "",
       notiRequestId: map['notiRequestId']?.toString() ?? "",

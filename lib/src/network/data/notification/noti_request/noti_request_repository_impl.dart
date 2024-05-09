@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:survly/src/config/constants/firebase_collections.dart';
 import 'package:survly/src/network/data/notification/noti_request/noti_request_repository.dart';
+import 'package:survly/src/network/data/notification/notification/notification_repository_impl.dart';
 import 'package:survly/src/network/model/notification/noti_request.dart';
 
 class NotiRequestRepositoryImpl implements NotiRequestRepository {
@@ -34,12 +35,20 @@ class NotiRequestRepositoryImpl implements NotiRequestRepository {
 
   @override
   Future<NotiRequest?> fetchNotiRequestByNotiId(String notiId) async {
-    var value = await ref
-        .where(NotiRequestCollection.fieldNotiId, isEqualTo: notiId)
-        .get();
-    if (value.docs.isNotEmpty) {
-      return NotiRequest.fromMap(value.docs[0].data());
+    try {
+      var noti =
+          await NotificationRepositoryImpl().fetchNotificationById(notiId);
+      var valueNotiRequest = await ref
+          .where(NotiRequestCollection.fieldNotiId, isEqualTo: notiId)
+          .get();
+
+      return NotiRequest.fromMap({
+        ...noti!.toMap(),
+        ...valueNotiRequest.docs[0].data(),
+      });
+    } catch (e) {
+      Logger().e("fetch noti request error", error: e);
+      rethrow;
     }
-    return null;
   }
 }

@@ -18,6 +18,7 @@ class NotificationListBloc extends Cubit<NotificationListState> {
           await domainManager.notification.fetchAllNotificationOfUser(
         UserBaseSingleton.instance().userBase!.id,
       );
+      Logger().d("noti list length ${notiList.length}");
       emit(state.copyWith(notiList: notiList, isLoading: false));
     } catch (e) {
       Logger().e("fetch noti list error", error: e);
