@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:survly/src/features/notification_list/logic/notification_list_bloc.dart';
 import 'package:survly/src/features/notification_list/logic/notification_list_state.dart';
 import 'package:survly/src/features/notification_list/widget/noti_card.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
@@ -19,9 +20,9 @@ class NotificationListScreen extends StatelessWidget {
             previous.isLoading != current.isLoading,
         builder: (context, state) {
           return Scaffold(
-            appBar: const AppAppBarWidget(
+            appBar: AppAppBarWidget(
               backgroundColor: AppColors.primary,
-              title: "Notification",
+              title: S.of(context).labelNoti,
             ),
             body: state.isLoading ? const AppLoadingCircle() : _buildNotiList(),
           );

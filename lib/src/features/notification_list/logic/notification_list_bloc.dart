@@ -4,6 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/notification_list/logic/notification_list_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
+import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/notification/notification.dart';
 
 class NotificationListBloc extends Cubit<NotificationListState> {
@@ -24,7 +25,7 @@ class NotificationListBloc extends Cubit<NotificationListState> {
       emit(state.copyWith(notiList: notiList));
     } catch (e) {
       Logger().e("fetch noti list error", error: e);
-      Fluttertoast.showToast(msg: "Cannot get your notification list");
+      Fluttertoast.showToast(msg: S.text.toastGetNotiListFail);
     } finally {
       emit(state.copyWith(isLoading: false));
     }
@@ -38,7 +39,7 @@ class NotificationListBloc extends Cubit<NotificationListState> {
       newList[newList.indexOf(notification)].isRead = true;
       emit(state.copyWith(notiList: newList));
     } catch (e) {
-      Fluttertoast.showToast(msg: "Cannot read noti");
+      Fluttertoast.showToast(msg: S.text.toastReadNotiFail);
     }
   }
 }
