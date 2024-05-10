@@ -22,4 +22,5 @@ class AppColors {
 
   // background color
   static Color? backgroundBrightness = Colors.grey[50];
+  static Color? backgroundNotiCard = const Color(0xFFeafae1);
 }

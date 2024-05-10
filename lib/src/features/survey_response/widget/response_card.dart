@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:survly/src/network/model/do_survey/do_survey.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/widgets/app_avatar_widget.dart';
@@ -34,19 +35,21 @@ class ResponseCard extends StatelessWidget {
                 size: 48,
               ),
               const SizedBox(width: 8),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    response.user?.fullname ?? "",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  Text(response.user?.email ?? ""),
-                ],
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      response.user?.fullname ?? "",
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                    Text(response.user?.email ?? ""),
+                  ],
+                ),
               ),
-              const Spacer(),
               _buildStatusIcon(),
             ],
           ),

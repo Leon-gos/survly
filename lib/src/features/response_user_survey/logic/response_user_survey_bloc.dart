@@ -8,16 +8,18 @@ import 'package:logger/logger.dart';
 import 'package:survly/src/config/constants/notification.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/response_user_survey/logic/response_user_survey_state.dart';
+import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/do_survey/do_survey.dart';
-import 'package:survly/src/network/model/notification/noti_request_body.dart';
-import 'package:survly/src/network/model/notification/noti_request_body.dart'
+import 'package:survly/src/network/model/notification/noti_do_survey.dart';
+import 'package:survly/src/service/notification/model/noti_request_body.dart';
+import 'package:survly/src/service/notification/model/noti_request_body.dart'
     as my_noti;
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/coordinator.dart';
-import 'package:survly/src/service/notification_service.dart';
+import 'package:survly/src/service/notification/service/notification_service.dart';
 
 class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
   ResponseUserSurveyBloc(String surveyId, String doSurveyId)
@@ -97,17 +99,13 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
         DoSurveyStatus.ignored,
       );
 
-      NotificationService.sendNotiToUserById(
-        requestBody: NotiRequestBody(
-          notification: my_noti.Notification(
-            title: S.text.notiTitleSurveyIgnore,
-            body: S.text.notiBodySurveyIgnore,
-          ),
-          data: {
-            NotiDataField.type: NotiType.adminResponseSurvey.value,
-          },
-        ),
-        userId: state.doSurvey?.user?.id,
+      sendNoti(
+        notiTitle: S.text.notiTitleSurveyIgnore,
+        notiBody: S.text.notiBodySurveyIgnore,
+        notiType: NotiType.adminResponseSurvey.value,
+        fromUserId: UserBaseSingleton.instance().userBase!.id,
+        toUserId: state.doSurvey!.user!.id,
+        doSurvey: state.doSurvey!,
       );
 
       Fluttertoast.showToast(msg: S.text.toastIgnoreSurveySuccessful);
@@ -132,17 +130,13 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
       domainManager.survey.increaseSurveyRespondentNum(state.survey!.surveyId);
 
       // send noti
-      NotificationService.sendNotiToUserById(
-        requestBody: NotiRequestBody(
-          notification: my_noti.Notification(
-            title: S.text.notiTitleSurveyApprove,
-            body: S.text.notiBodySurveyApprove,
-          ),
-          data: {
-            NotiDataField.type: NotiType.adminResponseSurvey.value,
-          },
-        ),
-        userId: state.doSurvey?.user?.id,
+      sendNoti(
+        notiTitle: S.text.notiTitleSurveyApprove,
+        notiBody: S.text.notiBodySurveyApprove,
+        notiType: NotiType.adminResponseSurvey.value,
+        fromUserId: UserBaseSingleton.instance().userBase!.id,
+        toUserId: state.doSurvey!.user!.id,
+        doSurvey: state.doSurvey!,
       );
 
       Fluttertoast.showToast(msg: S.text.toastApproveSurveySuccessfully);
@@ -150,6 +144,43 @@ class ResponseUserSurveyBloc extends Cubit<ResponseUserSurveyState> {
     } catch (e) {
       Fluttertoast.showToast(msg: S.text.toastApproveSurveyFail);
       Logger().e("Approve survey error", error: e);
+    }
+  }
+
+  void sendNoti({
+    required String notiTitle,
+    required String notiBody,
+    required String notiType,
+    required String fromUserId,
+    required String toUserId,
+    required DoSurvey doSurvey,
+  }) {
+    try {
+      NotificationService.sendNotiToUserById(
+        requestBody: NotiRequestBody(
+          notification: my_noti.Notification(
+            title: notiTitle,
+            body: notiBody,
+          ),
+          data: {
+            NotiDataField.type: notiType,
+          },
+        ),
+        userId: toUserId,
+      );
+
+      domainManager.notification.createNoti(
+        NotiDoSurvey.init(
+          title: notiTitle,
+          body: notiBody,
+          type: notiType,
+          fromUserId: fromUserId,
+          toUserId: toUserId,
+          doSurveyId: doSurvey.doSurveyId,
+        ),
+      );
+    } catch (e) {
+      Logger().e("send noti error", error: e);
     }
   }
 }

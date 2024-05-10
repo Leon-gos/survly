@@ -4,12 +4,14 @@ import 'package:logger/logger.dart';
 import 'package:survly/src/config/constants/notification.dart';
 import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/survey_request/logic/survey_request_state.dart';
+import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/model/do_survey/do_survey.dart';
-import 'package:survly/src/network/model/notification/noti_request_body.dart';
+import 'package:survly/src/network/model/notification/noti_request.dart';
+import 'package:survly/src/service/notification/model/noti_request_body.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/network/model/survey_request/survey_request.dart';
-import 'package:survly/src/service/notification_service.dart';
+import 'package:survly/src/service/notification/service/notification_service.dart';
 
 class SurveyRequestBloc extends Cubit<SurveyRequestState> {
   SurveyRequestBloc(Survey survey) : super(SurveyRequestState.ds(survey)) {
@@ -52,24 +54,7 @@ class SurveyRequestBloc extends Cubit<SurveyRequestState> {
       emit(state.copyWith(surveyRequestList: newList));
 
       // send noti
-      NotificationService.sendNotiToUserById(
-        requestBody: NotiRequestBody(
-          notification: Notification(
-            title: S.text.notiTitleResponseUserRequest(status.value),
-            body: S.text.notiBodyResponseUserRequest(
-              status.value,
-              state.survey.title,
-            ),
-          ),
-          data: {
-            NotiDataField.type: NotiType.adminResponseUserRequest.value,
-            NotiDataField.data: {
-              NotiDataDataKey.surveyId: state.survey.surveyId,
-            },
-          },
-        ),
-        userId: request.userId,
-      );
+      sendNoti(request, status);
 
       Fluttertoast.showToast(msg: S.text.toastResponseSurveySuccess);
     } catch (e) {
@@ -77,5 +62,45 @@ class SurveyRequestBloc extends Cubit<SurveyRequestState> {
       Logger().e("Something went wrong", error: e);
     }
     emit(state.copyWith(isLoading: false));
+  }
+
+  void sendNoti(
+    SurveyRequest request,
+    SurveyRequestStatus status,
+  ) {
+    String notiTitle = S.text.notiTitleResponseUserRequest(status.value);
+    String notiBody = S.text.notiBodyResponseUserRequest(
+      status.value,
+      state.survey.title,
+    );
+    String notiType = NotiType.adminResponseUserRequest.value;
+    String requestId = request.requestId;
+    String fromUserId = UserBaseSingleton.instance().userBase!.id;
+    String toUserId = request.userId;
+
+    NotificationService.sendNotiToUserById(
+      requestBody: NotiRequestBody(
+        notification: Notification(
+          title: notiTitle,
+          body: notiBody,
+        ),
+        data: {
+          NotiDataField.type: notiType,
+          NotiDataField.data: {
+            NotiDataDataKey.surveyId: state.survey.surveyId,
+          },
+        },
+      ),
+      userId: toUserId,
+    );
+
+    domainManager.notification.createNoti(NotiRequest.init(
+      title: notiTitle,
+      body: notiBody,
+      type: notiType,
+      fromUserId: fromUserId,
+      toUserId: toUserId,
+      requestId: requestId,
+    ));
   }
 }

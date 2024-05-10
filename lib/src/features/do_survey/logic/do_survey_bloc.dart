@@ -15,15 +15,17 @@ import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/localization/localization_utils.dart';
 import 'package:survly/src/network/data/do_survey/do_survey_repository_impl.dart';
 import 'package:survly/src/network/data/location_log/location_log_repository_impl.dart';
+import 'package:survly/src/network/model/do_survey/do_survey.dart';
 import 'package:survly/src/network/model/location_log/location_log.dart';
-import 'package:survly/src/network/model/notification/noti_request_body.dart';
-import 'package:survly/src/network/model/notification/noti_request_body.dart'
+import 'package:survly/src/network/model/notification/noti_do_survey.dart';
+import 'package:survly/src/service/notification/model/noti_request_body.dart';
+import 'package:survly/src/service/notification/model/noti_request_body.dart'
     as my_noti;
 import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/network/model/question/question_with_options.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/router/coordinator.dart';
-import 'package:survly/src/service/notification_service.dart';
+import 'package:survly/src/service/notification/service/notification_service.dart';
 import 'package:survly/src/service/picker_service.dart';
 import 'package:survly/src/utils/coordinate_helper.dart';
 import 'package:survly/src/utils/date_helper.dart';
@@ -339,19 +341,7 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
       var doSurvey = state.doSurvey;
       await domainManager.doSurvey.submitDoSurvey(doSurvey!);
 
-      NotificationService.sendNotiToUserById(
-        requestBody: NotiRequestBody(
-            notification: my_noti.Notification(
-              title: S.text.notiTitleUserRespondent,
-              body: S.text.notiBodyUserRespondent,
-            ),
-            data: {
-              NotiDataField.type: NotiType.userResponseSurvey.value,
-              NotiDataField.data:
-                  List<String>.of([state.survey.surveyId, doSurvey.doSurveyId]),
-            }),
-        userId: state.survey.adminId,
-      );
+      sendNoti(doSurvey);
 
       Fluttertoast.showToast(msg: S.text.toastSubmitSurveySuccess);
       emit(state.copyWith(isLoading: false));
@@ -360,6 +350,41 @@ class DoSurveyBloc extends Cubit<DoSurveyState> {
       Fluttertoast.showToast(msg: S.text.toastSubmitSurveyFail);
       Logger().e("Submit survey failed", error: e);
       emit(state.copyWith(isLoading: false));
+    }
+  }
+
+  void sendNoti(DoSurvey doSurvey) {
+    try {
+      String notiTitle = S.text.notiTitleUserRespondent;
+      String notiBody = S.text.notiBodyUserRespondent;
+      String notiType = NotiType.userResponseSurvey.value;
+      String fromUserId = UserBaseSingleton.instance().userBase!.id;
+      String toUserid = state.survey.adminId;
+
+      NotificationService.sendNotiToUserById(
+        requestBody: NotiRequestBody(
+            notification: my_noti.Notification(
+              title: notiTitle,
+              body: notiBody,
+            ),
+            data: {
+              NotiDataField.type: notiType,
+              NotiDataField.data:
+                  List<String>.of([state.survey.surveyId, doSurvey.doSurveyId]),
+            }),
+        userId: toUserid,
+      );
+
+      domainManager.notification.createNoti(NotiDoSurvey.init(
+        title: notiTitle,
+        body: notiBody,
+        type: notiType,
+        fromUserId: fromUserId,
+        toUserId: toUserid,
+        doSurveyId: doSurvey.doSurveyId,
+      ));
+    } catch (e) {
+      Logger().e("send noti error", error: e);
     }
   }
 }

@@ -150,6 +150,10 @@
     "labelYourAns": "Your answer",
     "toastValidating": "Validating your survey",
     "labelBtnDeleteAccount": "Delete my account",
+    "toastGetNotiListFail": "Cannot get your notification list",
+    "toastReadNotiFail": "Cannot read notification",
+    "labelNoti": "Notification",
+    
 
     "notiTitleUserRespondent": "New respondent",
     "notiBodyUserRespondent": "Someone has just response your survey. Check now!",

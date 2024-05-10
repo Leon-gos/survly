@@ -79,6 +79,12 @@ class DashboardAdminScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              IconButton(
+                onPressed: () {
+                  context.push(AppRouteNames.notificationList.path);
+                },
+                icon: const Icon(Icons.notifications_none),
+              ),
               PopupMenuButton(
                 itemBuilder: (context) {
                   return [

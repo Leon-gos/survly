@@ -10,7 +10,7 @@ import 'package:survly/src/network/data/survey/survey_repository_impl.dart';
 import 'package:survly/src/network/data/user/user_repository_impl.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:survly/src/network/model/notification/noti_request_body.dart';
+import 'package:survly/src/service/notification/model/noti_request_body.dart';
 import 'package:survly/src/router/coordinator.dart';
 import 'package:survly/src/router/router_name.dart';
 

@@ -6,10 +6,11 @@ import 'package:survly/src/domain_manager.dart';
 import 'package:survly/src/features/preview_survey/logic/preview_survey_state.dart';
 import 'package:survly/src/local/secure_storage/admin/admin_singleton.dart';
 import 'package:survly/src/localization/localization_utils.dart';
-import 'package:survly/src/network/model/notification/noti_request_body.dart';
+import 'package:survly/src/network/model/notification/noti_request.dart';
+import 'package:survly/src/service/notification/model/noti_request_body.dart';
 import 'package:survly/src/network/model/survey/survey.dart';
 import 'package:survly/src/network/model/survey_request/survey_request.dart';
-import 'package:survly/src/service/notification_service.dart';
+import 'package:survly/src/service/notification/service/notification_service.dart';
 
 class PreviewSurveyBloc extends Cubit<PreviewSurveyState> {
   PreviewSurveyBloc(Survey survey)
@@ -30,6 +31,7 @@ class PreviewSurveyBloc extends Cubit<PreviewSurveyState> {
 
   Future<void> requestSurvey() async {
     try {
+      // request survey
       var newRequest = SurveyRequest(
         requestId: "",
         surveyId: state.survey.surveyId,
@@ -38,7 +40,8 @@ class PreviewSurveyBloc extends Cubit<PreviewSurveyState> {
         status: SurveyRequestStatus.pending.value,
         message: state.requestMessage,
       );
-      await domainManager.surveyRequest.requestSurvey(state.survey, newRequest);
+      var value = await domainManager.surveyRequest
+          .requestSurvey(state.survey, newRequest);
       emit(
         state.copyWith(
           latestRequest: newRequest,
@@ -46,26 +49,54 @@ class PreviewSurveyBloc extends Cubit<PreviewSurveyState> {
         ),
       );
 
-      NotificationService.sendNotiToUserById(
+      if (value != null) {
+        sendNoti(value);
+        Fluttertoast.showToast(msg: "Request successfully");
+      }
+    } catch (e) {
+      Logger().e("Request survey failed", error: e);
+      Fluttertoast.showToast(msg: "Request failed");
+    }
+  }
+
+  Future<void> sendNoti(SurveyRequest request) async {
+    try {
+      String notiTitle = S.text.notiTitleUserSendRequest;
+      String notiBody = S.text.notiBodyUserSendRequest;
+      String notiType = NotiType.userRequestSurvey.value;
+      String requestId = request.requestId;
+      String fromUserId = UserBaseSingleton.instance().userBase!.id;
+      String toUserId = state.survey.adminId;
+
+      await NotificationService.sendNotiToUserById(
         requestBody: NotiRequestBody(
           notification: Notification(
-            title: S.text.notiTitleUserSendRequest,
-            body: S.text.notiBodyUserSendRequest,
+            title: notiTitle,
+            body: notiBody,
           ),
           data: {
-            NotiDataField.type: NotiType.userRequestSurvey.value,
+            NotiDataField.type: notiType,
             NotiDataField.data: {
               NotiDataDataKey.surveyId: state.survey.surveyId
             },
           },
         ),
-        userId: state.survey.adminId,
+        userId: toUserId,
       );
 
-      Fluttertoast.showToast(msg: "Request successfully");
+      await domainManager.notification.createNoti(
+        NotiRequest.init(
+          title: notiTitle,
+          body: notiBody,
+          type: notiType,
+          fromUserId: fromUserId,
+          toUserId: toUserId,
+          requestId: requestId,
+        ),
+      );
     } catch (e) {
-      Logger().e("Request survey failed", error: e);
-      Fluttertoast.showToast(msg: "Request failed");
+      Logger().e("send noti error", error: e);
+      Fluttertoast.showToast(msg: "Send noti fail");
     }
   }
 

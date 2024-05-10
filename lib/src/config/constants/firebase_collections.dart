@@ -96,3 +96,29 @@ class AnswerOptionCollection {
   static const String fieldOptionId = "questionId";
   static const String fieldUserId = "userId";
 }
+
+class NotificationCollection {
+  static const String collectionName = "notification";
+  static const String fieldNotiId = "notiId";
+  static const String fieldTitle = "title";
+  static const String fieldBody = "body";
+  static const String fieldIsRead = "isRead";
+  static const String fieldType = "type";
+  static const String fieldDateCreate = "dateCreate";
+  static const String fieldFromUserId = "fromUserId";
+  static const String fieldToUserId = "toUserId";
+}
+
+class NotiRequestCollection {
+  static const String collectionName = "notiRequest";
+  static const String fieldNotiRequestId = "notiRequestId";
+  static const String fieldRequestId = "requestId";
+  static const String fieldNotiId = "notiId";
+}
+
+class NotiDoSurveyCollection {
+  static const String collectionName = "notiDoSurvey";
+  static const String fieldNotiDoSurveyId = "notiDoSurveyId";
+  static const String fieldDoSurveyId = "doSurveyId";
+  static const String fieldNotiId = "notiId";
+}
