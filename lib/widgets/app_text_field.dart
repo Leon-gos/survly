@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AppTextField extends StatefulWidget {
   final String? hintText;
@@ -13,6 +14,8 @@ class AppTextField extends StatefulWidget {
   final String? label;
   final TextEditingController? textController;
   final int? maxLines;
+  final List<TextInputFormatter>? formatterList;
+  final int? maxLength;
 
   const AppTextField({
     super.key,
@@ -28,6 +31,8 @@ class AppTextField extends StatefulWidget {
     this.label,
     this.textController,
     this.maxLines,
+    this.formatterList,
+    this.maxLength,
   });
 
   @override
@@ -79,6 +84,8 @@ class _AppTextFieldState extends State<AppTextField> {
       textInputAction: widget.textInputAction ?? TextInputAction.done,
       maxLines: widget.maxLines ??
           (widget.textInputType == TextInputType.multiline ? 5 : 1),
+      inputFormatters: widget.formatterList,
+      maxLength: widget.maxLength,
     );
   }
 }

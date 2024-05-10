@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
@@ -13,14 +14,34 @@ import 'package:survly/src/network/model/question/question.dart';
 import 'package:survly/src/router/router_name.dart';
 import 'package:survly/src/theme/colors.dart';
 import 'package:survly/src/utils/date_helper.dart';
+import 'package:survly/src/utils/number_helper.dart';
 import 'package:survly/widgets/app_app_bar.dart';
 import 'package:survly/widgets/app_image_picker.dart';
 import 'package:survly/widgets/app_loading_circle.dart';
 import 'package:survly/widgets/app_text_field.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-class CreateSurveyScreen extends StatelessWidget {
+class CreateSurveyScreen extends StatefulWidget {
   const CreateSurveyScreen({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _CreateSurveyScreenState();
+}
+
+class _CreateSurveyScreenState extends State<CreateSurveyScreen> {
+  late final TextEditingController costController;
+
+  @override
+  void initState() {
+    super.initState();
+    costController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    costController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -204,12 +225,27 @@ class CreateSurveyScreen extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: AppTextField(
+                      textController: costController,
                       hintText: S.of(context).hintSurveyCost,
                       label: S.of(context).hintSurveyCost,
                       textInputType: TextInputType.number,
                       onTextChange: (newText) {
+                        Logger().d("new text: $newText");
+                        String formatedCost =
+                            NumberHelper.formatCurrencyWithoutUnit(
+                          int.parse(newText),
+                        );
+                        costController.value = TextEditingValue(
+                          text: formatedCost,
+                          selection: TextSelection.collapsed(
+                            offset: formatedCost.length,
+                          ),
+                        );
                         context.read<CreateSurveyBloc>().onCostChange(newText);
                       },
+                      formatterList: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
                     ),
                   )
                 ],
